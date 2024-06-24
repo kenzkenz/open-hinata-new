@@ -1139,7 +1139,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 zoseiText = '区分をしていない'
                 break
             }
-            cont += '<div class="zosei" style=width:' + width + 'px;>' +
+            cont += '<div class="zosei" style=width:' + 200 + 'px;>' +
                 '<h4 style="color: red">' + zoseiText + '</h4>' +
                 '<p>' + prop.A54_003 + prop.A54_005 + '</p>' +
                 '<p>盛り土番号=' + prop.A54_006 + '</p>' +
@@ -2579,6 +2579,8 @@ export function popUpNantora(rgba) {
   let b = rgba[2]
   let a = rgba[3]
   if (a === 0) return
+
+ console.log(rgba)
 
 
   // if (maxShinsui < 0.3) { // 津波浸水深 0.3m未満

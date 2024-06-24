@@ -142,6 +142,8 @@ for (let i of mapsStr) {
     ]
   })
   hyuganadaTsunamiTotatsu[i].values_['pointer'] = true
+  hyuganadaTsunamiTotatsu[i].values_['name'] = 'hyuganadatsunamitotatsu'
+  hyuganadaTsunamiTotatsu[i].values_['zoom'] = 15
 }
 function hyuganadaTsunamiTotatsuStyleFunction() {
   return function (feature, resolution) {
@@ -296,6 +298,8 @@ for (let i of mapsStr) {
     ]
   })
   hyuganadaShindoObj[i].values_['pointer'] = true
+  hyuganadaShindoObj[i].values_['name'] = 'hyuganadashindraster'
+  hyuganadaShindoObj[i].values_['zoom'] = 13
 }
 function hyuganadaShindoStyleFunction() {
   return function (feature, resolution) {
@@ -373,6 +377,8 @@ for (let i of mapsStr) {
     ]
   })
   hyugaTsunamiObj[i].values_['pointer'] = true
+  hyugaTsunamiObj[i].values_['name'] = 'hyugatsunamiraster'
+  hyugaTsunamiObj[i].values_['zoom'] = 15
 }
 function hyugaTsunamiStyleFunction() {
   return function (feature, resolution) {
@@ -451,6 +457,8 @@ for (let i of mapsStr) {
     ]
   })
   nantoraShindoObj[i].values_['pointer'] = true
+  nantoraShindoObj[i].values_['name'] = 'nantorashindraster'
+  nantoraShindoObj[i].values_['zoom'] = 13
 }
 function nantoraShindoStyleFunction() {
   return function (feature, resolution) {
@@ -525,6 +533,8 @@ for (let i of mapsStr) {
     ]
   })
   nantoraEkijyokaObj[i].values_['pointer'] = true
+  nantoraEkijyokaObj[i].values_['name'] = 'nantoraekijyokaraster'
+  nantoraEkijyokaObj[i].values_['zoom'] = 13
 }
 function nantoraEkijyokatyleFunction() {
   return function (feature, resolution) {
@@ -598,6 +608,8 @@ for (let i of mapsStr) {
     ]
   })
   nantoraObj[i].values_['pointer'] = true
+  nantoraObj[i].values_['name'] = 'nantoraraster'
+  nantoraObj[i].values_['zoom'] = 15
 }
 function nantoraStyleFunction() {
   return function (feature, resolution) {

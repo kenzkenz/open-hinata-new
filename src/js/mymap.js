@@ -780,9 +780,17 @@ export function initMap (vm) {
             const layers = map.getLayers().getArray().filter((layer) => {
                 return layer.getVisible()
             })
-            const layerNames = layers.map((v) => {
-                return v.get('name')
+            const layerNames = layers.map((layer) => {
+                const zoom = map.getView().getZoom()
+                if (layer.get('zoom')) {
+                    if (layer.get('zoom') >= zoom - 1) {
+                        return layer.get('name')
+                    }
+                } else {
+                    return layer.get('name')
+                }
             })
+            console.log(layerNames)
             // シームレス地質図-------------------------------------------------------------------------------
             function popupSeamless(evt) {
                 return new Promise(resolve => {
@@ -914,6 +922,11 @@ export function initMap (vm) {
                             server = 'https://kenzkenz3.xsrv.jp/mvt/miyazaki/hyuganadatsunamiraster/'
                             zoom = 15
                             func = PopUp.popUpHyugaTsunami
+                            break
+                        case 'hyuganadashindraster':
+                            server = 'https://kenzkenz3.xsrv.jp/mvt/miyazaki/hyuganadashindoraster/'
+                            zoom = 13
+                            func = PopUp.popUpHyugaShindo
                             break
                         case 'hyuganadatsunamitotatsu':
                             server = 'https://kenzkenz3.xsrv.jp/mvt/miyazaki/hyuganadatotatsuraster/'
