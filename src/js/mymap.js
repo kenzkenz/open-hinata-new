@@ -6,7 +6,6 @@ import Overlay from 'ol/Overlay';
 import View from 'ol/View'
 import { transform, fromLonLat } from 'ol/proj'
 import { ScaleLine } from 'ol/control';
-// import Toggle from 'ol-ext/control/Toggle'
 import Colorize from 'ol-ext/filter/Colorize'
 import Synchronize from 'ol-ext/interaction/Synchronize'
 import Lego from 'ol-ext/filter/Lego'
@@ -1321,42 +1320,6 @@ function getRgb( rx, ry, z, server) {
         //     resolve('err')
         // }
         // ----------------------------------------
-
-
-        // const loadImage = async() => {
-        //     const img = new Image();
-        //     img.src = server + z + '/' + x + '/' + y + '.png';
-        //     try {
-        //         await img.decode()
-        //         const canvas = document.createElement( 'canvas' )
-        //         const context = canvas.getContext( '2d' )
-        //         canvas.width = 1;
-        //         canvas.height = 1;
-        //         context.drawImage( img, i, j, 1, 1, 0, 0, 1, 1 );
-        //         const rgb = context.getImageData( 0, 0, 1, 1 ).data;
-        //         resolve(rgb)
-        //     }catch(encodingError){
-        //         resolve('err')
-        //     }
-        // }
-        // loadImage()
-
-
-        // img.src = server + z + '/' + x + '/' + y + '.png';
-        // try {
-        //     img.decode()
-        //     const canvas = document.createElement( 'canvas' )
-        //     const context = canvas.getContext( '2d' )
-        //     canvas.width = 1;
-        //     canvas.height = 1;
-        //     context.drawImage( img, i, j, 1, 1, 0, 0, 1, 1 );
-        //     const rgb = context.getImageData( 0, 0, 1, 1 ).data;
-        //     resolve(rgb)
-        // }catch(encodingError){
-        //     resolve('err')
-        // }
-
-
         img.onload = function(){
             const canvas = document.createElement( 'canvas' )
             const context = canvas.getContext( '2d' )
@@ -1370,7 +1333,6 @@ function getRgb( rx, ry, z, server) {
             resolve('err')
         }
         img.src = server + z + '/' + x + '/' + y + '.png';
-
     })
 }
 //-----------------------------------------------------------------------------------

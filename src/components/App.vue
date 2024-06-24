@@ -356,6 +356,19 @@
           // // ズームしたときの，ホイールに対する動作制御。
           scene.screenSpaceCameraController.minimumZoomDistance = 10
           // // めり込みにくくするためズーム制限
+
+
+          //--------------------------------------------------------------
+          this.$store.state.base.maps[mapName].getLayers().getArray().forEach((layer) => {
+            if (layer.values_.layers) {
+              layer.values_.layers.getArray().forEach((gv) => {
+                if (!gv.values_.name) gv.setVisible(false)
+              })
+            }
+          })
+          //--------------------------------------------------------------
+
+
           ol3d.setEnabled(true)
           // ol3d.getCamera().setTilt(0.75)
           tiltStart(ol3d)
@@ -364,7 +377,7 @@
         } else {
           const ol3d = this.$store.state.base.ol3d[mapName]
           // ol3d.setEnabled(false)
-          tiltEnd(ol3d)
+          tiltEnd(ol3d,this.$store.state.base.maps[mapName])
           this.$store.state.base.ol3d[mapName] = null
           document.querySelector('#' + mapName + '-3d').style.display = 'none'
         }
@@ -1518,13 +1531,25 @@
         }
       }
 
-      tiltEnd = function(ol3d){
+      tiltEnd = function(ol3d,map){
         if(ol3d.getCamera().getTilt() > 0){
           const tilt0 = ol3d.getCamera().getTilt()
           ol3d.getCamera().setTilt(tilt0 - 0.0125)
-          setTimeout(function(){tiltEnd(ol3d)},10);
+          setTimeout(function(){tiltEnd(ol3d,map)},10);
         } else {
           clearTimeout(tiltEnd)
+
+         //--------------------------------------------------------------
+          map.getLayers().getArray().forEach((layer) => {
+            if (layer.values_.layers) {
+              layer.values_.layers.getArray().forEach((gv) => {
+                gv.setVisible(true)
+              })
+            }
+          })
+          //--------------------------------------------------------------
+
+
           ol3d.setEnabled(false)
         }
       }
@@ -1883,6 +1908,9 @@
     }
 </style>
 <style>
+    label{
+      cursor: pointer!important;
+    }
     html {
       touch-action: none!important;
     }
@@ -2078,6 +2106,10 @@
         top: calc(100% - 3em);
         height: 22px;
         cursor: grab;
+    }
+    .ol-control button {
+        background: rgba(0,60,136,0.5);
+        color: white;
     }
     .ol-zoom {
         /*bottom: 40px;*/

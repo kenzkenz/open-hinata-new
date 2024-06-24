@@ -7133,14 +7133,18 @@ function yuhoukuStyleFunction() {
   }
 }
 // 河川---------------------------------------------------------------
+const kasenSource = new VectorTileSource({
+  format: new MVT(),
+  maxZoom: 14,
+  url:'https://kenzkenz3.xsrv.jp/mvt/kasenline/{z}/{x}/{y}.mvt',
+});
+kasenSource.set('olcs_skip', false)
+kasenSource.set('olcs_minimumLevel', 1)
+
 function Kasenline() {
   this.className = 'kasenline'
   this.name = 'kasenline'
-  this.source = new VectorTileSource({
-    format: new MVT(),
-    maxZoom: 14,
-    url:'https://kenzkenz3.xsrv.jp/mvt/kasenline/{z}/{x}/{y}.mvt',
-  });
+  this.source = kasenSource
   this.style = kasenStyleFunction()
   this.maxResolution = 76.437028 //zoom11
   this.declutter = true

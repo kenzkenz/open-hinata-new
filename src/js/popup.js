@@ -331,7 +331,11 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           cont += '<div style=width:200px>ダム名＝' + prop.W01_001 + '</div><hr>'
           break
         case 'city':
-          cont += '<div style=width:200px>' + prop.N03_004 + '</div><hr>'
+          if (cont.indexOf('city99') === -1) {
+            cont += '<div class="city99" style=width:200px>' +
+                '<h4>' + prop.N03_004 + '</h4>' +
+                '</div><hr>'
+          }
           break
         case 'kyoukai':
           if (cont.indexOf('kyoukai') === -1) {
