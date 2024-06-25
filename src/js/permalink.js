@@ -117,6 +117,25 @@ export function permalinkEventSet (response) {
           scene.screenSpaceCameraController.minimumZoomDistance = 10
           // // めり込みにくくするためズーム制限
           scene.globe.depthTestAgainstTerrain = true
+
+
+          //--------------------------------------------------------------
+          // なぜか配列を操作できない。
+          // console.log(store.state.base.maps[map].getLayers().getArray())
+          // store.state.base.maps[map].getLayers().getArray().forEach((layer) => {
+          //   // alert()
+          //   console.log(layer.values_.layers)
+          //   if (layer.values_.layers) {
+          //     layer.values_.layers.getArray().forEach((gv) => {
+          //       console.log(gv)
+          //       if (!gv.values_.name) gv.setVisible(false)
+          //     })
+          //   }
+          // })
+          //--------------------------------------------------------------
+
+
+
           ol3d.setEnabled(true)
           // const json = JSON.parse(obj[key])
           // console.log(obj[key])

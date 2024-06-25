@@ -1758,6 +1758,7 @@ for (let i of mapsStr) {
 
 // 東京都多摩地域赤色立体地図 ----------------------------------------------------------------------------
 function Tamared () {
+  this.name = 'tamared'
   this.preload = Infinity
   this.extent = transformE([138.9259, 35.90926,139.6112, 35.46722])
   this.source = new XYZ({
@@ -12607,6 +12608,7 @@ for (let i of mapsStr) {
 }
 // 北海道実測切図-----------------------------------------------------------------------
 function Jissokukirizu() {
+  this.neme = 'jissokukirizu'
   this.extent = transformE([138.0879731958565,45.59637701059333, 146.65316610940792,40.971791021489395])
   this.preload = Infinity
   this.source = new XYZ({
@@ -12623,6 +12625,7 @@ for (let i of mapsStr) {
 }
 
 function Jissokumatsumae() {
+  this.name = 'jissokumatsumae'
   this.extent = transformE([140.00435056635197,41.49701637286995, 140.33566671196516,41.37472447292248])
   this.preload = Infinity
   this.source = new XYZ({

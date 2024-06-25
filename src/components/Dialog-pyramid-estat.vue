@@ -1,7 +1,6 @@
 
 <template>
   <div :id="id">
-<!--    aaaaaaa-->
 <!--    <img class='loadingImg' src="https://kenzkenz.xsrv.jp/open-hinata/img/loading.gif" style="position: absolute;top:50%;left:50%;z-index:1;">-->
     <div class="d3-pyramid"></div>
     <!--      <svg id="d3-pyramid" width="350" :height="350" style="border: 1px dotted"></svg>-->
@@ -38,7 +37,7 @@ export default {
     const vm = this
     resasD3()
     function resasD3 () {
-      const elements = document.querySelectorAll('.v-dialog2-div')
+      const elements = document.querySelectorAll('#' + vm.mapName + ' .v-dialog2-div')
       const len = elements.length
       if (len>1) {
         elements[len-1].style.top = Number(elements[len-2].style.top.replace('px','')) + 40 + 'px'
@@ -63,6 +62,7 @@ export default {
       d3Create (vm.$store.state.base.estatDataset)
       function d3Create (response) {
         let  data = response
+        console.log(data)
         const margin = {top: 20, right: 20, bottom: 30, left: 20}
         let width = 550 - margin.left - margin.right
         let height = 400 - margin.top - margin.bottom
@@ -100,8 +100,9 @@ export default {
             .range([width - womanMargin-0,0])
 
         // d3.select(".d3-pyramid svg").remove()
-
+        console.log(d3.select('#' + vm.id + ' .d3-pyramid'))
         const svg = d3.select('#' + vm.id + ' .d3-pyramid').append("svg")
+        // const svg = d3.select('.d3-pyramid').append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
@@ -246,7 +247,6 @@ export default {
         // svg.append("g")
         //     .attr("transform", "translate(" + womanMargin -40 + "," + 0 + ")")
         //     .call(d3.axisRight(y).tickValues([]))
-
 
       }
     }

@@ -1151,7 +1151,7 @@ export function initMap (vm) {
                 const lon = evt.coordinate[0], lat = evt.coordinate[1];
                 for (let i in gLayers) {
                     const extent2 = gLayers[i].values_['extent2'];
-                    console.log(extent2)
+                    // console.log(extent2)
                     const lonMin = extent2[0], lonMax = extent2[2], latMin = extent2[1], latMax = extent2[3];
                     if (lonMin < lon && lonMax > lon) {
                         if (latMin < lat && latMax > lat) {
@@ -1634,8 +1634,8 @@ export function checkLayer (item, layerList, name) {
 export function multipliLayer (item, layerList, name) {
     store.commit('base/updateList', {value: layerList, mapName: name});
     const map = store.state.base.maps[name];
-    console.log(item.multipli)
-    console.log(item.layer)
+    // console.log(item.multipli)
+    // console.log(item.layer)
     if (item.layer.values_.layers) {
         const gLayers = item.layer.values_.layers.array_;
         for (let i in gLayers) {

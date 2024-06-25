@@ -359,15 +359,15 @@
 
 
           //--------------------------------------------------------------
+          console.log(store.state.base.maps[mapName].getLayers().getArray())
           this.$store.state.base.maps[mapName].getLayers().getArray().forEach((layer) => {
             if (layer.values_.layers) {
               layer.values_.layers.getArray().forEach((gv) => {
-                if (!gv.values_.name) gv.setVisible(false)
+                if (gv.values_.ol3d) gv.setVisible(false)
               })
             }
           })
           //--------------------------------------------------------------
-
 
           ol3d.setEnabled(true)
           // ol3d.getCamera().setTilt(0.75)
@@ -486,7 +486,7 @@
               let left
               if (window.innerWidth > 600) {
                 width = '550px'
-                left = (window.innerWidth - 560) + 'px'
+                left = (document.querySelector('#map01').clientWidth - 560) + 'px'
               } else {
                 width = '350px'
                 left = (window.innerWidth / 2 - 175) + 'px'
@@ -566,7 +566,7 @@
               let left
               if (window.innerWidth > 600) {
                 width = '550px'
-                left = (window.innerWidth - 560) + 'px'
+                left = (document.querySelector('#map01').clientWidth - 560) + 'px'
               } else {
                 width = '350px'
                 left = (window.innerWidth / 2 - 175) + 'px'
@@ -694,8 +694,10 @@
                    if (window.innerWidth < 600) {
                       left = (window.innerWidth / 2 - 175) + 'px'
                    } else {
-                      left = (window.innerWidth - 560) + 'px'
+                      left = (document.querySelector('#map01').clientWidth - 560) + 'px'
                    }
+                   console.log(left)
+                   // left = 0
                    const diialog =
                        {
                          id: vm.s_dialo2Id,
@@ -704,9 +706,11 @@
                            display: 'block',
                            top: '60px',
                            left:left,
+                           // right: '10px',
                            'z-index': vm.s_dialogMaxZindex
                          }
                        }
+                   console.log(diialog)
                    vm.$store.commit('base/pushDialogs2',{mapName: mapName, dialog: diialog})
                 })
             // switch (prefCode) {
@@ -1367,7 +1371,7 @@
             let left
             if (window.innerWidth > 600) {
               width = '400px'
-              left = (window.innerWidth - 410) + 'px'
+              left = (document.querySelector('#map01').clientWidth - 410) + 'px'
             } else {
               width = '350px'
               left = (window.innerWidth / 2 - 175) + 'px'
@@ -1407,7 +1411,7 @@
             let left
             if (window.innerWidth > 600) {
               width = '400px'
-              left = (window.innerWidth - 410) + 'px'
+              left = (document.querySelector('#map01').clientWidth - 410) + 'px'
             } else {
               width = '350px'
               left = (window.innerWidth / 2 - 175) + 'px'

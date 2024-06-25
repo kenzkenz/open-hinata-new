@@ -1352,7 +1352,10 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
 
           if (cont && cont !== undefined) {
             popupCenter(cont)
-            overlay.setPosition(coordinate)
+            try {
+              overlay.setPosition(coordinate)
+            } catch (e) {
+            }
           } else {
             // document.querySelector('.center-target').style.zIndex = 1
             overlay.setPosition(undefined)
@@ -1374,7 +1377,10 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
     content.innerHTML = cont2
     if (cont && cont !== undefined) {
       popupCenter(cont)
-      overlay.setPosition(coordinate)
+      try {
+        overlay.setPosition(coordinate)
+      } catch (e) {
+      }
     } else {
       // document.querySelector('.center-target').style.zIndex = 1
       overlay.setPosition(undefined)

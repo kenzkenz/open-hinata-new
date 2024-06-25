@@ -1093,15 +1093,18 @@ function saboStyleFunction() {
 
 
 // 大規模盛土造成地データ-----------------------------------------------------------------------
+const zoseiSource = new VectorTileSource({
+  crossOrigin: 'Anonymous',
+  format: new MVT(),
+  maxZoom:14,
+  url: "https://kenzkenz3.xsrv.jp/mvt/zosei/{z}/{x}/{y}.mvt"
+});
+zoseiSource.set('olcs_skip', false)
+zoseiSource.set('olcs_minimumLevel', 1)
 function zoseiMvt(){
   this.name = 'zoseiMvt'
   // this.className = 'zoseiMvt'
-  this.source = new VectorTileSource({
-    crossOrigin: 'Anonymous',
-    format: new MVT(),
-    maxZoom:14,
-    url: "https://kenzkenz3.xsrv.jp/mvt/zosei/{z}/{x}/{y}.mvt"
-  });
+  this.source = zoseiSource
   this.style = zoseiStyleFunction()
   this.maxResolution = 152.874057 //zoom10
   // this.declutter = true
@@ -1114,6 +1117,7 @@ for (let i of mapsStr) {
 }
 // ----------------------------------------------------------------------------
 function zoseiRaster() {
+  this.ol3d = true
   this.preload = Infinity
   this.source = new XYZ({
     url: 'https://kenzkenz3.xsrv.jp/zosei/{z}/{x}/{y}.png',
@@ -1172,7 +1176,7 @@ function zoseiStyleFunction() {
     })
     const textStyle = new Style({
       text: new Text({
-        font: "12px sans-serif",
+        font: "16px sans-serif",
         text: text,
         fill: new Fill({
           color: 'black'
@@ -1184,8 +1188,10 @@ function zoseiStyleFunction() {
         exceedLength:true
       })
     });
-    styles.push(polygonStyle);
-    if (zoom >= 13)styles.push(textStyle);
+    styles.push(polygonStyle)
+    if(!store.state.base.ol3d['map01']) {
+      if (zoom >= 13)styles.push(textStyle)
+    }
     return styles;
   }
 }
@@ -2074,14 +2080,17 @@ for (let i of mapsStr) {
   syougakkouku0Obj[i].values_['pointer'] = true
 }
 //R05小学校区------------------------------------------------------------------------------------------------
+const syougakkokuR05Source = new VectorTileSource({
+  format: new MVT(),
+  maxZoom:14,
+  url: "https://kenzkenz3.xsrv.jp/syogakko/gakku/r0502/{z}/{x}/{y}.mvt"
+})
+syougakkokuR05Source.set('olcs_skip', false)
+syougakkokuR05Source.set('olcs_minimumLevel', 1)
 function SyougakkoukuR05(mapName){
   this.name = 'syougakkouku'
   this.className = 'syuogakuR05'
-  this.source = new VectorTileSource({
-    format: new MVT(),
-    maxZoom:14,
-    url: "https://kenzkenz3.xsrv.jp/syogakko/gakku/r0502/{z}/{x}/{y}.mvt"
-  });
+  this.source = syougakkokuR05Source
   this.style = syougakkoukuStyleFunction(3,mapName,'syogakkoR05');
   this.maxResolution = 611.496226 //zoom8
   // this.declutter = true
@@ -2094,6 +2103,7 @@ for (let i of mapsStr) {
 export const syougakkoukuR05Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-A27-2023.html' target='_blank'>国土数値情報</a>";
 
 function SyougakkoukuR05Raster () {
+  this.ol3d = true,
   this.source = new XYZ({
     url: 'https://kenzkenz3.xsrv.jp/syogakko/gakkuraster/r05/{z}/{x}/{y}.png',
     crossOrigin: 'Anonymous',
@@ -7149,7 +7159,7 @@ const kasenSource = new VectorTileSource({
   format: new MVT(),
   maxZoom: 14,
   url:'https://kenzkenz3.xsrv.jp/mvt/kasenline/{z}/{x}/{y}.mvt',
-});
+})
 kasenSource.set('olcs_skip', false)
 kasenSource.set('olcs_minimumLevel', 1)
 
@@ -7167,6 +7177,7 @@ for (let i of mapsStr) {
   kasenLineObj[i] = new VectorTileLayer(new Kasenline())
 }
 function Ksenlinexyz () {
+  this.ol3d = true,
   this.source = new XYZ({
     url: 'https://kenzkenz3.xsrv.jp/kasenline/{z}/{x}/{y}.png',
     crossOrigin: 'Anonymous',
