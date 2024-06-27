@@ -50,7 +50,7 @@ const moduleBase = {
     menuFlg:false,
     notifications: {},
     notification: '',
-    dialogMaxZindex:1,
+    dialogMaxZindex:3,
     dialog2Id:1,
     splitFlg: 1,
     firstFlg: true,

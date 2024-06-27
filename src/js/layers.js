@@ -384,6 +384,22 @@ for (let i of mapsStr) {
   osmObj[i] = new TileLayer(new Osm())
 }
 const osmSumm = 'OpenStreetMapは、道路地図などの地理情報データを誰でも利用できるよう、フリーの地理情報データを作成することを目的としたプロジェクトです。<a href=\'https://openstreetmap.jp\' target=\'_blank\'>OpenStreetMap</a>';
+// 自然地形（白黒）------------------------------------------------------------------------------------
+function ShizenShirokuro () {
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://maps.gsi.go.jp/xyz/landform1_mono/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    minZoom: 2,
+    maxZoom: 18
+  })
+}
+const shizenShirokuroObj = {}
+for (let i of mapsStr) {
+  shizenShirokuroObj[i] = new TileLayer(new ShizenShirokuro())
+}
+const shizenShirokuroSumm = '国土地理院作成のタイルです。<br><a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">リンク</a>'
+
 // 標準地図------------------------------------------------------------------------------------
 function Std () {
   this.preload = Infinity
@@ -12716,6 +12732,8 @@ export const Layers =
         { text: '明治期の低湿地', data: { id: 'sitti', layer: sittiObj, opacity: 1, summary: stdSumm } },
         { text: '治水地形分類図 更新版（2007年以降）', data: { id: 'tisui2007', layer: tisui2007Obj, opacity: 1, summary: tisui2007Summ } },
         { text: '地形分類（自然地形）', data: { id: 'sizen', layer: LayersMvt.sizentikei0Obj, opacity: 1, summary: LayersMvt.sizentikeiSumm} },
+        { text: '自然地形（白黒）', data: { id: 'sizenshirokuro', layer: shizenShirokuroObj, opacity: 1, summary: shizenShirokuroSumm} },
+
         // { text: '地形分類（自然地形『詳細版』）', data: { id: 'sizen', layer: LayersMvt.sizentikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm} },
         { text: '地形分類（人工地形）', data: { id: "zinkoutikei", layer: LayersMvt.zinkoutikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm } },
         { text: '土地利用図（1982～1983年）', data: { id: "totiriyouzu", layer: totiriyouzuObj, opacity: 1, summary: totiriyouzuSumm } },

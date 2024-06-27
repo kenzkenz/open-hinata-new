@@ -8,7 +8,6 @@ import ColorClassifier from "color-classifier"
 let cont = ''
 export function popUp(map,layers,features,overlay,evt,content,content2) {
   let coordinate
-  let width
   let streetView
   let flg = false
   let features0 = features
@@ -18,12 +17,12 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
     for(let feature of features){
       if (feature.getGeometry().getType() === 'Point') {
         features0 = [features[i]]
+        layers = [layers[i]]
         break
       }
       i ++
     }
   }
-
   if (features) {
     if (features[0].getGeometry().getType() === 'Point' || features[0].getGeometry().getType() === 'LineString' || features[0].getGeometry().getType() === 'MultiLineString') {
       features0 = [features[0]]
@@ -43,7 +42,9 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
     features0.forEach((feature,i) =>{
       const geoType = feature.getGeometry().getType()
       const geometry = feature.getGeometry()
-      const prop = feature.getProperties();
+      const prop = feature.getProperties()
+      console.log(layers[i].get('name'))
+      console.log(geoType)
       console.log(prop)
       let lonLat
       if (geoType === 'Polygon' || geoType === 'MultiPolygon' || geoType === 'LineString' || geoType === 'MultiLineString') {
@@ -94,11 +95,14 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
         case 'syougakkouku':
           if (cont.indexOf('syougakkouku') === -1) {
             if(prop.A27_001) {
+              let biko = ''
+              if (prop.備考) biko = '<span style="color: red">備考=' + prop.備考 + '</span><br>'
               cont += '<div class="syougakkouku" style=width:300px>' +
                   '<h4>小学校区＝' + prop.A27_004 + '</h4>' +
                   '市区町村コード＝' + prop.A27_001 + '<br>' +
                   '設置主体=' + prop.A27_002 + '<br>' +
                   '所在地＝' + prop.A27_005 + '<br>' +
+                  biko +
                   'id＝' + prop.id + '<br>' +
                   '</div><hr>'
             } else if (prop.校区名) {
@@ -121,15 +125,18 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
         case 'tyuugakkouku' :
           if (cont.indexOf('tyuugakkouku') === -1) {
             if(prop.A32_001) {
+              let biko = ''
+              if (prop.備考) biko = '<span style="color: red">備考=' + prop.備考 + '</span><br>'
               cont += '<div class="tyuugakkouku" style=width:300px>' +
                   '<h4>中学校区＝' + prop.A32_004 + '</h4>' +
                   '市区町村コード＝' + prop.A32_001 + '<br>' +
                   '設置主体=' + prop.A32_002 + '<br>' +
-                  '所在地＝' + prop.A32_005 + '<br>' +
+                  '所在地＝' + ru(prop.A32_005) + '<br>' +
+                  biko +
                   'id＝' + prop.id + '<br>'+
                   '</div><hr>'
             } else if (prop.校区名) {
-              cont += '<div class="syougakkouku" style=width:300px>' +
+              cont += '<div class="tyuugakkouku" style=width:300px>' +
                   '<h4>中学校区＝' + prop.校区名 + '</h4>' +
                   '区=' + prop.区 + '<br>' +
                   '所在＝' + prop.所在 + '<br>' +
@@ -145,7 +152,6 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           }
           break;
         case 'tyuugakkoukuH25' :
-          width = 200
           if(prop.A32_001) {
             cont += '<div style=width:200px>市区町村コード＝' + prop.A32_001 + '<br>' +
                 '設置主体=' + prop.A32_002 + '<br>' +
@@ -160,7 +166,6 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           }
           break;
         case 'tyuugakkoukuH28' :
-          width = 200
           if(prop.A32_001) {
             cont += '<div style=width:200px>市区町村コード＝' + prop.A32_001 + '<br>' +
                 '設置主体=' + prop.A32_002 + '<br>' +
@@ -178,10 +183,11 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
         case 'youtoH23' :
         case 'youtoR01' :
           if (cont.indexOf('youtoR01') === -1) {
-            cont += '<div class="youtoR01" style=width:200px>都道府県名＝' + prop.A29_002 + '<br>' +
+            cont += '<div class="youtoR01" style=width:200px>' +
+                '<h4>' + prop.A29_005 + '</h4>' +
+                '都道府県名＝' + prop.A29_002 + '<br>' +
                 '市区町村名=' + prop.A29_003 + '<br>' +
                 '用途地域分類＝' + prop.A29_004 + '<br>' +
-                '用途地域名＝' + prop.A29_005 + '<br>' +
                 '建ぺい率＝' + prop.A29_006 + '<br>' +
                 '容積率＝' + prop.A29_007 + '<br>' +
                 '</div><hr>'
@@ -227,26 +233,22 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           switch (prop.A17_009) {
             case '01':
             case 1:
-              width = 100
-              cont += "<div style=width:100px>過疎市町村</div>";
+              cont += "<div style=width:250px>過疎市町村</div>";
               break;
             case '02':
             case 2:
-              width = 220
-              cont += "<div style=width:220px>過疎地域とみなされる市町村</div>";
+              cont += "<div style=width:250px>過疎地域とみなされる市町村</div>";
               break;
             case '03':
             case 3:
-              width = 200
-              cont += "<div style=width:200px>過疎地域とみなされる区域</div>";
+              cont += "<div style=width:250px>過疎地域とみなされる区域</div>";
               break;
           }
           cont += cont + '<hr>' + prop.A17_006
           break;
           // 夜の明かり
         case 'japanLight':
-          width = 150
-          if(map.getView().getZoom()>7) cont += '<div style=width:150px>明るさレベル＝' +  prop.light +'</div>'
+          if(map.getView().getZoom()>7) cont += '<div style=width:200px>明るさレベル＝' +  prop.light +'</div>'
           break
         case 'didh27':
           if (cont.indexOf('didh27') === -1) {
@@ -273,13 +275,16 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           }
           break
         case 'suiro':
-          cont += '<div style=width:250px>区分＝' + prop.rivCtg + '<br>タイプ＝' + prop.type + '</div>'
+          cont += '<div style=width:250px>' +
+              '区分＝' + prop.rivCtg + '<br>' +
+              'タイプ＝' + prop.type +
+              '</div><hr>'
           break
         case 'hinan':
           if (prop.P20_005 !== -1) {
-            cont += '<div style=width:200px>' + prop.P20_002 + '<br>' + prop.P20_003 + '<br>収容人数：' + prop.P20_005 + '人</div>'
+            cont += '<div style=width:200px>' + prop.P20_002 + '<br>' + prop.P20_003 + '<br>収容人数：' + prop.P20_005 + '人</div><hr>'
           } else {
-            cont += '<div style=width:200px>' + prop.P20_002 + '<br>' + prop.P20_003 + '</div>'
+            cont += '<div style=width:200px>' + prop.P20_002 + '<br>' + prop.P20_003 + '</div><hr>'
           }
           break
         case 'kouziR04':
@@ -312,12 +317,18 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           cont += '<div style=width:200px>' + prop.A38c_001 + '</div>'
           break
         case 'suikei1km':
-          if (prop.PTN_2015) {
-            cont += '<div style=width:200px>2020年人口＝' + prop.PTN_2020 +
-                '<br>2050年人口＝' + prop.PTN_2050 +
-                '<br>2050/2020＝' + Math.floor(prop.PTN_2050 / prop.PTN_2020 * 100) + '%</div>'
-          } else {
-            cont += '<div style=width:200px>' + prop.text + '</div><hr>'
+          if (cont.indexOf('suikei1km') === -1) {
+            if (prop.PTN_2015) {
+              cont += '<div class="suikei1km" style=width:250px>' +
+                  '<h4>2050/2020＝' + Math.floor(prop.PTN_2050 / prop.PTN_2020 * 100) + '%</h4>' +
+                  '2020年人口＝' + prop.PTN_2020 + '<br>' +
+                  '2050年人口＝' + prop.PTN_2050 +
+                  '</div><hr>'
+            } else {
+              cont += '<div class="suikei1km" style=width:250px>' +
+                  '<h4>' + prop.text + '</h4>' +
+                  '</div><hr>'
+            }
           }
           break
         case 'nougyou':
@@ -552,8 +563,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
         case 'gunbakumatu':
         case 'gunkuni':
         case 'gun':
-          width = 130
-          cont += '<div style=width:130px>' +
+          cont += '<div style=width:200px>' +
               '<h4>' + prop.GUN + '</h4>' +
               '国=' + prop.KUNI + '<br>' +
               '県=' + prop.PREF + '</div><hr>'
@@ -567,7 +577,6 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
               '</div><hr>'
           break
         case 'kiseikukan':
-          width = 200
           cont += '<div style=width:200px>' + prop.A1 + prop.A2 + '</div><hr>'
           break
         case 'railroad':
@@ -618,15 +627,17 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
               '</div><hr>'
           break
         case 'bus':
-          width = 200
-          cont += '<div style=width:200px>事業者名=' + prop.N07_001 + '<hr>' +
-              '備考=' + prop.N07_002 + '</div>'
+          cont += '<div style=width:300px>' +
+              '<h4>事業者名=' + prop.N07_001 + '</h4>' +
+              '備考=' + ru(prop.N07_002) +
+              '</div><hr>'
           break
         case 'bustei':
-          cont += '<div style=width:200px>事業者名=' + prop.P11_002 + '<hr>' +
-              'バス停名=' + prop.P11_001 + '<hr>' +
+          cont += '<div style=width:300px>' +
+              '<h4>バス停名=' + prop.P11_001 + '</h4>' +
+              '事業者名=' + prop.P11_002 +
               // 'バス系統=' + prop.P11_003_01 + '<hr>' +
-              '</div>'
+              '</div><hr>'
           break
         case 'okayamamai':
           if (cont.indexOf('okayamamai') === -1) {
@@ -826,7 +837,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
         case 'meijikokudo':
           cont += '<div style=width:200px;>' +
               '<h4>' + prop.Name + '</h4>' +
-              '</div>'
+              '</div><hr>'
           break
         case 'kasenline':
           let syubetu
@@ -1012,7 +1023,6 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           }
           break
         case 'drawLayer2':
-          width = 300
           let block = 'block'
           if (prop.src) {
             block = 'block'
@@ -1112,7 +1122,6 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
             name = prop.P14_008
             address = prop.P14_001 + prop.P14_002 + prop.P14_004
           }
-          width = 300
           cont += '<div style=width:300px;>' +
               '<h4>' + name + '</h4>' +
               '<p>' + ru(address) + '</p>' +
@@ -1344,14 +1353,11 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
         })
         .then(function (response) {
           console.log(response.data.results.lv01Nm)
-          let cont2 = cont + streetView
+          let cont2 = popupCenter(cont) + streetView
           const splitMuni = muni[Number(response.data.results.muniCd)].split(',')
-          // cont2 = splitMuni[1] + splitMuni[3] + '<h4>' + response.data.results.lv01Nm + '</h4>' + cont2
-
           content.innerHTML = cont2
-
           if (cont && cont !== undefined) {
-            popupCenter(cont)
+            // popupCenter(cont)
             try {
               overlay.setPosition(coordinate)
             } catch (e) {
@@ -1363,20 +1369,22 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
 
           const button = document.querySelector(".jinkopie1km,.jinkopie100m")
           if (button) button.setAttribute("jyusyo", response.data.results.lv01Nm )
+          const mapName = map.values_.target
+          const elChyome = document.querySelector( '#' + mapName + ' .h4-100m,' +
+                                                            '#' + mapName +  ' .h4-1k')
+          elChyome.innerHTML = response.data.results.lv01Nm
 
-          const h4 = document.querySelector(".h4-100m,.h4-1k")
-          h4.innerHTML = response.data.results.lv01Nm
-          const p = document.querySelector(".p-100m,.p-1k")
-          p.innerHTML = splitMuni[1] + splitMuni[3]
+          const elCity = document.querySelector('#' + mapName + " .p-100m," +
+                                                         '#' + mapName + " .p-1k")
+          elCity.innerHTML = splitMuni[1] + splitMuni[3]
 
           cont = ''
           flg = false
         })
   } else {
-    const cont2 = cont + streetView
+    const cont2 = popupCenter(cont)  + streetView
     content.innerHTML = cont2
     if (cont && cont !== undefined) {
-      popupCenter(cont)
       try {
         overlay.setPosition(coordinate)
       } catch (e) {
@@ -1399,6 +1407,11 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
       })
     }
     const maxWidth = d3.max(widthAr, function(d) { return Number(d); })
+    // console.log(cont)
+    // console.log(maxWidth)
+    // console.log(cont.match(/width:(.*?)px/g))
+    cont = cont.replace(/width:(.*?)px/,'width:' + maxWidth + 'px')
+    // console.log(cont)
     if (maxWidth) {
       document.querySelector('#' + map.values_.target + ' .ol-popup').style.left = -(maxWidth / 2) - 16 + 'px'
       const style1 = document.createElement('style')
@@ -1416,6 +1429,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
       document.head.appendChild(style1)
       document.head.appendChild(style2)
     }
+    return cont
     // document.querySelector('.center-target').style.zIndex = 0
   }
 }

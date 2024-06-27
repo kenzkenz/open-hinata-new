@@ -1944,7 +1944,6 @@ function syochiikiStyleFunction() {
     const styles = [];
     const polygonStyle = new Style({
       fill: new Fill({
-        // color: rgba
         color: 'rgba(0,0,0,0)'
       }),
       stroke: new Stroke({
@@ -1958,9 +1957,25 @@ function syochiikiStyleFunction() {
     } else {
       text = String(ru2(prop.JINKO)) + '人'
     }
+    let font
+    if (zoom<12) {
+      font = "8px sans-serif"
+    } else if (zoom<13) {
+        font = "10px sans-serif"
+    } else if (zoom<14) {
+      font = "12px sans-serif"
+    } else if (zoom<15) {
+      font = "14px sans-serif"
+    } else if (zoom<16) {
+      font = "18px sans-serif"
+    } else if (zoom<17) {
+      font = "20px sans-serif"
+    } else {
+      font = "20px sans-serif"
+    }
     const textStyle = new Style({
       text: new Text({
-        font: "16px sans-serif",
+        font: font,
         text: text,
         fill: new Fill({
           color: "red"
@@ -2045,7 +2060,9 @@ function Syougakkouku(mapName){
     url: "https://kenzkenz.github.io/syougaku/{z}/{x}/{y}.mvt"
   });
   this.style = syougakkoukuStyleFunction(3,mapName,'syogakkoR03');
-  this.maxResolution = 611.496226 //zoom8
+  // this.maxResolution = 611.496226 //zoom8
+  this.maxResolution = 1222.99 //zoom7
+
   // this.declutter = true
   // this.overflow = true
 }
@@ -2062,7 +2079,9 @@ function SyougakkoukuR03xyz () {
     minZoom: 0,
     maxZoom: 11
   })
-  this.minResolution = 611.496226 //zoom8
+  // this.minResolution = 611.496226 //zoom8
+  this.minResolution = 1222.99 //zoom7
+
 }
 export const syougakkoukuR03Obj = {};
 for (let i of mapsStr) {
@@ -2083,7 +2102,7 @@ for (let i of mapsStr) {
 const syougakkokuR05Source = new VectorTileSource({
   format: new MVT(),
   maxZoom:14,
-  url: "https://kenzkenz3.xsrv.jp/syogakko/gakku/r0502/{z}/{x}/{y}.mvt"
+  url: "https://kenzkenz3.xsrv.jp/syogakko/gakku/r0503/{z}/{x}/{y}.mvt"
 })
 syougakkokuR05Source.set('olcs_skip', false)
 syougakkokuR05Source.set('olcs_minimumLevel', 1)
@@ -2092,7 +2111,8 @@ function SyougakkoukuR05(mapName){
   this.className = 'syuogakuR05'
   this.source = syougakkokuR05Source
   this.style = syougakkoukuStyleFunction(3,mapName,'syogakkoR05');
-  this.maxResolution = 611.496226 //zoom8
+  // this.maxResolution = 611.496226 //zoom8
+  this.maxResolution = 1222.99 //zoom7
   // this.declutter = true
   // this.overflow = true
 }
@@ -2110,7 +2130,9 @@ function SyougakkoukuR05Raster () {
     minZoom: 0,
     maxZoom: 11
   })
-  this.minResolution = 611.496226 //zoom8
+  // this.minResolution = 611.496226 //zoom8
+  this.minResolution = 1222.99 //zoom7
+
 }
 export const syougakkoukuR05RasterObj = {};
 for (let i of mapsStr) {
@@ -2175,8 +2197,6 @@ function syougakkoukuStyleFunction(year,mapName,componentName) {
         textCheck = store.state.info.textCheckTyugakkoR03[mapName]
         break
     }
-    // console.log(componentName,paintCheck)
-    // const paintCheck = store.state.info.paintCheckSyogakkoR05[mapName]
     let text = ''
     if (year === 22 || year === 28) {
       text = prop["A27_003"];
@@ -2196,16 +2216,21 @@ function syougakkoukuStyleFunction(year,mapName,componentName) {
     }
     if (!textCheck) text = ''
     let rgb
-    let rgba
-    if (prop["A27_005"] || prop["A32_005"] || prop["A32_006"] || prop["校区名"]) {
+    let rgba = "rgba(255,255,255,0)"
+    if (prop["id"]) {
       const id = Math.round(Number(prop["id"].toString().slice(-3)))
-      // const id = Number(prop["id"])
-      // rgb = d3.rgb(d3syougakkoukuColor(Number(prop["id"])));
       rgb = d3.rgb(d3OridinalColor(id))
       rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
-    } else {
-      rgba = "rgba(255,255,255,0)"
     }
+
+
+    // if (prop["A27_005"] || prop["A32_005"] || prop["A32_006"] || prop["校区名"]) {
+    //   const id = Math.round(Number(prop["id"].toString().slice(-3)))
+    //   rgb = d3.rgb(d3OridinalColor(id))
+    //   rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
+    // } else {
+    //   rgba = "rgba(255,255,255,0)"
+    // }
     if (!paintCheck) rgba = "rgba(255,255,255,0)"
     let font
     if (zoom <= 14) {
@@ -2312,7 +2337,9 @@ function Tyuugakkouku(mapName){
     url: "https://kenzkenz.github.io/tyuugaku/{z}/{x}/{y}.mvt"
   });
   this.style = syougakkoukuStyleFunction(30,mapName,'tyugakkoR03');
-  this.maxResolution = 611.496226 //zoom8
+  // this.maxResolution = 611.496226 //zoom8
+  this.maxResolution = 1222.99 //zoom7
+
   // this.declutter = true
   // this.overflow = true
 }
@@ -2329,8 +2356,8 @@ function CyuugakkoukuR03xyz () {
     minZoom: 0,
     maxZoom: 8
   })
-  this.minResolution = 611.496226 //zoom8
-  // this.minResolution = 38.218514 //zoom12
+  // this.minResolution = 611.496226 //zoom8
+  this.minResolution = 1222.99 //zoom7
 }
 export const cyuugakkoukuR03Obj = {};
 for (let i of mapsStr) {
@@ -2354,11 +2381,12 @@ function TyuugakkoukuMvt(mapName){
   this.source = new VectorTileSource({
     format: new MVT(),
     maxZoom:14,
-    // url: "https://kenzkenz.github.io/tyuugaku/{z}/{x}/{y}.mvt"
-    url: "https://kenzkenz3.xsrv.jp/tyugakko/gakku/r0502/{z}/{x}/{y}.mvt"
+    url: "https://kenzkenz3.xsrv.jp/tyugakko/gakku/r0503/{z}/{x}/{y}.mvt"
   });
   this.style = syougakkoukuStyleFunction(30,mapName,'tyugakkoR05');
-  this.maxResolution = 611.496226 //zoom8
+  // this.maxResolution = 611.496226 //zoom8
+  this.maxResolution = 1222.99 //zoom7
+
   // this.declutter = true
   // this.overflow = true
 }
@@ -2376,8 +2404,8 @@ function CyugakkokuR05Raster () {
     minZoom: 0,
     maxZoom: 8
   })
-  this.minResolution = 611.496226 //zoom8
-  // this.minResolution = 38.218514 //zoom12
+  // this.minResolution = 611.496226 //zoom8
+  this.minResolution = 1222.99 //zoom7
 }
 export const tyugakkokuR05RasterObj = {};
 for (let i of mapsStr) {
@@ -2394,13 +2422,6 @@ for (let i of mapsStr) {
   })
   tyugakkokuR05Obj[i].values_['pointer'] = true
 }
-
-
-
-
-
-
-
 
 // 夜の明かり---------------------------------------------------------------------------------------
 function SekaiLight () {
@@ -5331,27 +5352,27 @@ var codeList_sizen = new Array(//図式コード,"色"]
     [105,"#5e5ce6"],
     [9999,"#ff00ff"]
 );
-// 簡易版
-function Sizentikei0(name,minzoom,maxzoom,url){
-  this.multiply = true,
+// 簡易版 こっちを使っている。
+function Sizentikei0(name){
+  this.multiply = true
   this.name = 'sizentikei0'
   this.source = new VectorTileSource({
     format: new GeoJSON({defaultProjection:'EPSG:4326'}),
     tileGrid: new createXYZ({
-      minZoom:minzoom,
-      maxZoom:maxzoom
+      minZoom:1,
+      maxZoom:16
     }),
-    url:url
-  });
+    url:"https://maps.gsi.go.jp/xyz/experimental_landformclassification1/{z}/{x}/{y}.geojson"
+  })
   this.style = sizentikeiStyleFunction(name)
   this.useInterimTilesOnError = false
   this.pointer = true
 }
 export  const sizentikei0Obj = {};
 for (let i of mapsStr) {
-  sizentikei0Obj[i] = new VectorTileLayer(new Sizentikei0('sizentikei2',1,16,"https://maps.gsi.go.jp/xyz/experimental_landformclassification1/{z}/{x}/{y}.geojson"))
+  sizentikei0Obj[i] = new VectorTileLayer(new Sizentikei0('sizentikei2'))
 }
-// 詳細版
+// 詳細版 使っていない。
 function Sizentikei(name,minzoom,maxzoom,url,zIndex){
   this.multiply = true,
   this.name = 'sizentikei'
@@ -5938,13 +5959,17 @@ const source =  new VectorTileSource({
   maxZoom: 14,
   // url: "https://kenzkenz.github.io/rosen/{z}/{x}/{y}.mvt"
   url: 'https://kenzkenz3.xsrv.jp/mvt/tetsudo/{z}/{x}/{y}.mvt'
-});
+})
+source.set('olcs_skip', false)
+source.set('olcs_minimumLevel', 1)
 const source2 = new VectorTileSource({
   format: new MVT(),
   maxZoom: 14,
   // url: "https://kenzkenz.github.io/eki/{z}/{x}/{y}.mvt"
   url: 'https://kenzkenz3.xsrv.jp/mvt/eki/{z}/{x}/{y}.mvt'
-});
+})
+source2.set('olcs_skip', false)
+source2.set('olcs_minimumLevel', 1)
 
 function Rosen() {
   this.name = "rosen"
@@ -5961,6 +5986,7 @@ for (let i of mapsStr) {
 export const rosenSumm = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N05-2023.html' target='_blank'>国土数値情報　鉄道データ</a>"
 
 function Rosenxyz () {
+  this.ol3d = true
   this.source = new XYZ({
     // url: 'https://kenzkenz3.xsrv.jp/rosen/{z}/{x}/{y}.png',
     url: 'https://kenzkenz3.xsrv.jp/tetsudo/{z}/{x}/{y}.png',
@@ -6012,7 +6038,9 @@ function rosenStyleFunction() {
         // placement: 'line'
       })
     })
-    if (zoom >= 11  && zoom<=12) styles.push(textStyle)
+    if(!store.state.base.ol3d['map01']) {
+      if (zoom >= 11  && zoom<=12) styles.push(textStyle)
+    }
     styles.push(lineStyle)
     return styles;
   }
@@ -6043,6 +6071,7 @@ function rosenhaisiStyleFunction() {
   }
 }
 function Eki() {
+  this.ol3d = true
   this.name = "eki"
   this.className = 'eki'
   this.style = ekiStyleFunction('blue',true)
@@ -6054,6 +6083,7 @@ for (let i of mapsStr) {
   ekiObj[i] = new VectorTileLayer(new Eki())
 }
 function Ekihaisi() {
+  this.ol3d = true
   this.name = "eki"
   this.className = 'eki'
   this.style = ekiStyleFunction('red')
@@ -6097,7 +6127,9 @@ function ekiStyleFunction(color,genzonEki) {
       })
     });
     styles.push(iconStyle)
-    styles.push(textStyle)
+    if(!store.state.base.ol3d['map01']) {
+      styles.push(textStyle)
+    }
     if (genzonEki) {
       if (genzon === '9999') return styles
     } else {
@@ -7177,7 +7209,7 @@ for (let i of mapsStr) {
   kasenLineObj[i] = new VectorTileLayer(new Kasenline())
 }
 function Ksenlinexyz () {
-  this.ol3d = true,
+  this.ol3d = true
   this.source = new XYZ({
     url: 'https://kenzkenz3.xsrv.jp/kasenline/{z}/{x}/{y}.png',
     crossOrigin: 'Anonymous',
