@@ -1330,6 +1330,21 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div><hr>'
           }
           break
+        case 'kizyunten':
+          if (cont.indexOf('kizyunten') === -1) {
+            let link = ''
+            if (prop.点番号) {
+              link = '<a href="https://terras.gsi.go.jp/geo_info/genchou/' + prop.点番号  + '/index.html" target="_blank">概要を表示</a>'
+            }
+            cont += '<div class="kizyunten" style=width:300px;>' +
+                '<h4>点名=' + ru(prop.点名) + '</h4>' +
+                '<h5>基準点種別=' + prop.基準点種別 + '</h5>' +
+                '<p>基準点コード=' + ru(prop.基準点コード) + '</p>' +
+                '<p>成果状態=' + ru(prop.成果状態) + '</p>' +
+                link +
+                '</div><hr>'
+          }
+          break
       }
     })
   }

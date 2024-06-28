@@ -20,9 +20,18 @@ import MVTFormat from 'ol/format/MVT'
 import WikiCommons from 'ol-ext/source/WikiCommons'
 import  * as Tilegrid from 'ol/tilegrid'
 import * as Loadingstrategy from 'ol/loadingstrategy'
+import src from "@/assets/icon/blackpin.png";
 // import image from "ol-ext/legend/Image";
 
+// const transformE = extent => {
+//   return transformExtent(extent,'EPSG:4326','EPSG:3857')
+// }
 const transformE = extent => {
+  function compareFunc(a, b) {
+    return a - b;
+  }
+  extent.sort(compareFunc);
+  extent = [extent[2],extent[0],extent[3],extent[1]]
   return transformExtent(extent,'EPSG:4326','EPSG:3857')
 }
 const ru = string => {
@@ -73,7 +82,174 @@ const mapsStr = ['map01','map02']
 // }
 // -----
 
-
+// 基準点------------------------------------------------------------------------------------
+function Kizyunten(){
+  this.name = 'kizyunten'
+  this.source = new VectorTileSource({
+    format: new GeoJSON({defaultProjection:'EPSG:4326'}),
+    tileGrid: new createXYZ({
+      minZoom:7,
+      maxZoom:14
+    }),
+    url:"https://maps.gsi.go.jp/xyz/cp/{z}/{x}/{y}.geojson"
+  })
+  this.style = kizyuntenStyleFunction()
+  this.maxResolution = 1222.99	 //zoom7
+  this.useInterimTilesOnError = false
+  this.pointer = true
+  this.declutter = true
+  this.overflow = true
+}
+export const kizyuntenSumm = "<div style='width: 200px'>三角点、水準点、電子基準点等の基準点の位置を表示します。<br>" +
+    "<a href='' target='_blank'></a></div>"
+export  const kizyuntenObj = {}
+for (let i of mapsStr) {
+  kizyuntenObj[i] = new VectorTileLayer(new Kizyunten())
+}
+//--------------------------
+function kizyuntenStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const kizyunten = prop.基準点種別
+    const seika = prop.成果状態
+    let text = prop.点名
+    let font
+    let scale
+    const styles = []
+    if (zoom<=16) {
+      // text = text.trunc(8)
+      font = "16px sans-serif"
+      scale = 0.05
+    } else {
+      font = "16px sans-serif"
+      scale = 0.05
+    }
+    let src = require('@/assets/icon/blackpin.png')
+    switch (kizyunten) {
+      case '電子基準点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/476.png')
+        } else {
+          src = require('@/assets/icon/476_None.png')
+        }
+        scale = 0.9
+        break
+      case '一等三角点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/201.png')
+        } else {
+          src = require('@/assets/icon/201_None.png')
+        }
+        scale = 1.2
+        break
+      case '二等三角点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/202.png')
+        } else {
+          src = require('@/assets/icon/202_None.png')
+        }
+        scale = 1.2
+        break
+      case '三等三角点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/203.png')
+        } else {
+          src = require('@/assets/icon/203_None.png')
+        }
+        scale = 1.2
+        break
+      case '四等三角点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/204.png')
+        } else {
+          src = require('@/assets/icon/204_None.png')
+        }
+        scale = 1.2
+        break
+      case '基準水準点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/206.png')
+        } else {
+          src = require('@/assets/icon/206_None.png')
+        }
+        scale = 1.2
+        break
+      case '準基準水準点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/206.png')
+        } else {
+          src = require('@/assets/icon/206_None.png')
+        }
+        scale = 1.2
+        break
+      case '一等水準交差点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/206.png')
+        } else {
+          src = require('@/assets/icon/206_None.png')
+        }
+        scale = 1.2
+        break
+      case '一等道路水準点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/206.png')
+        } else {
+          src = require('@/assets/icon/206_None.png')
+        }
+        scale = 1.2
+        break
+      case '一等水準点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/206.png')
+        } else {
+          src = require('@/assets/icon/206_None.png')
+        }
+        scale = 1.2
+        break
+      case '二等水準点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/207.png')
+        } else {
+          src = require('@/assets/icon/207_None.png')
+        }
+        scale = 1.2
+        break
+      case '二等道路水準点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/207.png')
+        } else {
+          src = require('@/assets/icon/207_None.png')
+        }
+        scale = 1.2
+        break
+      default:
+        src = require('@/assets/icon/blackpin.png')
+        scale = 1.2
+    }
+    const iconStyle = new Style({
+      image: new Icon({
+        src: src,
+        scale: scale
+      })
+    })
+    const textStyle = new Style({
+      text: new Text({
+        font: font,
+        text: text,
+        offsetY: 28,
+        stroke: new Stroke({
+          color: "white",
+          width: 3
+        })
+      })
+    });
+    // if(zoom>=10) styles.push(iconStyle)
+    styles.push(iconStyle)
+    if(zoom>=9) styles.push(textStyle)
+    return styles;
+  }
+}
 // 法務省宮崎市2024---------------------------------------------------------------------------------
 function Homusyomiyazaki2024(){
   this.name = 'homusyomiyazaki2024'
@@ -2053,7 +2229,7 @@ for (let i of mapsStr) {
 //R03小学校区------------------------------------------------------------------------------------------------
 function Syougakkouku(mapName){
   this.name = 'syougakkouku'
-  this.className = 'syuogakuR03'
+  // this.className = 'syuogakuR03'
   this.source = new VectorTileSource({
     format: new MVT(),
     maxZoom:15,
@@ -2108,7 +2284,7 @@ syougakkokuR05Source.set('olcs_skip', false)
 syougakkokuR05Source.set('olcs_minimumLevel', 1)
 function SyougakkoukuR05(mapName){
   this.name = 'syougakkouku'
-  this.className = 'syuogakuR05'
+  // this.className = 'syuogakuR05'
   this.source = syougakkokuR05Source
   this.style = syougakkoukuStyleFunction(3,mapName,'syogakkoR05');
   // this.maxResolution = 611.496226 //zoom8
@@ -2330,7 +2506,7 @@ function syougakkoukuStyleFunction(year,mapName,componentName) {
 //R03中学校区---------------------------------------------------------------------------------------
 function Tyuugakkouku(mapName){
   this.name = 'tyuugakkouku'
-  this.className = 'tyuugakkoukuR03'
+  // this.className = 'tyuugakkoukuR03'
   this.source = new VectorTileSource({
     format: new MVT(),
     maxZoom:15,
@@ -2377,7 +2553,7 @@ for (let i of mapsStr) {
 //R05中学校区---------------------------------------------------------------------------------------
 function TyuugakkoukuMvt(mapName){
   this.name = 'tyuugakkouku'
-  this.className = 'tyuugakkoukuR05'
+  // this.className = 'tyuugakkoukuR05'
   this.source = new VectorTileSource({
     format: new MVT(),
     maxZoom:14,
