@@ -304,8 +304,8 @@ function danmen(feature) {
             })
     }
     function dialogOpen(dataSet){
-        store.commit('base/incrDialog2Id');
-        store.commit('base/incrDialogMaxZindex');
+        store.commit('base/incrDialog2Id')
+        store.commit('base/incrDialogMaxZindex')
         const diialog =
             {
                 id: store.state.base.dialog2Id,
@@ -390,12 +390,6 @@ export function initMap (vm) {
     map01.addEventListener('mouseleave', () => {
         moveEnd()
     })
-    // const cesiumDiv = document.querySelector('.cesium-btn-div, .cesium-btn-up, .cesium-btn-down, .cesium-btn-left, .cesium-btn-right')
-    // cesiumDiv.addEventListener("touchstart", (e) => {
-    //     if (e.touches.length > 1) {
-    //         e.preventDefault();
-    //     }
-    // }, { passive: false });
 
     // マップ作製ループ用の配列を作成
     const maps = [
@@ -733,34 +727,10 @@ export function initMap (vm) {
                     })
             }
             if (window.innerWidth > 1000) pointerCreate()
-
-
-
-            // OL6ではバグのため動かない。無理やり動かすにはlayer.jsのレイヤーにthis.className = 'hoge'と
-            // 入れるといいが今度は合成が効かなくなる
-            // const pixel = (map).getPixelFromCoordinate(evt.coordinate);
-            // const layers = [];
-            // const layers00 = evt.map.getLayers().getArray();
-            // let mw5 = layers00.find(el => el.get('mw'));
-            // if (mw5) return
-            // if (!mw5) {
-            //     try {
-            //         (map).forEachLayerAtPixel(evt.pixel,function(layer){
-            //             layers.push(layer);
-            //         });
-            //     } catch (error) {}
-            // }
-            // const tgtLayers = layers.filter(function(layer) {
-            //     return layer.get('pointer');
-            // })
-            // if (tgtLayers.length>0) {
-            //     document.querySelector('#' + mapName + ' .ol-viewport').style.cursor = "pointer"
-            // }
         });
         // シングルクリック------------------------------------------------------------------------------------
 
         // 洪水,津波,継続,普通のフィーチャー用-----------------------------------------------------------------
-
 
         map.on('singleclick', function (evt) {
             console.log(JSON.stringify(transform(evt.coordinate, "EPSG:3857", "EPSG:4326")))
@@ -1230,7 +1200,14 @@ export function initMap (vm) {
         //     }
         // })
 
-        // シングルクリック終わり
+        // シングルクリック終わり---------------------------------------------------------------------
+
+        const popupElm =document.querySelector('#' + maps[i].mapName + ' .ol-overlaycontainer-stopevent')
+        const cssText = popupElm.style.cssText
+        popupElm.onclick = () => {
+            store.commit('base/incrDialogMaxZindex')
+            popupElm.style.cssText = cssText + 'z-index: ' + store.state.base.dialogMaxZindex + '!important;'
+        }
         //----------------------------------------------------------------------------------------
         const getElevation = (event) =>{
             let z = Math.floor(map.getView().getZoom())
