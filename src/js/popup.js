@@ -373,7 +373,9 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
               '<br>発生日時' + prop.A30b_003 + '</div><hr>'
           break
         case 'mitinoeki':
-          cont += "<div style=width:200px><a href=" + prop.P35_007 + " target='_blank'>" + prop.P35_006 + "</a></div><hr>"
+          cont += "<div style=width:200px>" +
+              "<h4><a href=" + prop.P35_007 + " target='_blank'>" + prop.P35_006 + "</a></h4>" +
+              "</div><hr>"
           break
         case 'tokyoZisin':
           cont += '<div style=width:300px>地区名＝' + prop.区市町村名 + prop.町丁目名 +
@@ -519,11 +521,13 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
               break;
             }
           }
-          cont += '<div style=width:300px>' +
-              '<h4>分類名=' + landFormName + '</h4>' +
-              '成り立ち=' + naritachi + '<hr>' +
-              'リスク=' + risk + '<hr>' +
-              '</div>'
+          if (cont.indexOf('sizentikei') === -1) {
+            cont += '<div class="sizentikei" style=width:300px>' +
+                '<h4>分類名=' + landFormName + '</h4>' +
+                '成り立ち=' + naritachi + '<hr>' +
+                'リスク=' + risk + '<hr>' +
+                '</div>'
+          }
           break
         case 'densyou':
           // const lonLat1 = transform([prop.geometry.extent_[0],prop.geometry.extent_[1]], "EPSG:3857", "EPSG:4326")

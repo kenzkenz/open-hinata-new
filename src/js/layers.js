@@ -78,7 +78,6 @@ function flood(pixels, data) {
       sinsui = Math.floor(sinsui)
       const floodColors = data.floodColors
       const rgb = floodColors[sinsui]
-      // // console.log(rgb)
       if (rgb) pixel[0] = rgb.r;
       if (rgb) pixel[1] = rgb.g;
       if (rgb) pixel[2] = rgb.b;
@@ -107,7 +106,7 @@ function flood(pixels, data) {
       sinsui = Math.floor(sinsui)
       const floodColors2 = data.floodColors2
       const rgb = floodColors2[sinsui]
-      // // console.log(rgb)
+      // console.log(rgb)
       if (rgb) pixel[0] = rgb.r;
       if (rgb) pixel[1] = rgb.g;
       if (rgb) pixel[2] = rgb.b;
