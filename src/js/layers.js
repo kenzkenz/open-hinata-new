@@ -20,10 +20,7 @@ import  * as MaskDep from './mask-dep'
 import  * as LayersMvt from './layers-mvt'
 // import BingMaps from 'ol/source/BingMaps'
 import * as d3 from "d3"
-import {fgbObj, homusyomiyazaki2024Summ, hyuganadaShindoSumm, kizyuntenSumm, nantoraShindoObj} from "./layers-mvt";
-// import {ssdsPrefObj} from "./layers-mvt";
-// const mapsStr = ['map01','map02','map03','map04']
-// const mapsStr = ['map01'];
+import {hokkaidoTsunamiMvtObj} from "./layers-mvt";
 const mapsStr = ['map01','map02'];
 const transformE = extent => {
   function compareFunc(a, b) {
@@ -13908,7 +13905,7 @@ export const Layers =
         //   ]},
         { text: '土砂災害',
           children: [
-            { text: '<i class="fa-solid fa-layer-group"></i>土砂災害全て', data: { id: 'dosyasaigai', layer: dosyaSaigaiObj, opacity: 1,summary:dosyaSaigaiSumm} },
+            // { text: '<i class="fa-solid fa-layer-group"></i>土砂災害全て', data: { id: 'dosyasaigai', layer: dosyaSaigaiObj, opacity: 1,summary:dosyaSaigaiSumm} },
             { text: '土砂災害警戒区域(土石流)', data: { id: 'dosya', layer: dosyaObj, opacity: 1, summary: dosyaSumm } },
             { text: '土石流危険渓流', data: { id: 'doseki', layer: dosekiObj, opacity: 1, summary: dosekiSumm } },
             { text: '急傾斜地崩壊危険箇所', data: { id: 'kyuukeisya', layer: kyuukeisyaObj, opacity: 1, summary: kyuukeisyaSumm } },
@@ -13947,8 +13944,10 @@ export const Layers =
             { text: '災害時活動困難係数', data: { id: "tokyoZisin2", layer: LayersMvt.tokyoZisin2Obj, opacity: 1, summary: LayersMvt.tokyoZisin2Summ } },
           ]},
         { text: '今後30年間震度6以上の確率', data: { id: 'jisin', layer: jisinObj, opacity: 1, summary: jisinSumm } },
-        { text: '北海道太平洋沿岸の津波浸水想定', data: { id: "hokkaidouTunamiT", layer: LayersMvt.hokkaidouTunamiTObj, opacity: 1, summary: LayersMvt.hokkaidouTunamiTSumm } },
-        { text: '北海道日本海沿岸の津波浸水想定', data: { id: "hokkaidouTunami", layer: LayersMvt.hokkaidouTunamiObj, opacity: 1, summary: LayersMvt.hokkaidouTunamiSumm } },
+        // { text: '北海道太平洋沿岸の津波浸水想定', data: { id: "hokkaidouTunamiT", layer: LayersMvt.hokkaidouTunamiTObj, opacity: 1, summary: LayersMvt.hokkaidouTunamiTSumm } },
+        // { text: '北海道日本海沿岸の津波浸水想定', data: { id: "hokkaidouTunami", layer: LayersMvt.hokkaidouTunamiObj, opacity: 1, summary: LayersMvt.hokkaidouTunamiSumm } },
+        { text: '北海道津波浸水想定', data: { id: "hokkaidoutsunami", layer: LayersMvt.hokkaidoTsunamiMvtObj, opacity: 1, summary: LayersMvt.hokkaidoTsunamiSumm } },
+
         { text: 'R05大規模盛土造成地', data: { id: 'zosei', layer: LayersMvt.zoseiObj, opacity: 1, summary: LayersMvt.zoseiSumm } }
       ]},
     { text: '遺跡、文化財等',

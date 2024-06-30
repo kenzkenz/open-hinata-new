@@ -248,7 +248,13 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           break;
           // 夜の明かり
         case 'japanLight':
-          if(map.getView().getZoom()>7) cont += '<div style=width:200px>明るさレベル＝' +  prop.light +'</div>'
+          if(map.getView().getZoom()>7) {
+            if (cont.indexOf('japanLight') === -1) {
+              cont += '<div class="japanLight" style=width:200px>' +
+                  '<h4>明るさレベル＝' +  prop.light + '</h4>' +
+                  '</div><hr>'
+            }
+          }
           break
         case 'didh27':
           if (cont.indexOf('didh27') === -1) {
@@ -1214,6 +1220,48 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '<h4>' + prop.N06_018 + '</h4>' +
                 '<p>供用開始年' + prop.N06_012 + '年</p>' +
                 '</div><hr>'
+          }
+          break
+        case 'hokkaidotsunamimvt':
+          if (cont.indexOf('hokkaidotsunamimvt') === -1) {
+            let maxShinsui = prop.max
+            if (prop.max) {
+              maxShinsui = prop.max
+            } else {
+              maxShinsui = prop.MAX_SIN
+            }
+            const level = prop.level
+
+
+            if (level) {
+              let levelText
+              if (level === 1) {
+                levelText = '0.3m未満'
+              } else if (level === 2) {
+                levelText = '0.3~0.5m'
+              } else if (level === 3) {
+                levelText = '0.5~1.0m'
+              } else if (level === 4) {
+                levelText = '1.0~3.0m'
+              } else if (level === 5) {
+                levelText = '3.0~5.0m'
+              } else if (level === 6) {
+                levelText = '5.0~10.0m'
+              } else if (level === 7) {
+                levelText = '10.0~20.0m'
+              } else if (level === 8) {
+                levelText = '20.0m以上'
+              }
+              cont += '<div class="hokkaidotsunamimvt" style=width:300px;>' +
+                  '<h5 style="color: red">北海道 津波浸水深 = ' + levelText + '</h5>' +
+                  '</div><hr>'
+            } else {
+              cont += '<div class="hokkaidotsunamimvt" style=width:300px;>' +
+                  '<h5 style="color: red">北海道 津波浸水深 = ' + maxShinsui + 'm</h5>' +
+                  '</div><hr>'
+
+            }
+
           }
           break
         case 'hyugatsunamimvt':
@@ -2860,6 +2908,50 @@ export function popUpHyuganadaToutatsu(rgba) {
     cont = "<h5 style=width:300px>日向灘地震津波浸水開始時間(地震発生後) 25分～30分</h5>"
   } else if (r === 254 && g === 227 && b === 214) {
     cont = "<h5 style=width:300px>日向灘地震津波浸水開始時間(地震発生後) 30分～</h5>"
+  }
+  if (cont) cont = '<span style="color: red">' + cont + '</span>'
+  return cont
+}
+//----------------------------------------------------------------------------------------
+export function popUpHcokkaidoTsunami(rgba) {
+  let r = rgba[0]
+  let g = rgba[1]
+  let b = rgba[2]
+  let a = rgba[3]
+  if (a === 0) return
+  const palette = [
+    {r: 255, g: 255, b: 179},
+    {r: 247, g: 245, b: 169},
+    {r: 248, g: 225, b: 166},
+    {r: 255, g: 216, b: 192},
+    {r: 255, g: 183, b: 183},
+    {r: 255, g: 145, b: 145},
+    {r: 242, g: 133, b: 201},
+    {r: 220, g: 122, b: 220}
+  ]
+  const colorClassifier = new ColorClassifier(palette);
+  const color = colorClassifier.classify({r: r, g: g, b: b});
+  // console.log(color)
+  r = color.r
+  g = color.g
+  b = color.b
+  let cont
+  if (r === 255 && g === 255 && b === 179) {
+    cont = "<h5 style=width:300px>北海道 津波浸水深 0.3m未満</h5>"
+  } else if (r === 247 && g === 245 && b === 169) {
+    cont = "<h5 style=width:300px>北海道 津波浸水深 0.3~0.5m</h5>"
+  } else if (r === 248 && g === 225 && b === 166) {
+    cont = "<h5 style=width:300px>北海道 津波浸水深 0〜1m</h5>"
+  } else if (r === 255 && g === 216 && b === 192) {
+    cont = "<h5 style=width:300px>北海道 津波浸水深 1〜3m</h5>"
+  } else if (r === 255 && g === 183 && b === 183) {
+    cont = "<h5 style=width:300px>北海道 津波浸水深 3〜5m</h5>"
+  } else if (r === 255 && g === 145 && b === 145) {
+    cont = "<h5 style=width:300px>北海道 津波浸水深 5〜10m</h5>"
+  } else if (r === 242 && g === 133 && b === 201) {
+    cont = "<h5 style=width:300px>北海道 津波浸水深 10〜20m</h5>"
+  } else if (r === 220 && g === 122 && b === 220) {
+    cont = "<h5 style=width:300px>北海道 津波浸水深 20m〜</h5>"
   }
   if (cont) cont = '<span style="color: red">' + cont + '</span>'
   return cont

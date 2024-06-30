@@ -508,7 +508,147 @@ function hyuganadaShindoStyleFunction() {
     return styles
   }
 }
-// 宮崎見日向灘沖地震津波---------------------------------------------------------------------------------
+
+// 北海道津波---------------------------------------------------------------------------------
+const hokkaidoTsunamiSource = new VectorTileSource({
+  crossOrigin: 'Anonymous',
+  format: new MVT(),
+  maxZoom: 17,
+  url: "https://kenzkenz3.xsrv.jp/mvt/hokkaidotsunami/{z}/{x}/{y}.mvt"
+})
+hokkaidoTsunamiSource.set('olcs_skip', false)
+hokkaidoTsunamiSource.set('olcs_minimumLevel', 1)
+function HokkaidotsunamiMvt(){
+  this.name = 'hokkaidotsunamimvt'
+  this.source = hokkaidoTsunamiSource
+  this.style = hokkaidoTsunamiStyleFunction()
+  this.declutter = true
+  this.overflow = true
+}
+export const hokkaidoTsunamiSumm = "<div style='width: 250px'><a href='https://www.harp.lg.jp/opendata/dataset/105.html' target='_blank'>北海道の津波浸水想定の公表資料（データ集）【北海道】</a>" +
+    "<br><img src='https://kenzkenz.xsrv.jp/open-hinata/img/shinsui_legend_popup.png' width='250px'></div>"
+export  const hokkaidoTsunamiMvtObj = {};
+for (let i of mapsStr) {
+  hokkaidoTsunamiMvtObj[i] = new VectorTileLayer(new HokkaidotsunamiMvt())
+}
+// ----------------------------------------------------------------------------
+// function hokkaidoTsunamiRaster() {
+//   this.name = 'hokkaidotsunamiraster'
+//   this.preload = Infinity
+//   this.source = new XYZ({
+//     url: 'https://kenzkenz3.xsrv.jp/hokkaidotsunamiraster2/{z}/{x}/{y}.png',
+//     crossOrigin: 'anonymous',
+//     minZoom: 0,
+//     maxZoom: 14
+//   })
+//   // this.minResolution = 9.554629	 //zoom14
+//   this.minResolution = 4.777314 //zoom15
+//   // this.minResolution = 2.388657 //zoom16
+// }
+// export const hokkaidoTsunamiRasterObj = {};
+// for (let i of mapsStr) {
+//   hokkaidoTsunamiRasterObj[i] = new TileLayer(new hokkaidoTsunamiRaster())
+// }
+// export const hokkaidoTsunamiObj = {}
+// for (let i of mapsStr) {
+//   hokkaidoTsunamiObj[i] = new LayerGroup({
+//     layers: [
+//       hokkaidoTsunamiMvtObj[i],
+//       // hokkaidoTsunamiRasterObj[i]
+//     ]
+//   })
+//   hokkaidoTsunamiObj[i].values_['pointer'] = true
+//   // hokkaidoTsunamiObj[i].values_['name'] = 'hokkaidotsunamiraster'
+//   // hokkaidoTsunamiObj[i].values_['zoom'] = 13
+// }
+function hokkaidoTsunamiStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    let maxShinsui = prop.max
+    if (prop.max) {
+      maxShinsui = prop.max
+    } else {
+      maxShinsui = prop.MAX_SIN
+    }
+    const level = prop.level
+    const styles = [];
+    let rgb
+    let font
+    if (level) {
+      if (level === 1) { // 津波浸水深 0.3m未満
+        rgb = "rgb(255,255,179)"
+      } else if (level === 2) { // 津波浸水深 0.3~0.5m
+        rgb = "rgb(247,245,169)"
+      } else if (level === 3) { // 津波浸水深 0.5~1.0m
+        rgb = "rgb(248,225,166)"
+      } else if (level === 4) { // 津波浸水深 1.0~3.0m
+        rgb = "rgb(255,216,192)"
+      } else if (level === 5) { // 津波浸水深 3.0~5.0m
+        rgb = "rgb(255,183,183)"
+      } else if (level === 6) { // 津波浸水深 5.0~10.0m
+        rgb = "rgb(255,145,145)"
+      } else if (level === 7) { // 津波浸水深 10.0~20.0m
+        rgb = "rgb(242,133,201)"
+      } else if (level === 8) { // 津波浸水深 20.0m以上
+        rgb = "rgb(220,122,220)"
+      }
+    } else {
+      if (maxShinsui < 0.3) { // 津波浸水深 0.3m未満
+        rgb = "rgb(255,255,179)"
+      } else if (maxShinsui < 0.5) { // 津波浸水深 0.3~0.5m
+        rgb = "rgb(247,245,169)"
+      } else if (maxShinsui < 1) { // 津波浸水深 0.5~1.0m
+        rgb = "rgb(248,225,166)"
+      } else if (maxShinsui < 3) { // 津波浸水深 1.0~3.0m
+        rgb = "rgb(255,216,192)"
+      } else if (maxShinsui < 5) { // 津波浸水深 3.0~5.0m
+        rgb = "rgb(255,183,183)"
+      } else if (maxShinsui < 10) { // 津波浸水深 5.0~10.0m
+        rgb = "rgb(255,145,145)"
+      } else if (maxShinsui < 20) { // 津波浸水深 10.0~20.0m
+        rgb = "rgb(242,133,201)"
+      } else if (maxShinsui >= 20) { // 津波浸水深 20.0m以上
+        rgb = "rgb(220,122,220)"
+      }
+    }
+    if (zoom <= 19) {
+      font = "8px sans-serif"
+    } else if (zoom <= 20) {
+      font = "14px sans-serif"
+    } else {
+      font = "20px sans-serif"
+    }
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: rgb
+      }),
+      stroke: new Stroke({
+        color: zoom >= 18.5 ? 'black' : rgb,
+        width: 1
+      })
+    })
+    const textStyle = new Style({
+      text: new Text({
+        font: font,
+        text: String(maxShinsui) + 'm',
+        fill:  new Fill({
+          color:"black"
+        }),
+        stroke: new Stroke({
+          color: "white",
+          width: 3
+        })
+      })
+    })
+    styles.push(polygonStyle)
+    if (zoom >= 18.5) styles.push(textStyle)
+    return styles
+  }
+}
+
+
+// 宮崎見日向灘地震津波---------------------------------------------------------------------------------
 function HyugatsunamiMvt(){
   this.name = 'hyugatsunamimvt'
   // this.className = 'hyugatsunamimvt'
@@ -2637,24 +2777,24 @@ function japanLightStyleFunction () {
     const prop = feature.getProperties();
     const text = prop["light"];
     let light100
-    if(zoom>=8) {
+    if(zoom>=9) {
       const lightNum = Number(prop["light"]);
-      light100 = lightNum / 255;
+      light100 = lightNum / 255
     }else{
-      light100 = Number(prop["rate"]) / 10;
+      light100 = Number(prop["rate"]) / 10
     }
-    const rgb = d3.rgb(d3Color(light100));
-    let rgba;
-    if(zoom>=8) {
+    const rgb = d3.rgb(d3Color(light100))
+    let rgba
+    if(zoom>=9) {
       if (light100 === 1) {
-        rgba = "rgba(255,165,0,0.8)";
+        rgba = "rgba(255,165,0,0.8)"
       } else {
-        rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ", 0.8 )";
+        rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ", 0.8 )"
       }
     }else{
-      rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ", 0.8 )";
+      rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ", 0.8 )"
     }
-    const styles = [];
+    const styles = []
     const fillStyle =
       new Style({
         fill: new Fill({
