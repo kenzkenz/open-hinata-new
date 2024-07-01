@@ -325,15 +325,13 @@ export function permalinkEventSet (response) {
                             case 'flood10m':
                               height = '357px'
                               break
+                            case 'kijyunten':
                             case 'ssdsCity':
                             case 'ssdsPref':
                               bottom = ''
                               top = '60px'
                               left = '10px'
-                              // height = '480px'
-                              // left = (window.innerWidth / 2 - 175) + 'px'
                               break
-
                           }
                           console.log(c.name)
                         }

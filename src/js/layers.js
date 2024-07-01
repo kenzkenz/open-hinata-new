@@ -13983,7 +13983,7 @@ export const Layers =
         // { text: 'test', data: { id: "kouzuimesyu9syu", layer: LayersMvt.fgbObj, opacity: 1, summary: LayersMvt.kozuiMesh9syuSumm} },
         // { text: '一等三角点', data: { id: "itto", layer: LayersMvt.ittosankakutenObj, opacity: 1, summary: LayersMvt.ittosankakutenSumm } },
 
-        { text: '基準点', data: { id: "kizyunten", layer: LayersMvt.kizyuntenObj, opacity: 1, summary: LayersMvt.kizyuntenSumm } },
+        { text: '基準点', data: { id: "kizyunten", layer: LayersMvt.kizyuntenObj, opacity: 1, summary: LayersMvt.kizyuntenSumm, component: {name: 'kijyunten', values:[]} } },
 
         { text: 'ウィキメディア・コモンズ', data: { id: "wiki", layer: LayersMvt.wikiObj, opacity: 1, summary: LayersMvt.wikiSumm } },
         { text: '気象庁予報区（一次細分区域等 ）', data: { id: "yohouku1", layer: LayersMvt.yohouku1Obj, opacity: 1, summary: LayersMvt.yohoukuSumm } },

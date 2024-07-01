@@ -83,35 +83,37 @@ const mapsStr = ['map01','map02']
 // -----
 
 // 基準点------------------------------------------------------------------------------------
-function Kizyunten(){
+function Kizyunten(mapName){
   this.name = 'kizyunten'
   this.source = new VectorTileSource({
     format: new GeoJSON({defaultProjection:'EPSG:4326'}),
     tileGrid: new createXYZ({
       minZoom:7,
+      // minZoom:12,
       maxZoom:14
     }),
     url:"https://maps.gsi.go.jp/xyz/cp/{z}/{x}/{y}.geojson"
   })
-  this.style = kizyuntenStyleFunction()
+  this.style = kizyuntenStyleFunction(mapName)
   this.maxResolution = 1222.99	 //zoom7
   this.useInterimTilesOnError = false
   this.pointer = true
   this.declutter = true
   this.overflow = true
 }
-export const kizyuntenSumm = "<div style='width: 200px'>三角点、水準点、電子基準点等の基準点の位置を表示します。<br>" +
+export const kizyuntenSumm = "<div style='font-size: small'>電子基準点、一等三角点以外はズーム12から表示、選択可能<br>" +
     "<a href='' target='_blank'></a></div>"
 export  const kizyuntenObj = {}
 for (let i of mapsStr) {
-  kizyuntenObj[i] = new VectorTileLayer(new Kizyunten())
+  kizyuntenObj[i] = new VectorTileLayer(new Kizyunten(i))
 }
 //--------------------------
-function kizyuntenStyleFunction() {
+function kizyuntenStyleFunction(mapName) {
   return function (feature, resolution) {
+    const kijyunten = store.state.info.kijyunten[mapName]
     const zoom = getZoom(resolution)
     const prop = feature.getProperties()
-    const kizyunten = prop.基準点種別
+    // const kizyunten = prop.基準点種別
     const seika = prop.成果状態
     let text = prop.点名
     let font
@@ -126,7 +128,7 @@ function kizyuntenStyleFunction() {
       scale = 0.05
     }
     let src = require('@/assets/icon/blackpin.png')
-    switch (kizyunten) {
+    switch (prop.基準点種別) {
       case '電子基準点':
         if (seika === '正常') {
           src = require('@/assets/icon/476.png')
@@ -244,9 +246,10 @@ function kizyuntenStyleFunction() {
         })
       })
     });
-    // if(zoom>=10) styles.push(iconStyle)
-    styles.push(iconStyle)
-    if(zoom>=9) styles.push(textStyle)
+    if (kijyunten === prop.基準点種別 || kijyunten === 'all' ) {
+      styles.push(iconStyle)
+      if(zoom>=9) styles.push(textStyle)
+    }
     return styles;
   }
 }

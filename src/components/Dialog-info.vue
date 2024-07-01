@@ -24,9 +24,8 @@
             <v-ssds-pref :item="item" :mapName="mapName" v-else-if="item.component.name === 'ssdsCity'"/>
             <v-kosoku :item="item" :mapName="mapName" v-else-if="item.component.name === 'kosoku'"/>
             <v-tetsudojikeirertsu :item="item" :mapName="mapName" v-else-if="item.component.name === 'tetsudoJikeiretsu'"/>
-
             <v-paint :item="item" :mapName="mapName" v-else-if="item.component.name === 'syogakkoR05' || item.component.name === 'syogakkoR03' || item.component.name === 'tyugakkoR05' || item.component.name === 'tyugakkoR03'"/>
-
+            <v-kijyunten :item="item" :mapName="mapName" v-else-if="item.component.name === 'kijyunten'"/>
 
         </div>
     </div>
@@ -45,6 +44,7 @@
   import DialogInfoSsdsPref from '@/components/dialog-info/Dialog-info-ssds'
   import DialogInfoKosoku from '@/components/dialog-info/Dialog-info-kosoku'
   import DialogInfoteTetudojikeiretsu from '@/components/dialog-info/Dialog-info-tetsudojikeirertsu'
+  import DialogInfoKijyunten from '@/components/dialog-info/Dialog-info-kijyunten'
 
   export default {
     name: "v-dialog-info",
@@ -61,6 +61,7 @@
       'v-ssds-pref':DialogInfoSsdsPref,
       'v-kosoku':DialogInfoKosoku,
       'v-tetsudojikeirertsu':DialogInfoteTetudojikeiretsu,
+      'v-kijyunten':DialogInfoKijyunten,
     },
     props: ['mapName'],
     computed: {

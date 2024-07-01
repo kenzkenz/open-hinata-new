@@ -314,12 +314,16 @@ const moduleInfo = {
     paintCheckSyogakkoR03: {map01: true, map02: true, map03: true, map04: true},
     paintCheckTyugakkoR05: {map01: true, map02: true, map03: true, map04: true},
     paintCheckTyugakkoR03: {map01: true, map02: true, map03: true, map04: true},
-
     textCheckSyogakkoR05: {map01: true, map02: true, map03: true, map04: true},
     textCheckSyogakkoR03: {map01: true, map02: true, map03: true, map04: true},
     textCheckTyugakkoR05: {map01: true, map02: true, map03: true, map04: true},
     textCheckTyugakkoR03: {map01: true, map02: true, map03: true, map04: true},
-
+    kijyunten: {
+      map01: 'all',
+      map02: 'all',
+      map03: 'all',
+      map04: 'all'
+    },
     seaLevel10m: {
       map01: 0,
       map02: 0,
@@ -514,11 +518,15 @@ const moduleInfo = {
           } else if (payload.order === 1){
             variable = 'textCheckTyugakkoR03'
           }
+          break
         case 'kosoku':
           variable = 'kosoku'
           break
         case 'tetsudoJikeiretsu':
           variable = 'tetsudoJikeiretsu'
+          break
+        case 'kijyunten':
+          variable = 'kijyunten'
           break
       }
       state[variable][payload.mapName] = payload.value
