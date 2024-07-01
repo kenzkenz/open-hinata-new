@@ -298,13 +298,16 @@ export function permalinkEventSet (response) {
                       let bottom
                       let top
                       if (window.innerWidth < 600) {
-                        left = (window.innerWidth / 2 - 125) + 'px'
-                        top  = ''
-                        bottom = '60px'
-                        // top = '60px'
-                        // left = '10px'
-                        // bottom = ''
+                        // left = (window.innerWidth / 2 - 125) + 'px'
+                        // top  = ''
+                        // bottom = '60px'
+                        bottom = ''
+                        top = '60px'
+                        left = '10px'
                         if (c) {
+                          left = (window.innerWidth / 2 - 125) + 'px'
+                          top  = ''
+                          bottom = '60px'
                           switch (c.name) {
                             case 'tetsudoJikeiretsu':
                             case 'kosoku':
@@ -332,6 +335,10 @@ export function permalinkEventSet (response) {
                               top = '60px'
                               left = '10px'
                               break
+                            default:
+                              bottom = ''
+                              top = '60px'
+                              left = '10px'
                           }
                           console.log(c.name)
                         }

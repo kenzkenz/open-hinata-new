@@ -95,13 +95,13 @@ function Kizyunten(mapName){
     url:"https://maps.gsi.go.jp/xyz/cp/{z}/{x}/{y}.geojson"
   })
   this.style = kizyuntenStyleFunction(mapName)
-  this.maxResolution = 1222.99	 //zoom7
+  this.maxResolution = 611.496226	 //zoom8
   this.useInterimTilesOnError = false
   this.pointer = true
   this.declutter = true
   this.overflow = true
 }
-export const kizyuntenSumm = "<div style='font-size: small'>電子基準点、一等三角点以外はズーム12から表示、選択可能<br>" +
+export const kizyuntenSumm = "<div style='font-size: small'>電子基準点、一等三角点以外は<span style='color: red'>ズーム12</span>から表示、選択可能<br>" +
     "<a href='' target='_blank'></a></div>"
 export  const kizyuntenObj = {}
 for (let i of mapsStr) {
