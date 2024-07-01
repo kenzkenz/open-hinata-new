@@ -1427,6 +1427,10 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
             // popupCenter(cont)
             try {
               overlay.setPosition(coordinate)
+              const popupElm =document.querySelector('#' + mapName + ' .ol-overlaycontainer-stopevent')
+              const cssText = popupElm.style.cssText
+              store.commit('base/incrDialogMaxZindex')
+              popupElm.style.cssText = cssText + 'z-index: ' + store.state.base.dialogMaxZindex + '!important;'
             } catch (e) {
             }
           } else {
@@ -1454,6 +1458,10 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
     if (cont && cont !== undefined) {
       try {
         overlay.setPosition(coordinate)
+        const popupElm =document.querySelector('#' + map.values_.target + ' .ol-overlaycontainer-stopevent')
+        const cssText = popupElm.style.cssText
+        store.commit('base/incrDialogMaxZindex')
+        popupElm.style.cssText = cssText + 'z-index: ' + store.state.base.dialogMaxZindex + '!important;'
       } catch (e) {
       }
     } else {

@@ -83,25 +83,34 @@ const mapsStr = ['map01','map02']
 // -----
 
 // 基準点------------------------------------------------------------------------------------
+let kijyuntenMaxResolution
+if (window.innerWidth > 1000) {
+  kijyuntenMaxResolution = 305.748113	 //zoom9
+} else {
+  kijyuntenMaxResolution = 305.748113	 //zoom9
+}
 function Kizyunten(mapName){
   this.name = 'kizyunten'
   this.source = new VectorTileSource({
     format: new GeoJSON({defaultProjection:'EPSG:4326'}),
     tileGrid: new createXYZ({
-      minZoom:7,
-      // minZoom:12,
+      // minZoom:7,
+      minZoom:12,
       maxZoom:14
     }),
     url:"https://maps.gsi.go.jp/xyz/cp/{z}/{x}/{y}.geojson"
   })
   this.style = kizyuntenStyleFunction(mapName)
-  this.maxResolution = 611.496226	 //zoom8
+  this.maxResolution = kijyuntenMaxResolution
+  // this.maxResolution = 611.496226	 //zoom8
+  // this.maxResolution = 305.748113	 //zoom9
+  // this.maxResolution = 152.874057	 //zoom10
   this.useInterimTilesOnError = false
   this.pointer = true
   this.declutter = true
   this.overflow = true
 }
-export const kizyuntenSumm = "<div style='font-size: small'>電子基準点、一等三角点以外は<span style='color: red'>ズーム12</span>から表示、選択可能<br>" +
+export const kizyuntenSumm = "<div style='font-size: small'><span style='color: red'>ズーム9</span>から表示、選択可能<br>" +
     "<a href='' target='_blank'></a></div>"
 export  const kizyuntenObj = {}
 for (let i of mapsStr) {
