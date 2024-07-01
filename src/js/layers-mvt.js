@@ -81,6 +81,85 @@ const mapsStr = ['map01','map02']
 //   fgbObj[i] = new VectorLayer(new fgb())
 // }
 // -----
+// 単写真------------------------------------------------------------------------------------
+let tansyashinMaxResolution
+if (window.innerWidth > 1000) {
+  tansyashinMaxResolution = 76.437028	 //zoom11
+} else {
+  tansyashinMaxResolution = 38.218514	 //zoom12
+}
+function Tansyashin(){
+  this.name = 'tansyashin'
+  this.source = new VectorTileSource({
+    format: new GeoJSON({defaultProjection:'EPSG:4326'}),
+    tileGrid: new createXYZ({
+      minZoom:14,
+      maxZoom:14
+    }),
+    url:"https://cyberjapandata.gsi.go.jp/xyz/pp/{z}/{x}/{y}.geojson"
+  })
+  this.style = tansyashinStyleFunction()
+  this.maxResolution = tansyashinMaxResolution
+  this.useInterimTilesOnError = false
+  this.pointer = true
+  this.declutter = true
+  this.overflow = true
+}
+export const tansyashinSumm = "<div style='width: 200px;'>" +
+    "<a href='' target='_blank'></a></div>"
+export  const tansyashinObj = {}
+for (let i of mapsStr) {
+  tansyashinObj[i] = new VectorTileLayer(new Tansyashin())
+}
+//--------------------------
+function tansyashinStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    let text = prop.撮影年月日 + ' ' + prop.撮影計画機関
+    let color
+    const styles = []
+    let font
+    if (zoom >= 18) {
+      font = "14px sans-serif"
+    } else {
+      font = "14px sans-serif"
+    }
+    if (prop.撮影計画機関 === '米軍') {
+      color = 'red'
+    } else if (prop.撮影計画機関 === '陸軍'){
+      color = 'blue'
+    } else {
+      color = 'black'
+    }
+    const iconStyle = new Style({
+      image: new Icon({
+        src: require('@/assets/icon/whitecircle.png'),
+        color: color,
+        scale: 1
+      })
+    })
+    const textStyle = new Style({
+      text: new Text({
+        font: font,
+        text: text,
+        offsetY: 26,
+        stroke: new Stroke({
+          color: "white",
+          width: 3
+        })
+      })
+    });
+    styles.push(iconStyle)
+    styles.push(textStyle)
+    // if(zoom>=16) {
+    //   styles.push(textStyle);
+    // }
+    return styles
+  }
+}
+
+
 
 // 基準点------------------------------------------------------------------------------------
 let kijyuntenMaxResolution

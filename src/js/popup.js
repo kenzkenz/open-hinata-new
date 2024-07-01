@@ -1397,6 +1397,24 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div><hr>'
           }
           break
+        case 'tansyashin':
+          if (cont.indexOf('tansyashin') === -1) {
+            const link = '<h5><a href="https://mapps.gsi.go.jp/contentsImageDisplay.do?specificationId=' + prop.ID  + '&isDetail=true" target="_blank">航空写真を表示</a></h5>'
+            let link2 = ''
+            if (window.innerWidth > 1000) {
+              link2 = '<h5><a href="https://mapps.gsi.go.jp/maplibSearch.do?specificationId=' + prop.ID  + '" target="_blank">地図・空中写真閲覧サービス</a></h5>'
+            }
+            cont += '<div class="tansyashin" style=width:300px;>' +
+                '<h4>撮影計画機関=' + prop.撮影計画機関 + '</h4>' +
+                '<h5>撮影年月日=' + prop.撮影年月日 + '</h5>' +
+                '<p>撮影縮尺=' + prop.撮影縮尺 + '</p>' +
+                '<p>カラー種別=' + prop.カラー種別 + '</p>' +
+                '<p>撮影高度=' + prop.撮影高度 + '</p>' +
+                link +
+                link2 +
+                '</div><hr>'
+          }
+          break
       }
     })
   }

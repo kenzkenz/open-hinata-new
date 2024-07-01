@@ -12729,7 +12729,6 @@ export const Layers =
         { text: '治水地形分類図 更新版（2007年以降）', data: { id: 'tisui2007', layer: tisui2007Obj, opacity: 1, summary: tisui2007Summ } },
         { text: '地形分類（自然地形）', data: { id: 'sizen', layer: LayersMvt.sizentikei0Obj, opacity: 1, summary: LayersMvt.sizentikeiSumm} },
         { text: '自然地形（白黒）', data: { id: 'sizenshirokuro', layer: shizenShirokuroObj, opacity: 1, summary: shizenShirokuroSumm} },
-
         // { text: '地形分類（自然地形『詳細版』）', data: { id: 'sizen', layer: LayersMvt.sizentikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm} },
         { text: '地形分類（人工地形）', data: { id: "zinkoutikei", layer: LayersMvt.zinkoutikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm } },
         { text: '土地利用図（1982～1983年）', data: { id: "totiriyouzu", layer: totiriyouzuObj, opacity: 1, summary: totiriyouzuSumm } },
@@ -12830,6 +12829,7 @@ export const Layers =
         { text: '1945~50年航空写真(一部)', data: { id: 'sp45', layer: sp45Obj, opacity: 1, summary: sp45Summ } },
         { text: '1936~42年航空写真(一部)', data: { id: 'sp36', layer: sp36Obj, opacity: 1, summary: sp36Summ } },
         { text: '1928年航空写真(大阪府)', data: { id: 'sp28', layer: sp28Obj, opacity: 1, summary: sp28Summ } },
+        { text: '単写真', data: { id: "tansyashin", layer: LayersMvt.tansyashinObj, opacity: 1, summary: LayersMvt.tansyashinSumm } },
       ]},
     { text: '立体図、地質図等',
       children: [
