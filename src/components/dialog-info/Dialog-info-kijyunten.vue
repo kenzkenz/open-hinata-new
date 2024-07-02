@@ -2,10 +2,7 @@
   <div class="content-div">
     <p v-html="item.title"></p><hr>
     <div style="text-align: center;">
-<!--      <label :for="'paint-check-'+ item.component.name">塗りつぶし</label><input :id="'paint-check-'+ item.component.name" type="checkbox" v-model="s_paint" @change="paintChange">-->
-<!--      <label style="margin-left: 20px;" :for="'text-check-'+ item.component.name">学校名</label><input :id="'text-check-'+ item.component.name" type="checkbox" v-model="s_text" @change="textChange">-->
       <b-form-select v-model="s_kijyunten" :options="options" @change="selectChange"></b-form-select>
-
     </div>
     <hr>
     <span v-html="item.summary"></span>

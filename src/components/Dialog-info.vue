@@ -26,6 +26,7 @@
             <v-tetsudojikeirertsu :item="item" :mapName="mapName" v-else-if="item.component.name === 'tetsudoJikeiretsu'"/>
             <v-paint :item="item" :mapName="mapName" v-else-if="item.component.name === 'syogakkoR05' || item.component.name === 'syogakkoR03' || item.component.name === 'tyugakkoR05' || item.component.name === 'tyugakkoR03'"/>
             <v-kijyunten :item="item" :mapName="mapName" v-else-if="item.component.name === 'kijyunten'"/>
+            <v-tansyashin :item="item" :mapName="mapName" v-else-if="item.component.name === 'tansyashin'"/>
 
         </div>
     </div>
@@ -45,6 +46,7 @@
   import DialogInfoKosoku from '@/components/dialog-info/Dialog-info-kosoku'
   import DialogInfoteTetudojikeiretsu from '@/components/dialog-info/Dialog-info-tetsudojikeirertsu'
   import DialogInfoKijyunten from '@/components/dialog-info/Dialog-info-kijyunten'
+  import DialogInfoTansyashin from '@/components/dialog-info/Dialog-info-tansyashin'
 
   export default {
     name: "v-dialog-info",
@@ -62,6 +64,7 @@
       'v-kosoku':DialogInfoKosoku,
       'v-tetsudojikeirertsu':DialogInfoteTetudojikeiretsu,
       'v-kijyunten':DialogInfoKijyunten,
+      'v-tansyashin':DialogInfoTansyashin,
     },
     props: ['mapName'],
     computed: {

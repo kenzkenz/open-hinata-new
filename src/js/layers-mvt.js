@@ -88,7 +88,7 @@ if (window.innerWidth > 1000) {
 } else {
   tansyashinMaxResolution = 38.218514	 //zoom12
 }
-function Tansyashin(){
+function Tansyashin(mapName){
   this.name = 'tansyashin'
   this.source = new VectorTileSource({
     format: new GeoJSON({defaultProjection:'EPSG:4326'}),
@@ -98,63 +98,68 @@ function Tansyashin(){
     }),
     url:"https://cyberjapandata.gsi.go.jp/xyz/pp/{z}/{x}/{y}.geojson"
   })
-  this.style = tansyashinStyleFunction()
+  this.style = tansyashinStyleFunction(mapName)
   this.maxResolution = tansyashinMaxResolution
   this.useInterimTilesOnError = false
   this.pointer = true
   this.declutter = true
   this.overflow = true
 }
-export const tansyashinSumm = "<div style='width: 200px;'>" +
-    "<a href='' target='_blank'></a></div>"
+export const tansyashinSumm = "<a href='https://maps.gsi.go.jp/development/ichiran.html#pp' target='_blank'>国土地理院</a>"
 export  const tansyashinObj = {}
 for (let i of mapsStr) {
-  tansyashinObj[i] = new VectorTileLayer(new Tansyashin())
+  tansyashinObj[i] = new VectorTileLayer(new Tansyashin(i))
 }
 //--------------------------
-function tansyashinStyleFunction() {
+function tansyashinStyleFunction(mapName) {
   return function (feature, resolution) {
+    const tansyashin = store.state.info.tansyashin[mapName]
     const zoom = getZoom(resolution)
     const prop = feature.getProperties()
-    let text = prop.撮影年月日 + ' ' + prop.撮影計画機関
+    let text = prop.撮影年月日 + '\n' + prop.撮影計画機関
     let color
     const styles = []
     let font
-    if (zoom >= 18) {
+    let scale
+    let offsetY
+    if (zoom <= 15) {
       font = "14px sans-serif"
+      scale = 1
+      offsetY = 38
     } else {
-      font = "14px sans-serif"
+      font = "16px sans-serif"
+      scale = 1.5
+      offsetY = 42
     }
     if (prop.撮影計画機関 === '米軍') {
       color = 'red'
     } else if (prop.撮影計画機関 === '陸軍'){
       color = 'blue'
     } else {
-      color = 'black'
+      color = 'green'
     }
     const iconStyle = new Style({
       image: new Icon({
         src: require('@/assets/icon/whitecircle.png'),
         color: color,
-        scale: 1
+        scale: scale
       })
     })
     const textStyle = new Style({
       text: new Text({
         font: font,
         text: text,
-        offsetY: 26,
+        offsetY: offsetY,
         stroke: new Stroke({
           color: "white",
           width: 3
         })
       })
-    });
-    styles.push(iconStyle)
-    styles.push(textStyle)
-    // if(zoom>=16) {
-    //   styles.push(textStyle);
-    // }
+    })
+    if (tansyashin === prop.撮影計画機関 || tansyashin === 'all') {
+      styles.push(iconStyle)
+      if(zoom>=16) styles.push(textStyle)
+    }
     return styles
   }
 }

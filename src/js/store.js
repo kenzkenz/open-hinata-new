@@ -324,6 +324,12 @@ const moduleInfo = {
       map03: 'all',
       map04: 'all'
     },
+    tansyashin: {
+      map01: 'all',
+      map02: 'all',
+      map03: 'all',
+      map04: 'all'
+    },
     seaLevel10m: {
       map01: 0,
       map02: 0,
@@ -527,6 +533,9 @@ const moduleInfo = {
           break
         case 'kijyunten':
           variable = 'kijyunten'
+          break
+        case 'tansyashin':
+          variable = 'tansyashin'
           break
       }
       state[variable][payload.mapName] = payload.value

@@ -12829,7 +12829,7 @@ export const Layers =
         { text: '1945~50年航空写真(一部)', data: { id: 'sp45', layer: sp45Obj, opacity: 1, summary: sp45Summ } },
         { text: '1936~42年航空写真(一部)', data: { id: 'sp36', layer: sp36Obj, opacity: 1, summary: sp36Summ } },
         { text: '1928年航空写真(大阪府)', data: { id: 'sp28', layer: sp28Obj, opacity: 1, summary: sp28Summ } },
-        { text: '単写真', data: { id: "tansyashin", layer: LayersMvt.tansyashinObj, opacity: 1, summary: LayersMvt.tansyashinSumm } },
+        { text: '単写真', data: { id: "tansyashin", layer: LayersMvt.tansyashinObj, opacity: 1, summary: LayersMvt.tansyashinSumm, component: {name: 'tansyashin', values:[]} } },
       ]},
     { text: '立体図、地質図等',
       children: [
