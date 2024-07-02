@@ -13985,6 +13985,9 @@ export const Layers =
 
         { text: '基準点', data: { id: "kizyunten", layer: LayersMvt.kizyuntenObj, opacity: 1, summary: LayersMvt.kizyuntenSumm, component: {name: 'kijyunten', values:[]} } },
 
+        { text: '基準点v2', data: { id: "kizyuntenv2", layer: LayersMvt.kizyunten2Obj, opacity: 1, summary: LayersMvt.kizyunten2Summ } },
+
+
         { text: 'ウィキメディア・コモンズ', data: { id: "wiki", layer: LayersMvt.wikiObj, opacity: 1, summary: LayersMvt.wikiSumm } },
         { text: '気象庁予報区（一次細分区域等 ）', data: { id: "yohouku1", layer: LayersMvt.yohouku1Obj, opacity: 1, summary: LayersMvt.yohoukuSumm } },
         { text: '夜の明かり', data: { id: "japanLight", layer: LayersMvt.japanLightObj, opacity: 1, summary: LayersMvt.japanLightSumm } },

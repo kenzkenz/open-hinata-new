@@ -164,7 +164,269 @@ function tansyashinStyleFunction(mapName) {
   }
 }
 
+// 基準点2------------------------------------------------------------------------------------
+let kijyunten2MaxResolution
+if (window.innerWidth > 1000) {
+  kijyunten2MaxResolution = 76.437028	 //zoom11
+} else {
+  kijyunten2MaxResolution = 76.437028	 //zoom11
+}
+function Kizyunten2(){
+  this.name = 'kizyunten'
+  this.source = new VectorTileSource({
+    format: new GeoJSON({defaultProjection:'EPSG:4326'}),
+    tileGrid: new createXYZ({
+      // minZoom:7,
+      minZoom:12,
+      maxZoom:14
+    }),
+    url:"https://maps.gsi.go.jp/xyz/cp/{z}/{x}/{y}.geojson"
+  })
+  this.style = kizyunten2StyleFunction()
+  this.maxResolution = kijyunten2MaxResolution
+  // this.maxResolution = 611.496226	 //zoom8
+  // this.maxResolution = 305.748113	 //zoom9
+  // this.maxResolution = 152.874057	 //zoom10
+  this.useInterimTilesOnError = false
+  this.pointer = true
+  this.declutter = true
+  this.overflow = true
+}
+export const kizyunten2Summ = "<div style='font-size: small'><span style='color: red'>ズーム9</span>から表示、選択可能<br>" +
+    "<a href='' target='_blank'></a></div>"
+export  const kizyunten21Obj = {}
+for (let i of mapsStr) {
+  kizyunten21Obj[i] = new VectorTileLayer(new Kizyunten2())
+}
+//-----------------------------------------------------------
+let kijyunten22MaxResolution
+if (window.innerWidth > 1000) {
+  kijyunten22MaxResolution = 611.496226	 //zoom8
+} else {
+  kijyunten22MaxResolution = 611.496226	 //zoom8
+}
+function Kizyunten22(){
+  this.name = 'kizyunten'
+  this.source = new VectorTileSource({
+    format: new GeoJSON({defaultProjection:'EPSG:4326'}),
+    tileGrid: new createXYZ({
+      minZoom:7,
+      maxZoom:14
+    }),
+    url:"https://maps.gsi.go.jp/xyz/cp/{z}/{x}/{y}.geojson"
+  })
+  this.style = kizyunten2StyleFunction()
+  this.maxResolution = kijyunten22MaxResolution
+  this.minResolution = kijyunten2MaxResolution
+  this.useInterimTilesOnError = false
+  this.pointer = true
+  // this.declutter = true
+  // this.overflow = true
+}
+export  const kizyunten22Obj = {}
+for (let i of mapsStr) {
+  kizyunten22Obj[i] = new VectorTileLayer(new Kizyunten22())
+}
 
+export const  kizyunten2Obj = {}
+for (let i of mapsStr) {
+  kizyunten2Obj[i] = new LayerGroup({
+    layers: [
+      kizyunten21Obj[i],
+      kizyunten22Obj[i]
+    ]
+  })
+  kizyunten2Obj[i].values_['pointer'] = true
+}
+
+
+
+
+//--------------------------
+function kizyunten2StyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const seika = prop.成果状態
+    let text = prop.点名
+    let font
+    let scale
+    const styles = []
+    if (zoom<=16) {
+      // text = text.trunc(8)
+      font = "16px sans-serif"
+      scale = 0.05
+    } else {
+      font = "16px sans-serif"
+      scale = 0.05
+    }
+    let src = require('@/assets/icon/blackpin.png')
+    switch (prop.基準点種別) {
+      case '電子基準点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/476.png')
+        } else {
+          src = require('@/assets/icon/476_None.png')
+        }
+        scale = 0.9
+        break
+      case '一等三角点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/201.png')
+        } else {
+          src = require('@/assets/icon/201_None.png')
+        }
+        scale = 1.2
+        break
+      case '二等三角点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/202.png')
+        } else {
+          src = require('@/assets/icon/202_None.png')
+        }
+        scale = 1.2
+        break
+      case '三等三角点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/203.png')
+        } else {
+          src = require('@/assets/icon/203_None.png')
+        }
+        scale = 1.2
+        break
+      case '四等三角点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/204.png')
+        } else {
+          src = require('@/assets/icon/204_None.png')
+        }
+        scale = 1.2
+        break
+      case '基準水準点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/206.png')
+        } else {
+          src = require('@/assets/icon/206_None.png')
+        }
+        scale = 1.2
+        break
+      case '準基準水準点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/206.png')
+        } else {
+          src = require('@/assets/icon/206_None.png')
+        }
+        scale = 1.2
+        break
+      case '一等水準交差点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/206.png')
+        } else {
+          src = require('@/assets/icon/206_None.png')
+        }
+        scale = 1.2
+        break
+      case '一等道路水準点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/206.png')
+        } else {
+          src = require('@/assets/icon/206_None.png')
+        }
+        scale = 1.2
+        break
+      case '一等水準点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/206.png')
+        } else {
+          src = require('@/assets/icon/206_None.png')
+        }
+        scale = 1.2
+        break
+      case '二等水準点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/207.png')
+        } else {
+          src = require('@/assets/icon/207_None.png')
+        }
+        scale = 1.2
+        break
+      case '二等道路水準点':
+        if (seika === '正常') {
+          src = require('@/assets/icon/207.png')
+        } else {
+          src = require('@/assets/icon/207_None.png')
+        }
+        scale = 1.2
+        break
+      default:
+        src = require('@/assets/icon/blackpin.png')
+        scale = 1.2
+    }
+    const iconStyle = new Style({
+      image: new Icon({
+        src: src,
+        scale: scale
+      })
+    })
+    const textStyle = new Style({
+      text: new Text({
+        font: font,
+        text: text,
+        offsetY: 28,
+        stroke: new Stroke({
+          color: "white",
+          width: 3
+        })
+      })
+    });
+
+    if (zoom<=11) {
+      if (prop.基準点種別 === '一等三角点' || prop.基準点種別 === '電子基準点') {
+        styles.push(iconStyle)
+        styles.push(textStyle)
+      }
+    } else if (zoom<=12) {
+      if (prop.基準点種別 === '一等三角点'
+          || prop.基準点種別 === '電子基準点'
+          || prop.基準点種別 === '二等三角点') {
+        styles.push(iconStyle)
+        styles.push(textStyle)
+      }
+    } else if (zoom<=13) {
+      if (prop.基準点種別 === '一等三角点'
+          || prop.基準点種別 === '電子基準点'
+          || prop.基準点種別 === '二等三角点'
+          || prop.基準点種別 === '三等三角点'
+      ) {
+        styles.push(iconStyle)
+        styles.push(textStyle)
+      }
+    } else if (zoom<=14) {
+      if (prop.基準点種別 === '一等三角点'
+          || prop.基準点種別 === '電子基準点'
+          || prop.基準点種別 === '二等三角点'
+          || prop.基準点種別 === '三等三角点'
+          || prop.基準点種別 === '四等三角点'
+      ) {
+        styles.push(iconStyle)
+        styles.push(textStyle)
+      }
+    } else {
+      styles.push(iconStyle)
+      styles.push(textStyle)
+    }
+
+
+
+
+
+    // if (kijyunten === prop.基準点種別 || kijyunten === 'all' ) {
+    //   styles.push(iconStyle)
+    //   if(zoom>=9) styles.push(textStyle)
+    // }
+    return styles;
+  }
+}
 
 // 基準点------------------------------------------------------------------------------------
 let kijyuntenMaxResolution
