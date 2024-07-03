@@ -114,8 +114,12 @@ for (let i of mapsStr) {
 function tansyashinStyleFunction(mapName) {
   return function (feature, resolution) {
     const tansyashin = store.state.info.tansyashin[mapName]
+    const tansyashinSlider = store.state.info.tansyashinSlider[mapName]
+    const tansyashinFumei = store.state.info.tansyashinFumei[mapName]
     const zoom = getZoom(resolution)
     const prop = feature.getProperties()
+    const year = Number(prop.撮影年月日.split('-')[0])
+    // console.log(year)
     let text = prop.撮影年月日 + '\n' + prop.撮影計画機関
     let color
     const styles = []
@@ -156,9 +160,11 @@ function tansyashinStyleFunction(mapName) {
         })
       })
     })
-    if (tansyashin === prop.撮影計画機関 || tansyashin === 'all') {
-      styles.push(iconStyle)
-      if(zoom>=16) styles.push(textStyle)
+    if ((year >= tansyashinSlider[0] && year <= tansyashinSlider[1]) || (year === 1111 && tansyashinFumei)) {
+      if (tansyashin === prop.撮影計画機関 || tansyashin === 'all') {
+        styles.push(iconStyle)
+        if(zoom>=16) styles.push(textStyle)
+      }
     }
     return styles
   }
@@ -238,9 +244,6 @@ for (let i of mapsStr) {
   })
   kizyunten2Obj[i].values_['pointer'] = true
 }
-
-
-
 
 //--------------------------
 function kizyunten2StyleFunction() {

@@ -330,6 +330,18 @@ const moduleInfo = {
       map03: 'all',
       map04: 'all'
     },
+    tansyashinSlider: {
+      map01: [1930,2030],
+      map02: [1930,2030],
+      map03: [1930,2030],
+      map04: [1930,2030]
+    },
+    tansyashinFumei: {
+      map01: true,
+      map02: true,
+      map03: true,
+      map04: true
+    },
     seaLevel10m: {
       map01: 0,
       map02: 0,
@@ -535,7 +547,13 @@ const moduleInfo = {
           variable = 'kijyunten'
           break
         case 'tansyashin':
-          variable = 'tansyashin'
+          if (payload.order === 0) {
+            variable = 'tansyashin'
+          } else if (payload.order === 1){
+            variable = 'tansyashinSlider'
+          } else if (payload.order === 2){
+            variable = 'tansyashinFumei'
+          }
           break
       }
       state[variable][payload.mapName] = payload.value
