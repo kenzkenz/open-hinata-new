@@ -88,7 +88,7 @@ function GifuDetail(){
   this.name = 'gifudetail'
   this.source = new TileWMS({
     url: 'https://geo-gifu.org/cgi-bin/mapserv?map=/var/www/html/gifu_geology/gifugeo_detail_postgis.map',
-    params: {'LAYERS': 'gifu_detail', 'TILED': true},
+    params: {'LAYERS': 'gifu_detail', 'TILED': true}
     // serverType: 'geoserver',
     // transition: 0,
   })
