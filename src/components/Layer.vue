@@ -30,7 +30,8 @@
                     <span class ="title-span" v-html="item.title"></span>
               </div>
                 <div class="range-div"><input type="range" min="0" max="1" step="0.01" class="range" v-model.number="item.opacity" @input="opacityChange(item)" /></div>
-                <div class="info-div" @click="infoOpen(arguments[0],item)"><i class="fa-solid fa-circle-info hover"></i></div>
+<!--                <div class="info-div" @click="infoOpen(arguments[0],item)"><i class="fa-solid fa-circle-info hover"></i></div>-->
+                <div class="info-div" @click="infoOpen(arguments[0],item)"><i class="fa-solid fa-gear hover"></i></div>
                 <div class="close-div" @click="removeLayer(item)"><i class="fa-sharp fa-solid fa-trash-arrow-up hover"></i></div>
             </div>
         </li>

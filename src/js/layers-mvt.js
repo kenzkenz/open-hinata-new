@@ -11,6 +11,7 @@ import {transformExtent} from "ol/proj"
 import LayerGroup from "ol/layer/Group"
 import XYZ from "ol/source/XYZ"
 import TileLayer from "ol/layer/Tile"
+import TileWMS from 'ol/source/TileWMS.js'
 import Icon from 'ol/style/Icon'
 import VectorSource from "ol/source/Vector"
 import VectorLayer from "ol/layer/Vector"
@@ -81,6 +82,47 @@ const mapsStr = ['map01','map02']
 //   fgbObj[i] = new VectorLayer(new fgb())
 // }
 // -----
+
+// ジオランドぎふ---------------------------------------------------------------------------------
+function GifuDetail(){
+  this.name = 'gifudetail'
+  this.source = new TileWMS({
+    url: 'https://geo-gifu.org/cgi-bin/mapserv?map=/var/www/html/gifu_geology/gifugeo_detail_postgis.map',
+    params: {'LAYERS': 'gifu_detail', 'TILED': true},
+    // serverType: 'geoserver',
+    // transition: 0,
+  })
+}
+export const geoLandGifuSumm = "<a href='https://geo-gifu.org/geoland/' target='_blank'>ジオランドぎふ</a>"
+export  const gifuDetailObj = {};
+for (let i of mapsStr) {
+  gifuDetailObj[i] = new TileLayer(new GifuDetail())
+}
+// ---------------------------
+function GifuFault(){
+  this.name = 'gifufault'
+  this.source = new TileWMS({
+    url: 'https://geo-gifu.org/cgi-bin/mapserv?map=/var/www/html/gifu_geology/gifugeo_detail_postgis.map',
+    params: {'LAYERS': 'gifu_fault', 'TILED': true},
+  })
+}
+export  const gifuFaultObj = {};
+for (let i of mapsStr) {
+  gifuFaultObj[i] = new TileLayer(new GifuFault())
+}
+// ---------------------------
+function GifuActiveFault(){
+  this.name = 'gifuactivefault'
+  this.source = new TileWMS({
+    url: 'https://geo-gifu.org/cgi-bin/mapserv?map=/var/www/html/gifu_geology/gifugeo_detail_postgis.map',
+    params: {'LAYERS': 'active_fault', 'TILED': true},
+  })
+}
+export  const gifuActiveFaultObj = {};
+for (let i of mapsStr) {
+  gifuActiveFaultObj[i] = new TileLayer(new GifuActiveFault())
+}
+
 // 単写真------------------------------------------------------------------------------------
 let tansyashinMaxResolution
 if (window.innerWidth > 1000) {
@@ -119,8 +161,7 @@ function tansyashinStyleFunction(mapName) {
     const zoom = getZoom(resolution)
     const prop = feature.getProperties()
     const year = Number(prop.撮影年月日.split('-')[0])
-    // console.log(year)
-    let text = prop.撮影年月日 + '\n' + prop.撮影計画機関
+    let text = year + '\n' + prop.撮影計画機関
     let color
     const styles = []
     let font
@@ -198,8 +239,7 @@ function Kizyunten2(){
   this.declutter = true
   this.overflow = true
 }
-export const kizyunten2Summ = "<div style='font-size: small'><span style='color: red'>ズーム9</span>から表示、選択可能<br>" +
-    "<a href='' target='_blank'></a></div>"
+export const kizyunten2Summ = "<a href='https://maps.gsi.go.jp/development/ichiran.html#cp' target='_blank'>国土地理院</a>"
 export  const kizyunten21Obj = {}
 for (let i of mapsStr) {
   kizyunten21Obj[i] = new VectorTileLayer(new Kizyunten2())
@@ -256,12 +296,9 @@ function kizyunten2StyleFunction() {
     let scale
     const styles = []
     if (zoom<=16) {
-      // text = text.trunc(8)
       font = "16px sans-serif"
-      scale = 0.05
     } else {
       font = "16px sans-serif"
-      scale = 0.05
     }
     let src = require('@/assets/icon/blackpin.png')
     switch (prop.基準点種別) {
@@ -418,15 +455,6 @@ function kizyunten2StyleFunction() {
       styles.push(iconStyle)
       styles.push(textStyle)
     }
-
-
-
-
-
-    // if (kijyunten === prop.基準点種別 || kijyunten === 'all' ) {
-    //   styles.push(iconStyle)
-    //   if(zoom>=9) styles.push(textStyle)
-    // }
     return styles;
   }
 }
@@ -2618,10 +2646,21 @@ function syochiikiStyleFunction() {
   return function (feature, resolution) {
     const zoom = getZoom(resolution);
     const prop = feature.getProperties();
+    // const jinkoMax = 0.1
+    // const syochiikiColor = d3.scaleLinear()
+    //     .domain([
+    //       0,
+    //       jinkoMax/3.5,
+    //       jinkoMax/1.75,
+    //       jinkoMax*30/35,
+    //       jinkoMax])
+    //     .range(["white", "red","#880000",'maroon','black']);
+    // console.log(prop.JINKO/prop.AREA)
     const styles = [];
     const polygonStyle = new Style({
       fill: new Fill({
         color: 'rgba(0,0,0,0)'
+        // color: syochiikiColor(prop.JINKO/prop.AREA)
       }),
       stroke: new Stroke({
         color: "red",
@@ -5308,30 +5347,20 @@ for (let i of mapsStr) {
 export const cityR03Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html' target='_blank'>国土数値情報　行政区域データ</a>";
 
 //------------------------------------------
-const cityColor = d3.scaleOrdinal(d3.schemeCategory10);
 function cityStyleFunction() {
   return function (feature, resolution) {
     const zoom = getZoom(resolution);
     const prop = feature.getProperties();
-    const styles = [];
+    const styles = []
     let id
+    let font
     if (prop.N03_007) {
       id = Number(prop.N03_007.slice(0, 2))
     } else {
       id = 0
     }
     const rgb = d3.rgb(d3OridinalColor(id))
-    // const rgb = d3.rgb(cityColor(id))
-    const rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.8)"
-    // const polygonStyle = new Style({
-    //   fill: new Fill({
-    //     color: rgba
-    //   }),
-    //   stroke: new Stroke({
-    //     color: "white",
-    //     width: 1
-    //   })
-    // });
+    const rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
     let polygonStyle
     if (zoom > 10) {
       polygonStyle = new Style({
@@ -5356,13 +5385,18 @@ function cityStyleFunction() {
         zIndex: 0
       });
     }
+    if (zoom <=11 ) {
+      font = "14px sans-serif"
+    } else if (zoom <=12 ) {
+      font = "20px sans-serif"
+    } else {
+      font = "24px sans-serif"
+    }
     const text = prop.N03_004
     const textStyle = new Style({
       text: new Text({
-        font: "14px sans-serif",
+        font: font,
         text: text,
-        // placement:"point",
-        // offsetY:10,
         fill: new Fill({
           color: "black"
         }),

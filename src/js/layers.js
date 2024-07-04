@@ -20,7 +20,7 @@ import  * as MaskDep from './mask-dep'
 import  * as LayersMvt from './layers-mvt'
 // import BingMaps from 'ol/source/BingMaps'
 import * as d3 from "d3"
-import {hokkaidoTsunamiMvtObj} from "./layers-mvt";
+import {gifuDetailObj, hokkaidoTsunamiMvtObj} from "./layers-mvt";
 const mapsStr = ['map01','map02'];
 const transformE = extent => {
   function compareFunc(a, b) {
@@ -927,9 +927,9 @@ function Ryuuiki () {
     // url: 'https://kenzkenz.xsrv.jp/open-hinata/php/proxy-png-curl.php?url=https://tiles.dammaps.jp/ryuiki_t/1/{z}/{x}/{y}.png',
     // url: 'https://hgis.pref.miyazaki.lg.jp/hinata/php/proxy-png-curl.php?url=https://tiles.dammaps.jp/ryuiki_t/1/{z}/{x}/{y}.png',
 
-    // url: 'https://tiles.dammaps.jp/ryuiki_t/1/{z}/{x}/{y}.png',
+    url: 'https://tiles.dammaps.jp/ryuiki_t/1/{z}/{x}/{y}.png',
 
-    url: 'https://kenzkenz3.xsrv.jp/ryuuiki/{z}/{x}/{y}.png',
+    // url: 'https://kenzkenz3.xsrv.jp/ryuuiki/{z}/{x}/{y}.png',
     // crossOrigin: 'Anonymous',
     minZoom: 5,
     maxZoom: 14
@@ -12868,6 +12868,15 @@ export const Layers =
 
         { text: '能登CS立体図', data: { id: 'notocs', layer: notoCsObj, opacity: 1, zoom:9, center:[136.9312018478913, 37.22961765479215], summary: notoCsSumm } },
         { text: '能登西部赤色立体地図', data: { id: 'notoseibu', layer: notoSeibuObj, opacity: 1, zoom:9, center:[136.9312018478913, 37.22961765479215], summary: notoSeubuSumm } },
+
+        { text: 'ジオランドぎふ',
+          children: [
+            { text: 'ジオランドぎふ詳細地質図', data: { id: "gifusyousai", layer: LayersMvt.gifuDetailObj, opacity: 1, summary: LayersMvt.geoLandGifuSumm} },
+            { text: 'ジオランドぎふ断層', data: { id: "gifudansou", layer: LayersMvt.gifuFaultObj, opacity: 1, summary: LayersMvt.geoLandGifuSumm} },
+            { text: 'ジオランドぎふ活断層', data: { id: "gifukatsudansou", layer: LayersMvt.gifuActiveFaultObj, opacity: 1, summary: LayersMvt.geoLandGifuSumm} },
+
+          ]},
+
         { text: '兵庫県遺跡立体図',
           children: [
             { text: '摩耶山城', data: { id: 'mayasanjyou', layer: mayasanjyouObj, opacity: 1, zoom:17, center:[135.20985199593505, 34.72741190512792], summary: hyougoIsekiSumm } },
@@ -13980,7 +13989,9 @@ export const Layers =
       children: [
         { text: '登記所備付地図データ(宮崎市)', data: { id: "homusyomiyazakishi", layer: LayersMvt.homusyomiyazaki2024Obj, opacity: 1, summary: LayersMvt.homusyomiyazaki2024Summ } },
         { text: '2021土地利用細分メッシュ(100m)', data: { id: "tochiriyosaibun", layer: LayersMvt.mesh100mTochiriyoObj, opacity: 1, summary: LayersMvt.mesh1kmObjSumm } },
-        // { text: 'test', data: { id: "kouzuimesyu9syu", layer: LayersMvt.fgbObj, opacity: 1, summary: LayersMvt.kozuiMesh9syuSumm} },
+
+        // { text: 'test', data: { id: "kouzuimesyu9syu", layer: LayersMvt.geoLandGifu01Obj, opacity: 1, summary: LayersMvt.kozuiMesh9syuSumm} },
+
         // { text: '一等三角点', data: { id: "itto", layer: LayersMvt.ittosankakutenObj, opacity: 1, summary: LayersMvt.ittosankakutenSumm } },
 
         { text: '基準点', data: { id: "kizyunten", layer: LayersMvt.kizyuntenObj, opacity: 1, summary: LayersMvt.kizyuntenSumm, component: {name: 'kijyunten', values:[]} } },

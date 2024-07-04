@@ -1824,7 +1824,7 @@
       position:absolute;
       top:60%;
       right:0px;
-      z-index:1;
+      z-index:2;
       display:none;
       height:145px;
       width:145px;
@@ -1837,6 +1837,11 @@
       /*-webkit-user-select:none;*/
       /*-ms-user-select:none;*/
       /*cursor:move;*/
+    }
+    @media screen and (max-width:480px) {
+      .cesium-btn-div {
+        top:calc(50% - 73px);
+      }
     }
     .cesiun-btn-container{
       position:relative;

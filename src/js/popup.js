@@ -351,6 +351,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           if (cont.indexOf('city99') === -1) {
             cont += '<div class="city99" style=width:200px>' +
                 '<h4>' + prop.N03_004 + '</h4>' +
+                '<p>' + prop.N03_001 +ru(prop.N03_003) + '</p>' +
                 '</div><hr>'
           }
           break
@@ -1402,12 +1403,16 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
             const link = '<h5><a href="https://mapps.gsi.go.jp/contentsImageDisplay.do?specificationId=' + prop.ID  + '&isDetail=true" target="_blank">航空写真を表示</a></h5>'
             // const link2 = '<h5><a href="https://mapps.gsi.go.jp/maplibSearch.do?specificationId=' + prop.ID  + '" target="_blank">地図・空中写真閲覧サービス</a></h5>'
             const link2 = '<h5><a href="https://mapps.gsi.go.jp/map-lib-api/apiContentsView.do?specificationId=' + prop.ID  + '" target="_blank">地図・空中写真閲覧サービス</a></h5>'
+
+            const img = '<img style="object-fit:cover;height:200px;width:350px;" src="https://mapps.gsi.go.jp/contentsImage.do?specificationId=' + prop.ID + '">'
+
             cont += '<div class="tansyashin" style=width:300px;>' +
                 '<h4>撮影計画機関=' + prop.撮影計画機関 + '</h4>' +
                 '<h5>撮影年月日=' + prop.撮影年月日 + '</h5>' +
                 '<p>撮影縮尺=' + prop.撮影縮尺 + '</p>' +
                 '<p>カラー種別=' + prop.カラー種別 + '</p>' +
                 '<p>撮影高度=' + prop.撮影高度 + '</p>' +
+                // '<img style="object-fit:cover;height:200px;width:350px;" src="https://mapps.gsi.go.jp/contentsImage.do?specificationId=743349">' +
                 link +
                 link2 +
                 '</div><hr>'
