@@ -30,6 +30,7 @@ const moduleBase = {
       dialogEdit0:{style: {top: '56px', right: '10px', 'z-index': 1, height: 'auto', 'width': '200px', display: 'none'}},
       dialogEdit:{style: {top: '250px', right: '10px', 'z-index': 1, height: 'auto', 'width': '323px', display: 'none'}},
       menuDialog: {style: {top: '56px', left: '10px', 'z-index': 1, height: 'auto', 'min-width': '150px', display: 'none'}},
+      measureDialog: {style: {top: '56px', right: '10px', 'z-index': 1, height: 'auto', 'width': '350px', display: 'none'}},
       map01: {style: {top: '56px', left:'10px', 'z-index': 1, height: 'auto', 'min-width': '250px', display: 'none'}},
       map02: {style: {top: '56px', left:'10px', 'z-index': 1, height: 'auto', 'min-width': '250px', display: 'none'}},
       map03: {style: {top: '56px', left:'10px', 'z-index': 1, height: 'auto', 'min-width': '250px', display: 'none'}},

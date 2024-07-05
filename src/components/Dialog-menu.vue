@@ -31,22 +31,22 @@
             <a id="toPng" href="#" download="image.png" @click='toPng'>PNGダウンロード</a><br>
 <!--            <hr>-->
 <!--            <a href="https://kenzkenz.xsrv.jp/open-hinata/open-hinata.html" target="_blank">WEBページへ</a>-->
-            <hr>
-            計測
-            <br>
-            <b-button :pressed.sync="toggleDanmen" class='olbtn' :size="btnSize">{{ toggleDanmen ? '断面図ON' : '断面図OFF' }}</b-button>
-            <b-button style="margin-left: 10px;" :pressed.sync="toggleLine" class='olbtn' :size="btnSize">{{ toggleLine ? '距離計測ON' : '距離計測OFF' }}</b-button>
-            <b-button style="margin-left: 10px;" :pressed.sync="toggleMenseki" class='olbtn' :size="btnSize">{{ toggleMenseki ? '面積計測ON' : '面積計測OFF' }}</b-button>
-            <b-button style="margin-left: 10px;" :pressed.sync="toggleCircle" class='olbtn' :size="btnSize">{{ toggleCircle ? '円描画ON' : '円描画OFF' }}</b-button>
-            <br>
-<!--            <b-button style="margin-top: 10px;" class='olbtn' :size="btnSize" @click="drawStop">描画ストップ</b-button>-->
-            <b-button style="margin-top: 10px;" :pressed.sync="toggleIdou" class='olbtn' :size="btnSize">{{ toggleIdou ? '移動ON' : '描画ストップ&移動OFF' }}</b-button>
-            <b-button style="margin-top: 10px; margin-left: 10px" :pressed.sync="toggleDelete" class='olbtn' :size="btnSize">{{ toggleDelete ? '削除ON' : '削除OFF' }}</b-button>
-            <b-button style="margin-top: 10px; margin-left: 10px;" class='olbtn' :size="btnSize" @click="drawReset">クリア</b-button>
-            <br>
-          <b-button style="margin-top: 10px;" class='olbtn' :size="btnSize" @click="saveGeojson">geojson保存</b-button>
+<!--            <hr>-->
+<!--            計測-->
+<!--            <br>-->
+<!--            <b-button :pressed.sync="toggleDanmen" class='olbtn' :size="btnSize">{{ toggleDanmen ? '断面図ON' : '断面図OFF' }}</b-button>-->
+<!--            <b-button style="margin-left: 10px;" :pressed.sync="toggleLine" class='olbtn' :size="btnSize">{{ toggleLine ? '距離計測ON' : '距離計測OFF' }}</b-button>-->
+<!--            <b-button style="margin-left: 10px;" :pressed.sync="toggleMenseki" class='olbtn' :size="btnSize">{{ toggleMenseki ? '面積計測ON' : '面積計測OFF' }}</b-button>-->
+<!--            <b-button style="margin-left: 10px;" :pressed.sync="toggleCircle" class='olbtn' :size="btnSize">{{ toggleCircle ? '円描画ON' : '円描画OFF' }}</b-button>-->
+<!--            <br>-->
+<!--&lt;!&ndash;            <b-button style="margin-top: 10px;" class='olbtn' :size="btnSize" @click="drawStop">描画ストップ</b-button>&ndash;&gt;-->
+<!--            <b-button style="margin-top: 10px;" :pressed.sync="toggleIdou" class='olbtn' :size="btnSize">{{ toggleIdou ? '移動ON' : '描画ストップ&移動OFF' }}</b-button>-->
+<!--            <b-button style="margin-top: 10px; margin-left: 10px" :pressed.sync="toggleDelete" class='olbtn' :size="btnSize">{{ toggleDelete ? '削除ON' : '削除OFF' }}</b-button>-->
+<!--            <b-button style="margin-top: 10px; margin-left: 10px;" class='olbtn' :size="btnSize" @click="drawReset">クリア</b-button>-->
+<!--            <br>-->
+<!--          <b-button style="margin-top: 10px;" class='olbtn' :size="btnSize" @click="saveGeojson">geojson保存</b-button>-->
 
-          <a id="download" download="draw.geojson"></a>
+<!--          <a id="download" download="draw.geojson"></a>-->
 
         </div>
     </v-dialog>

@@ -1620,19 +1620,19 @@ export function popUpKeizoku(rgba) {
   const b = rgba[2]
   let cont
   if(r===160 && g===210 && b===255) {
-    cont = "<div style=width:300px>浸水継続 12時間未満</div>"
+    cont = "<h4 style=width:300px>浸水継続 12時間未満</h4>"
   }else if(r===0 && g===65 && b===255) {
-    cont = "<div style=width:300px>浸水継続 12時間~1日未満</div>"
+    cont = "<h4 style=width:300px>浸水継続 12時間~1日未満</h4>"
   }else if(r===250 && g===245 && b===0) {
-    cont = "<div style=width:300px>浸水継続 1日~3日未満</div>"
+    cont = "<h4 style=width:300px>浸水継続 1日~3日未満</h4>"
   }else if(r===255 && g===153 && b===0) {
-    cont = "<div style=width:300px>浸水継続 3日~1週間未満</div>"
+    cont = "<h4 style=width:300px>浸水継続 3日~1週間未満</h4>"
   }else if(r===255 && g===40 && b===0) {
-    cont = "<div style=width:300px>浸水継続 1週間~2週間未満</div>"
+    cont = "<h4 style=width:300px>浸水継続 1週間~2週間未満</h4>"
   }else if(r===180 && g===0 && b===104) {
-    cont = "<div style=width:300px>浸水継続 2週間~4週間未満</div>"
+    cont = "<h4 style=width:300px>浸水継続 2週間~4週間未満</h4>"
   }else if(r===96 && g===0 && b===96) {
-    cont = "<div style=width:300px>浸水継続 4週間以上~</div>"
+    cont = "<h4 style=width:300px>浸水継続 4週間以上~</h4>"
   }
   if (cont) cont = '<span style="color: red">' + cont + '</span>'
   return cont
