@@ -34,6 +34,7 @@ import {moveEnd} from "./permalink"
 import Dialog from 'ol-ext/control/Dialog'
 import Icon from 'ol/style/Icon'
 import * as d3 from "d3"
+import PrintDialog from 'ol-ext/control/PrintDialog.js'
 
 // ドロー関係-------------------------------------------------------------------------------
 export  const drawLayer2 = new VectorLayer({
@@ -239,15 +240,13 @@ export function measure (geoType,feature,coordAr) {
 }
 
 function danmen(feature) {
-    d3.select('#map01 .loadingImg').style("display","block")
-
-    // const feature = event.feature
     const coordAr = feature.getGeometry().getCoordinates()
     const geoType = feature.getGeometry().getType()
     console.log(feature)
     console.log(coordAr)
     console.log(geoType)
     if (geoType !==  'LineString') return
+    d3.select('#map01 .loadingImg').style("display","block")
     const tDistance = (measure (geoType,feature,coordAr).tDistance)
     const tDistance2 = (measure (geoType,feature,coordAr).tDistance2)
     const splitCount = 300;
@@ -478,6 +477,44 @@ export function initMap (vm) {
 
 
         // コントロール追加---------------------------------------------------------------------------
+
+
+        // Print control
+        var printControl = new PrintDialog({
+            // target: document.querySelector('.info'),
+            // targetDialog: map.getTargetElement()
+            // save: false,
+            // copy: false,
+            // pdf: false
+        });
+        printControl.setSize('A4');
+        map.addControl(printControl);
+        printControl.setOrientation('landscape')
+        /* On print > save image file */
+        printControl.on(['print', 'error'], function(e) {
+            // Print success
+            if (e.image) {
+                if (e.pdf) {
+                    // Export pdf using the print info
+                    var pdf = new jsPDF({
+                        orientation: e.print.orientation,
+                        unit: e.print.unit,
+                        format: e.print.size
+                    });
+                    pdf.addImage(e.image, 'JPEG', e.print.position[0], e.print.position[0], e.print.imageWidth, e.print.imageHeight);
+                    pdf.save(e.print.legend ? 'legend.pdf' : 'map.pdf');
+                } else  {
+                    // Save image as file
+                    e.canvas.toBlob(function(blob) {
+                        var name = (e.print.legend ? 'legend.' : 'map.')+e.imageType.replace('image/','');
+                        saveAs(blob, name);
+                    }, e.imageType, e.quality);
+                }
+            } else {
+                console.warn('No canvas to export');
+            }
+        });
+
 
         // map.addControl(new ScaleLine());
         const notification = new Notification();

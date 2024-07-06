@@ -246,41 +246,6 @@ export default {
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
       }
     })
-    this.$watch(function () {
-      return [this.toggleCenter]
-    }, function () {
-      const mapsStr = ['map01','map02','map03','map04']
-      // const map = this.$store.state.base.maps['map04']
-      MyMap.history ('中心十字onoff')
-      const target = document.querySelector(".center-target");
-      if (this.toggleCenter) {
-        console.log('on')
-        target.style.display = 'block';
-        // mapsStr.forEach(value => {
-        //   const map = this.$store.state.base.maps[value]
-        //   const centerTarget = new Target({composite: 'difference'})
-        //   // centerTarget.ol_uid = "18657"
-        //   map.addControl(centerTarget);
-        // })
-      } else {
-        console.log('off')
-        target.style.display = 'none';
-
-        // mapsStr.forEach(value => {
-        //   const map = this.$store.state.base.maps[value]
-        //   const targets = map.getControls().array_
-        //   const targetsMap = targets.map(value => {
-        //     return value
-        //   });
-        //   targetsMap.forEach(target => {
-        //     if (target instanceof ol_control_Target){
-        //       map.removeControl(target)
-        //     }
-        //   })
-        // })
-
-      }
-    });
   }
 }
 </script>

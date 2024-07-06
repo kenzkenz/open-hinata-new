@@ -25,11 +25,13 @@
               <b-button :pressed.sync="toggleCenter" class='olbtn' :size="btnSize">{{ toggleCenter ? '中心十字ON' : '中心十字OFF' }}</b-button>
             </div>
             <hr>
-             住所
             <input type='text' @change="onInput" v-model="address" placeholder="住所or座標で検索します。" style="width: 300px;">
             <hr>
-            <a id="toPng" href="#" download="image.png" @click='toPng'>PNGダウンロード</a><br>
+<!--            <a id="toPng" href="#" download="image.png" @click='toPng'>PNGダウンロード</a><br>-->
 
+            <b-button class='olbtn' :size="btnSize" @click="printLeft">画像保存と印刷（左画面）</b-button>
+            <br>
+            <b-button style="margin-top: 5px" class='olbtn' :size="btnSize" @click="printRight">画像保存と印刷（右画面）</b-button>
 
         </div>
     </v-dialog>
@@ -38,9 +40,6 @@
 <script>
   import axios from 'axios'
   import * as MyMap from '../js/mymap'
-  import {drawLayer} from "../js/mymap";
-  import {GeoJSON} from 'ol/format.js';
-  import {moveEnd} from "../js/permalink";
 
   export default {
     name: "Menu",
@@ -51,14 +50,7 @@
         btnSize: 'sm',
         shortUrlText: '',
         shortUrlTextBitly: '',
-        toggle: false,
         toggleCenter: true,
-        toggleLine: false,
-        toggleDanmen: false,
-        toggleMenseki: false,
-        toggleCircle: false,
-        toggleDelete: false,
-        toggleIdou: false,
         selected: 20,
         options: [
           { value: '20', text: '20' },
@@ -73,49 +65,15 @@
       }
     },
     methods: {
-      saveGeojson () {
-        const features = drawLayer.getSource().getFeatures()
-        features.forEach(function(feature){
-          if (feature.getGeometry().getType() === 'Circle') {
-            const radius = feature.getGeometry().getRadius();
-            const center = feature.getGeometry().getCenter();
-            feature.set('radius', radius);
-            feature.set('center', center);
-          }
-        })
-        const drawSourceGeojson = new GeoJSON().writeFeatures(features, {
-          featureProjection: "EPSG:3857"
-        });
-        const geojsonT = JSON.stringify(JSON.parse(drawSourceGeojson),null,1);
-        console.log(geojsonT)
-        const type = "text/plain";
-        const blob = new Blob([geojsonT], {type: type});
-        const a = document.getElementById('download');
-        a.href = window.URL.createObjectURL(blob);
-        a.click()
+      printLeft () {
+        MyMap.history ('印刷画面へ')
+        const printBtn = document.querySelector('#map01 .ol-print button')
+        printBtn.click()
       },
-      drawStop () {
-        this.toggleLine = false
-        this.toggleMenseki = false
-        this.toggleCircle = false
-        this.toggleDelete = false
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.polygonInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.circleInteraction)
-        // this.$store.state.base.maps['map01'].addInteraction(MyMap.transformInteraction)
-        this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
-      },
-      drawReset () {
-        this.toggleLine = false
-        this.toggleMenseki = false
-        this.toggleCircle = false
-        this.toggleDelete = false
-        this.toggleDanmen = false
-        MyMap.drawLayer.getSource().clear()
-        moveEnd()
-      },
-      distance (){
-        MyMap.addDrawInteraction(this.$store.state.base.maps['map01'])
+      printRight () {
+        MyMap.history ('印刷画面へ')
+        const printBtn = document.querySelector('#map02 .ol-print button')
+        printBtn.click()
       },
       // ------------------------------------------------------------------------------------------
       onInput() {
@@ -230,7 +188,19 @@
       }
     },
     mounted () {
-      
+      this.$watch(function () {
+        return [this.toggleCenter]
+      }, function () {
+        MyMap.history ('中心十字onoff')
+        const target = document.querySelector(".center-target");
+        if (this.toggleCenter) {
+          console.log('on')
+          target.style.display = 'block';
+        } else {
+          console.log('off')
+          target.style.display = 'none';
+        }
+      })
     }
   }
 </script>

@@ -2055,6 +2055,9 @@
 </style>
 <style>
     /*ol関係のスタイル*/
+    .ol-print {
+      display: none;
+    }
     .ol-attribution button {
       display: none;
     }
