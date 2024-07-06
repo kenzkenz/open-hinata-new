@@ -29,9 +29,9 @@
             <hr>
 <!--            <a id="toPng" href="#" download="image.png" @click='toPng'>PNGダウンロード</a><br>-->
 
-            <b-button class='olbtn' :size="btnSize" @click="printLeft">画像保存と印刷（左画面）</b-button>
+            <b-button class='olbtn' :size="btnSize" @click="printLeft">画像保存と印刷</b-button>
             <br>
-            <b-button style="margin-top: 5px" class='olbtn' :size="btnSize" @click="printRight">画像保存と印刷（右画面）</b-button>
+            <b-button v-if="s_splitFlg === 2" style="margin-top: 5px" class='olbtn' :size="btnSize" @click="printRight">画像保存と印刷（右画面）</b-button>
 
         </div>
     </v-dialog>
@@ -60,12 +60,16 @@
       }
     },
     computed: {
+      s_splitFlg () {
+        return this.$store.state.base.splitFlg
+      },
       S_menuDialog () {
         return this.$store.state.base.dialogs.menuDialog
       }
     },
     methods: {
       printLeft () {
+        console.log(this.$store.state.base.splitFlg)
         MyMap.history ('印刷画面へ')
         const printBtn = document.querySelector('#map01 .ol-print button')
         printBtn.click()
@@ -188,6 +192,9 @@
       }
     },
     mounted () {
+
+      // console.log(this.$store.state.base.splitFlg)
+
       this.$watch(function () {
         return [this.toggleCenter]
       }, function () {

@@ -2081,6 +2081,11 @@
       bottom: 12px;
       left: -50px;
       user-select: text!important;
+
+    }
+    #map01-popup-content, #map02-popup-content {
+      max-height: 600px;
+      overflow: auto;
     }
     .ol-popup:after, .ol-popup:before {
       top: 100%;

@@ -11,20 +11,49 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
   let streetView
   let flg = false
   let features0 = features
+  let layers0 = []
+  let features00 = []
+
+
+
+
+  // if (features) {
+  //   let i = 0
+  //   for(let feature of features){
+  //     if (feature.getGeometry().getType() === 'Point') {
+  //       features0 = [features[i]]
+  //       layers = [layers[i]]
+  //       break
+  //     }
+  //     i ++
+  //   }
+  // }
+  // if (features) {
+  //   if (features[0].getGeometry().getType() === 'Point' || features[0].getGeometry().getType() === 'LineString' || features[0].getGeometry().getType() === 'MultiLineString') {
+  //     features0 = [features[0]]
+  //   }
+  // }
 
   if (features) {
-    let i = 0
-    for(let feature of features){
-      if (feature.getGeometry().getType() === 'Point') {
-        features0 = [features[i]]
-        layers = [layers[i]]
-        break
+    const exit = features.find((feature) => {
+      return feature.getGeometry().getType() === 'Point'
+    })
+    if (exit) {
+      let i = 0
+      for(let feature of features){
+        if (feature.getGeometry().getType() === 'Point') {
+          features00.push(features[i])
+          layers0.push(layers[i])
+        }
+        i ++
       }
-      i ++
+      features0 = features00
+      layers = layers0
     }
   }
+
   if (features) {
-    if (features[0].getGeometry().getType() === 'Point' || features[0].getGeometry().getType() === 'LineString' || features[0].getGeometry().getType() === 'MultiLineString') {
+    if (features[0].getGeometry().getType() === 'LineString' || features[0].getGeometry().getType() === 'MultiLineString') {
       features0 = [features[0]]
     }
   }
@@ -626,16 +655,18 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           }
           break
         case 'eki':
-          let haishinenEki = ''
-          if (prop.N05_005e !== '9999') {
-            haishinenEki = '<span style="color:red;">変更・廃止年 = ' + (Number(prop.N05_005e) + 1) + '年</span>'
+          if (cont.indexOf('eki123') === -1) {
+            let haishinenEki = ''
+            if (prop.N05_005e !== '9999') {
+              haishinenEki = '<span style="color:red;">変更・廃止年 = ' + (Number(prop.N05_005e) + 1) + '年</span>'
+            }
+            cont += '<div class="eki123" style=width:300px>' +
+                '<h4>' + prop.N05_011 + '</h4>' +
+                '運営会社=' + prop.N05_003 + '<br>' +
+                '路線名　=' + prop.N05_002 + '<br>' +
+                haishinenEki +
+                '</div><hr>'
           }
-          cont += '<div style=width:300px>' +
-              '<h4>' + prop.N05_011 + '</h4>' +
-              '運営会社=' + prop.N05_003 + '<br>' +
-              '路線名　=' + prop.N05_002 + '<br>' +
-              haishinenEki +
-              '</div><hr>'
           break
         case 'bus':
           cont += '<div style=width:300px>' +

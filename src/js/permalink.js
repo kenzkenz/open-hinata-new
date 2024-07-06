@@ -237,7 +237,7 @@ export function permalinkEventSet (response) {
           })
         }
         store.state.base.maps.map01.addInteraction(MyMap.modifyInteraction)
-        store.state.base.maps.map02.addInteraction(MyMap.modifyInteraction)
+        // store.state.base.maps.map02.addInteraction(MyMap.modifyInteraction)
         // store.state.base.maps.map01.addInteraction(MyMap.transformInteraction)
         store.state.base.maps.map01.addLayer(MyMap.drawLayer)
       }
