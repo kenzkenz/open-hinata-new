@@ -7684,6 +7684,87 @@ function yubinkuColorStyleFunction() {
     return styles;
   }
 }
+// 幕末期近世村---------------------------------------------------------------
+function KinseiPoint() {
+  this.useInterimTilesOnError = false
+  this.name = 'kinseipoint'
+  this.source = new VectorTileSource({
+    format: new MVT(),
+    minZoom: 11,
+    maxZoom: 14,
+    url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/point/mvt/{z}/{x}/{y}.mvt',
+  });
+  this.style = kinseiPointStyleFunction()
+  this.maxResolution = 76.437028 //zoom11
+  // this.declutter = true
+  // this.overflow = true
+}
+export const kinseiSumm = "<a href='' target='_blank'></a>"
+export const kinseiPointMvtObj = {};
+for (let i of mapsStr) {
+  kinseiPointMvtObj[i] = new VectorTileLayer(new KinseiPoint())
+}
+
+function KinseiPointRaster () {
+  this.source = new XYZ({
+    url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/point/raster/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    minZoom: 0,
+    maxZoom: 11
+  })
+  this.minResolution = 76.437029 //zoom11
+}
+export const kinseiPointRasterObj = {};
+for (let i of mapsStr) {
+  kinseiPointRasterObj[i] = new TileLayer(new KinseiPointRaster())
+}
+function kinseiPointStyleFunction() {
+  return function (feature,resolution) {
+    const prop = feature.getProperties();
+    const zoom = getZoom(resolution);
+    let text = prop.村名
+    let font
+    if (zoom <= 13) {
+      font = "14px sans-serif"
+    } else {
+      font = "20px sans-serif"
+    }
+    const styles = []
+    const imageStyle = new Style({
+      image: new Icon({
+        src: require('@/assets/icon/whitecircle.png'),
+        color: 'blue',
+        scale: 1.2
+      }),
+    })
+    const textStyle = new Style({
+      text: new Text({
+        font: font,
+        text: text,
+        placement:"point",
+        offsetY:25,
+        stroke: new Stroke({
+          color: "white",
+          width: 3
+        })
+      })
+    })
+    styles.push(imageStyle)
+    styles.push(textStyle)
+    return styles;
+  }
+}
+
+export const kinseiPointObj = {};
+for (let i of mapsStr) {
+  kinseiPointObj[i] = new LayerGroup({
+    layers: [
+      kinseiPointMvtObj[i],
+      kinseiPointRasterObj[i],
+    ]
+  })
+  kinseiPointObj[i].values_['pointer'] = true
+}
 
 // 地名---------------------------------------------------------------
 function chimei() {

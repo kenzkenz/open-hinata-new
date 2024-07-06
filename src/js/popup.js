@@ -35,13 +35,20 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
   // }
 
   if (features) {
-    const exit = features.find((feature) => {
+    let extent
+    for(let feature of features){
+      if (feature.getGeometry().getType() === 'Point') {
+        extent = feature.getGeometry().getExtent()
+        break
+      }
+    }
+    const result = features.find((feature) => {
       return feature.getGeometry().getType() === 'Point'
     })
-    if (exit) {
+    if (result) {
       let i = 0
       for(let feature of features){
-        if (feature.getGeometry().getType() === 'Point') {
+        if (feature.getGeometry().getType() === 'Point'&& JSON.stringify(extent) === JSON.stringify(feature.getGeometry().getExtent())) {
           features00.push(features[i])
           layers0.push(layers[i])
         }
@@ -1446,6 +1453,18 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 // '<img style="object-fit:cover;height:200px;width:350px;" src="https://mapps.gsi.go.jp/contentsImage.do?specificationId=743349">' +
                 link +
                 link2 +
+                '</div><hr>'
+          }
+          break
+        case 'kinseipoint':
+          if (cont.indexOf('kinseipoint') === -1) {
+            cont += '<div class="kinseipoint" style=width:200px;>' +
+                '<h4>' + prop.村名 + '</h4>' +
+                '<p>国名=' + prop.国名 + '</p>' +
+                '<p>国郡=' + prop.国郡 + '</p>' +
+                '<p>郡名=' + prop.郡名 + '</p>' +
+                '<p>領分１=' + prop.領分１ + '</p>' +
+                '<p>相給=' + prop.相給 + '</p>' +
                 '</div><hr>'
           }
           break

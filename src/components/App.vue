@@ -2086,6 +2086,7 @@
     #map01-popup-content, #map02-popup-content {
       max-height: 600px;
       overflow: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .ol-popup:after, .ol-popup:before {
       top: 100%;

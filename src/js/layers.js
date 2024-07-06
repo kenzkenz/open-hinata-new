@@ -13685,6 +13685,10 @@ export const Layers =
       children: [
         // { text: '幕末の郡(国で色分け)', data: { id: "gunbakumatu", layer: LayersMvt.gunbakumatuObj, opacity: 1, summary: LayersMvt.gunSumm } },
         { text: '日本歴史地名大系', data: { id: "chimei", layer: LayersMvt.chimei0Obj, opacity: 1, summary: LayersMvt.chimeiSumm } },
+
+        { text: '幕末期近世の村', data: { id: "kinseipoint", layer: LayersMvt.kinseiPointObj, opacity: 1, summary: LayersMvt.kinseiSumm } },
+
+
         { text: '明治中期の郡(県で色分け)', data: { id: "gun", layer: LayersMvt.gunObj, opacity: 1, summary: LayersMvt.gunSumm } },
         { text: '明治中期の郡(国で色分け)', data: { id: "gunkuni", layer: LayersMvt.gunkuniObj, opacity: 1, summary: LayersMvt.gunSumm } },
         { text: 'T09市町村', data: { id: "cityT9", layer: LayersMvt.cityT9Obj, opacity: 1, summary: LayersMvt.cityT9Summ } },
