@@ -7699,7 +7699,7 @@ function KinseiPoint() {
   // this.declutter = true
   // this.overflow = true
 }
-export const kinseiSumm = "<a href='' target='_blank'></a>"
+export const kinseiSumm = "<a href='https://github.com/yaoyue00085856/Kyudaka_agrivillage' target='_blank'>幕末期近世村領域データ</a>"
 export const kinseiPointMvtObj = {};
 for (let i of mapsStr) {
   kinseiPointMvtObj[i] = new VectorTileLayer(new KinseiPoint())
