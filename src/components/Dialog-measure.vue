@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import * as MyMap from '../js/mymap'
 import {drawLayer} from "../js/mymap";
 import {GeoJSON} from 'ol/format.js';
