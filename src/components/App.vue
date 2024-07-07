@@ -75,7 +75,10 @@
                 <v-dialog-main-info v-if="mapName === 'map01'"/>
                 <v-dialog-edit v-if="mapName === 'map01'"/>
 <!--                <div class="zoom-div">{{ zoom[mapName] }}</div>-->
-                <div class="zoom-div"><span v-html="zoom[mapName]"></span><span style="margin-left: 5px;" class="address"></span></div>
+                <div class="zoom-div">
+                  <span class="zoom-span" style="" v-html="zoom[mapName]"></span>
+                  <span style="margin-left: 5px;" class="address"></span>
+                </div>
             </div>
         </div>
         <!--map01からmap04をループで作成。ここまで-->
@@ -1733,6 +1736,19 @@
         -ms-user-select: none;
         user-select: none;
         /*cursor: grab;*/
+    }
+    .zoom-span {
+      display: inline-block;
+      width: 280px
+    }
+    @media screen and (max-width:500px) {
+      .zoom-div {
+        font-size: small;
+      }
+      .zoom-span {
+        display: inline-block;
+        width: 200px
+      }
     }
     .marker, .current-position-marker{
       position: absolute;

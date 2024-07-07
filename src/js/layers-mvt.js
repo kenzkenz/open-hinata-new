@@ -2872,15 +2872,15 @@ const d3OridinalColor = d3.scaleOrdinal()
     .domain(domain)
     .range(["red", "green", "blue", "darkcyan", "coral"
       , "wheat", "silver", "burlywood"
-      , "lavender", "teal", "tomato", "gray", "darkslategray"
+      , "lavender", "gray", "darkslategray"
       , "orangered", "darkgray", "darkgreen"
       , "skyblue", "chartreuse", "sienna", "orchid", "lightblue"
       , "aquamarine", "sandybrown", "darkorange", "thistle"
+      , "palevioletred", "darkseagreen", "orange", "pink",
       , "dodgerblue", "lightgreen", "goldenrod", "magenta", "cornflowerblue"
       , "crimson", "steelblue", "mediumvioletred"
       , "royalblue", "khaki", "deeppink", "midnightblue"
       , "mediumseagreen", "hotpink", "navy", "mediumaquamarine", "gold"
-      , "palevioletred", "darkseagreen", "orange", "pink", "mediumblue"
       , "springgreen", "peru", "fuchsia", "deepskyblue", "darkgoldenrod"
       , "violet", "lightskyblue", "lawngreen", "chocolate", "plum"
       , "greenyellow", "saddlebrown", "mediumorchid", "powderblue", "lime"
@@ -7689,11 +7689,10 @@ let kinseiPolygonMaxResolution
 if (window.innerWidth > 1000) {
   kinseiPolygonMaxResolution = 611.496226	 //zoom8
 } else {
-  // kinseiPolygonMaxResolution = 305.748113	 //zoom9
-  kinseiPolygonMaxResolution = 400	 //zoom9
+  kinseiPolygonMaxResolution = 305.748113	 //zoom9
+  // kinseiPolygonMaxResolution = 400	 //zoom9
 }
-
-function KinseiPolygon() {
+function KinseiPolygon(mapName) {
   this.useInterimTilesOnError = false
   this.name = 'kinseipolygon'
   this.source = new VectorTileSource({
@@ -7702,26 +7701,40 @@ function KinseiPolygon() {
     maxZoom: 14,
     url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/polygon/{z}/{x}/{y}.mvt',
   });
-  this.style = kinseiRasterStyleFunction()
+  this.style = kinseiPolygonStyleFunction(mapName)
   this.maxResolution = kinseiPolygonMaxResolution
   // this.maxResolution = 611.496226	 //zoom8
   // this.maxResolution = 305.748113	 //zoom9
-  // this.declutter = true
+  this.declutter = true
   // this.overflow = true
 }
 export const kinseiPolygonMvtObj = {};
 for (let i of mapsStr) {
-  kinseiPolygonMvtObj[i] = new VectorTileLayer(new KinseiPolygon())
+  kinseiPolygonMvtObj[i] = new VectorTileLayer(new KinseiPolygon(i))
 }
-function kinseiRasterStyleFunction() {
+const kinseiColor = d3.scaleOrdinal(d3.schemeCategory10);
+function kinseiPolygonStyleFunction(mapName) {
   return function (feature, resolution) {
+    const selectColor = store.state.info.selectColor[mapName]
     const zoom = getZoom(resolution);
     const prop = feature.getProperties();
     const styles = []
+    let rgb
+    let rgba
     let font
-    const rgb = d3.rgb(d3OridinalColor(Number(prop.KEY)))
-    // const rgb = d3.rgb(d3OridinalColor(prop.領分１))
-    const rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
+    switch (selectColor) {
+      case '標準':
+        rgb = d3.rgb(d3OridinalColor(Number(prop.KEY)))
+        rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
+        break
+      case '藩で色分け':
+        rgb = d3.rgb(d3OridinalColor(prop.領分１))
+        rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
+        break
+      case '色なし':
+        rgba = 'rgba(0,0,0,0)'
+        break
+    }
     let polygonStyle
     if (zoom > 10) {
       polygonStyle = new Style({
@@ -7747,13 +7760,14 @@ function kinseiRasterStyleFunction() {
       });
     }
     if (zoom <=11 ) {
-      font = "14px sans-serif"
+      font = "10px sans-serif"
     } else if (zoom <=12 ) {
-      font = "20px sans-serif"
+      font = "16px sans-serif"
     } else {
-      font = "24px sans-serif"
+      font = "20px sans-serif"
     }
-    const text = prop.N03_004
+    let text = prop.村名
+    if (text) text = text.trunc(4)
     const textStyle = new Style({
       text: new Text({
         font: font,
@@ -7765,7 +7779,9 @@ function kinseiRasterStyleFunction() {
           color: "white",
           width: 3
         }),
-        exceedLength:true
+        placement: 'point'
+        // overflow: true,
+        // exceedLength:true
       })
     });
     if (prop.村名)styles.push(polygonStyle);
@@ -7857,7 +7873,7 @@ for (let i of mapsStr) {
 
       // kinseiPointRasterObj[i],
       kinseiPolygonMvtObj[i],
-      kinseiPointMvtObj[i],
+      // kinseiPointMvtObj[i],
     ]
   })
   kinseiPointObj[i].values_['pointer'] = true

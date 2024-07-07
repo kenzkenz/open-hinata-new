@@ -325,6 +325,12 @@ const moduleInfo = {
       map03: 'all',
       map04: 'all'
     },
+    selectColor: {
+      map01: '標準',
+      map02: '標準',
+      map03: '標準',
+      map04: '標準'
+    },
     tansyashin: {
       map01: 'all',
       map02: 'all',
@@ -555,6 +561,9 @@ const moduleInfo = {
           } else if (payload.order === 2){
             variable = 'tansyashinFumei'
           }
+          break
+        case 'kinsei':
+          variable = 'selectColor'
           break
       }
       state[variable][payload.mapName] = payload.value
