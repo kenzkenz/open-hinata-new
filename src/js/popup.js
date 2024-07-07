@@ -1460,11 +1460,22 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           if (cont.indexOf('kinseipoint') === -1) {
             cont += '<div class="kinseipoint" style=width:200px;>' +
                 '<h4>' + prop.村名 + '</h4>' +
+                '<h5>領分１=' + prop.領分１ + '<h5/>' +
                 '<p>国名=' + prop.国名 + '</p>' +
                 '<p>国郡=' + prop.国郡 + '</p>' +
                 '<p>郡名=' + prop.郡名 + '</p>' +
-                '<p>領分１=' + prop.領分１ + '</p>' +
                 '<p>相給=' + prop.相給 + '</p>' +
+                '</div><hr>'
+          }
+          break
+        case 'kinseipolygon':
+          if (cont.indexOf('kinseipolygon') === -1) {
+            cont += '<div class="kinseipolygon" style=width:200px;>' +
+                '<h4>' + prop.村名 + '</h4>' +
+                '<h5>領分１=' + prop.領分１ + '</h5>' +
+                '<p>国名=' + prop.国名 + '</p>' +
+                '<p>国郡=' + prop.国郡 + '</p>' +
+                '<p>郡名=' + prop.郡名 + '</p>' +
                 '</div><hr>'
           }
           break

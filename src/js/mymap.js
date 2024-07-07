@@ -35,6 +35,7 @@ import Dialog from 'ol-ext/control/Dialog'
 import Icon from 'ol/style/Icon'
 import * as d3 from "d3"
 import PrintDialog from 'ol-ext/control/PrintDialog.js'
+import muni from './muni'
 
 // ドロー関係-------------------------------------------------------------------------------
 export  const drawLayer2 = new VectorLayer({
@@ -1267,11 +1268,22 @@ export function initMap (vm) {
                     // vm.zoom[mapName] = 'zoom=' + zoom
                     vm.zoom[mapName] = '標高取得できませんでした。'
                 }
-            } );
-            // const zoom = String(Math.floor(map.getView().getZoom() * 100) / 100)
-            // vm.zoom[mapName] = 'zoom=' + zoom
+            })
+
+            const lonLat = transform([coord[0], coord[1]], "EPSG:3857", "EPSG:4326")
+            axios
+                .get('https://mreversegeocoder.gsi.go.jp/reverse-geocoder/LonLatToAddress', {
+                    params: {
+                        lon: lonLat[0],
+                        lat: lonLat[1]
+                    }
+                })
+                .then(function (response) {
+                    const splitMuni = muni[Number(response.data.results.muniCd)].split(',')
+                    const elAddress = document.querySelector( '#' + mapName + ' .address')
+                    if (elAddress.innerHTML !== response.data.results.lv01Nm) elAddress.innerHTML = splitMuni[1] + splitMuni[3] + response.data.results.lv01Nm
+                })
         }
-        // const win = window.navigator.userAgent.includes('Win')
         map.on('moveend', function (event) {
             // console.log(777)
             moveEnd()

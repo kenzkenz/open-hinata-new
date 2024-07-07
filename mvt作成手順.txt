@@ -316,7 +316,7 @@ tippecanoe -rg -pk -pf -f -e tile3 t3.geojson
 tippecanoe -rg -pk -pf -f -e tile3 s3.geojson
 tippecanoe -Z15 -z16 -pk -pf -f -e tile h.geojson
 tippecanoe -rg -pk -pf -f -e tile k.geojson
-
+tippecanoe -pk -pf -f -e tile n.geojson
 
 $ cd tile
 $ gzip -d -v -r -S .pbf *

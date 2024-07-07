@@ -7685,6 +7685,101 @@ function yubinkuColorStyleFunction() {
   }
 }
 // 幕末期近世村---------------------------------------------------------------
+let kinseiPolygonMaxResolution
+if (window.innerWidth > 1000) {
+  kinseiPolygonMaxResolution = 611.496226	 //zoom8
+} else {
+  // kinseiPolygonMaxResolution = 305.748113	 //zoom9
+  kinseiPolygonMaxResolution = 400	 //zoom9
+}
+
+function KinseiPolygon() {
+  this.useInterimTilesOnError = false
+  this.name = 'kinseipolygon'
+  this.source = new VectorTileSource({
+    format: new MVT(),
+    // minZoom: 11,
+    maxZoom: 14,
+    url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/polygon/{z}/{x}/{y}.mvt',
+  });
+  this.style = kinseiRasterStyleFunction()
+  this.maxResolution = kinseiPolygonMaxResolution
+  // this.maxResolution = 611.496226	 //zoom8
+  // this.maxResolution = 305.748113	 //zoom9
+  // this.declutter = true
+  // this.overflow = true
+}
+export const kinseiPolygonMvtObj = {};
+for (let i of mapsStr) {
+  kinseiPolygonMvtObj[i] = new VectorTileLayer(new KinseiPolygon())
+}
+function kinseiRasterStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution);
+    const prop = feature.getProperties();
+    const styles = []
+    let font
+    const rgb = d3.rgb(d3OridinalColor(Number(prop.KEY)))
+    // const rgb = d3.rgb(d3OridinalColor(prop.領分１))
+    const rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
+    let polygonStyle
+    if (zoom > 10) {
+      polygonStyle = new Style({
+        fill: new Fill({
+          color: rgba
+        }),
+        stroke: new Stroke({
+          color: "black",
+          width: 2
+        }),
+        zIndex: 0
+      });
+    } else {
+      polygonStyle = new Style({
+        fill: new Fill({
+          color: rgba
+        }),
+        stroke: new Stroke({
+          color: "black",
+          width: 1
+        }),
+        zIndex: 0
+      });
+    }
+    if (zoom <=11 ) {
+      font = "14px sans-serif"
+    } else if (zoom <=12 ) {
+      font = "20px sans-serif"
+    } else {
+      font = "24px sans-serif"
+    }
+    const text = prop.N03_004
+    const textStyle = new Style({
+      text: new Text({
+        font: font,
+        text: text,
+        fill: new Fill({
+          color: "black"
+        }),
+        stroke: new Stroke({
+          color: "white",
+          width: 3
+        }),
+        exceedLength:true
+      })
+    });
+    if (prop.村名)styles.push(polygonStyle);
+    if(zoom>=9) {
+      styles.push(textStyle);
+    }
+    return styles;
+  }
+}
+
+
+
+
+
 function KinseiPoint() {
   this.useInterimTilesOnError = false
   this.name = 'kinseipoint'
@@ -7734,7 +7829,7 @@ function kinseiPointStyleFunction() {
       image: new Icon({
         src: require('@/assets/icon/whitecircle.png'),
         color: 'blue',
-        scale: 1.2
+        scale: 1.5
       }),
     })
     const textStyle = new Style({
@@ -7759,8 +7854,10 @@ export const kinseiPointObj = {};
 for (let i of mapsStr) {
   kinseiPointObj[i] = new LayerGroup({
     layers: [
+
+      // kinseiPointRasterObj[i],
+      kinseiPolygonMvtObj[i],
       kinseiPointMvtObj[i],
-      kinseiPointRasterObj[i],
     ]
   })
   kinseiPointObj[i].values_['pointer'] = true

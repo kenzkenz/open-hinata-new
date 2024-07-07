@@ -74,7 +74,8 @@
                 <v-dialog-measure v-if="mapName === 'map01'"/>
                 <v-dialog-main-info v-if="mapName === 'map01'"/>
                 <v-dialog-edit v-if="mapName === 'map01'"/>
-                <div class="zoom-div">{{ zoom[mapName] }}</div>
+<!--                <div class="zoom-div">{{ zoom[mapName] }}</div>-->
+                <div class="zoom-div"><span v-html="zoom[mapName]"></span><span style="margin-left: 5px;" class="address"></span></div>
             </div>
         </div>
         <!--map01からmap04をループで作成。ここまで-->
