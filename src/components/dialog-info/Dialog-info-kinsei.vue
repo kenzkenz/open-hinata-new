@@ -7,7 +7,20 @@
       <b-form-select v-model="s_selectColor" :options="options" @change="selectChange"></b-form-select>
     </div>
     <hr>
-    出典 <span v-html="item.summary"></span>
+    <div v-if="s_selectColor === '藩で色分け2'">
+      <hr>
+      <p>「藩で色分け2」の凡例</p>
+      <ul>
+        <li>皇室領と社寺領＝黒</li>
+        <li>幕府領＝赤</li>
+        <li>旗本領＝灰</li>
+        <li>藩領＝紫</li>
+        <li>その他＝青</li>
+      </ul>
+    </div>
+    <div>
+      出典 <span v-html="item.summary"></span>
+    </div>
   </div>
 </template>
 
@@ -25,6 +38,7 @@ export default {
       options: [
         { value: '標準', text: '標準' },
         { value: '藩で色分け', text: '藩で色分け' },
+        { value: '藩で色分け2', text: '藩で色分け2' },
         { value: '色なし', text: '色なし' },
       ]
     }

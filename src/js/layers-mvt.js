@@ -7720,7 +7720,7 @@ function kinseiPolygonStyleFunction(mapName) {
     const prop = feature.getProperties();
     const styles = []
     let rgb
-    let rgba
+    let rgba = 'rgba(0,0,0,0)'
     let font
     switch (selectColor) {
       case '標準':
@@ -7730,6 +7730,24 @@ function kinseiPolygonStyleFunction(mapName) {
       case '藩で色分け':
         rgb = d3.rgb(d3OridinalColor(prop.領分１))
         rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
+        break
+      case '藩で色分け2':
+        const ryo = prop.領分１
+        if (ryo) {
+          // console.log(prop.領分１.slice(-1),prop.領分１)
+          if (ryo === '幕領') {
+            rgba = 'rgba(255,255,255,0.7)'
+            rgba = 'rgba(255,0,0,0.7)'
+          } else if (ryo === '旗本領分') {
+            rgba = 'rgba(127,127,127,0.7)'
+          } else if (ryo.indexOf('藩') !== -1) {
+            rgba = 'rgba(104,52,154,0.7)'
+          } else if (ryo === '皇室領' || ryo === '社寺領') {
+            rgba = 'rgba(0,0,0,0.7)'
+          } else {
+            rgba = 'rgba(0,0,255,0.7)'
+          }
+        }
         break
       case '色なし':
         rgba = 'rgba(0,0,0,0)'
