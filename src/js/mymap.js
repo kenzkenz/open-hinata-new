@@ -1279,9 +1279,13 @@ export function initMap (vm) {
                     }
                 })
                 .then(function (response) {
-                    const splitMuni = muni[Number(response.data.results.muniCd)].split(',')
                     const elAddress = document.querySelector( '#' + mapName + ' .address')
-                    if (elAddress.innerHTML !== response.data.results.lv01Nm) elAddress.innerHTML = splitMuni[1] + splitMuni[3] + response.data.results.lv01Nm
+                    if (response.data.results) {
+                        const splitMuni = muni[Number(response.data.results.muniCd)].split(',')
+                        if (elAddress.innerHTML !== response.data.results.lv01Nm) elAddress.innerHTML = splitMuni[1] + splitMuni[3] + response.data.results.lv01Nm
+                    } else {
+                        elAddress.innerHTML = ''
+                    }
                 })
         }
         map.on('moveend', function (event) {
