@@ -192,9 +192,8 @@
       }
     },
     mounted () {
-
       // console.log(this.$store.state.base.splitFlg)
-
+      //------------------------------------------------------------
       this.$watch(function () {
         return [this.toggleCenter]
       }, function () {
@@ -207,7 +206,15 @@
           console.log('off')
           target.style.display = 'none';
         }
+        localStorage.setItem('centerTarget',this.toggleCenter)
+        console.log(localStorage.getItem('centerTarget'))
       })
+      //------------------------------------------------------------
+      if (localStorage.getItem('centerTarget') === 'false') {
+        this.toggleCenter = false
+      } else {
+        this.toggleCenter = true
+      }
     }
   }
 </script>
