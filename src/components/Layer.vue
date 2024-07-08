@@ -95,6 +95,7 @@
         const dialogEl = document.querySelector('#' + this.mapName + " .dialog-div")
         const top = dialogEl.offsetTop + 'px';
         const left = (dialogEl.offsetLeft + dialogEl.offsetWidth + 5) + 'px';
+        //  const left = '10px'
         const result = this.s_dialogsINfo[this.mapName].find(el => el.id === item.id);
         this.$store.commit('base/incrDialogMaxZindex');
         if (!result) {

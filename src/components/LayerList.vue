@@ -66,7 +66,12 @@
 
             if (node.data.component) {
               const top = this.$store.state.base.dialogs[this.mapName].style.top;
-              const left = Number(this.$store.state.base.dialogs[this.mapName].style.left.replace(/px/,"")) + document.querySelector('#' + this.mapName + ' .dialog-div').clientWidth + 10 + 'px';
+              let left
+              if (window.innerWidth > 600) {
+                left = Number(this.$store.state.base.dialogs[this.mapName].style.left.replace(/px/, "")) + document.querySelector('#' + this.mapName + ' .dialog-div').clientWidth + 10 + 'px';
+              } else {
+                left = '10px'
+              }
               const infoDialog =
                 {
                   id: node.data.id,
@@ -79,10 +84,10 @@
                     display: 'block',
                     top: top,
                     left: left,
-                    'z-index': 9
+                    'z-index': 20
                   }
                 };
-              this.$store.commit('base/deketeDialogsInfo',{mapName: this.mapName})
+              // this.$store.commit('base/deketeDialogsInfo',{mapName: this.mapName})
               this.$store.commit('base/pushDialogsInfo', {mapName: this.mapName, dialog: infoDialog});
             }
           }
