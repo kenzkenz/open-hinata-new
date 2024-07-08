@@ -1618,11 +1618,13 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
         layer.setOpacity(newLayerList[0][i].opacity)
         // 新規追加したレイヤーだけにズームとセンターを設定する。
         if(!store.state.base.firstFlg) {
-            if (newLayerList[0][0].zoom) {
-                map.getView().setZoom(newLayerList[0][0].zoom)
-            }
-            if (newLayerList[0][0].center) {
-                map.getView().setCenter(transform(newLayerList[0][0].center, "EPSG:4326", "EPSG:3857"));
+            if (store.state.base.jumpFlg) {
+                if (newLayerList[0][0].zoom) {
+                    map.getView().setZoom(newLayerList[0][0].zoom)
+                }
+                if (newLayerList[0][0].center) {
+                    map.getView().setCenter(transform(newLayerList[0][0].center, "EPSG:4326", "EPSG:3857"));
+                }
             }
         }
     }

@@ -57,6 +57,7 @@ const moduleBase = {
     firstFlg: true,
     increment: 0,
     popUpCont: '',
+    jumpFlg: true,
     hight: {
       map01: 1,
       map02: 1,

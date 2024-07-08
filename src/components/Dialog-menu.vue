@@ -32,6 +32,8 @@
             <b-button class='olbtn' :size="btnSize" @click="printLeft">画像保存と印刷</b-button>
             <br>
             <b-button v-if="s_splitFlg === 2" style="margin-top: 5px" class='olbtn' :size="btnSize" @click="printRight">画像保存と印刷（右画面）</b-button>
+            <br>
+            <label for='jump-check'>背景選択時に設定地にジャンプする</label><input id='jump-check' type="checkbox" v-model="s_jumpFlg">
 
         </div>
     </v-dialog>
@@ -56,10 +58,19 @@
           { value: '20', text: '20' },
           { value: '30', text: '30' },
           { value: '50', text: '50' }
-        ]
+        ],
       }
     },
     computed: {
+      s_jumpFlg: {
+        get() {
+          return this.$store.state.base.jumpFlg
+        },
+        set(value) {
+          this.$store.state.base.jumpFlg = value
+          localStorage.setItem('jump',this.s_jumpFlg)
+        }
+      },
       s_splitFlg () {
         return this.$store.state.base.splitFlg
       },
@@ -214,6 +225,11 @@
         this.toggleCenter = false
       } else {
         this.toggleCenter = true
+      }
+      if (localStorage.getItem('jump') === 'false') {
+        this.s_jumpFlg = false
+      } else {
+        this.s_jumpFlg = true
       }
     }
   }
