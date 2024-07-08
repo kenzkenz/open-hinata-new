@@ -82,7 +82,58 @@ const mapsStr = ['map01','map02']
 //   fgbObj[i] = new VectorLayer(new fgb())
 // }
 // -----
-
+// 道路元標---------------------------------------------------------------
+function DoroGenpyo() {
+  this.useInterimTilesOnError = false
+  this.name = 'dorogenpyo'
+  this.source = new VectorSource({
+    url:'https://kenzkenz.xsrv.jp/open-hinata/geojson/dorogenpyo.geojson',
+    format: new GeoJSON()
+  });
+  this.style = dorogenpyoFunction()
+}
+export const dorogenpyoSumm = "<a href='https://www.google.com/maps/d/viewer?mid=10INzkQHrBTQssOgLbQjsg6ujMxODY51n&g_ep=CAISDTYuMTIyLjEuNjk5MTAYACDdYipaLDk0MjI0ODI1LDk0MjI3MjQ3LDk0MjI3MjQ4LDQ3MDcxNzA0LDQ3MDY5NTA4LDk0MjE4NjQxLDk0MjAzMDE5LDQ3MDg0MzA0LDk0MjA4NDU4LDk0MjA4NDQ3QgJKUA%3D%3D&g_st=ic&ll=35.141870526449246%2C138.33098634178353&z=7' target='_blank'>道路元標</a>"
+export const dorogenpyoObj = {};
+for (let i of mapsStr) {
+  dorogenpyoObj[i] = new VectorLayer(new DoroGenpyo())
+}
+function dorogenpyoFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    const iconStyle = new Style({
+      image: new Icon({
+        src: require('@/assets/icon/whitecircle.png'),
+        color: 'green'
+      })
+    })
+    let font
+    if (zoom <= 15) {
+      font = "14px sans-serif"
+      // scale = 1
+      // offsetY = 38
+    } else {
+      font = "16px sans-serif"
+      // scale = 1.5
+      // offsetY = 42
+    }
+    const textStyle = new Style({
+      text: new Text({
+        font: font,
+        text: prop.Name,
+        offsetY: 20,
+        stroke: new Stroke({
+          color: "white",
+          width: 3
+        })
+      })
+    })
+    if (zoom >= 11) styles.push(textStyle)
+    styles.push(iconStyle)
+    return styles;
+  }
+}
 // ジオランドぎふ---------------------------------------------------------------------------------
 function GifuDetail(){
   this.name = 'gifudetail'

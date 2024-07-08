@@ -1479,6 +1479,14 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div><hr>'
           }
           break
+        case 'dorogenpyo':
+          if (cont.indexOf('dorogenpyo') === -1) {
+            cont += '<div class="dorogenpyo" style=width:200px;>' +
+                '<h4>' + prop.Name + '</h4>' +
+                '<p>' + prop.description + '</p>' +
+                '</div><hr>'
+          }
+          break
       }
     })
   }

@@ -13980,6 +13980,8 @@ export const Layers =
       ]},
     { text: '道、鉄道等',
       children: [
+        { text: '道路元標', data: { id: "dorogenpyo", layer: LayersMvt.dorogenpyoObj, opacity: 1, summary: LayersMvt.dorogenpyoSumm} },
+
         { text: '五街道', data: { id: "gokaido", layer: LayersMvt.gokaidoObj, opacity: 1, summary: LayersMvt.gokaidoSumm} },
         { text: '明治期における国道の比定路線', data: { id: "meijikokudo", layer: LayersMvt.meijikokudoObj, opacity: 1, summary: LayersMvt.meijikokudoSumm} },
         { text: 'R05鉄道（廃線は赤色）', data: { id: "rosen", layer: LayersMvt.rosen0Obj, opacity: 1, summary: LayersMvt.rosenSumm} },
