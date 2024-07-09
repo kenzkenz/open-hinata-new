@@ -16,8 +16,12 @@
       <b-button style="margin-top: 5px;" :pressed.sync="toggleDelete" class='olbtn' :size="btnSize">{{ toggleDelete ? '削除' : '削除' }}</b-button>
       <b-button style="margin-top: 5px; margin-left: 10px;" class='olbtn' :size="btnSize" @click="drawReset">クリア</b-button>
       <b-button style="margin-top: 5px;margin-left: 10px;" class='olbtn' :size="btnSize" @click="saveGeojson">geojson保存</b-button>
+      <b-button style="margin-top: 5px;margin-left: 10px;" class='olbtn' :size="btnSize" @click="saveGpx">GPX保存</b-button>
+      <b-button style="margin-top: 5px;margin-left: 10px;" class='olbtn' :size="btnSize" @click="saveKml">kml保存</b-button>
 
       <a id="download" download="draw.geojson"></a>
+      <a id="download-gpx" download="draw.gpx"></a>
+      <a id="download-kml" download="draw.kml"></a>
 
     </div>
   </v-dialog>
@@ -25,9 +29,11 @@
 
 <script>
 import * as MyMap from '../js/mymap'
-import {drawLayer} from "../js/mymap";
-import {GeoJSON} from 'ol/format.js';
-import {moveEnd} from "../js/permalink";
+import {drawLayer} from "@/js/mymap"
+import GeoJSON from 'ol/format/GeoJSON'
+import GPX from 'ol/format/GPX'
+import KML from 'ol/format/KML'
+import {moveEnd} from "@/js/permalink"
 
 export default {
   name: "dialog-measure",
@@ -58,6 +64,36 @@ export default {
     }
   },
   methods: {
+    saveKml () {
+      const features = drawLayer.getSource().getFeatures()
+      const drawSourceKml = new KML().writeFeatures(features, {
+        featureProjection: "EPSG:3857"
+      })
+      console.log(drawSourceKml)
+      const type = "text/plain";
+      const blob = new Blob([drawSourceKml], {type: type});
+      const a = document.getElementById('download-kml');
+      a.href = window.URL.createObjectURL(blob);
+      a.click()
+    },
+    saveGpx () {
+      const features = drawLayer.getSource().getFeatures()
+      const drawSourceGpx = new GPX().writeFeatures(features, {
+        featureProjection: "EPSG:3857"
+      })
+      // console.log(drawSourceGpx)
+      const drawSourceKml = new KML().writeFeatures(features, {
+        featureProjection: "EPSG:3857"
+      })
+      console.log(drawSourceKml)
+
+
+      const type = "text/plain";
+      const blob = new Blob([drawSourceGpx], {type: type});
+      const a = document.getElementById('download-gpx');
+      a.href = window.URL.createObjectURL(blob);
+      a.click()
+    },
     saveGeojson () {
       const features = drawLayer.getSource().getFeatures()
       features.forEach(function(feature){

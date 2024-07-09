@@ -1096,6 +1096,7 @@ export function initMap (vm) {
                 }
 
                 drawLayer2.setZIndex(maxZndex)
+                drawLayer.setZIndex(maxZndex)
 
             }
         })
@@ -1177,6 +1178,7 @@ export function initMap (vm) {
                 }
 
                 drawLayer2.setZIndex(maxZndex)
+                drawLayer.setZIndex(maxZndex)
 
             }
         })
@@ -1279,6 +1281,7 @@ export function initMap (vm) {
                     }
                 })
                 .then(function (response) {
+                    // console.log(response.data.results)
                     const elAddress = document.querySelector( '#' + mapName + ' .address')
                     if (response.data.results) {
                         const splitMuni = muni[Number(response.data.results.muniCd)].split(',')

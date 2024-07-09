@@ -92,7 +92,7 @@ function DoroGenpyo() {
   });
   this.style = dorogenpyoFunction()
 }
-export const dorogenpyoSumm = "<a href='https://www.google.com/maps/d/viewer?mid=10INzkQHrBTQssOgLbQjsg6ujMxODY51n&g_ep=CAISDTYuMTIyLjEuNjk5MTAYACDdYipaLDk0MjI0ODI1LDk0MjI3MjQ3LDk0MjI3MjQ4LDQ3MDcxNzA0LDQ3MDY5NTA4LDk0MjE4NjQxLDk0MjAzMDE5LDQ3MDg0MzA0LDk0MjA4NDU4LDk0MjA4NDQ3QgJKUA%3D%3D&g_st=ic&ll=35.141870526449246%2C138.33098634178353&z=7' target='_blank'>道路元標</a>"
+export const dorogenpyoSumm = "<a href='https://www.google.com/maps/d/viewer?mid=10INzkQHrBTQssOgLbQjsg6ujMxODY51n&g_ep=CAISDTYuMTIyLjEuNjk5MTAYACDdYipaLDk0MjI0ODI1LDk0MjI3MjQ3LDk0MjI3MjQ4LDQ3MDcxNzA0LDQ3MDY5NTA4LDk0MjE4NjQxLDk0MjAzMDE5LDQ3MDg0MzA0LDk0MjA4NDU4LDk0MjA4NDQ3QgJKUA%3D%3D&g_st=ic&ll=35.141870526449246%2C138.33098634178353&z=7' target='_blank'>みんなで地理プラーザ　小林護氏提供</a>"
 export const dorogenpyoObj = {};
 for (let i of mapsStr) {
   dorogenpyoObj[i] = new VectorLayer(new DoroGenpyo())
