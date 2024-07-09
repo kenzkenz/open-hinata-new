@@ -120,18 +120,19 @@ export  const drawLayer = new VectorLayer({
     // pointer: true,
     source: drawSource,
     // altitudeMode: 'clampToGround',
-    style: drawStylefunction()
+    style: drawLayerStylefunction()
 })
 export const selectInteraction = new Select({
     layers: [drawLayer]
 })
 
-function drawStylefunction (){
+function drawLayerStylefunction (){
     return function (feature, resolution) {
         const prop = feature.getProperties()
         const geoType = feature.getGeometry().getType()
         // console.log(prop.distance)
         // console.log(prop)
+        console.log(geoType)
         const styles = []
         const lineStyle = new Style({
             stroke: new Stroke({
@@ -541,16 +542,12 @@ export function initMap (vm) {
                     GeoJSON,
                     IGC,
                     // use constructed format to set options
-                    new KML({extractStyles: true}),
+                    new KML({extractStyles: false}),
                     TopoJSON,
                 ],
             })
             dragAndDropInteraction.on('addfeatures', function (event) {
                 map.addInteraction(modifyInteraction)
-                // map.addInteraction(transformInteraction)
-                // const vectorSource = new VectorSource({
-                //     features: event.features,
-                // })
                 event.features.forEach((feature) => {
                     drawLayer.getSource().addFeature(feature)
                 })
@@ -566,7 +563,7 @@ export function initMap (vm) {
                         moveEnd()
                     }
                 })
-                map.addLayer(drawLayer)
+                // map.addLayer(drawLayer)
                 map.getView().fit(drawLayer.getSource().getExtent())
             })
             map.addInteraction(dragAndDropInteraction)
