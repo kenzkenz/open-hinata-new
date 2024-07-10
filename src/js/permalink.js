@@ -56,10 +56,11 @@ export function permalinkEventSet (response) {
   });
   if (window.location.hash !== '') {
     // const hash = decodeURIComponent(window.location.hash.replace('#', ''));
-    // console.log(response)
+    // console.log(response.data)
     let hash
     if (response.data) {
-      hash = decodeURIComponent(response.data.replace('#', ''));
+      // hash = decodeURIComponent(response.data.replace('#', ''));
+      hash = response.data.replace('#', '');
     } else {
       hash = decodeURIComponent(window.location.hash.replace('#', ''));
     }
@@ -97,8 +98,8 @@ export function permalinkEventSet (response) {
           const ol3d = store.state.base.ol3d[map]
           const scene = ol3d.getCesiumScene()
           const json = JSON.parse(obj[key])
-          console.log(obj[key])
-          console.log(json)
+          // console.log(obj[key])
+          // console.log(json)
           const terrainProvider = new Cesium.PngElevationTileTerrainProvider( {
             url: 'https://gsj-seamless.jp/labs/elev2/elev/{z}/{y}/{x}.png?prj=latlng&size=257',
             // url: 'https://tiles.gsj.jp/tiles/elev/mixed/{z}/{y}/{x}.png',
@@ -108,7 +109,7 @@ export function permalinkEventSet (response) {
             heightScale: json.hight,
             // heightScale: 0.01,
           })
-          console.log(json.hight)
+          // console.log(json.hight)
           store.state.base.hight[map] = json.hight
           scene.terrainProvider = terrainProvider
           scene.terrainProvider.heightmapTerrainQuality = 0.5
@@ -177,9 +178,9 @@ export function permalinkEventSet (response) {
             const setumei = feature.properties.setumei
             const src = feature.properties.src
             if (feature.geometry.type === 'Point') {
-              console.log(feature.geometry.coordinates)
+              // console.log(feature.geometry.coordinates)
               const coordinates = transform(feature.geometry.coordinates, "EPSG:4326", "EPSG:3857")
-              console.log(coordinates)
+              // console.log(coordinates)
               const point = new Point(coordinates)
               const newFeature = new Feature(point)
               // newFeature['properties'] = 'aaa'
@@ -187,7 +188,7 @@ export function permalinkEventSet (response) {
               newFeature.setProperties({setumei: setumei})
               newFeature.setProperties({src: src})
 
-              console.log(newFeature)
+              // console.log(newFeature)
               MyMap.drawLayer2.getSource().addFeature(newFeature)
             }
           })
@@ -195,11 +196,17 @@ export function permalinkEventSet (response) {
         // store.state.base.maps.map01.addLayer(MyMap.drawLayer2)
       }
       if (key==='GJ') {
+
+        // console.log(obj[key])
+
         const geojson = JSON.parse(obj[key])
+        // console.log(geojson)
         if (geojson.features[0]) {
           geojson.features.forEach((feature) => {
-            const distance = feature.properties.distance
+            // console.log(feature.geometry.type)
+            // const distance = feature.properties.distance
             if (feature.geometry.type === 'GeometryCollection') {
+              const distance = feature.properties.distance
               const center = feature.properties.center
               const radius = feature.properties.radius
               const circle = new Circle(center, radius)
@@ -207,6 +214,7 @@ export function permalinkEventSet (response) {
               newFeature.setProperties({distance: distance})
               MyMap.drawLayer.getSource().addFeature(newFeature)
             } else if (feature.geometry.type === 'LineString') {
+              const distance = feature.properties.distance
               let coordinates = []
               feature.geometry.coordinates.forEach((coord) => {
                 // coord = turf.toWgs84(coord)
@@ -218,16 +226,32 @@ export function permalinkEventSet (response) {
               // newFeature.setProperties({distance: "distance"})
               newFeature['properties'] = 'aaa'
               newFeature.setProperties({distance: distance})
-              console.log(newFeature)
+              // console.log(newFeature)
+              MyMap.drawLayer.getSource().addFeature(newFeature)
+            } else if (feature.geometry.type === 'Point') {
+              // alert()
+              // let coordinates = []
+              // console.log(feature.geometry.coordinates)
+              // feature.geometry.coordinates.forEach((coord) => {
+              //   // coord = turf.toWgs84(coord)
+              //   coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
+              // })
+              // const distance = feature.properties.distance
+              const coordinates = transform(feature.geometry.coordinates, "EPSG:4326", "EPSG:3857")
+              const point = new Point(coordinates)
+              const newFeature = new Feature(point)
+              // newFeature.setProperties({distance: "distance"})
+              // console.log(newFeature)
               MyMap.drawLayer.getSource().addFeature(newFeature)
             } else if (feature.geometry.type === 'Polygon') {
+              const distance = feature.properties.distance
               let coordinates = []
               feature.geometry.coordinates[0].forEach((coord) => {
                 // coord = turf.toWgs84(coord)
-                console.log(coord)
+                // console.log(coord)
                 coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
               })
-              console.log(coordinates)
+              // console.log(coordinates)
               const polygon = new Polygon([coordinates])
               const newFeature = new Feature(polygon)
               newFeature['properties'] = 'aaaa'
@@ -237,6 +261,7 @@ export function permalinkEventSet (response) {
           })
         }
         store.state.base.maps.map01.addInteraction(MyMap.modifyInteraction)
+
         // store.state.base.maps.map02.addInteraction(MyMap.modifyInteraction)
         // store.state.base.maps.map01.addInteraction(MyMap.transformInteraction)
         store.state.base.maps.map01.addLayer(MyMap.drawLayer)
@@ -397,17 +422,22 @@ export function permalinkEventSet (response) {
 export function moveEnd () {
   const features = MyMap.drawLayer.getSource().getFeatures()
   features.forEach(function(feature){
-    if (feature.getGeometry().getType() === 'Circle') {
-      const radius = feature.getGeometry().getRadius();
-      const center = feature.getGeometry().getCenter();
-      feature.set('radius', radius);
-      feature.set('center', center);
+    if (feature.getGeometry()) {
+      if (feature.getGeometry().getType() === 'Circle') {
+        const radius = feature.getGeometry().getRadius();
+        const center = feature.getGeometry().getCenter();
+        feature.set('radius', radius);
+        feature.set('center', center);
+      }
     }
   })
   const drawSourceGeojson = new GeoJSON().writeFeatures(features, {
     featureProjection: "EPSG:3857"
   });
-  const geojsonT = JSON.stringify(JSON.parse(drawSourceGeojson),null,1);
+  let geojsonT = JSON.stringify(JSON.parse(drawSourceGeojson),null,1);
+
+  // console.log(geojsonT)
+  geojsonT = geojsonT.replace(/=/g,'')
   // console.log(geojsonT)
 
   // ----------------------------------------------------------------------------------
@@ -459,25 +489,42 @@ export function moveEnd () {
   //---------------------------------------------------------------
   // const parameters = decodeURIComponent(window.location.hash)
   const parameters = hash + parameter
+  // console.log(parameters)
   if(store.state.base.increment > 4) {
-    axios
-        .get('https://kenzkenz.xsrv.jp/open-hinata/php/insert.php', {
-          params: {
-            parameters: parameters
-          }
-        })
-        .then(function (response) {
-          // console.log(response.data.urlid)
-          // const url = new URL(window.location.href) // URLを取得
-          // window.history.replaceState(null, '', url.pathname) //パラメータを削除 FB対策
+
+    let params = new URLSearchParams();
+    params.append('parameters', parameters);
+    axios.post('https://kenzkenz.xsrv.jp/open-hinata/php/insert2.php', params)
+    // axios.post('/php/insert2.php', params)
+        .then(response => {
           window.history.pushState(state, 'map', "#s" + response.data.urlid);
           MyMap.history('moveend', window.location.href)
         })
-        .catch(function (error) {
+        .catch(error => {
           console.log(error);
-        })
-        .finally(function () {
         });
+
+
+    // axios
+    //     .get('https://kenzkenz.xsrv.jp/open-hinata/php/insert.php', {
+    //       params: {
+    //         parameters: parameters
+    //       }
+    //     })
+    //     // .post('https://kenzkenz.xsrv.jp/open-hinata/php/insert2.php', params)
+    //     .then(function (response) {
+    //       console.log(response)
+    //       // console.log(response.data.urlid)
+    //       // const url = new URL(window.location.href) // URLを取得
+    //       // window.history.replaceState(null, '', url.pathname) //パラメータを削除 FB対策
+    //       window.history.pushState(state, 'map', "#s" + response.data.urlid);
+    //       MyMap.history('moveend', window.location.href)
+    //     })
+    //     .catch(function (error) {
+    //       console.log(error);
+    //     })
+    //     .finally(function () {
+    //     });
   } else {
     store.commit('base/increment')
   }

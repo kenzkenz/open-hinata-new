@@ -116,7 +116,7 @@ function danmenStyleFunction() {
 const drawSource = new VectorSource({wrapX: false})
 export  const drawLayer = new VectorLayer({
     // zIndex: 999999,
-    name: 'drawSource',
+    name: 'drawLayer',
     // pointer: true,
     source: drawSource,
     // altitudeMode: 'clampToGround',
@@ -132,8 +132,40 @@ function drawLayerStylefunction (){
         const geoType = feature.getGeometry().getType()
         // console.log(prop.distance)
         // console.log(prop)
-        console.log(geoType)
+        // console.log(geoType)
         const styles = []
+        const pointStyle = new Style({
+            image: new Icon({
+                src: require('@/assets/icon/whitecircle.png'),
+                color: 'red',
+                scale: 1.5
+            }),
+            stroke: new Stroke({
+                color: "white",
+                width: 1
+            }),
+            // text: new Text({
+            //     font: "20px sans-serif",
+            //     text: prop.N05_011,
+            //     offsetY: 16,
+            //     stroke: new Stroke({
+            //         color: "white",
+            //         width: 3
+            //     })
+            // })
+        })
+
+
+        const polygonStyle = new Style({
+            fill: new Fill({
+                color: 'rgba(0,0,0,0)'
+            }),
+            // stroke: new Stroke({
+            //     color: "black",
+            //     width: 1
+            // }),
+            // zIndex: 0
+        });
         const lineStyle = new Style({
             stroke: new Stroke({
                 color:"red",
@@ -163,6 +195,8 @@ function drawLayerStylefunction (){
                 stroke: new Stroke({ width:2, color:'red' })
             })
         })
+        styles.push(polygonStyle)
+        styles.push(pointStyle)
         styles.push(lineStyle)
         styles.push(textStyle)
         if (geoType === 'Circle') styles.push(textStyle2)
@@ -174,6 +208,10 @@ export const danmenInteraction = new Draw({
     source: drawSource,
     type: 'LineString',
     // freehand:true
+})
+export const pointInteraction0 = new Draw({
+    source: drawSource,
+    type: 'Point',
 })
 export const lineInteraction = new Draw({
     source: drawSource,
@@ -333,13 +371,12 @@ danmenInteraction.on('drawend', function (event) {
 })
 
 modifyInteraction.on('modifyend', function (event) {
-    console.log(event.features.array_[0].ol_uid)
     const feature = event.features.array_[0]
     const coordAr = event.features.array_[0].getGeometry().getCoordinates()
     const geoType = event.features.array_[0].getGeometry().getType()
     measure (geoType,feature,coordAr)
     moveEnd()
-    if (store.state.base.drawType === 'danmen') danmen(feature)
+    // if (store.state.base.drawType === 'danmen') danmen(feature)
 })
 
 drawLayer.getSource().on("change", function(e) {
@@ -547,7 +584,7 @@ export function initMap (vm) {
                 ],
             })
             dragAndDropInteraction.on('addfeatures', function (event) {
-                map.addInteraction(modifyInteraction)
+                // map.addInteraction(modifyInteraction)
                 event.features.forEach((feature) => {
                     drawLayer.getSource().addFeature(feature)
                 })
@@ -974,6 +1011,7 @@ export function initMap (vm) {
                             layers.push(layer);
                         })
                         if(features.length) {
+                            console.log(layers)
                             if (layers[0]) {
                                 PopUp.popUp(evt.map, layers, features, overlay[i], evt, content, html)
                                 rgbaArr = []

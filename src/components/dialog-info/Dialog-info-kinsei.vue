@@ -39,6 +39,7 @@ export default {
         { value: '標準', text: '標準' },
         { value: '藩で色分け', text: '藩で色分け' },
         { value: '藩で色分け2', text: '藩で色分け2' },
+        { value: '国で色分け', text: '国で色分け' },
         { value: '色なし', text: '色なし' },
       ]
     }

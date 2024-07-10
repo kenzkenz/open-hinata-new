@@ -12,7 +12,8 @@ function makeRandStr($length) {
     }
     return $r_str;
 }
-$parameters = $_GET["parameters"];
+$parameters = $_POST['parameters'];
+//$parameters = 1;
 for ($i = 1; $i <= 10; $i++) {
     //ユニークID生成
     $newurlid = makeRandStr(6);
@@ -33,6 +34,8 @@ for ($i = 1; $i <= 10; $i++) {
         $stmtI->execute(array($newurlid,$url,$parameters));
 //            print_r("追加");
         $response = array('urlid' => $newurlid,'url' => $url);
+//        $response = array('text' => $_POST['text']);
+//        echo $url;
         break;
     }
 }

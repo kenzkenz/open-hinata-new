@@ -7763,6 +7763,19 @@ export const kinseiPolygonMvtObj = {};
 for (let i of mapsStr) {
   kinseiPolygonMvtObj[i] = new VectorTileLayer(new KinseiPolygon(i))
 }
+function KinseiPolygonRaster () {
+  this.source = new XYZ({
+    url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/polygon/raster/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    minZoom: 0,
+    maxZoom: 10
+  })
+  this.minResolution = kinseiPolygonMaxResolution
+}
+export const kinseiPolygonRasterObj = {};
+for (let i of mapsStr) {
+  kinseiPolygonRasterObj[i] = new TileLayer(new KinseiPolygonRaster())
+}
 const kinseiColor = d3.scaleOrdinal(d3.schemeCategory10);
 function kinseiPolygonStyleFunction(mapName) {
   return function (feature, resolution) {
@@ -7799,6 +7812,10 @@ function kinseiPolygonStyleFunction(mapName) {
             rgba = 'rgba(0,0,255,0.7)'
           }
         }
+        break
+      case '国で色分け':
+        rgb = d3.rgb(d3OridinalColor(prop.国名))
+        rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
         break
       case '色なし':
         rgba = 'rgba(0,0,0,0)'
@@ -7942,6 +7959,7 @@ for (let i of mapsStr) {
 
       // kinseiPointRasterObj[i],
       kinseiPolygonMvtObj[i],
+      kinseiPolygonRasterObj[i],
       // kinseiPointMvtObj[i],
     ]
   })

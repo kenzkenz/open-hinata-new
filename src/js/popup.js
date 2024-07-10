@@ -1487,6 +1487,13 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div><hr>'
           }
           break
+        case 'drawLayer':
+          if (cont.indexOf('drawLayer') === -1) {
+            cont += '<div class="drawLayer" style=width:200px;>' +
+                '<p>' + prop.description + '</p>' +
+                '</div><hr>'
+          }
+          break
       }
     })
   }

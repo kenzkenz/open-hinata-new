@@ -1595,6 +1595,7 @@
             urlid: urlid
           }
         }).then(function (response) {
+          // alert()
           init(response)
           // vm.$modal.hide('modal0')
         }).finally(function () {

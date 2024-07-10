@@ -5,5 +5,5 @@ module.exports = {
     iconPaths: {
       favicon32: 'favicon.ico',
     }
-  }
+  },
 }
