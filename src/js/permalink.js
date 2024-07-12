@@ -197,11 +197,12 @@ export function permalinkEventSet (response) {
       }
       if (key==='GJ') {
 
-        // console.log(obj[key])
+        console.log(decodeURIComponent(obj[key]))
 
-        const geojson = JSON.parse(obj[key])
+        const geojson = JSON.parse(decodeURIComponent(obj[key]))
         // console.log(geojson)
         if (geojson.features[0]) {
+          let newFeature
           geojson.features.forEach((feature) => {
             // console.log(feature.geometry.type)
             // const distance = feature.properties.distance
@@ -210,9 +211,9 @@ export function permalinkEventSet (response) {
               const center = feature.properties.center
               const radius = feature.properties.radius
               const circle = new Circle(center, radius)
-              const newFeature = new Feature(circle)
+              newFeature = new Feature(circle)
               newFeature.setProperties({distance: distance})
-              MyMap.drawLayer.getSource().addFeature(newFeature)
+              // MyMap.drawLayer.getSource().addFeature(newFeature)
             } else if (feature.geometry.type === 'LineString') {
               const distance = feature.properties.distance
               let coordinates = []
@@ -222,45 +223,38 @@ export function permalinkEventSet (response) {
               })
               // const distance = feature.properties.distance
               const lineString = new LineString(coordinates)
-              const newFeature = new Feature(lineString)
+              newFeature = new Feature(lineString)
               // newFeature.setProperties({distance: "distance"})
-              newFeature['properties'] = 'aaa'
               newFeature.setProperties({distance: distance})
               // console.log(newFeature)
-              MyMap.drawLayer.getSource().addFeature(newFeature)
+              // if (feature.properties.description) newFeature.setProperties({description: feature.properties.description})
+              // MyMap.drawLayer.getSource().addFeature(newFeature)
             } else if (feature.geometry.type === 'Point') {
-              // alert()
-              // let coordinates = []
-              // console.log(feature.geometry.coordinates)
-              // feature.geometry.coordinates.forEach((coord) => {
-              //   // coord = turf.toWgs84(coord)
-              //   coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
-              // })
-              // const distance = feature.properties.distance
               const coordinates = transform(feature.geometry.coordinates, "EPSG:4326", "EPSG:3857")
               const point = new Point(coordinates)
-              const newFeature = new Feature(point)
-              // newFeature.setProperties({distance: "distance"})
-              // console.log(newFeature)
+              newFeature = new Feature(point)
+              if (feature.properties.description) newFeature.setProperties({description: feature.properties.description})
               MyMap.drawLayer.getSource().addFeature(newFeature)
             } else if (feature.geometry.type === 'Polygon') {
               const distance = feature.properties.distance
               let coordinates = []
               feature.geometry.coordinates[0].forEach((coord) => {
-                // coord = turf.toWgs84(coord)
-                // console.log(coord)
                 coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
               })
-              // console.log(coordinates)
               const polygon = new Polygon([coordinates])
-              const newFeature = new Feature(polygon)
-              newFeature['properties'] = 'aaaa'
+              newFeature = new Feature(polygon)
               newFeature.setProperties({distance: distance})
-              MyMap.drawLayer.getSource().addFeature(newFeature)
             }
+            Object.keys(feature.properties).forEach(function(key) {
+              console.log(key,feature.properties[key])
+              newFeature.setProperties({[key]: feature.properties[key]})
+            })
+            MyMap.drawLayer.getSource().addFeature(newFeature)
+
           })
         }
-        store.state.base.maps.map01.addInteraction(MyMap.modifyInteraction)
+
+        // store.state.base.maps.map01.addInteraction(MyMap.modifyInteraction)
 
         // store.state.base.maps.map02.addInteraction(MyMap.modifyInteraction)
         // store.state.base.maps.map01.addInteraction(MyMap.transformInteraction)
@@ -436,9 +430,12 @@ export function moveEnd () {
   });
   let geojsonT = JSON.stringify(JSON.parse(drawSourceGeojson),null,1);
 
+  console.log(geojsonT)
+
+  // geojsonT = geojsonT.replace(/=/g,'')
   // console.log(geojsonT)
-  geojsonT = geojsonT.replace(/=/g,'')
-  // console.log(geojsonT)
+
+  geojsonT = encodeURIComponent(geojsonT)
 
   // ----------------------------------------------------------------------------------
   const features2 = MyMap.drawLayer2.getSource().getFeatures()

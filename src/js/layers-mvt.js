@@ -82,12 +82,48 @@ const mapsStr = ['map01','map02']
 //   fgbObj[i] = new VectorLayer(new fgb())
 // }
 // -----
+
+//R05都市計画------------------------------------------------------------------------------------------------
+function ToshikeikakuR05(){
+  this.name = 'toshikeikakuR05'
+  this.source = new VectorTileSource({
+    format: new MVT(),
+    maxZoom:14,
+    url: 'https://kenzkenz3.xsrv.jp/mvt/toshikeikaku/r05/{z}/{x}/{y}.mvt'
+  });
+  // this.maxResolution = '152.874057' //zoom10
+  this.style = toshikeikakuStyleFunction()
+}
+export  const toshikeikakuR05Obj = {};
+for (let i of mapsStr) {
+  toshikeikakuR05Obj[i] = new VectorTileLayer(new ToshikeikakuR05())
+}
+export const toshikeikakuR05Summ = "<a href='https://www.mlit.go.jp/toshi/tosiko/toshi_tosiko_tk_000087.html' target='_blank'>都市計画決定GISデータ</a>"
+function toshikeikakuStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: 'rgba(0,0,200,0.5)'
+      }),
+      stroke: new Stroke({
+        color: "black",
+        width: 1
+      }),
+    })
+    styles.push(polygonStyle)
+    return styles
+  }
+}
+
 // 道路元標---------------------------------------------------------------
 function DoroGenpyo() {
   this.useInterimTilesOnError = false
   this.name = 'dorogenpyo'
   this.source = new VectorSource({
-    url:'https://kenzkenz.xsrv.jp/open-hinata/geojson/dorogenpyo.geojson',
+    url:'https://kenzkenz.xsrv.jp/open-hinata/geojson/dorogenpyo2.geojson',
     format: new GeoJSON()
   });
   this.style = dorogenpyoFunction()
@@ -3772,53 +3808,124 @@ for (let i of mapsStr) {
   youtoR01Obj[i] = new VectorTileLayer(new YoutoR01())
 }
 export const youtoR01Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-A29-v2_1.html' target='_blank'>国土数値情報　用途地域</a>";
+
+//R05用途地域------------------------------------------------------------------------------------------------
+function YoutoR05(){
+  this.name = 'youtoR05'
+  this.source = new VectorTileSource({
+    format: new MVT(),
+    maxZoom:13,
+    url: 'https://kenzkenz3.xsrv.jp/mvt/yotochiiki/r05/{z}/{x}/{y}.mvt'
+  });
+  this.maxResolution = '152.874057' //zoom10
+  this.style = youtotiikiStyleFunction();
+}
+export  const youtoR05Obj = {};
+for (let i of mapsStr) {
+  youtoR05Obj[i] = new VectorTileLayer(new YoutoR05())
+}
+export const youtoR05Summ = "<a href='https://www.mlit.go.jp/toshi/tosiko/toshi_tosiko_tk_000087.html' target='_blank'>都市計画決定GISデータ</a>"
+
+
+
 //------------------------------------------------------
 function youtotiikiStyleFunction() {
   return function (feature, resolution) {
-    var prop = feature.getProperties();
-    var cate = prop["A29_004"];
-    var rgba = "rgba(0,0,0,0)";
-    switch (cate) {
-      case 1://第一種低層住居専用地域
-        rgba = "rgba(51,204,153,0.8)";
-        break;
-      case 2://第二種低層住居専用地域
-        rgba = "rgba(0,153,102,0.8)";
-        break;
-      case 3://第一種中高層住居専用地域
-        rgba = "rgba(102,204,102,0.8)";
-        break;
-      case 4://第二種中高層住居専用地域
-        rgba = "rgba(204,255,153,0.8)";
-        break;
-      case 5://第一種住居地域
-        rgba = "rgba(255,255,153,0.8)";
-        break;
-      case 6://第二種住居地域
-        rgba = "rgba(255,204,153,0.8)";
-        break;
-      case 7://準住居地域
-        rgba = "rgba(255,204,102,0.8)";
-        break;
-      case 8://近隣商業地域
-        rgba = "rgba(255,153,204,0.8)";
-        break;
-      case 9://商業地域
-        rgba = "rgba(255,102,153,0.8)";
-        break;
-      case 10://準工業地域
-        rgba = "rgba(204,153,255,0.8)";
-        break;
-      case 11://工業地域
-        rgba = "rgba(204,255,255,0.8)";
-        break;
-      case 12://工業専用地域
-        rgba = "rgba(102,204,255,0.8)";
-        break;
-      case 99://
-        rgba = "rgba(0,0,0,0.1)";
-        break;
+    let prop = feature.getProperties();
+    // let cate = prop["A29_004"]
+    // if (prop.YoutoID) cate = prop.YoutoID
+
+    let rgba = "rgba(0,0,0,0)"
+    if (prop["A29_004"]) {
+      switch (prop["A29_004"]) {
+        case 1://第一種低層住居専用地域
+          rgba = "rgba(92,201,59,0.8)"
+          break;
+        case 2://第二種低層住居専用地域
+          rgba = "rgba(177,252,173,0.8)"
+          break;
+        case 3://第一種中高層住居専用地域
+          rgba = "rgba(214,254,81,0.8)"
+          break;
+        case 4://第二種中高層住居専用地域
+          rgba = "rgba(255,255,209,0.8)"
+          break;
+        case 5://第一種住居地域
+          rgba = "rgba(255,255,84,0.8)"
+          break;
+        case 6://第二種住居地域
+          rgba = "rgba(247,206,160,0.8)"
+          break;
+        case 7://準住居地域
+          rgba = "rgba(247,206,85,0.8)"
+          break;
+        case 8://近隣商業地域
+          rgba = "rgba(247,206,252,0.8)"
+          break;
+        case 9://商業地域
+          rgba = "rgba(241,158,202,0.8)"
+          break;
+        case 10://準工業地域
+          rgba = "rgba(196,155,249,0.8)"
+          break;
+        case 11://工業地域
+          rgba = "rgba(214,254,254,0.8)"
+          break;
+        case 12://工業専用地域
+          rgba = "rgba(164,203,203,0.8)"
+          break;
+        case 99://
+          rgba = "rgba(200,200,200,0.8)"
+          break;
+      }
+    } else {
+      // console.log(prop.YoutoID)
+      switch (prop.YoutoID) {
+        case 1://第一種低層住居専用地域
+          rgba = "rgba(92,201,59,0.8)"
+          break;
+        case 2://第二種低層住居専用地域
+          rgba = "rgba(177,252,173,0.8)"
+          break;
+        case 3://第一種中高層住居専用地域
+          rgba = "rgba(214,254,81,0.8)"
+          break;
+        case 4://第二種中高層住居専用地域
+          rgba = "rgba(255,255,209,0.8)"
+          break;
+        case 5://第一種住居地域
+          rgba = "rgba(255,255,84,0.8)"
+          break;
+        case 6://第二種住居地域
+          rgba = "rgba(247,206,160,0.8)"
+          break;
+        case 7://準住居地域
+          rgba = "rgba(247,206,85,0.8)"
+          break;
+        case 8://田園住居地域
+          rgba = "rgba(247,206,85,0.8)"//色は仮置き
+          break;
+        case 9://近隣商業地域
+          rgba = "rgba(247,206,252,0.8)"
+          break;
+        case 10://商業地域
+          rgba = "rgba(241,158,202,0.8)"
+          break;
+        case 11://準工業地域
+          rgba = "rgba(196,155,249,0.8)"
+          break;
+        case 12://工業地域
+          rgba = "rgba(214,254,254,0.8)"
+          break;
+        case 13://工業専用地域
+          rgba = "rgba(164,203,203,0.8)"
+          break;
+        case 99://
+          rgba = "rgba(200,200,200,0.8)"
+          break;
+      }
     }
+
     var style;
     if (resolution < 125.87) {
       style = new Style({

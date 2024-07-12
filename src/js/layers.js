@@ -13705,6 +13705,8 @@ export const Layers =
         { text: '鳥獣保護区', data: { id: "chyouzyuuh27", layer: LayersMvt.chyouzyuuH27Obj, opacity: 1, summary: LayersMvt.chyouzyuuH27Summ } },
         { text: '農業地域', data: { id: "nouhyouh27", layer: LayersMvt.nougyouH27Obj, opacity: 1, summary: LayersMvt.nougyouH27Summ } },
         { text: '農業集落境界', data: { id: "kyoukai", layer: LayersMvt.kyoukaiObj, opacity: 1, summary: LayersMvt.kyoukaiSumm } },
+        { text: 'R05都市計画区域', data: { id: "toshikeikaku", layer: LayersMvt.toshikeikakuR05Obj, opacity: 1, summary: LayersMvt.toshikeikakuR05Summ } },
+
         { text: '医療圏',
           children: [
             { text: '一次医療圏', data: { id: "iryouken1zi", layer: LayersMvt.iryouken1ziObj, opacity: 1, summary: LayersMvt.iryouken1ziSumm } },
@@ -13815,8 +13817,9 @@ export const Layers =
           ]},
         { text: '用途地域',
           children: [
-            { text: 'H23用途地域', data: { id: "youtoH23", layer: LayersMvt.youtoH23Obj, opacity: 1, summary: LayersMvt.youtoH23Summ } },
+            { text: 'R05用途地域', data: { id: "youtoR05", layer: LayersMvt.youtoR05Obj, opacity: 1, summary: LayersMvt.youtoR05Summ } },
             { text: 'R01用途地域', data: { id: "youtoR01", layer: LayersMvt.youtoR01Obj, opacity: 1, summary: LayersMvt.youtoR01Summ } },
+            { text: 'H23用途地域', data: { id: "youtoH23", layer: LayersMvt.youtoH23Obj, opacity: 1, summary: LayersMvt.youtoH23Summ } },
           ]},
         { text: '人口集中地区',
           children: [

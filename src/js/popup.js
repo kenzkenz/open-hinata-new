@@ -229,6 +229,18 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div><hr>'
           }
           break;
+        case 'youtoR05' :
+          if (cont.indexOf('youtoR05') === -1) {
+            cont += '<div class="youtoR05" style=width:200px>' +
+                '<h4>' + prop.用途地域 + '</h4>' +
+                '都道府県名＝' + prop.Pref + '<br>' +
+                '市区町村名=' + prop.Cityname + '<br>' +
+                '用途地域分類＝' + prop.YoutoID + '<br>' +
+                '建ぺい率＝' + prop.建ぺい率 + '<br>' +
+                '容積率＝' + prop.容積率 + '<br>' +
+                '</div><hr>'
+          }
+          break;
         case 'tosiH30' :
           switch (prop.layer_no) {
             case 1://市街化区域
@@ -340,10 +352,12 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           cont += '<div style=width:200px>' + prop.L01_023 +'<br>公示価格＝' + Number(prop.L01_091).toLocaleString() + '円</div>'
           break
         case 'hude':
-          if (prop.land_type === 100) {
-            cont += '<div style=width:200px>' + '田</div>'
-          } else {
-            cont += '<div style=width:200px>' + '畑</div>'
+          if (cont.indexOf('hude') === -1) {
+            if (prop.land_type === 100) {
+              cont += '<div class="hude" style=width:200px><h4>' + '田</h4></div>'
+            } else {
+              cont += '<div class="hude" style=width:200px><h4>' + '畑</h4></div>'
+            }
           }
           break
         case 'sanson':
@@ -1489,8 +1503,25 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           break
         case 'drawLayer':
           if (cont.indexOf('drawLayer') === -1) {
-            cont += '<div class="drawLayer" style=width:200px;>' +
-                '<p>' + prop.description + '</p>' +
+            let kmlName = ''
+            let kmlDescription = ''
+            if (prop.name) {
+              kmlName = '<h4>' + prop.name +  '</h4>'
+            }
+            if (prop.description) {
+              kmlDescription = '<p>' + prop.description +  '</p>'
+            }
+            cont += '<div class="drawLayer" style=width:300px;>' +
+                kmlName +
+                kmlDescription +
+                '</div><hr>'
+          }
+          break
+        case 'toshikeikakuR05':
+          if (cont.indexOf('toshikeikakuR05') === -1) {
+            cont += '<div class="toshikeikakuR05" style=width:200px;>' +
+                '<h4>' + prop.Type + '</h4>' +
+                '<p>' + prop.Pref + prop.Cityname + '</p>' +
                 '</div><hr>'
           }
           break
