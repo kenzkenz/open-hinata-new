@@ -82,7 +82,46 @@ const mapsStr = ['map01','map02']
 //   fgbObj[i] = new VectorLayer(new fgb())
 // }
 // -----
-
+//R05区域区分------------------------------------------------------------------------------------------------
+function KuikikubunR05(){
+  this.name = 'kuikikubunR05'
+  this.source = new VectorTileSource({
+    format: new MVT(),
+    maxZoom:14,
+    url: 'https://kenzkenz3.xsrv.jp/mvt/kuikikubun/r05/{z}/{x}/{y}.mvt'
+  });
+  // this.maxResolution = '152.874057' //zoom10
+  this.style = kuikikubunStyleFunction()
+}
+export  const kuikikubunR05Obj = {};
+for (let i of mapsStr) {
+  kuikikubunR05Obj[i] = new VectorTileLayer(new KuikikubunR05())
+}
+export const kuikikubunR05Summ = "<a href='https://www.mlit.go.jp/toshi/tosiko/toshi_tosiko_tk_000087.html' target='_blank'>都市計画決定GISデータ</a>"
+function kuikikubunStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    let color
+    if (prop.kubunID === 22) { //市街化区域
+      color = "rgba(40,152,53,0.7)"
+    } else {                   //市街化調整区域
+      color = "rgba(239,255,3,0.7)"
+    }
+    const styles = []
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: color
+      }),
+      stroke: new Stroke({
+        color: "black",
+        width: 1
+      }),
+    })
+    styles.push(polygonStyle)
+    return styles
+  }
+}
 //R05都市計画------------------------------------------------------------------------------------------------
 function ToshikeikakuR05(){
   this.name = 'toshikeikakuR05'
@@ -3989,11 +4028,11 @@ function tositiikiStyleFunction(year) {
     switch (layerNo) {
       case '1':
       case 1://市街化区域
-        rgba = "rgba(40,152,53,0.7)";
+        rgba = "rgba(40,152,53,0.7)"
         break;
       case '2':
       case 2://市街化調整区域
-        rgba = "rgba(239,255,3,0.7)";
+        rgba = "rgba(239,255,3,0.7)"
         zindex = 1;
         break;
       case '3':
