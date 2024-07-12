@@ -1569,6 +1569,14 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div><hr>'
           }
           break
+        case 'kodoriyoR05':
+          if (cont.indexOf('kodoriyoR05') === -1) {
+            cont += '<div class="kodoriyoR05" style=width:200px;>' +
+                '<h4>' + prop.Type + '</h4>' +
+                '<p>' + prop.Pref + prop.Cityname + '</p>' +
+                '</div><hr>'
+          }
+          break
       }
     })
   }

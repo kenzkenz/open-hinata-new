@@ -82,7 +82,42 @@ const mapsStr = ['map01','map02']
 //   fgbObj[i] = new VectorLayer(new fgb())
 // }
 // -----
-//R0高度地区------------------------------------------------------------------------------------------------
+
+//R05高度利用地区------------------------------------------------------------------------------------------------
+function KodoRiyoR05(){
+  this.name = 'kodoriyoR05'
+  this.source = new VectorTileSource({
+    format: new MVT(),
+    maxZoom:14,
+    url: 'https://kenzkenz3.xsrv.jp/mvt/kodoriyo/r05/{z}/{x}/{y}.mvt'
+  });
+  // this.maxResolution = '152.874057' //zoom10
+  this.style = kodoriyoStyleFunction()
+}
+export  const kodoriyoR05Obj = {};
+for (let i of mapsStr) {
+  kodoriyoR05Obj[i] = new VectorTileLayer(new KodoRiyoR05())
+}
+export const kodoriyoR05Summ = "<a href='https://www.mlit.go.jp/toshi/tosiko/toshi_tosiko_tk_000087.html' target='_blank'>都市計画決定GISデータ</a>"
+function kodoriyoStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: 'rgba(70,130,180,0.7)'
+      }),
+      stroke: new Stroke({
+        color: "black",
+        width: 1
+      }),
+    })
+    styles.push(polygonStyle)
+    return styles
+  }
+}
+//R05高度地区------------------------------------------------------------------------------------------------
 function KodoR05(){
   this.name = 'kodoR05'
   this.source = new VectorTileSource({
