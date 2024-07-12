@@ -13708,6 +13708,10 @@ export const Layers =
         { text: 'R05都市計画区域', data: { id: "toshikeikaku", layer: LayersMvt.toshikeikakuR05Obj, opacity: 1, summary: LayersMvt.toshikeikakuR05Summ } },
         { text: 'R05区域区分', data: { id: "kuikikubunr05", layer: LayersMvt.kuikikubunR05Obj, opacity: 1, summary: LayersMvt.kuikikubunR05Summ } },
         { text: 'R05立地適正化計画', data: { id: "ritteki05", layer: LayersMvt.rittekiR05Obj, opacity: 1, summary: LayersMvt.rittekiR05Summ } },
+        { text: 'R05都市計画道路', data: { id: "doror05", layer: LayersMvt.doroR05Obj, opacity: 1, summary: LayersMvt.doroR05Summ } },
+        { text: 'R05防火準防火', data: { id: "bouka05", layer: LayersMvt.boukaR05Obj, opacity: 1, summary: LayersMvt.boukaR05Summ } },
+        { text: 'R05高度地区', data: { id: "kodor05", layer: LayersMvt.kodoR05Obj, opacity: 1, summary: LayersMvt.kodoR05Summ } },
+
 
         { text: '医療圏',
           children: [
@@ -14022,24 +14026,24 @@ export const Layers =
         { text: 'ラスタータイルtest', data: { id: "dokuji", layer: dokujiObj, opacity: 1, summary: LayersMvt.busSumm, component: {name: 'dokuji', values:[]}} },
       ]},
   ];
-// let cnt = 0
-// function aaa () {
-//   Layers.forEach(value => {
-//     // console.log(value)
-//     if (!value.children) cnt++
-//     function bbb (v1) {
-//       if (v1.children) {
-//         v1.children.forEach(v2 => {
-//           // console.log(v2)
-//           if (!v2.children) cnt++
-//           if (v2.children) bbb(v2)
-//         })
-//       }
-//     }
-//     bbb(value)
-//   })
-// }
-// aaa()
-// console.log('背景' + cnt + '件')
+let cnt = 0
+function aaa () {
+  Layers.forEach(value => {
+    // console.log(value)
+    if (!value.children) cnt++
+    function bbb (v1) {
+      if (v1.children) {
+        v1.children.forEach(v2 => {
+          // console.log(v2)
+          if (!v2.children) cnt++
+          if (v2.children) bbb(v2)
+        })
+      }
+    }
+    bbb(value)
+  })
+}
+aaa()
+console.log('背景' + cnt + '件')
 
 

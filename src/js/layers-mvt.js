@@ -82,6 +82,115 @@ const mapsStr = ['map01','map02']
 //   fgbObj[i] = new VectorLayer(new fgb())
 // }
 // -----
+//R0高度地区------------------------------------------------------------------------------------------------
+function KodoR05(){
+  this.name = 'kodoR05'
+  this.source = new VectorTileSource({
+    format: new MVT(),
+    maxZoom:14,
+    url: 'https://kenzkenz3.xsrv.jp/mvt/kodochiku/r05/{z}/{x}/{y}.mvt'
+  });
+  // this.maxResolution = '152.874057' //zoom10
+  this.style = kodoStyleFunction()
+}
+export  const kodoR05Obj = {};
+for (let i of mapsStr) {
+  kodoR05Obj[i] = new VectorTileLayer(new KodoR05())
+}
+export const kodoR05Summ = "<a href='https://www.mlit.go.jp/toshi/tosiko/toshi_tosiko_tk_000087.html' target='_blank'>都市計画決定GISデータ</a>"
+function kodoStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: 'rgba(128,128,128,0.7)'
+      }),
+      stroke: new Stroke({
+        color: "black",
+        width: 1
+      }),
+    })
+    styles.push(polygonStyle)
+    return styles
+  }
+}
+//R0防火------------------------------------------------------------------------------------------------
+function BoukaR05(){
+  this.name = 'boukaR05'
+  this.source = new VectorTileSource({
+    format: new MVT(),
+    maxZoom:14,
+    url: 'https://kenzkenz3.xsrv.jp/mvt/bouka/r05/{z}/{x}/{y}.mvt'
+  });
+  // this.maxResolution = '152.874057' //zoom10
+  this.style = boukaStyleFunction()
+}
+export  const boukaR05Obj = {};
+for (let i of mapsStr) {
+  boukaR05Obj[i] = new VectorTileLayer(new BoukaR05())
+}
+export const boukaR05Summ = "<a href='https://www.mlit.go.jp/toshi/tosiko/toshi_tosiko_tk_000087.html' target='_blank'>都市計画決定GISデータ</a>"
+function boukaStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    let color
+    let zIndex
+    if (prop.kubunID === 24) { //防火地域
+      color = "rgba(255,0,0,0.7)"
+      zIndex = 2
+    } else if (prop.kubunID === 25){ //準防火地域
+      color = "rgba(255,192,203,0.7)"
+      zIndex = 1
+    }
+    const styles = []
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: color
+      }),
+      stroke: new Stroke({
+        color: "black",
+        width: 1
+      }),
+      zIndex: zIndex
+    })
+    styles.push(polygonStyle)
+    return styles
+  }
+}
+//R05都市計画道路------------------------------------------------------------------------------------------------
+function DoroR05(){
+  this.name = 'doroR05'
+  this.source = new VectorTileSource({
+    format: new MVT(),
+    maxZoom:14,
+    url: 'https://kenzkenz3.xsrv.jp/mvt/doro/r05/{z}/{x}/{y}.mvt'
+  });
+  // this.maxResolution = '152.874057' //zoom10
+  this.style = doroStyleFunction()
+}
+export  const doroR05Obj = {};
+for (let i of mapsStr) {
+  doroR05Obj[i] = new VectorTileLayer(new DoroR05())
+}
+export const doroR05Summ = "<a href='https://www.mlit.go.jp/toshi/tosiko/toshi_tosiko_tk_000087.html' target='_blank'>都市計画決定GISデータ</a>"
+function doroStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    const lineStyle = new Style({
+      stroke: new Stroke({
+        color: 'blue',
+        width: 2,
+      }),
+    })
+    styles.push(lineStyle)
+    return styles
+  }
+}
 //R05立地適正化------------------------------------------------------------------------------------------------
 function RittekiR05(){
   this.name = 'rittekiR05'

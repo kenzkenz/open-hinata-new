@@ -1535,6 +1535,40 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div><hr>'
           }
           break
+        case 'doroR05':
+          if (cont.indexOf('doroR05') === -1) {
+            cont += '<div class="doroR05" style=width:250px;>' +
+                '<h4>' + prop.区分 + '</h4>' +
+                '<p>告示番号=' + prop.告示番号L + '</p>' +
+                '<p>最終告示日=' + prop.最終告示日 + '</p>' +
+                '<p>' + prop.Pref + prop.Cityname + '</p>' +
+                '</div><hr>'
+          }
+          break
+        case 'kuikikubunR05':
+          if (cont.indexOf('kuikikubunR05') === -1) {
+            cont += '<div class="kuikikubunR05" style=width:200px;>' +
+                '<h4>' + prop.区域区分 + '</h4>' +
+                '<p>' + prop.Pref + prop.Cityname + '</p>' +
+                '</div><hr>'
+          }
+          break
+        case 'boukaR05':
+          if (cont.indexOf('boukaR05') === -1) {
+            cont += '<div class="boukaR05" style=width:200px;>' +
+                '<h4>' + prop.防火準防火 + '</h4>' +
+                '<p>' + prop.Pref + prop.Cityname + '</p>' +
+                '</div><hr>'
+          }
+          break
+        case 'kodoR05':
+          if (cont.indexOf('kodoR05') === -1) {
+            cont += '<div class="kodoR05" style=width:200px;>' +
+                '<h4>' + prop.Type + '</h4>' +
+                '<p>' + prop.Pref + prop.Cityname + '</p>' +
+                '</div><hr>'
+          }
+          break
       }
     })
   }
