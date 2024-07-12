@@ -242,21 +242,23 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           }
           break;
         case 'tosiH30' :
-          switch (prop.layer_no) {
-            case 1://市街化区域
-              cont += "<h4 style=width:200px>市街化区域</h4>";
-              break;
-            case 2://市街化調整区域
-              cont += "<h4 style=width:200px>市街化調整区域</h4>";
-              break;
-            case 3://その他用途地域
-              cont += "<h4 style=width:200px>その他用途地域</h4>";
-              break;
-            case 4://用途未設定
-              cont += "<h4 style=width:200px>用途未設定</h4>";
-              break;
+          if (cont.indexOf('tosiH30') === -1) {
+            switch (prop.layer_no) {
+              case 1://市街化区域
+                cont += "<h4 class='tosiH30' style=width:200px>市街化区域</h4>";
+                break;
+              case 2://市街化調整区域
+                cont += "<h4 class='tosiH30' style=width:200px>市街化調整区域</h4>";
+                break;
+              case 3://その他用途地域
+                cont += "<h4 class='tosiH30' style=width:200px>その他用途地域</h4>";
+                break;
+              case 4://用途未設定
+                cont += "<h4 class='tosiH30' style=width:200px>用途未設定</h4>";
+                break;
+            }
+            cont += '<hr>'
           }
-          cont += '<hr>'
           break;
         case 'tosiH18' :
           switch (prop.A09_003) {
@@ -1521,6 +1523,14 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           if (cont.indexOf('toshikeikakuR05') === -1) {
             cont += '<div class="toshikeikakuR05" style=width:200px;>' +
                 '<h4>' + prop.Type + '</h4>' +
+                '<p>' + prop.Pref + prop.Cityname + '</p>' +
+                '</div><hr>'
+          }
+          break
+        case 'rittekiR05':
+          if (cont.indexOf('rittekiR05') === -1) {
+            cont += '<div class="rittekiR05" style=width:220px;>' +
+                '<h4>' + prop.区域区分 + '</h4>' +
                 '<p>' + prop.Pref + prop.Cityname + '</p>' +
                 '</div><hr>'
           }

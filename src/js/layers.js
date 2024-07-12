@@ -13707,6 +13707,7 @@ export const Layers =
         { text: '農業集落境界', data: { id: "kyoukai", layer: LayersMvt.kyoukaiObj, opacity: 1, summary: LayersMvt.kyoukaiSumm } },
         { text: 'R05都市計画区域', data: { id: "toshikeikaku", layer: LayersMvt.toshikeikakuR05Obj, opacity: 1, summary: LayersMvt.toshikeikakuR05Summ } },
         { text: 'R05区域区分', data: { id: "kuikikubunr05", layer: LayersMvt.kuikikubunR05Obj, opacity: 1, summary: LayersMvt.kuikikubunR05Summ } },
+        { text: 'R05立地適正化計画', data: { id: "ritteki05", layer: LayersMvt.rittekiR05Obj, opacity: 1, summary: LayersMvt.rittekiR05Summ } },
 
         { text: '医療圏',
           children: [

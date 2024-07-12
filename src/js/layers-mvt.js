@@ -82,6 +82,53 @@ const mapsStr = ['map01','map02']
 //   fgbObj[i] = new VectorLayer(new fgb())
 // }
 // -----
+//R05立地適正化------------------------------------------------------------------------------------------------
+function RittekiR05(){
+  this.name = 'rittekiR05'
+  this.source = new VectorTileSource({
+    format: new MVT(),
+    maxZoom:14,
+    url: 'https://kenzkenz3.xsrv.jp/mvt/ritteki/r05/{z}/{x}/{y}.mvt'
+  });
+  // this.maxResolution = '152.874057' //zoom10
+  this.style = rittekiStyleFunction()
+}
+export  const rittekiR05Obj = {};
+for (let i of mapsStr) {
+  rittekiR05Obj[i] = new VectorTileLayer(new RittekiR05())
+}
+export const rittekiR05Summ = "<a href='https://www.mlit.go.jp/toshi/tosiko/toshi_tosiko_tk_000087.html' target='_blank'>都市計画決定GISデータ</a>"
+function rittekiStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    let color
+    let zIndex
+    if (prop.kubunID === 31) { //居住誘導区域
+      color = "rgba(200,0,0,0.7)"
+      zIndex = 1
+    } else if (prop.kubunID === 32){ //都市機能誘導区域
+      color = "rgba(0,200,200,0.7)"
+      zIndex = 2
+    } else if (prop.kubunID === 0){ //立地適正化計画区域
+      color = "rgba(200,200,200,0.7)"
+      zIndex = 0
+    }
+    const styles = []
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: color
+      }),
+      stroke: new Stroke({
+        color: "black",
+        width: 1
+      }),
+      zIndex: zIndex
+    })
+    styles.push(polygonStyle)
+    return styles
+  }
+}
 //R05区域区分------------------------------------------------------------------------------------------------
 function KuikikubunR05(){
   this.name = 'kuikikubunR05'
