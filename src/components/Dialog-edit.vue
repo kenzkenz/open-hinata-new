@@ -10,7 +10,11 @@
         <input id="my_form_input" type="file" name="file_1" accept="image/*" @change="file_upload()">
       </form>
       <b-button class='olbtn' size="sm" @click="upLoad">画像</b-button>
-      <b-button style="margin-left: 10px" :pressed.sync="s_toggleModify" class='olbtn' size="sm">{{ s_toggleModify ? '変形' : '変形' }}</b-button>
+      <b-button style="margin-left: 10px" :pressed.sync="s_toggleModify" class='olbtn' size="sm">変形</b-button>
+      <b-button style="margin-left: 10px" class='olbtn' size="sm" @click="openDialog">色</b-button>
+<!--      <div style="position: relative;">-->
+<!--        <chrome-picker v-model="colors" style="position: absolute;top:10px;"/>-->
+<!--      </div>-->
       <b-button style="margin-left: 10px" class='olbtn' size="sm" @click="featureRemove">削除</b-button>
     </div>
   </v-dialog>
@@ -20,16 +24,24 @@
 import * as MyMap from '../js/mymap'
 import {moveEnd} from "@/js/permalink"
 import store from "@/js/store";
+import {Chrome} from 'vue-color'
+import * as d3 from "d3"
 
 export default {
   name: "dialog-edit",
   data () {
     return {
+      colors: '',
       togglePoint: false,
       contentSize: {'height': 'auto', 'margin': '10px', 'overflow': 'hidden', 'user-select': 'text'},
     }
   },
+  components: {
+    'chrome-picker': Chrome
+  },
   computed: {
+    s_dialogMaxZindex () { return this.$store.state.base.dialogMaxZindex},
+    s_dialogs () { return this.$store.state.base.dialogs},
     s_toggleModify: {
       get() {
         return this.$store.state.base.toggleModify
@@ -58,6 +70,40 @@ export default {
     },
   },
   methods: {
+    openDialog () {
+      const dialog = this.s_dialogs['dialogColor']
+      if (dialog.style.display === 'block') {
+        dialog.style.display = 'none'
+      } else {
+        this.$store.commit('base/incrDialogMaxZindex');
+        dialog.style["z-index"] = this.s_dialogMaxZindex;
+        dialog.style.display = 'block'
+        MyMap.overlay['0'].setPosition(undefined)
+
+        console.log(this.$store.state.base.editFeature.getGeometry().getType())
+        const geoType = this.$store.state.base.editFeature.getGeometry().getType()
+        let color
+        if (geoType === 'Point' || geoType === 'LineString') {
+          color = this.$store.state.base.editFeature.values_._color
+          if (!color) color = 'rgba(0,0,0,1)'
+        } else if (geoType === 'Polygon' || geoType === 'Circle') {
+          color = this.$store.state.base.editFeature.values_._fillColor
+          if (!color) color = 'rgba(0,0,0,0.5)'
+        }
+
+
+        console.log(color)
+
+
+        const rgba = d3.rgb(color)
+        const colorP = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.opacity }
+        this.$store.state.base.editFeatureColor = colorP
+        // console.log(this.$store.state.base.editFeatureColor)
+      }
+    },
+    color(){
+      alert()
+    },
     upLoad(){
       document.getElementById("my_form_input").click();
     },

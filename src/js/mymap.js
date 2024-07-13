@@ -134,11 +134,27 @@ function drawLayerStylefunction (){
         // console.log(prop)
         // console.log(geoType)
         let text
+        let color
+        let fillColor
+        if (prop._color) {
+            color = prop._color
+        } else {
+            if (geoType === 'Point') {
+                color = 'black'
+            } else {
+                color = 'rgba(0,0,0,0.5)'
+            }
+        }
+        if (prop._fillColor) {
+            fillColor = prop._fillColor
+        } else {
+            fillColor = 'rgba(0,0,0,0.5)'
+        }
         const styles = []
         const pointStyle = new Style({
             image: new Icon({
                 src: require('@/assets/icon/whitecircle.png'),
-                color: 'red',
+                color: color,
                 scale: 1.5
             }),
             stroke: new Stroke({
@@ -155,21 +171,19 @@ function drawLayerStylefunction (){
             //     })
             // })
         })
-
-
         const polygonStyle = new Style({
             fill: new Fill({
-                color: 'rgba(0,0,0,0)'
+                color: fillColor
             }),
-            // stroke: new Stroke({
-            //     color: "black",
-            //     width: 1
-            // }),
+            stroke: new Stroke({
+                color: "black",
+                width: 1
+            }),
             // zIndex: 0
         })
         const lineStyle = new Style({
             stroke: new Stroke({
-                color:"red",
+                color: color,
                 width:3
             })
         })
@@ -194,7 +208,6 @@ function drawLayerStylefunction (){
                     color: "white",
                     width: 3
                 }),
-                // placement: 'line'
             })
         })
         const textStyle2 = new Style({
@@ -206,8 +219,8 @@ function drawLayerStylefunction (){
             })
         })
         styles.push(polygonStyle)
-        styles.push(pointStyle)
-        styles.push(lineStyle)
+        if (geoType === 'Point') styles.push(pointStyle)
+        if (geoType === 'LineString') styles.push(lineStyle)
         styles.push(textStyle)
         if (geoType === 'Circle') styles.push(textStyle2)
         return styles

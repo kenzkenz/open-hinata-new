@@ -29,6 +29,8 @@ const moduleBase = {
     dialogs: {
       dialogEdit0:{style: {top: '56px', right: '10px', 'z-index': 1, height: 'auto', 'width': '200px', display: 'none'}},
       dialogEdit:{style: {top: '300px', right: '10px', 'z-index': 1, height: 'auto', 'width': '323px', display: 'none'}},
+      dialogColor:{style: {top: '320px', right: '10px', 'z-index': 1, height: 'auto', 'width': '250px', display: 'none'}},
+
       menuDialog: {style: {top: '56px', left: '10px', 'z-index': 1, height: 'auto', 'min-width': '150px', display: 'none'}},
       measureDialog: {style: {top: '56px', right: '10px', 'z-index': 1, height: 'auto', 'width': '350px', display: 'none'}},
       map01: {style: {top: '56px', left:'10px', 'z-index': 1, height: 'auto', 'min-width': '250px', display: 'none'}},
@@ -99,6 +101,7 @@ const moduleBase = {
     editFeatureName:'',
     editFeatureSetumei:'',
     editFeatureSrc:'',
+    editFeatureColor:'{ r: 25, g: 77, b: 51, a: 0.5 }',
     resasOrEstat:'',
     prefId:[{pref:'北海道', id:1}, {pref:'青森県', id:2}, {pref:'岩手県', id:3}, {pref:'宮城県', id:4},
           {pref:'秋田県', id:5}, {pref:'山形県', id:6}, {pref:'福島県', id:7}, {pref:'茨城県', id:8},
