@@ -1588,6 +1588,14 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div><hr>'
           }
           break
+        case 'kukakuseiriR05':
+          if (cont.indexOf('kukakuseiriR05') === -1) {
+            cont += '<div class="kukakuseiriR05" style=width:200px;>' +
+                '<h4>' + prop.Type + '</h4>' +
+                '<p>' + prop.Pref + prop.Cityname + '</p>' +
+                '</div><hr>'
+          }
+          break
       }
     })
   }

@@ -10,8 +10,8 @@
         <input id="my_form_input" type="file" name="file_1" accept="image/*" @change="file_upload()">
       </form>
       <b-button class='olbtn' size="sm" @click="upLoad">画像</b-button>
-      <b-button style="margin-left: 10px" :pressed.sync="s_toggleModify" class='olbtn' size="sm">{{ s_toggleModify ? '移動ON' : '移動OFF' }}</b-button>
-      <b-button style="margin-left: 10px" class='olbtn' size="sm" @click="featureRemove">ポイント削除</b-button>
+      <b-button style="margin-left: 10px" :pressed.sync="s_toggleModify" class='olbtn' size="sm">{{ s_toggleModify ? '変形' : '変形' }}</b-button>
+      <b-button style="margin-left: 10px" class='olbtn' size="sm" @click="featureRemove">削除</b-button>
     </div>
   </v-dialog>
 </template>
@@ -62,9 +62,9 @@ export default {
       document.getElementById("my_form_input").click();
     },
     featureRemove(){
-      const result = window.confirm('ポイントを削除しますか。');
+      const result = window.confirm('削除しますか。');
       if( !result ) return
-
+      MyMap.drawLayer.getSource().removeFeature(this.$store.state.base.editFeature)
       MyMap.drawLayer2.getSource().removeFeature(this.$store.state.base.editFeature)
       store.state.base.dialogs.dialogEdit.style.display = 'none'
       MyMap.overlay['0'].setPosition(undefined)
@@ -118,9 +118,13 @@ export default {
     }, function () {
       if (this.s_toggleModify) {
         this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction2)
+        this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
+        this.s_togglePoint = false
         MyMap.overlay['0'].setPosition(undefined)
       } else {
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction2)
+        this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
+
       }
     })
   }

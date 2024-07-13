@@ -174,7 +174,11 @@ function drawLayerStylefunction (){
             })
         })
         if (prop.name) {
-            text = prop.name + '\n' + prop.distance
+            if (prop.distance) {
+                text = prop.name + '\n' + prop.distance
+            } else {
+                text = prop.name
+            }
         } else {
             text = prop.distance
         }
@@ -503,9 +507,7 @@ export function initMap (vm) {
 
         // ------------------------
         pointInteraction.on('drawend', function (event) {
-            const feature = event.feature;
-            const coordAr = feature.getGeometry().getCoordinates()
-            const geoType = feature.getGeometry().getType()
+            const feature = event.feature
             store.state.base.editFeature = feature
             // map.removeInteraction(pointInteraction)
             store.state.base.togglePoint = false
@@ -513,11 +515,35 @@ export function initMap (vm) {
             overlay[i].setPosition(undefined)
             moveEnd()
         })
+        pointInteraction0.on('drawend', function (event) {
+            const feature = event.feature
+            store.state.base.editFeature = feature
+            store.state.base.togglePoint0 = false
+            store.state.base.dialogs.dialogEdit.style.display = 'block'
+            overlay[i].setPosition(undefined)
+            moveEnd()
+        })
         lineInteraction.on('drawend', function (event) {
-            const feature = event.feature;
+            const feature = event.feature
             store.state.base.editFeature = feature
             // map.removeInteraction(pointInteraction)
-            store.state.base.togglePoint = false
+            store.state.base.toggleLine = false
+            store.state.base.dialogs.dialogEdit.style.display = 'block'
+            overlay[i].setPosition(undefined)
+            moveEnd()
+        })
+        polygonInteraction.on('drawend', function (event) {
+            const feature = event.feature
+            store.state.base.editFeature = feature
+            store.state.base.toggleMenseki = false
+            store.state.base.dialogs.dialogEdit.style.display = 'block'
+            overlay[i].setPosition(undefined)
+            moveEnd()
+        })
+        circleInteraction.on('drawend', function (event) {
+            const feature = event.feature
+            store.state.base.editFeature = feature
+            store.state.base.toggleCircle = false
             store.state.base.dialogs.dialogEdit.style.display = 'block'
             overlay[i].setPosition(undefined)
             moveEnd()
@@ -618,6 +644,8 @@ export function initMap (vm) {
                         const circle = new Circle(feature.get('center'), feature.get('radius'));
                         const newFeature = new Feature(circle);
                         newFeature.setProperties({distance: distance})
+                        newFeature.setProperties({name: feature.getProperties().name})
+                        newFeature.setProperties({setumei: feature.getProperties().setumei})
                         drawLayer.getSource().addFeature(newFeature)
                         moveEnd()
                     }

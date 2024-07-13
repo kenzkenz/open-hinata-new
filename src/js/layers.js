@@ -13712,6 +13712,7 @@ export const Layers =
         { text: 'R05防火準防火', data: { id: "bouka05", layer: LayersMvt.boukaR05Obj, opacity: 1, summary: LayersMvt.boukaR05Summ } },
         { text: 'R05高度地区', data: { id: "kodor05", layer: LayersMvt.kodoR05Obj, opacity: 1, summary: LayersMvt.kodoR05Summ } },
         { text: 'R05高度利用地区', data: { id: "kodoriyor05", layer: LayersMvt.kodoriyoR05Obj, opacity: 1, summary: LayersMvt.kodoriyoR05Summ } },
+        { text: 'R05土地区画整理事業', data: { id: "kukakuseirir05", layer: LayersMvt.kukakuseiriR05Obj, opacity: 1, summary: LayersMvt.kukakuseiriR05Summ } },
 
 
         { text: '医療圏',
