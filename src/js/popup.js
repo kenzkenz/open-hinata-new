@@ -106,8 +106,17 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
       }
       const lon = lonLat[0]
       const lat = lonLat[1]
+      let edit
+      if (layers[i].get('name') === 'drawLayer') {
+        edit = '<span style="display: inline-block;width: 110px;text-align: right;">' +
+            '<button class="edit-button">編集する</button>' +
+            '</span>'
+      } else {
+        edit = ''
+      }
       streetView = '<a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=' + lat + ',' + lon + '&hl=ja" target="_blank">StreetView</a>' +
           ' <a href="https://www.google.co.jp/maps?q=' + lat + ',' + lon + '&hl=ja" target="_blank">GoogleMap</a>' +
+          edit +
           '</div>'
       switch (layers[i].get('name')) {
           // 小学校区
@@ -1087,6 +1096,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div></div><hr>'
           }
           break
+        case 'drawLayer':
         case 'drawLayer2':
           let block = 'block'
           if (prop.src) {
@@ -1105,7 +1115,8 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           store.state.base.editFeatureName = features[0].getProperties().name
           store.state.base.editFeatureSetumei = features[0].getProperties().setumei
           store.state.base.editFeatureSrc = features[0].getProperties().src
-          if (document.querySelector('#dialog-edit0').style.display === 'block') {
+          if (document.querySelector('#dialog-edit0').style.display === 'block' ||
+              document.querySelector('#dialog-measure').style.display === 'block') {
             store.state.base.dialogs.dialogEdit.style.display = 'block'
           }
           break
@@ -1503,7 +1514,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div><hr>'
           }
           break
-        case 'drawLayer':
+        case 'drawLayer9':
           if (cont.indexOf('drawLayer') === -1) {
             let kmlName = ''
             let kmlDescription = ''

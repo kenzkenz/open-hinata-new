@@ -218,7 +218,6 @@ export function permalinkEventSet (response) {
               const distance = feature.properties.distance
               let coordinates = []
               feature.geometry.coordinates.forEach((coord) => {
-                // coord = turf.toWgs84(coord)
                 coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
               })
               // const distance = feature.properties.distance
@@ -230,11 +229,13 @@ export function permalinkEventSet (response) {
               // if (feature.properties.description) newFeature.setProperties({description: feature.properties.description})
               // MyMap.drawLayer.getSource().addFeature(newFeature)
             } else if (feature.geometry.type === 'Point') {
+              // alert()
               const coordinates = transform(feature.geometry.coordinates, "EPSG:4326", "EPSG:3857")
               const point = new Point(coordinates)
               newFeature = new Feature(point)
-              if (feature.properties.description) newFeature.setProperties({description: feature.properties.description})
-              MyMap.drawLayer.getSource().addFeature(newFeature)
+              // if (feature.properties.description) newFeature.setProperties({description: feature.properties.description})
+              // MyMap.drawLayer.getSource().addFeature(newFeature)
+
             } else if (feature.geometry.type === 'Polygon') {
               const distance = feature.properties.distance
               let coordinates = []
@@ -244,11 +245,15 @@ export function permalinkEventSet (response) {
               const polygon = new Polygon([coordinates])
               newFeature = new Feature(polygon)
               newFeature.setProperties({distance: distance})
+              // MyMap.drawLayer.getSource().addFeature(newFeature)
             }
-            Object.keys(feature.properties).forEach(function(key) {
-              console.log(key,feature.properties[key])
-              newFeature.setProperties({[key]: feature.properties[key]})
-            })
+            console.log(feature.properties)
+            if (feature.properties) {
+              Object.keys(feature.properties).forEach(function(key) {
+                console.log(key,feature.properties[key])
+                newFeature.setProperties({[key]: feature.properties[key]})
+              })
+            }
             MyMap.drawLayer.getSource().addFeature(newFeature)
 
           })

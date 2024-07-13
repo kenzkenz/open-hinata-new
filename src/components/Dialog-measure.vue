@@ -1,10 +1,10 @@
 <template>
-  <v-dialog :dialog="S_measureDialog">
+  <v-dialog :dialog="S_measureDialog" id="dialog-measure">
     <div :style="menuContentSize">
 <!--      計測-->
       <br>
-      <b-button :pressed.sync="togglePoint" class='olbtn' :size="btnSize">ポイント</b-button>
-      <b-button style="margin-left: 10px;" :pressed.sync="toggleLine" class='olbtn' :size="btnSize">ライン</b-button>
+      <b-button :pressed.sync="s_togglePoint" class='olbtn' :size="btnSize">ポイント</b-button>
+      <b-button style="margin-left: 10px;" :pressed.sync="s_toggleLine" class='olbtn' :size="btnSize">ライン</b-button>
       <b-button style="margin-left: 10px;" :pressed.sync="toggleMenseki" class='olbtn' :size="btnSize">ポリゴン</b-button>
       <b-button style="margin-left: 10px;" :pressed.sync="toggleCircle" class='olbtn' :size="btnSize">サークル</b-button>
 <!--      <b-button style="margin-left: 10px;" :pressed.sync="toggleDanmen" class='olbtn' :size="btnSize">{{ toggleDanmen ? '断面図' : '断面図' }}</b-button>-->
@@ -64,7 +64,23 @@ export default {
   computed: {
     S_measureDialog () {
       return this.$store.state.base.dialogs.measureDialog
-    }
+    },
+    s_togglePoint: {
+      get() {
+        return this.$store.state.base.togglePoint
+      },
+      set(value) {
+        this.$store.state.base.togglePoint = value
+      }
+    },
+    s_toggleLine: {
+      get() {
+        return this.$store.state.base.toggleLine
+      },
+      set(value) {
+        this.$store.state.base.toggleLine = value
+      }
+    },
   },
   methods: {
     saveKml () {
@@ -144,6 +160,16 @@ export default {
     },
   },
   mounted () {
+    // const mapName = 'map01'
+    // const olPopup = document.querySelector('#' + mapName + ' .ol-popup')
+    // olPopup.addEventListener('click', (e) => {
+    //   if (e.target && e.target.classList.contains("edit-button")) {
+    //     alert()
+    //   }
+    // })
+
+
+
     this.$watch(function () {
       return [this.toggleIdou]
     }, function () {
@@ -271,14 +297,14 @@ export default {
       }
     })
     this.$watch(function () {
-      return [this.toggleLine]
+      return [this.s_toggleLine]
     }, function () {
-      if (this.toggleLine) {
+      if (this.s_toggleLine) {
         // this.$store.state.base.maps['map01'].removeLayer(MyMap.drawLayer)
         // this.$store.state.base.maps['map01'].addLayer(MyMap.drawLayer)
         console.log('on')
 
-        this.togglePoint = false
+        this.s_togglePoint = false
         this.toggleMenseki = false
         this.toggleCircle = false
         this.toggleDelete = false
@@ -289,8 +315,7 @@ export default {
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction0)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.polygonInteraction)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.lineInteraction)
-        // alert()
-        this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
+        // this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
         // this.$store.state.base.maps['map02'].addInteraction(MyMap.modifyInteraction)
         this.$store.state.base.drawType = 'line'
 
@@ -301,14 +326,14 @@ export default {
       }
     })
     this.$watch(function () {
-      return [this.togglePoint]
+      return [this.s_togglePoint]
     }, function () {
-      if (this.togglePoint) {
+      if (this.s_togglePoint) {
         // this.$store.state.base.maps['map01'].removeLayer(MyMap.drawLayer)
         // this.$store.state.base.maps['map01'].addLayer(MyMap.drawLayer)
         console.log('on')
         // alert()
-        this.toggleLine = false
+        this.s_toggleLine = false
         this.toggleMenseki = false
         this.toggleCircle = false
         this.toggleDelete = false
@@ -318,14 +343,14 @@ export default {
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.polygonInteraction)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.pointInteraction0)
-        this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
+        // this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
         // this.$store.state.base.maps['map02'].addInteraction(MyMap.modifyInteraction)
         this.$store.state.base.drawType = 'point'
 
       } else {
         console.log('off')
         // MyMap.drawLayer.getSource().clear()
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction)
+        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction0)
       }
     })
   }

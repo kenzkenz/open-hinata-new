@@ -133,6 +133,7 @@ function drawLayerStylefunction (){
         // console.log(prop.distance)
         // console.log(prop)
         // console.log(geoType)
+        let text
         const styles = []
         const pointStyle = new Style({
             image: new Icon({
@@ -165,17 +166,22 @@ function drawLayerStylefunction (){
             //     width: 1
             // }),
             // zIndex: 0
-        });
+        })
         const lineStyle = new Style({
             stroke: new Stroke({
                 color:"red",
                 width:3
             })
-        });
+        })
+        if (prop.name) {
+            text = prop.name + '\n' + prop.distance
+        } else {
+            text = prop.distance
+        }
         const textStyle = new Style({
             text: new Text({
-                font: "24px sans-serif",
-                text: prop.distance,
+                font: "16px sans-serif",
+                text: text,
                 offsetY: 30,
                 fill:  new Fill({
                     color:"black"
@@ -507,8 +513,24 @@ export function initMap (vm) {
             overlay[i].setPosition(undefined)
             moveEnd()
         })
+        lineInteraction.on('drawend', function (event) {
+            const feature = event.feature;
+            store.state.base.editFeature = feature
+            // map.removeInteraction(pointInteraction)
+            store.state.base.togglePoint = false
+            store.state.base.dialogs.dialogEdit.style.display = 'block'
+            overlay[i].setPosition(undefined)
+            moveEnd()
+        })
 
-
+        const olPopup = document.querySelector('#map01' + ' .ol-popup')
+        olPopup.addEventListener('click', (e) => {
+            if (e.target && e.target.classList.contains("edit-button")) {
+                store.state.base.dialogs.dialogEdit.style.display = 'block'
+                // overlay[i].setPosition(undefined)
+                moveEnd()
+            }
+        })
 
         //-----------------------
 

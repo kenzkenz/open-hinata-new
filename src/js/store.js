@@ -90,6 +90,7 @@ const moduleBase = {
     },
     ssdsStatName: '',
     togglePoint:false,
+    toggleLine:false,
     toggleModify:false,
     editFeature:'',
     editFeatureName:'',
