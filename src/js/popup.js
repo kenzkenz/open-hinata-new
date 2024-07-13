@@ -1106,15 +1106,14 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           }
           cont += '<div style=width:300px;>' +
               '<h4 id="drawLayer2-name">' + ru(prop.name) + '</h4>' +
-              '<p id="drawLayer2-setumei">' + ru(prop.setumei) + '</p>' +
+              '<p id="drawLayer2-setumei">' + ru(prop.description) + '</p>' +
               '<a style="display: ' + block + '" id="drawLayer2-href" href="' + prop.src + '" target="_blank" ><img id="drawLayer2-src" src="' + prop.src + '" style="object-fit: cover;width: 300px;"></a><br>' +
-              '<p>' + prop.description +  '</p>' +
               '</div>'
           // if (!prop.name) cont += ''
           store.state.base.editFeature = features[0]
           console.log(features[0].getProperties())
           store.state.base.editFeatureName = features[0].getProperties().name
-          store.state.base.editFeatureSetumei = features[0].getProperties().setumei
+          store.state.base.editFeatureSetumei = features[0].getProperties().description
           store.state.base.editFeatureSrc = features[0].getProperties().src
           if (document.querySelector('#dialog-edit0').style.display === 'block' ||
               document.querySelector('#dialog-measure').style.display === 'block') {

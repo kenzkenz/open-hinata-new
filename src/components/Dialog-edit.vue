@@ -118,7 +118,7 @@ export default {
     changeName(e) {
       const feature = this.$store.state.base.editFeature
       feature.setProperties({name: this.$store.state.base.editFeatureName})
-      feature.setProperties({setumei: this.$store.state.base.editFeatureSetumei})
+      feature.setProperties({description: this.$store.state.base.editFeatureSetumei})
       document.querySelector('#drawLayer2-name').innerHTML = this.$store.state.base.editFeatureName
       document.querySelector('#drawLayer2-setumei').innerHTML = this.$store.state.base.editFeatureSetumei
       moveEnd()
