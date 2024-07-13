@@ -435,11 +435,8 @@ export function moveEnd () {
   });
   let geojsonT = JSON.stringify(JSON.parse(drawSourceGeojson),null,1);
 
-  console.log(geojsonT)
-
-  // geojsonT = geojsonT.replace(/=/g,'')
   // console.log(geojsonT)
-
+  
   geojsonT = encodeURIComponent(geojsonT)
 
   // ----------------------------------------------------------------------------------
