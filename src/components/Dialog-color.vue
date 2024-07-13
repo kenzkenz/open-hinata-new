@@ -2,7 +2,7 @@
   <v-dialog :dialog="s_dialogColor" id="dialog-color">
     <div :style="contentSize">
       <chrome-picker v-model="s_featureColor"/>
-<!--      <chrome-picker v-model="s_featureColor" @input="changeColor"/>-->
+<!--      <compact-picker v-model="s_featureColor"/>-->
     </div>
   </v-dialog>
 </template>
@@ -12,7 +12,7 @@ import * as MyMap from '../js/mymap'
 import {moveEnd} from "@/js/permalink"
 import store from "@/js/store";
 import {Chrome} from 'vue-color'
-
+import {Compact} from 'vue-color'
 export default {
   name: "dialog-color",
   data () {
@@ -22,6 +22,7 @@ export default {
     }
   },
   components: {
+    'compact-picker': Compact,
     'chrome-picker': Chrome
   },
   computed: {
