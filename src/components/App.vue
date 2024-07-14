@@ -60,8 +60,8 @@
                     <b-button class='olbtn-red' :size="btnSize" @click="openDialog(s_dialogs[mapName])">背景</b-button>
                 </div>
                 <div class="top-right-div">
-                  <b-button i v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="openDialog(s_dialogs['measureDialog'])"><i class="fa-solid fa-ruler"></i></b-button>
-                  <b-button style="margin-left: 10px" i v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="openDialog(s_dialogs['dialogEdit0'])"><i class="fa-solid fa-pen"></i></b-button>
+                  <b-button i v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="openDialog(s_dialogs['measureDialog'])"><i class="fa-solid fa-pen"></i></b-button>
+<!--                  <b-button style="margin-left: 10px" i v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="openDialog(s_dialogs['dialogEdit0'])"><i class="fa-solid fa-pen"></i></b-button>-->
                 </div>
 
                 <div class="bottom-right-div">

@@ -161,6 +161,8 @@ export default {
       // this.$store.state.base.maps['map02'].addInteraction(MyMap.modifyInteraction)
     },
     drawReset () {
+      const result = window.confirm('全て除しますか。');
+      if( !result ) return
       this.s_toggleLine = false
       this.s_togglePoint = false
       this.s_toggleMenseki = false
@@ -199,7 +201,7 @@ export default {
         this.toggleDelete = false
         this.toggleDanmen = false
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction0)
+        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.polygonInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.circleInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.danmenInteraction)
@@ -229,7 +231,7 @@ export default {
           //     e.target.getFeatures().getLength() +
         });
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction0)
+        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.polygonInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.circleInteraction)
       } else {
@@ -249,7 +251,7 @@ export default {
         this.toggleIdou = false
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.selectInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction0)
+        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.polygonInteraction)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.circleInteraction)
         // this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
@@ -274,7 +276,7 @@ export default {
         this.toggleIdou = false
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.selectInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction0)
+        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.polygonInteraction)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.polygonInteraction)
         // this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
@@ -301,7 +303,7 @@ export default {
         this.toggleIdou = false
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.selectInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction0)
+        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.polygonInteraction)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.danmenInteraction)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
@@ -330,7 +332,7 @@ export default {
         this.toggleIdou = false
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.selectInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction0)
+        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.polygonInteraction)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.lineInteraction)
         // this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
@@ -360,7 +362,7 @@ export default {
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.selectInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.polygonInteraction)
-        this.$store.state.base.maps['map01'].addInteraction(MyMap.pointInteraction0)
+        this.$store.state.base.maps['map01'].addInteraction(MyMap.pointInteraction)
         // this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
         // this.$store.state.base.maps['map02'].addInteraction(MyMap.modifyInteraction)
         this.$store.state.base.drawType = 'point'
@@ -368,7 +370,7 @@ export default {
       } else {
         console.log('off')
         // MyMap.drawLayer.getSource().clear()
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction0)
+        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction)
       }
     })
   }

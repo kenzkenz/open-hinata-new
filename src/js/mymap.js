@@ -38,20 +38,6 @@ import PrintDialog from 'ol-ext/control/PrintDialog.js'
 import muni from './muni'
 
 // ドロー関係-------------------------------------------------------------------------------
-export  const drawLayer2 = new VectorLayer({
-    // pointer: true,
-    // className: 'drawLayer2',
-    name: 'drawLayer2',
-    source: new VectorSource({wrapX: false}),
-    style: drawLayer2StyleFunction()
-})
-export const pointInteraction = new Draw({
-    source: drawLayer2.getSource(),
-    type: 'Point',
-})
-export const modifyInteraction2 = new Modify ({
-    source: drawLayer2.getSource(),
-})
 function  getZoom(resolution)  {
     let zoom = 0;
     let r = 156543.03390625; // resolution for zoom 0
@@ -63,37 +49,6 @@ function  getZoom(resolution)  {
         }
     }
     return zoom; // resolution was greater than 156543.03390625 so return 0
-}
-function drawLayer2StyleFunction() {
-    return function (feature, resolution) {
-        const zoom = getZoom(resolution);
-        const prop = feature.getProperties();
-        const styles = []
-        const iconStyle = new Style({
-            image: new Icon({
-                src: require('@/assets/icon/whitecircle.png'),
-                color: 'red',
-                scale: 1.5
-            })
-        })
-        const textStyle = new Style({
-            text: new Text({
-                font: "16px sans-serif",
-                text: prop.name,
-                offsetY: 20,
-                fill: new Fill({
-                    color: "black"
-                }),
-                stroke: new Stroke({
-                    color: "white",
-                    width: 3
-                }),
-            })
-        });
-        if(zoom>=12) styles.push(textStyle)
-        styles.push(iconStyle)
-        return styles;
-    }
 }
 export  const danmenLayer = new VectorLayer({
     name: 'drawSource',
@@ -232,7 +187,7 @@ export const danmenInteraction = new Draw({
     type: 'LineString',
     // freehand:true
 })
-export const pointInteraction0 = new Draw({
+export const pointInteraction = new Draw({
     source: drawSource,
     type: 'Point',
 })
@@ -520,15 +475,6 @@ export function initMap (vm) {
 
         // ------------------------
         pointInteraction.on('drawend', function (event) {
-            const feature = event.feature
-            store.state.base.editFeature = feature
-            // map.removeInteraction(pointInteraction)
-            store.state.base.togglePoint = false
-            store.state.base.dialogs.dialogEdit.style.display = 'block'
-            overlay[i].setPosition(undefined)
-            moveEnd()
-        })
-        pointInteraction0.on('drawend', function (event) {
             const feature = event.feature
             store.state.base.editFeature = feature
             store.state.base.togglePoint0 = false
@@ -1193,7 +1139,7 @@ export function initMap (vm) {
                     }
                 }
 
-                drawLayer2.setZIndex(maxZndex)
+                // drawLayer2.setZIndex(maxZndex)
                 drawLayer.setZIndex(maxZndex)
 
             }
@@ -1206,8 +1152,7 @@ export function initMap (vm) {
             const option = {
                 layerFilter: function (layer) {
                     return layer.get('name') === 'Mw5center'
-                        || layer.get('name') === 'Mw20center'
-                        || layer.get('name') === 'drawLayer2';
+                        || layer.get('name') === 'Mw20center';
                 }
             };
             const feature = map.forEachFeatureAtPixel(evt.pixel,
@@ -1275,7 +1220,6 @@ export function initMap (vm) {
                     }
                 }
 
-                drawLayer2.setZIndex(maxZndex)
                 drawLayer.setZIndex(maxZndex)
 
             }
@@ -1737,8 +1681,6 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
     // drawLayer.set("altitudeMode","clampToGround")
     map.removeLayer(drawLayer)
     map.addLayer(drawLayer)
-    map.removeLayer(drawLayer2)
-    map.addLayer(drawLayer2)
     map.removeLayer(danmenLayer)
     map.addLayer(danmenLayer)
 }

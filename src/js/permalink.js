@@ -169,32 +169,6 @@ export function permalinkEventSet (response) {
       //   ol3d.getCamera().setTilt(json.tilt)
       //   ol3d.getCamera().setHeading(json.heading)
       // }
-      if (key==='GJ2') {
-        const geojson = JSON.parse(obj[key])
-        if (geojson.features[0]) {
-          geojson.features.forEach((feature) => {
-            // const distance = feature.properties.distance
-            const name = feature.properties.name
-            const setumei = feature.properties.setumei
-            const src = feature.properties.src
-            if (feature.geometry.type === 'Point') {
-              // console.log(feature.geometry.coordinates)
-              const coordinates = transform(feature.geometry.coordinates, "EPSG:4326", "EPSG:3857")
-              // console.log(coordinates)
-              const point = new Point(coordinates)
-              const newFeature = new Feature(point)
-              // newFeature['properties'] = 'aaa'
-              newFeature.setProperties({name: name})
-              newFeature.setProperties({setumei: setumei})
-              newFeature.setProperties({src: src})
-
-              // console.log(newFeature)
-              MyMap.drawLayer2.getSource().addFeature(newFeature)
-            }
-          })
-        }
-        // store.state.base.maps.map01.addLayer(MyMap.drawLayer2)
-      }
       if (key==='GJ') {
 
         console.log(decodeURIComponent(obj[key]))
@@ -440,13 +414,6 @@ export function moveEnd () {
   geojsonT = encodeURIComponent(geojsonT)
 
   // ----------------------------------------------------------------------------------
-  const features2 = MyMap.drawLayer2.getSource().getFeatures()
-  const drawSourceGeojson2 = new GeoJSON().writeFeatures(features2, {
-    featureProjection: "EPSG:3857"
-  });
-  const geojsonT2 = JSON.stringify(JSON.parse(drawSourceGeojson2),null,1);
-  // console.log(geojsonT2)
-  // ----------------------------------------------------------------------------------
   const map = store.state.base.maps.map01;
   const zoom = map.getView().getZoom();
   const center = map.getView().getCenter();
@@ -458,7 +425,6 @@ export function moveEnd () {
   let parameter = '?S=' + store.state.base.splitFlg;
   parameter += '&L=' + store.getters['base/layerLists'];
   parameter += '&GJ=' + geojsonT
-  parameter += '&GJ2=' + geojsonT2
 
   const maps = ['map01','map02','map03','map04']
   maps.forEach((map) => {

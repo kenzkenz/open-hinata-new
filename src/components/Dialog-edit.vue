@@ -90,8 +90,6 @@ export default {
         dialog.style["z-index"] = this.s_dialogMaxZindex;
         dialog.style.display = 'block'
         MyMap.overlay['0'].setPosition(undefined)
-
-        console.log(this.$store.state.base.editFeature.getGeometry().getType())
         const geoType = this.$store.state.base.editFeature.getGeometry().getType()
         let color
         if (geoType === 'Point' || geoType === 'LineString') {
@@ -101,15 +99,9 @@ export default {
           color = this.$store.state.base.editFeature.values_._fillColor
           if (!color) color = 'rgba(0,0,0,0.5)'
         }
-
-
-        console.log(color)
-
-
         const rgba = d3.rgb(color)
         const colorP = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.opacity }
         this.$store.state.base.editFeatureColor = colorP
-        // console.log(this.$store.state.base.editFeatureColor)
       }
     },
     color(){
