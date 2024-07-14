@@ -60,8 +60,11 @@ export default {
     toroku: function() {
 
       this.$store.state.base.layerLists['map01'] = this.$store.state.base.layerLists['map01'].filter((layer) => {
-        return layer.id !== 'dokuji00'
+        return layer.layer.values_.source.urls[0] !== this.s_dokujiUrl
       })
+      // this.$store.state.base.layerLists['map01'] = this.$store.state.base.layerLists['map01'].filter((layer) => {
+      //   return layer.id !== 'dokuji00'
+      // })
 
       layers.dokujiLayerTsuika(0)
       // console.log(this.$store.getters['base/layerList']('map01'))

@@ -174,12 +174,12 @@ export function permalinkEventSet (response) {
       //   ol3d.getCamera().setHeading(json.heading)
       // }
       if (key==='DL') {
-        // console.log(obj[key])
-        store.state.info.dokujiUrl['map01'] = obj[key]
+        store.state.info.dokujiUrl['map01'] = JSON.parse(obj[key]).url
+        store.state.info.dokujiName['map01'] = JSON.parse(obj[key]).name
       }
-      if (key==='DN') {
-        store.state.info.dokujiName['map01'] = obj[key]
-      }
+      // if (key==='DN') {
+      //   store.state.info.dokujiName['map01'] = obj[key]
+      // }
       if (key==='GJ') {
 
         // console.log(decodeURIComponent(obj[key]))
@@ -448,8 +448,11 @@ export function moveEnd () {
       Math.round(center4326[1] * 100000) / 100000;
   let parameter = '?S=' + store.state.base.splitFlg;
 
-  parameter += '&DL=' + store.state.info.dokujiUrl['map01']
-  parameter += '&DN=' + store.state.info.dokujiName['map01']
+  const url = JSON.stringify({
+    url:store.state.info.dokujiUrl['map01'],
+    name:store.state.info.dokujiName['map01']
+  })
+  parameter += '&DL=' + url
 
   parameter += '&L=' + store.getters['base/layerLists'];
 
