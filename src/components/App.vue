@@ -75,6 +75,7 @@
                 <v-dialog-main-info v-if="mapName === 'map01'"/>
                 <v-dialog-edit v-if="mapName === 'map01'"/>
                 <v-dialog-color v-if="mapName === 'map01'"/>
+                <v-dialog-dokuji v-if="mapName === 'map01'"/>
 
 <!--                <div class="zoom-div">{{ zoom[mapName] }}</div>-->
                 <div class="zoom-div">
@@ -107,6 +108,7 @@
   import DialogMainInfo from './Dialog-edit0'
   import DialogEdit from './Dialog-edit'
   import DialogColor from './Dialog-color'
+  import DialogDokuji from './Dialog-dokuji'
   import * as Permalink from '../js/permalink'
   import Inobounce from '../js/inobounce'
   import * as MyMap from '../js/mymap'
@@ -128,6 +130,7 @@
       'v-dialog-main-info': DialogMainInfo,
       'v-dialog-edit': DialogEdit,
       'v-dialog-color': DialogColor,
+      'v-dialog-dokuji': DialogDokuji,
     },
     data () {
       return {

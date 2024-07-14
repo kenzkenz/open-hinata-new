@@ -7,7 +7,6 @@
 
       <quill-editor v-model="s_featureSetumei"
                     ref="quillEditor"
-                    options="editorOption"
                     @input="changeName"
       >
       </quill-editor>
@@ -39,9 +38,6 @@ export default {
   name: "dialog-edit",
   data () {
     return {
-      editorOption: {
-        theme: 'snow'
-      },
       colors: '',
       togglePoint: false,
       contentSize: {'height': 'auto', 'margin': '10px', 'overflow': 'hidden', 'user-select': 'text'},

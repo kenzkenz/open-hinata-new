@@ -30,6 +30,8 @@ const moduleBase = {
       dialogEdit0:{style: {top: '56px', right: '10px', 'z-index': 1, height: 'auto', 'width': '200px', display: 'none'}},
       dialogEdit:{style: {top: '300px', right: '10px', 'z-index': 1, height: 'auto', 'width': '323px', display: 'none'}},
       dialogColor:{style: {top: '320px', right: '10px', 'z-index': 1, height: 'auto', 'width': '250px', display: 'none'}},
+      dialogDokuji:{style: {top: '56px', left: '10px', 'z-index': 1, height: 'auto', 'width': '350px', display: 'none'}},
+
 
       menuDialog: {style: {top: '56px', left: '10px', 'z-index': 1, height: 'auto', 'min-width': '150px', display: 'none'}},
       measureDialog: {style: {top: '56px', right: '10px', 'z-index': 1, height: 'auto', 'width': '350px', display: 'none'}},
@@ -277,12 +279,12 @@ const moduleInfo = {
       map03: '',
       map04: ''
     },
-    // crossOrigin: {
-    //   map01: '',
-    //   map02: '',
-    //   map03: '',
-    //   map04: ''
-    // },
+    dokujiName: {
+      map01: '',
+      map02: '',
+      map03: '',
+      map04: ''
+    },
     selected10m: {
       map01: 200,
       map02: 200,

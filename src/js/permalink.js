@@ -1,12 +1,15 @@
 import store from './store'
 import { transform } from 'ol/proj.js'
 import * as Layers from '../js/layers'
+import * as LayersMvt from '@/js/layers-mvt'
 import * as MyMap from '../js/mymap'
 import axios from "axios";
 import {GeoJSON} from "ol/format";
 import {Circle,LineString,Polygon,Point} from "ol/geom";
 import Feature from "ol/Feature";
 import OLCesium from "ol-cesium";
+import * as layers from "@/js/layers";
+import {dokujiObjAr} from "../js/layers";
 export function permalinkEventSet (response) {
   // 起動時の処理------------------------------------------------------------------------------
   // value.layerはオブジェクトになっており、map01から04が入っている。
@@ -89,6 +92,7 @@ export function permalinkEventSet (response) {
         obj[i.split('=')[0]] = i.split('=')[1];
       }
     }
+    // console.log(obj)
     for (let key in obj) {
       // const maps = ['map01','map02','map03','map04']
       const maps = ['map01']
@@ -169,9 +173,16 @@ export function permalinkEventSet (response) {
       //   ol3d.getCamera().setTilt(json.tilt)
       //   ol3d.getCamera().setHeading(json.heading)
       // }
+      if (key==='DL') {
+        // console.log(obj[key])
+        store.state.info.dokujiUrl['map01'] = obj[key]
+      }
+      if (key==='DN') {
+        store.state.info.dokujiName['map01'] = obj[key]
+      }
       if (key==='GJ') {
 
-        console.log(decodeURIComponent(obj[key]))
+        // console.log(decodeURIComponent(obj[key]))
 
         const geojson = JSON.parse(decodeURIComponent(obj[key]))
         // console.log(geojson)
@@ -253,6 +264,7 @@ export function permalinkEventSet (response) {
         // store.state.base.maps.map03.removeLayer(store.state.base.maps.map03.getLayers().getArray()[0]);
         // store.state.base.maps.map04.removeLayer(store.state.base.maps.map04.getLayers().getArray()[0]);
         const urlLayerListArr = JSON.parse(obj[key]);
+        // console.log(urlLayerListArr)
         for (let i = 0; i < urlLayerListArr.length; i++) {
           // 逆ループ
           for (let j = urlLayerListArr[i].length - 1; j >= 0; j--) {
@@ -263,6 +275,9 @@ export function permalinkEventSet (response) {
                 } else {
                   if (urlLayerListArr[i][j].id === node.data.id) {
                     const mapName = 'map0' + ( i + 1 )
+
+                    // console.log(node.data.id)
+
 
                     store.commit('base/unshiftLayerList', {
                       value: {
@@ -382,6 +397,15 @@ export function permalinkEventSet (response) {
                 }
               }
             };
+            layers.dokujiLayerTsuika(0)
+            layers.dokujiObjAr[0].map01.getSource().setUrl(store.state.info.dokujiUrl['map01'])
+            layers.dokujiObjAr[0].map02.getSource().setUrl(store.state.info.dokujiUrl['map01'])
+            Layers.Layers.push({
+              text: store.state.info.dokujiName['map01'],
+              data: { id: "dokuji00", layer: layers.dokujiObjAr[0],
+                opacity: 1,
+                summary: '',
+              }})
             saiki(Layers.Layers)
           }
         }
@@ -409,7 +433,7 @@ export function moveEnd () {
   });
   let geojsonT = JSON.stringify(JSON.parse(drawSourceGeojson),null,1);
 
-  console.log(geojsonT)
+  // console.log(geojsonT)
 
   geojsonT = encodeURIComponent(geojsonT)
 
@@ -423,7 +447,13 @@ export function moveEnd () {
       Math.round(center4326[0] * 100000) / 100000 + '/' +
       Math.round(center4326[1] * 100000) / 100000;
   let parameter = '?S=' + store.state.base.splitFlg;
+
+  parameter += '&DL=' + store.state.info.dokujiUrl['map01']
+  parameter += '&DN=' + store.state.info.dokujiName['map01']
+
   parameter += '&L=' + store.getters['base/layerLists'];
+
+  // console.log(store.getters['base/layerLists'])
   parameter += '&GJ=' + geojsonT
 
   const maps = ['map01','map02','map03','map04']

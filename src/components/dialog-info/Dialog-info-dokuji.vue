@@ -1,13 +1,17 @@
 <template>
   <div style="padding: 10px;">
+    名称<br>
+    <input type='text' @input="onInput" v-model="s_dokujiname" style="width: 300px;"><br>
     タイルURL<br>
-    <input type='text' @input="onInput" v-model="s_dokujiUrl" style="width: 300px;"><br><br>
-    URLは記録されません。テスト用です。
+    <input type='text' @input="onInput" v-model="s_dokujiUrl" style="width: 300px;"><br>
+    <b-button style="margin-top: 5px;" class="olbtn" size="sm" @click="toroku">タイル追加</b-button>
+
  </div>
 </template>
 <script>
 import * as permalink from '../../js/permalink'
 import store from "@/js/store";
+import * as layers  from '@/js/layers'
 export default {
   name: "Dialog-info-dokuji",
   props: ['mapName', 'item'],
@@ -34,19 +38,30 @@ export default {
           permalink.moveEnd()
         }
     },
+    s_dokujName:{
+      get() {
+        return this.$store.state.info.dokujiName[this.mapName]
+      },
+      set(value) {
+        this.$store.state.info.dokujiName[this.mapName] = value
+        permalink.moveEnd()
+      }
+    },
   },
   methods: {
-    // changeRadio: function() {
-    //   console.log(this.picked)
-    // },
+    toroku: function() {
+      // layers.dokujiLayerTsuika(0)
+      console.log(store.state.layerLists['map01'])
+
+    },
     onInput: function() {
-      console.log(this.s_dokujiUrl)
-      const map = store.state.base.maps[this.mapName];
-      const result = this.s_layerList.find((el) => el.id === 'dokuji');
-      console.log(result.layer.getSource())
-      result.layer.getSource().setUrl(this.s_dokujiUrl)
-      result.layer.getSource().changed()
-      map.render();
+      // console.log(this.s_dokujiUrl)
+      // const map = store.state.base.maps[this.mapName];
+      // const result = this.s_layerList.find((el) => el.id === 'dokuji');
+      // console.log(result.layer.getSource())
+      // result.layer.getSource().setUrl(this.s_dokujiUrl)
+      // result.layer.getSource().changed()
+      // map.render();
     }
   },
   mounted ()  {

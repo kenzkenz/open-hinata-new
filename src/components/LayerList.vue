@@ -47,6 +47,10 @@
             this.$store.commit('base/updateList', {value: newLayerList, mapName: this.mapName})
           } else {
             // 通常の追加
+
+            console.log(this.mapName)
+            console.log(node.data.layer)
+
             this.$store.commit('base/unshiftLayerList', {
               value: {
                 id: node.data.id,

@@ -10126,13 +10126,18 @@ function Dokuji () {
     minZoom: 1,
     maxZoom: 18
   })
-  this.useInterimTilesOnError = false
-  // this.updateWhileInteracting = true
 }
-const dokujiObj = {};
-for (let i of mapsStr) {
-  dokujiObj[i] = new TileLayer(new Dokuji())
+export const dokujiObjAr = []
+export function dokujiLayerTsuika (i) {
+  dokujiObjAr[i] = {};
+  for (let ii of mapsStr) {
+    dokujiObjAr[i][ii] = new TileLayer(new Dokuji())
+  }
 }
+// export const dokujiObjAr = {};
+// for (let i of mapsStr) {
+//   dokujiObj[i] = new TileLayer(new Dokuji())
+// }
 
 // 日本土壌インベントリー-------------------------------------------------------------------------------
 function Dojyou () {
@@ -14025,7 +14030,7 @@ export const Layers =
         { text: '湖沼', data: { id: "kosyouH17", layer: LayersMvt.kosyouH17Obj, opacity: 1, summary: LayersMvt.kosyouH17Summ } },
         // { text: '法務省地図', data: { id: "houmusyou", layer: houmusyouObj, opacity: 1, summary: houmusyouSumm } },
         { text: 'OpenTopoMap', data: { id: "otm", layer: otmObj, opacity: 1, summary: otmSumm } },
-        { text: 'ラスタータイルtest', data: { id: "dokuji", layer: dokujiObj, opacity: 1, summary: LayersMvt.busSumm, component: {name: 'dokuji', values:[]}} },
+        // { text: 'ラスタータイルtest', data: { id: "dokuji", layer: dokujiObjAr[99], opacity: 1, summary: LayersMvt.busSumm, component: {name: 'dokuji', values:[]}} },
       ]},
   ];
 let cnt = 0

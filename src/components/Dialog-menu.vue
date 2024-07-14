@@ -30,8 +30,9 @@
 <!--            <a id="toPng" href="#" download="image.png" @click='toPng'>PNGダウンロード</a><br>-->
 
             <b-button class='olbtn' :size="btnSize" @click="printLeft">画像保存と印刷</b-button>
+            <b-button v-if="s_splitFlg === 2" style="margin-left: 10px" class='olbtn' :size="btnSize" @click="printRight">画像保存と印刷（右画面）</b-button>
             <br>
-            <b-button v-if="s_splitFlg === 2" style="margin-top: 5px" class='olbtn' :size="btnSize" @click="printRight">画像保存と印刷（右画面）</b-button>
+            <b-button style="margin-top: 5px;" class='olbtn' :size="btnSize" @click="openDialog">レイヤー追加</b-button>
             <br>
             <label for='jump-check'>背景選択時に設定地にジャンプする</label><input id='jump-check' type="checkbox" v-model="s_jumpFlg">
 
@@ -62,6 +63,10 @@
       }
     },
     computed: {
+      s_dialogDokuji () {
+        return this.$store.state.base.dialogs.dialogDokuji
+      },
+      s_dialogMaxZindex () { return this.$store.state.base.dialogMaxZindex},
       s_jumpFlg: {
         get() {
           return this.$store.state.base.jumpFlg
@@ -79,6 +84,16 @@
       }
     },
     methods: {
+      openDialog () {
+        const dialog = this.s_dialogDokuji
+        if (dialog.style.display === 'block') {
+          dialog.style.display = 'none'
+        } else {
+          this.$store.commit('base/incrDialogMaxZindex');
+          dialog.style["z-index"] = this.s_dialogMaxZindex;
+          dialog.style.display = 'block'
+        }
+      },
       printLeft () {
         console.log(this.$store.state.base.splitFlg)
         MyMap.history ('印刷画面へ')
