@@ -8223,7 +8223,11 @@ function kinseiPolygonStyleFunction(mapName) {
       font = "20px sans-serif"
     }
     let text = prop.村名
-    if (text) text = text.trunc(4)
+    if (text) {
+      if (text.split('・').length > 1 ) {
+        text = text.split('・')[0] + '(他' + (text.split('・').length -1) + '村)'
+      }
+    }
     const textStyle = new Style({
       text: new Text({
         font: font,

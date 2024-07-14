@@ -18,8 +18,30 @@ import VModal from 'vue-js-modal'
 import dragV from 'v-drag'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
-Vue.component('VueSlider', VueSlider)
+import VueQuillEditor from 'vue-quill-editor'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+const editorOption = {
+    modules: {
+        // table: true,
+        toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],
+            ['blockquote', 'code-block'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            [{ indent: '-1' }, { indent: '+1' }],
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            [{ color: [] }, { background: [] }],
+            // ['clean'],
+            // テーブルメニューを追加
+            // [{ table: ['newtable_1_1'] }, { table: 'append-row' }, { table: 'append-col' }],
+        ],
+    },
+    placeholder: '説明を入力',
+};
 
+Vue.use(VueQuillEditor, editorOption);
+// Vue.use(VueQuillEditor)
+Vue.component('VueSlider', VueSlider)
 Vue.use(dragV, {
     // global configuration
 });

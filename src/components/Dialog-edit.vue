@@ -3,7 +3,15 @@
     <div :style="contentSize">
       <input style="width: 300px;" type="text" @input="changeName" v-model="s_featureName" placeholder="名称を入力">
       <hr>
-      <textarea style="width: 300px;" rows="4" cols="35" @input="changeName" v-model="s_featureSetumei" placeholder="説明を入力"></textarea>
+<!--/*      <textarea style="width: 300px;" rows="4" cols="35" @input="changeName" v-model="s_featureSetumei" placeholder="説明を入力"></textarea>*/-->
+
+      <quill-editor v-model="s_featureSetumei"
+                    ref="quillEditor"
+                    options="editorOption"
+                    @input="changeName"
+      >
+      </quill-editor>
+
       <hr>
       <img :src="s_featureSrc" style="width: 300px;margin-bottom: 10px">
       <form id="my_form" style="display: none">
@@ -31,6 +39,9 @@ export default {
   name: "dialog-edit",
   data () {
     return {
+      editorOption: {
+        theme: 'snow'
+      },
       colors: '',
       togglePoint: false,
       contentSize: {'height': 'auto', 'margin': '10px', 'overflow': 'hidden', 'user-select': 'text'},
@@ -120,7 +131,11 @@ export default {
       feature.setProperties({name: this.$store.state.base.editFeatureName})
       feature.setProperties({description: this.$store.state.base.editFeatureSetumei})
       document.querySelector('#drawLayer2-name').innerHTML = this.$store.state.base.editFeatureName
+      console.log(this.$store.state.base.editFeatureSetumei)
+
+
       document.querySelector('#drawLayer2-setumei').innerHTML = this.$store.state.base.editFeatureSetumei
+      console.log(document.querySelector('#drawLayer2-setumei').innerHTML)
       moveEnd()
     },
     file_upload() {
@@ -178,6 +193,9 @@ export default {
 </script>
 
 <style scoped>
+.quill-editor {
+  /*height: 100px;*/
+}
 .olbtn{
   background-color: rgba(0,60,136,0.5);
 }

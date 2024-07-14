@@ -1104,9 +1104,11 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           } else {
             block = 'none'
           }
+          console.log(prop.description)
+
           cont += '<div style=width:300px;>' +
               '<h4 id="drawLayer2-name">' + ru(prop.name) + '</h4>' +
-              '<p id="drawLayer2-setumei">' + ru(prop.description) + '</p>' +
+              '<span id="drawLayer2-setumei">' + ru(prop.description) + '</span>' +
               '<a style="display: ' + block + '" id="drawLayer2-href" href="' + prop.src + '" target="_blank" ><img id="drawLayer2-src" src="' + prop.src + '" style="object-fit: cover;width: 300px;"></a><br>' +
               '</div>'
           // if (!prop.name) cont += ''
@@ -2825,10 +2827,10 @@ export function popUpDojyou(rgba) {
       url = result[3].slice(0,2)
       a = "<a href='https://soil-inventory.rad.naro.go.jp/explain/" + url + ".html' target='_blank'>" + result[4] + "</a>"
     }
-    cont = "<div style=width:300px;font-size:small>" +
-        "土壌分類名：" + a +
-        "<br>土壌分類記号：" + result[3] +
-        "<br>" + result[5] +
+    cont = "<div style=width:350px;font-size:small>" +
+        "<h4>土壌分類名：" + a + '</h4>' +
+        "<p>土壌分類記号：" + result[3] + '</p>' +
+        "<p>" + result[5] + '</p>' +
         "</div>"
   }
   return cont
