@@ -238,8 +238,6 @@
       openDialog (dialog) {
         if (dialog.style.display === 'block') {
           dialog.style.display = 'none'
-          // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction2)
-
         } else {
           this.$store.commit('base/incrDialogMaxZindex');
           dialog.style["z-index"] = this.s_dialogMaxZindex;

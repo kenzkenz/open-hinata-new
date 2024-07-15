@@ -1,17 +1,16 @@
 <template>
   <div style="padding: 10px;">
-    名称<br>
-    <input type='text' @input="onInput" v-model="s_dokujiname" style="width: 300px;"><br>
-    タイルURL<br>
-    <input type='text' @input="onInput" v-model="s_dokujiUrl" style="width: 300px;"><br>
-    <b-button style="margin-top: 5px;" class="olbtn" size="sm" @click="toroku">タイル追加</b-button>
+    名称変更<br>
+    <input type='text' @input="henko" v-model="s_name" style="width: 300px;"><br>
+<!--    タイルURL<br>-->
+<!--    <input type='text' @input="onInput" v-model="s_url" style="width: 300px;"><br>-->
+<!--    <b-button style="margin-top: 5px;" class="olbtn" size="sm" @click="henko">変更</b-button>-->
 
  </div>
 </template>
 <script>
 import * as permalink from '../../js/permalink'
 import store from "@/js/store";
-import * as layers  from '@/js/layers'
 export default {
   name: "Dialog-info-dokuji",
   props: ['mapName', 'item'],
@@ -24,51 +23,46 @@ export default {
     }
   },
   computed: {
+    s_name: {
+      get () {return store.state.info.layerTitle},
+      set (value) {
+        store.state.info.layerTitle = value
+      }
+    },
+    s_url:{
+      get() {
+        return this.$store.state.info.layerUrl
+      },
+      set(value) {
+        store.state.info.layerUrl = value
+      }
+    },
     s_layerList: {
       get () {return store.getters['base/layerList'](this.mapName)},
       set (value) { store.commit('base/updateList', {value: value, mapName: this.mapName}) }
     },
-    s_dokujiUrl:{
-        get() {
-          return this.$store.state.info.dokujiUrl[this.mapName].url
-        },
-        set(value) {
-          this.$store.commit('base/updateListPart',{mapName: this.mapName, id:this.item.id, values: [{url:value}]});
-          this.$store.commit('info/updateDokujiUrl',{mapName: this.mapName, value: {url:value}})
-          permalink.moveEnd()
-        }
-    },
-    s_dokujName:{
-      get() {
-        return this.$store.state.info.dokujiName[this.mapName]
-      },
-      set(value) {
-        this.$store.state.info.dokujiName[this.mapName] = value
-        permalink.moveEnd()
-      }
-    },
   },
   methods: {
-    toroku: function() {
-      // layers.dokujiLayerTsuika(0)
-      console.log(store.state.layerLists['map01'])
+    henko: function() {
+      const aaa = store.state.base.layerLists['map01'].find((layer) => {
+        return layer.id === store.state.info.layerId
+      })
+      console.log(aaa.layer.values_.source.urls[0])
+      // aaa.layer.values_.source.urls[0] = this.s_url
+      aaa.title = this.s_name
 
+      const bbb = store.state.info.dokujiLayers.find((value) => {
+        return value.id === store.state.info.layerId
+      })
+      console.log(bbb)
+      bbb.name = this.s_name
+      // bbb.url = this.s_url
+      permalink.moveEnd()
     },
-    onInput: function() {
-      // console.log(this.s_dokujiUrl)
-      // const map = store.state.base.maps[this.mapName];
-      // const result = this.s_layerList.find((el) => el.id === 'dokuji');
-      // console.log(result.layer.getSource())
-      // result.layer.getSource().setUrl(this.s_dokujiUrl)
-      // result.layer.getSource().changed()
-      // map.render();
-    }
   },
   mounted ()  {
-    this.onInput()
   },
   watch: {
-
   }
 }
 </script>

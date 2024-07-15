@@ -31,8 +31,9 @@
 
             <b-button class='olbtn' :size="btnSize" @click="printLeft">画像保存と印刷</b-button>
             <b-button v-if="s_splitFlg === 2" style="margin-left: 10px" class='olbtn' :size="btnSize" @click="printRight">画像保存と印刷（右画面）</b-button>
+            <hr>
+            <b-button class='olbtn' :size="btnSize" @click="openDialog">背景追加（XYZタイル）</b-button>
             <br>
-            <b-button style="margin-top: 5px;" class='olbtn' :size="btnSize" @click="openDialog">レイヤー追加</b-button>
             <br>
             <label for='jump-check'>背景選択時に設定地にジャンプする</label><input id='jump-check' type="checkbox" v-model="s_jumpFlg">
 

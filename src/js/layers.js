@@ -10134,10 +10134,6 @@ export function dokujiLayerTsuika (i) {
     dokujiObjAr[i][ii] = new TileLayer(new Dokuji())
   }
 }
-// export const dokujiObjAr = {};
-// for (let i of mapsStr) {
-//   dokujiObj[i] = new TileLayer(new Dokuji())
-// }
 
 // 日本土壌インベントリー-------------------------------------------------------------------------------
 function Dojyou () {

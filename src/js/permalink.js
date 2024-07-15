@@ -174,8 +174,11 @@ export function permalinkEventSet (response) {
       //   ol3d.getCamera().setHeading(json.heading)
       // }
       if (key==='DL') {
-        store.state.info.dokujiUrl['map01'] = JSON.parse(obj[key]).url
-        store.state.info.dokujiName['map01'] = JSON.parse(obj[key]).name
+        // store.state.info.dokujiUrl['map01'] = JSON.parse(obj[key]).url
+        // store.state.info.dokujiName['map01'] = JSON.parse(obj[key]).name
+        store.state.info.dokujiLayers = JSON.parse(obj[key])
+
+
       }
       // if (key==='DN') {
       //   store.state.info.dokujiName['map01'] = obj[key]
@@ -397,15 +400,38 @@ export function permalinkEventSet (response) {
                 }
               }
             };
-            layers.dokujiLayerTsuika(0)
-            layers.dokujiObjAr[0].map01.getSource().setUrl(store.state.info.dokujiUrl['map01'])
-            layers.dokujiObjAr[0].map02.getSource().setUrl(store.state.info.dokujiUrl['map01'])
-            Layers.Layers.push({
-              text: store.state.info.dokujiName['map01'],
-              data: { id: "dokuji00", layer: layers.dokujiObjAr[0],
-                opacity: 1,
-                summary: '',
-              }})
+
+            console.log(store.state.info.dokujiLayers)
+
+            store.state.info.dokujiLayers.forEach((value,i) =>{
+              // store.state.info.dokujiUrl['map01'] = value.url
+              // store.state.info.dokujiName['map01'] = value.name
+              console.log(value)
+              layers.dokujiLayerTsuika(i)
+              console.log(layers.dokujiObjAr[i].map01)
+              layers.dokujiObjAr[i].map01.getSource().setUrl(value.url)
+              layers.dokujiObjAr[i].map02.getSource().setUrl(value.url)
+              Layers.Layers.push({
+                text: value.name,
+                data: {
+                  id: "dokuji" + i,
+                  layer: layers.dokujiObjAr[i],
+                  opacity: 1,
+                  summary: '',
+                }})
+            })
+            console.log(Layers.Layers)
+
+            // layers.dokujiLayerTsuika(0)
+            // layers.dokujiObjAr[0].map01.getSource().setUrl(store.state.info.dokujiUrl['map01'])
+            // layers.dokujiObjAr[0].map02.getSource().setUrl(store.state.info.dokujiUrl['map01'])
+            // Layers.Layers.push({
+            //   text: store.state.info.dokujiName['map01'],
+            //   data: { id: "dokuji00", layer: layers.dokujiObjAr[0],
+            //     opacity: 1,
+            //     summary: '',
+            //   }})
+
             saiki(Layers.Layers)
           }
         }
@@ -417,6 +443,7 @@ export function permalinkEventSet (response) {
 }
 
 export function moveEnd () {
+  console.log(999999)
   const features = MyMap.drawLayer.getSource().getFeatures()
   features.forEach(function(feature){
     if (feature.getGeometry()) {
@@ -448,11 +475,14 @@ export function moveEnd () {
       Math.round(center4326[1] * 100000) / 100000;
   let parameter = '?S=' + store.state.base.splitFlg;
 
-  const url = JSON.stringify({
-    url:store.state.info.dokujiUrl['map01'],
-    name:store.state.info.dokujiName['map01']
-  })
-  parameter += '&DL=' + url
+  parameter += '&DL=' + JSON.stringify(store.state.info.dokujiLayers)
+
+
+  // const url = JSON.stringify({
+  //   url:store.state.info.dokujiUrl['map01'],
+  //   name:store.state.info.dokujiName['map01']
+  // })
+  // parameter += '&DL=' + url
 
   parameter += '&L=' + store.getters['base/layerLists'];
 

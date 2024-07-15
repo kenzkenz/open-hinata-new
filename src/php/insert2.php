@@ -14,7 +14,7 @@ function makeRandStr($length) {
 }
 $parameters = $_POST['parameters'];
 //$parameters = 1;
-for ($i = 1; $i <= 10; $i++) {
+for ($i = 1; $i <= 20; $i++) {
     //ユニークID生成
     $newurlid = makeRandStr(6);
 //    $newurlid = 9;

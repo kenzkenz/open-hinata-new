@@ -42,6 +42,7 @@
 <script>
   import vuedraggable from 'vuedraggable'
   import * as permalink from '../js/permalink'
+  import * as layers from '../js/layers'
   import * as MyMap from '../js/mymap'
   export default {
     name: 'Layer',
@@ -114,10 +115,25 @@
             }
           // this.$store.commit('base/deketeDialogsInfo',{mapName: this.mapName})
           this.$store.commit('base/pushDialogsInfo',{mapName: this.mapName, dialog: infoDialog})
+          //-------------------------------------------------------
+          this.$store.state.info.layerId = item.id
+          this.$store.state.info.layerTitle = item.title
+          // const result = layers.Layers.find((value) => {
+          //   if (value.data) if (value.data.id) return value.data.id === item.id
+          // })
+          // console.log(result.data.layer.map01.values_.source.urls[0])
+          // this.$store.state.info.layerUrl = result.data.layer.map01.values_.source.urls[0]
         } else {
           // 既に存在しているときは表示のみ。データを変更せずにスタイルを直接書き換えている。
           result.style.display = 'block';
           result.style["z-index"] = this.s_dialogMaxZindex
+          //------------------------------------------------------
+          this.$store.state.info.layerId = item.id
+          this.$store.state.info.layerTitle = item.title
+          // const result = layers.Layers.find((value) => {
+          //   if (value.data) if (value.data.id) return value.data.id === item.id
+          // })
+          // this.$store.state.info.layerUrl = result.data.layer.map01.values_.source.urls[0]
         }
       }
     },

@@ -79,6 +79,7 @@
       close (item) {
         const result = this.$store.state.base.dialogsInfo[this.mapName] .find(el => el.id === item.id);
         result.style.display = 'none'
+
       },
       dialogMouseDown (item) {
         const result = this.$store.state.base.dialogsInfo[this.mapName] .find(el => el.id === item.id);
