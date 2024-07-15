@@ -82,6 +82,84 @@ const mapsStr = ['map01','map02']
 //   fgbObj[i] = new VectorLayer(new fgb())
 // }
 // -----
+//R05特別用途地区------------------------------------------------------------------------------------------------
+function TokubetsuyotoR05(){
+  this.name = 'tokubetsuyotoR05'
+  this.source = new VectorTileSource({
+    format: new MVT(),
+    maxZoom:14,
+    url: 'https://kenzkenz3.xsrv.jp/mvt/tokubetsuyoto/r05/{z}/{x}/{y}.mvt'
+  });
+  // this.maxResolution = '152.874057' //zoom10
+  this.style = tokubetsuyotoStyleFunction()
+}
+export  const tokubetsuyotoR05Obj = {};
+for (let i of mapsStr) {
+  tokubetsuyotoR05Obj[i] = new VectorTileLayer(new TokubetsuyotoR05())
+}
+export const tokubetsuyotoR05Summ = "<a href='https://www.mlit.go.jp/toshi/tosiko/toshi_tosiko_tk_000087.html' target='_blank'>都市計画決定GISデータ</a>"
+function tokubetsuyotoStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    let color
+    let zIndex
+    // if (prop.用途区分 === 24) { //防火地域
+    //   color = "rgba(255,0,0,0.7)"
+    // } else if (prop.kubunID === 25){ //準防火地域
+    //   color = "rgba(255,192,203,0.7)"
+    // }
+    switch (prop.用途区分) {
+      case '特別工業地区':
+        color = "rgba(164,203,203,0.7)"
+        break
+      case '文教地区':
+        color = 'rgba(255,265,0,0.7)'
+        break
+      case '小売店舗地区':
+        color = "rgba(0,100,0,0.7)"
+        break
+      case '事務所地区':
+        color = "rgba(105,105,105,0.8)"
+        break
+      case '厚生地区':
+        color = "rgba(255,105,180,0.7)"
+        break
+      case '娯楽レクリエーション地区':
+        color = "rgba(210,105,30,0.7)"
+        break
+      case '観光地区':
+        color = "rgba(255,0,255,0.7)"
+        break
+      case '特別業務地区':
+        color = 'rgba(0,128,128,0.7)'
+        break
+      case '中高層階住居専用地区':
+        color = "rgba(214,254,81,0.7)"
+        break
+      case '商業専用地区':
+        color = "rgba(241,158,202,0.7)"
+        break
+      case '研究開発地区':
+        color = "rgba(70,130,180,0.7)"
+        break
+    }
+    if (prop.youtoID === 0) color = 'rgba(0,0,0,0.5)'
+    const styles = []
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: color
+      }),
+      stroke: new Stroke({
+        color: "black",
+        width: 1
+      }),
+      // zIndex: zIndex
+    })
+    styles.push(polygonStyle)
+    return styles
+  }
+}
 //R05土地区画整理------------------------------------------------------------------------------------------------
 function KukakuseiriR05(){
   this.name = 'kukakuseiriR05'

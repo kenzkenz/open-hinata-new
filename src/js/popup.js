@@ -1598,6 +1598,21 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div><hr>'
           }
           break
+        case 'tokubetsuyotoR05':
+          if (cont.indexOf('tokubetsuyotoR05') === -1) {
+            let yotokubun
+            if (prop.用途区分) {
+              yotokubun = prop.用途区分
+            } else {
+              yotokubun = 'その他'
+            }
+            cont += '<div class="tokubetsuyotoR05" style=width:200px;>' +
+                '<h4>' + prop.Type + '</h4>' +
+                '<h4>' + yotokubun + '</h4>' +
+                '<p>' + prop.Pref + prop.Cityname + '</p>' +
+                '</div><hr>'
+          }
+          break
       }
     })
   }
