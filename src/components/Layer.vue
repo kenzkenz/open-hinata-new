@@ -29,10 +29,13 @@
               <div class="item-div" @click="clickDiv(item)">
                     <span class ="title-span" v-html="item.title"></span>
               </div>
-                <div class="range-div"><input type="range" min="0" max="1" step="0.01" class="range" v-model.number="item.opacity" @input="opacityChange(item)" /></div>
+              <div class="range-div"><input type="range" min="0" max="1" step="0.01" class="range" v-model.number="item.opacity" @input="opacityChange(item)" /></div>
 <!--                <div class="info-div" @click="infoOpen(arguments[0],item)"><i class="fa-solid fa-circle-info hover"></i></div>-->
-                <div class="info-div" @click="infoOpen(arguments[0],item)"><i class="fa-solid fa-gear hover"></i></div>
-                <div class="close-div" @click="removeLayer(item)"><i class="fa-sharp fa-solid fa-trash-arrow-up hover"></i></div>
+              <div class="info-div" @click="infoOpen(arguments[0],item)"><i class="fa-solid fa-gear hover"></i></div>
+
+              <div class="bookmark-div" @click="bookmark(item)"><i class="fa-sharp fa-solid fa-bookmark hover"></i></div>
+
+              <div class="close-div" @click="removeLayer(item)"><i class="fa-sharp fa-solid fa-trash-arrow-up hover"></i></div>
             </div>
         </li>
 <!--        <vue-snotify></vue-snotify>-->
@@ -83,6 +86,26 @@
         MyMap.history ('合成')
         MyMap.multipliLayer(item, this.s_layerList, this.mapName);
         permalink.moveEnd()
+      },
+      bookmark (item) {
+        MyMap.history ('ブックマーク')
+        console.log(item)
+
+        // const bookMark = []
+        let bookMark = JSON.parse(localStorage.getItem('bookmark'))
+        console.log(bookMark)
+        if (!bookMark) bookMark = []
+
+        bookMark.push(item.id)
+        bookMark = Array.from(new Set(bookMark))
+
+        localStorage.setItem('bookmark',JSON.stringify(bookMark))
+        console.log(localStorage.getItem('bookmark'))
+
+        // localStorage.removeItem("bookmark")
+
+        // MyMap.removeLayer(item, this.s_layerList, this.mapName)
+        // this.$store.commit('base/deleteDialogsInfo',{mapName: this.mapName})
       },
       removeLayer (item) {
         MyMap.history ('リセット3')
@@ -229,7 +252,8 @@
         position: absolute;
         top:16px;
         left:86px;
-        width:calc(100% - 104px);
+        /*width:calc(100% - 104px);*/
+        width:calc(100% - 124px);
     }
     .info-div{
         position: absolute;
@@ -238,6 +262,14 @@
         width:15px;
         cursor: pointer;
         color:rgba(0,60,136,0.5);
+    }
+    .bookmark-div{
+      position: absolute;
+      top:13px;
+      right:20px;
+      width:15px;
+      color:rgba(0,60,136,0.5);
+      cursor: pointer;
     }
     .close-div{
         position: absolute;

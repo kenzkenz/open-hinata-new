@@ -81,6 +81,7 @@ export default {
       layers.dokujiLayerTsuika(i)
       layers.dokujiObjAr[i].map01.getSource().setUrl(this.s_dokujiUrl)
       layers.dokujiObjAr[i].map02.getSource().setUrl(this.s_dokujiUrl)
+      console.log(layers.dokujiObjAr[i])
       this.$store.commit('base/unshiftLayerList', {
         value: {
           id: 'dokuji' + i,

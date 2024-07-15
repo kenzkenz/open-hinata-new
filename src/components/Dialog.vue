@@ -4,6 +4,7 @@
         <div class="drag-handle" v-my-drag-handle>
         </div>
             <div>
+              <div id="bookmark-btn" v-if="reset === 1" class="bookmark-btn-div" @click="bookmarkBtn"><i class="fa-sharp fa-solid fa-bookmark hover"></i></div>
               <div id="reset-btn" v-if="reset === 1" class="reset-btn-div" @click="resetBtn"><i class="fa-sharp fa-solid fa-trash-arrow-up hover"></i></div>
               <div class="close-btn-div" @click="closeBtn"><i class="fa-solid fa-xmark hover close-btn"></i></div>
                 <slot></slot>
@@ -15,6 +16,7 @@
   import store from "@/js/store";
   import * as Layers from '../js/layers'
   import * as MyMap from '../js/mymap'
+  import * as layers from "@/js/layers";
   export default {
     name: 'Dialog',
     props: ['dialog','reset','mapName'],
@@ -23,6 +25,89 @@
       }
     },
     methods: {
+      bookmarkBtn () {
+        store.commit('base/deleteDialogsInfo',{mapName: this.mapName})
+        MyMap.history ('ブックマークだ')
+        const map = store.state.base.maps[this.mapName];
+        // const removeResult = this.s_layerList.filter((el) => el.id !== 2);
+        this.s_layerList.forEach((value) =>{
+          map.removeLayer(value.layer)
+        })
+
+
+        // ここで
+
+        this.$store.state.base.layerLists['map01'] = []
+
+
+        const bookmark = JSON.parse(localStorage.getItem('bookmark'))
+
+        bookmark.forEach((id) => {
+          console.log(id)
+          console.log(Layers.Layers)
+
+          let result
+          let cnt = 0
+          function aaa () {
+            Layers.Layers.forEach(value => {
+              // console.log(value)
+              if (!value.children) {
+                console.log(value.data.id)
+                if (value.data.id == id) {
+                  result = value
+                }
+              }
+              function bbb (v1) {
+                if (v1.children) {
+                  v1.children.forEach(v2 => {
+                    // console.log(v2)
+                    if (!v2.children) {
+                      if (v2.data.id == id) {
+                        result = v2
+                      }
+                    }
+                    if (v2.children) bbb(v2)
+                  })
+                }
+              }
+              bbb(value)
+            })
+          }
+          aaa()
+          console.log(result.data.layer.map01)
+          console.log(result.data.id)
+          store.commit('base/unshiftLayerList', {
+            value: {
+              id: result.data.id,
+              multipli: false,
+              check: true,
+              title: result.text,
+              layer: result.data.layer,
+              // layer: Layers.Layers[1].children[1].data.layer[this.mapName],
+              opacity: 1,
+              addFlg:true,
+              summary: '',
+              component: ''
+            },
+            mapName: 'map01'
+          })
+        })
+
+
+
+        // store.commit('base/updateList', {
+        //   value: [{
+        //     id: 2,
+        //     check: true,
+        //     title: '淡色地図',
+        //     layer: Layers.Layers[1].children[1].data.layer[this.mapName],
+        //     opacity: 1,
+        //     summary: Layers.Layers[1].children[1].data.summary,
+        //     component: ''
+        //   }],
+        //   mapName: this.mapName
+        // })
+      },
       resetBtn () {
         store.commit('base/deleteDialogsInfo',{mapName: this.mapName})
         MyMap.history ('リセット2だ')
@@ -91,6 +176,15 @@
         cursor: grab;
         color: white;
         /*width: 50px;*/
+    }
+    .bookmark-btn-div {
+      position: absolute;
+      top: 0;
+      right: 70px;
+      cursor: pointer;
+      color: #fff;
+      z-index: 2;
+      font-size:1.4em;
     }
     .reset-btn-div{
       position: absolute;
