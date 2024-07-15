@@ -285,6 +285,7 @@ export function permalinkEventSet (response) {
                     store.commit('base/unshiftLayerList', {
                       value: {
                         id: node.data.id,
+                        bookmark: urlLayerListArr[i][j].bk,
                         multipli: urlLayerListArr[i][j].m,
                         // multipli: true,
                         check: urlLayerListArr[i][j].ck,

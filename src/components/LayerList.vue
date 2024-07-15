@@ -33,7 +33,7 @@
     methods: {
       onNodeSelected: function (node) {
         if (node.children.length === 0) {
-          console.log(node.data)
+          console.log(node)
           const layerList = this.$store.getters['base/layerList'](this.mapName)
           // リストをクリックしたときに既にlayerListに存在する時は削除する
           const deleteLayer = layerList.find(value => {
@@ -49,11 +49,17 @@
             // 通常の追加
 
             console.log(this.mapName)
-            console.log(node.data.layer)
+            console.log(node)
+
+            let bookMark = JSON.parse(localStorage.getItem('bookmark'))
+            if (!bookMark) bookMark = []
+            let bookMarkFlg = false
+            if (bookMark.indexOf(node.data.id) !== -1) bookMarkFlg = true
 
             this.$store.commit('base/unshiftLayerList', {
               value: {
                 id: node.data.id,
+                bookmark: bookMarkFlg,
                 multipli: node.multipli,
                 check: node.data.check,
                 title: node.text,

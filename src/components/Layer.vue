@@ -26,14 +26,25 @@
                 </div>
               </label>
 
-              <div class="item-div" @click="clickDiv(item)">
+              <div class="item-div">
                     <span class ="title-span" v-html="item.title"></span>
               </div>
               <div class="range-div"><input type="range" min="0" max="1" step="0.01" class="range" v-model.number="item.opacity" @input="opacityChange(item)" /></div>
 <!--                <div class="info-div" @click="infoOpen(arguments[0],item)"><i class="fa-solid fa-circle-info hover"></i></div>-->
               <div class="info-div" @click="infoOpen(arguments[0],item)"><i class="fa-solid fa-gear hover"></i></div>
 
-              <div class="bookmark-div" @click="bookmark(item)"><i class="fa-sharp fa-solid fa-bookmark hover"></i></div>
+<!--              <div class="bookmark-div" @click="bookmark(item)"><span :style="bookmarkStyle"><i class="fa-sharp fa-solid fa-bookmark hover"></i></span></div>-->
+
+<!--              <div class="bookmark-div" @click="bookmark(item)"><span :style="bookmarkStyle"><i class="fa-sharp fa-solid fa-bookmark hover"></i></span></div>-->
+
+                <input :id='"checkbox3" + item.id' type="checkbox" class='bookmark-div' v-model="item.bookmark" @change="bookmark(item)">
+              <b-popover   content="ブックマーク"
+                           :target='"checkbox3" + item.id'
+                           triggers="hover"
+                           placement="left"
+                           boundary="viewport"
+              />
+
 
               <div class="close-div" @click="removeLayer(item)"><i class="fa-sharp fa-solid fa-trash-arrow-up hover"></i></div>
             </div>
@@ -47,11 +58,17 @@
   import * as permalink from '../js/permalink'
   import * as layers from '../js/layers'
   import * as MyMap from '../js/mymap'
+  import store from "@/js/store";
   export default {
     name: 'Layer',
     props: ['mapName'],
     components: {
       'v-draggable': vuedraggable
+    },
+    data () {
+      return {
+        bookmarkStyle: {}
+      }
     },
     methods: {
       displayNotification() {
@@ -90,17 +107,30 @@
       bookmark (item) {
         MyMap.history ('ブックマーク')
         console.log(item)
-
-        // const bookMark = []
         let bookMark = JSON.parse(localStorage.getItem('bookmark'))
-        console.log(bookMark)
         if (!bookMark) bookMark = []
-
-        bookMark.push(item.id)
+        if (bookMark.indexOf(item.id) !== -1) {
+          bookMark = bookMark.filter((v) => {
+            return v !== item.id
+          })
+          // this.bookmarkStyle = {'color': 'black'}
+        } else {
+          bookMark.push(item.id)
+          // this.bookmarkStyle = {'color': 'red'}
+        }
         bookMark = Array.from(new Set(bookMark))
 
         localStorage.setItem('bookmark',JSON.stringify(bookMark))
         console.log(localStorage.getItem('bookmark'))
+
+        store.commit('base/updateList', {value: this.s_layerList, mapName: this.mapName})
+
+
+        // if (item.check===false) {
+        //   item.layer.setVisible(false)
+        // }else{
+        //   item.layer.setVisible(true)
+        // }
 
         // localStorage.removeItem("bookmark")
 
@@ -161,6 +191,9 @@
       }
     },
     computed: {
+      // bookmarkStyle () {
+      //   return {'color': 'red'}
+      // },
       s_layerList: {
         get () { return this.$store.getters['base/layerList'](this.mapName) },
         set (value) { this.$store.commit('base/updateList', {value: value, mapName: this.mapName}) }
@@ -304,6 +337,14 @@
       left: 46px;
       top:8px;
       height: 100%;
+      cursor: pointer;
+    }
+    .check3-div{
+      position: absolute;
+      top:13px;
+      right:20px;
+      width:15px;
+      color:rgba(0,60,136,0.5);
       cursor: pointer;
     }
     .check-box {

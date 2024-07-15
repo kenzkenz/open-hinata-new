@@ -142,7 +142,8 @@ const moduleBase = {
             m:layer.multipli,
             ck:check,
             o:layer.opacity,
-            c:layer.component
+            c:layer.component,
+            bk:layer.bookmark
           })
         }
         layerListArr2.push(layerList2)

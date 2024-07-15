@@ -34,11 +34,7 @@
           map.removeLayer(value.layer)
         })
 
-
-        // ここで
-
         this.$store.state.base.layerLists['map01'] = []
-
 
         const bookmark = JSON.parse(localStorage.getItem('bookmark'))
 
@@ -75,10 +71,11 @@
           }
           aaa()
           console.log(result.data.layer.map01)
-          console.log(result.data.id)
+          console.log(result)
           store.commit('base/unshiftLayerList', {
             value: {
               id: result.data.id,
+              bookmark:true,
               multipli: false,
               check: true,
               title: result.text,
