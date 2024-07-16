@@ -21,7 +21,7 @@ import  * as LayersMvt from './layers-mvt'
 // import BingMaps from 'ol/source/BingMaps'
 import * as d3 from "d3"
 import {gifuDetailObj, hokkaidoTsunamiMvtObj} from "./layers-mvt";
-const mapsStr = ['map01','map02'];
+const mapsStr = ['map01','map02']
 const transformE = extent => {
   function compareFunc(a, b) {
     return a - b;

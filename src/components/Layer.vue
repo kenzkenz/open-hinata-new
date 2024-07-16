@@ -38,6 +38,8 @@
 <!--              <div class="bookmark-div" @click="bookmark(item)"><span :style="bookmarkStyle"><i class="fa-sharp fa-solid fa-bookmark hover"></i></span></div>-->
 
                 <input :id='"checkbox3" + item.id' type="checkbox" class='bookmark-div' v-model="item.bookmark" @change="bookmark(item)">
+
+
               <b-popover   content="ブックマーク"
                            :target='"checkbox3" + item.id'
                            triggers="hover"
@@ -106,23 +108,22 @@
       },
       bookmark (item) {
         MyMap.history ('ブックマーク')
-        console.log(item)
+        console.log(item.bookmark)
         let bookMark = JSON.parse(localStorage.getItem('bookmark'))
         if (!bookMark) bookMark = []
-        if (bookMark.indexOf(item.id) !== -1) {
+
+        if (item.bookmark) {
+          bookMark.push(item.id)
+        } else {
           bookMark = bookMark.filter((v) => {
             return v !== item.id
           })
-          // this.bookmarkStyle = {'color': 'black'}
-        } else {
-          bookMark.push(item.id)
-          // this.bookmarkStyle = {'color': 'red'}
         }
         bookMark = Array.from(new Set(bookMark))
-
         localStorage.setItem('bookmark',JSON.stringify(bookMark))
         console.log(localStorage.getItem('bookmark'))
-
+        console.log(this.s_layerList)
+        // 重要
         store.commit('base/updateList', {value: this.s_layerList, mapName: this.mapName})
 
 

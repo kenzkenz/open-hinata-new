@@ -29,12 +29,19 @@
         store.commit('base/deleteDialogsInfo',{mapName: this.mapName})
         MyMap.history ('ブックマークだ')
         const map = store.state.base.maps[this.mapName];
+        const map2 = store.state.base.maps['map02'];
         // const removeResult = this.s_layerList.filter((el) => el.id !== 2);
         this.s_layerList.forEach((value) =>{
           map.removeLayer(value.layer)
         })
 
-        this.$store.state.base.layerLists['map01'] = []
+        store.state.base.layerLists['map02'].forEach((value) =>{
+          map2.removeLayer(value.layer)
+        })
+
+
+        store.state.base.layerLists['map01'] = []
+        store.state.base.layerLists['map02'] = []
 
         const bookmark = JSON.parse(localStorage.getItem('bookmark'))
 
@@ -72,22 +79,25 @@
           aaa()
           console.log(result.data.layer.map01)
           console.log(result)
-          store.commit('base/unshiftLayerList', {
-            value: {
-              id: result.data.id,
-              bookmark:true,
-              multipli: false,
-              check: true,
-              title: result.text,
-              layer: result.data.layer,
-              // layer: Layers.Layers[1].children[1].data.layer[this.mapName],
-              opacity: 1,
-              addFlg:true,
-              summary: '',
-              component: ''
-            },
-            mapName: 'map01'
-          })
+          const mapsStr = ['map01','map02']
+          for (let i of mapsStr) {
+            store.commit('base/unshiftLayerList', {
+              value: {
+                id: result.data.id,
+                bookmark:true,
+                multipli: false,
+                check: true,
+                title: result.text,
+                layer: result.data.layer,
+                // layer: Layers.Layers[1].children[1].data.layer[this.mapName],
+                opacity: 1,
+                addFlg:true,
+                summary: '',
+                component: ''
+              },
+              mapName: i
+            })
+          }
         })
 
 
