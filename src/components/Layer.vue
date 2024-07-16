@@ -36,9 +36,10 @@
 <!--              <div class="bookmark-div" @click="bookmark(item)"><span :style="bookmarkStyle"><i class="fa-sharp fa-solid fa-bookmark hover"></i></span></div>-->
 
 <!--              <div class="bookmark-div" @click="bookmark(item)"><span :style="bookmarkStyle"><i class="fa-sharp fa-solid fa-bookmark hover"></i></span></div>-->
-
-                <input :id='"checkbox3" + item.id' type="checkbox" class='bookmark-div' v-model="item.bookmark" @change="bookmark(item)">
-
+              <label class="bookmark-label">
+                <input type="checkbox" class='bookmark-div checkbox' v-model="item.bookmark" @change="bookmark(item)">
+                <span class="checkbox-fontas"></span>
+              </label>
 
               <b-popover   content="ブックマーク"
                            :target='"checkbox3" + item.id'
@@ -46,6 +47,8 @@
                            placement="left"
                            boundary="viewport"
               />
+
+
 
 
               <div class="close-div" @click="removeLayer(item)"><i class="fa-sharp fa-solid fa-trash-arrow-up hover"></i></div>
@@ -235,6 +238,38 @@
 </script>
 
 <style scoped>
+
+    .checkbox {
+      display: none;
+    }
+    .bookmark-label{
+      position: absolute;
+      top:7px;
+      right:23px;
+      width:15px;
+      color:rgba(0,60,136,0.5);
+      cursor: pointer;
+    }
+    .checkbox-fontas {
+      position: relative;
+      vertical-align: middle;
+      font-size: 21px;
+    }
+    .checkbox + .checkbox-fontas:before {
+      font-weight: 550;
+      font-family: "Font Awesome 5 Free";
+      content: '\f02e';
+      color:rgba(0,60,136,0.5);
+      cursor: pointer;
+    }
+    .checkbox:checked + .checkbox-fontas:before {
+      /*color: #2db29c;*/
+      color: white;
+    }
+    .checkbox-fontas:hover:before{
+      color: blue;
+    }
+
     ul{
         padding: 0;
         margin: 0;
@@ -287,7 +322,7 @@
         top:16px;
         left:86px;
         /*width:calc(100% - 104px);*/
-        width:calc(100% - 124px);
+        width:calc(100% - 127px);
     }
     .info-div{
         position: absolute;
@@ -297,18 +332,20 @@
         cursor: pointer;
         color:rgba(0,60,136,0.5);
     }
-    .bookmark-div{
-      position: absolute;
-      top:13px;
-      right:20px;
-      width:15px;
-      color:rgba(0,60,136,0.5);
-      cursor: pointer;
-    }
+
+    /*.bookmark-div{*/
+    /*  position: absolute;*/
+    /*  top:13px;*/
+    /*  right:20px;*/
+    /*  width:15px;*/
+    /*  color:rgba(0,60,136,0.5);*/
+    /*  cursor: pointer;*/
+    /*}*/
     .close-div{
+        font-size: large;
         position: absolute;
-        top:13px;
-        right:0;
+        top:9px;
+        right:3px;
         width:15px;
         color:rgba(0,60,136,0.5);
         cursor: pointer;
