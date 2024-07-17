@@ -281,11 +281,23 @@ export function permalinkEventSet (response) {
 
                     // console.log(node.data.id)
 
+                    // ここか？
 
+                    let bookMark = JSON.parse(localStorage.getItem('bookmark'))
+                    if (!bookMark) bookMark = []
+
+                    console.log(node.data.id)
+                    let bookMarkFlg
+                    if (bookMark.indexOf(node.data.id) !== -1) {
+                      bookMarkFlg = true
+                    } else {
+                      bookMarkFlg = false
+                    }
                     store.commit('base/unshiftLayerList', {
                       value: {
                         id: node.data.id,
-                        bookmark: urlLayerListArr[i][j].bk,
+                        // bookmark: urlLayerListArr[i][j].bk,
+                        bookmark: bookMarkFlg,
                         multipli: urlLayerListArr[i][j].m,
                         // multipli: true,
                         check: urlLayerListArr[i][j].ck,
@@ -444,7 +456,6 @@ export function permalinkEventSet (response) {
 }
 
 export function moveEnd () {
-  console.log(999999)
   const features = MyMap.drawLayer.getSource().getFeatures()
   features.forEach(function(feature){
     if (feature.getGeometry()) {

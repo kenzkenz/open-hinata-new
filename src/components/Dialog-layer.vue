@@ -47,7 +47,9 @@
       splitMap () {
         const contentHeight = (window.innerHeight - 190) + 'px';
         const contentHeight2 = ((window.innerHeight / 2) - 0) + 'px';
-        const secondContentHeight = (window.innerHeight - 410) + 'px';
+        let secondContentHeight = (window.innerHeight - 410)
+        if (secondContentHeight > 500) secondContentHeight = 500
+        secondContentHeight = secondContentHeight + 'px';
         const secondContentHeight2 = ((window.innerHeight / 2) - 220) + 'px';
         console.log(this.s_splitFlg)
         switch (this.s_splitFlg) {

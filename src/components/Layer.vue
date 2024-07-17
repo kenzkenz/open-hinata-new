@@ -1,7 +1,7 @@
 選択されたリストを表示するvueファイル。
 <template>
-<!--  <v-draggable element="ul" :options="{handle:'.handle-div, .title-span',animation: 200}" v-model="s_layerList">-->
-  <v-draggable element="ul" :options="{handle:'.handle-div',animation: 200}" v-model="s_layerList">
+  <v-draggable element="ul" :options="{handle:'.handle-div, .item-div',animation: 200}" v-model="s_layerList">
+<!--  <v-draggable element="ul" :options="{handle:'.handle-div',animation: 200}" v-model="s_layerList">-->
         <li v-for="item in s_layerList" :key="item.id">
             <div class="list-div">
 
@@ -38,18 +38,15 @@
 <!--              <div class="bookmark-div" @click="bookmark(item)"><span :style="bookmarkStyle"><i class="fa-sharp fa-solid fa-bookmark hover"></i></span></div>-->
               <label class="bookmark-label">
                 <input type="checkbox" class='bookmark-div checkbox' v-model="item.bookmark" @change="bookmark(item)">
-                <span class="checkbox-fontas"></span>
+                <span :id='"label" + item.id' class="checkbox-fontas"></span>
               </label>
 
               <b-popover   content="ブックマーク"
-                           :target='"checkbox3" + item.id'
+                           :target='"label" + item.id'
                            triggers="hover"
                            placement="left"
                            boundary="viewport"
               />
-
-
-
 
               <div class="close-div" @click="removeLayer(item)"><i class="fa-sharp fa-solid fa-trash-arrow-up hover"></i></div>
             </div>

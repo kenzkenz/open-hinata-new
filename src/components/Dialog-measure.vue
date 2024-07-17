@@ -1,7 +1,7 @@
 <template>
   <v-dialog :dialog="S_measureDialog" id="dialog-measure">
     <div :style="menuContentSize">
-<!--      計測-->
+      計測もできます。
       <br>
       <b-button :pressed.sync="s_togglePoint0" class='olbtn' :size="btnSize">ポイント</b-button>
       <b-button style="margin-left: 10px;" :pressed.sync="s_toggleLine" class='olbtn' :size="btnSize">ライン</b-button>
@@ -16,7 +16,7 @@
 
 <!--      <b-button style="margin-top: 5px;" :pressed.sync="toggleDelete" class='olbtn' :size="btnSize">{{ toggleDelete ? '削除' : '削除' }}</b-button>-->
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawReset">全て削除</b-button>
-      <br>
+      <hr>
       <b-button style="margin-top: 5px;" class='olbtn' :size="btnSize" @click="saveGeojson">geojson保存</b-button>
       <b-button style="margin-top: 5px;margin-left: 10px;" class='olbtn' :size="btnSize" @click="saveGpx">GPX保存</b-button>
       <b-button style="margin-top: 5px;margin-left: 10px;" class='olbtn' :size="btnSize" @click="saveKml">kml保存</b-button>

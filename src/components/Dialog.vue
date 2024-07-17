@@ -89,7 +89,6 @@
                 check: true,
                 title: result.text,
                 layer: result.data.layer,
-                // layer: Layers.Layers[1].children[1].data.layer[this.mapName],
                 opacity: 1,
                 addFlg:true,
                 summary: '',
@@ -99,21 +98,6 @@
             })
           }
         })
-
-
-
-        // store.commit('base/updateList', {
-        //   value: [{
-        //     id: 2,
-        //     check: true,
-        //     title: '淡色地図',
-        //     layer: Layers.Layers[1].children[1].data.layer[this.mapName],
-        //     opacity: 1,
-        //     summary: Layers.Layers[1].children[1].data.summary,
-        //     component: ''
-        //   }],
-        //   mapName: this.mapName
-        // })
       },
       resetBtn () {
         store.commit('base/deleteDialogsInfo',{mapName: this.mapName})
