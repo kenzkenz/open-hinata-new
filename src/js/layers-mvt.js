@@ -1720,7 +1720,7 @@ function nantoraRaster() {
   this.name = 'nantoraraster'
   this.preload = Infinity
   this.source = new XYZ({
-    url: 'https://kenzkenz3.xsrv.jp/mvt/miyazaki/nantoraraster2/{z}/{x}/{y}.png',
+    url: 'https://kenzkenz3.xsrv.jp/mvt/miyazaki/nantoraraster/{z}/{x}/{y}.png',
     crossOrigin: 'anonymous',
     minZoom: 0,
     maxZoom: 15
@@ -1793,25 +1793,25 @@ function nantoraStyleFunction() {
   }
 }
 // 鉄道時系列---------------------------------------------------------------
-function Tetsudoujikeiretsu2(mapName){
-  this.name = 'tetsudojikeiretsu'
-  // this.className = 'tetsudojikeiretsu'
-  this.source = new VectorTileSource({
-    crossOrigin: 'Anonymous',
-    format: new MVT(),
-    maxZoom:14,
-    url: "https://kenzkenz3.xsrv.jp/mvt/tetsudojikeiretsu2/{z}/{x}/{y}.mvt",
-  });
-  this.style = tetsudojikeiretsuStyleFunction(mapName)
-  // this.maxResolution = nantoraMaxResolution
-  // this.declutter = true
-  // this.overflow = true
-}
-export const tetsudojikeiretsu2Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N05-2023.html' target='_blank'>国土数値情報</a>"
-export const tetsudojikeiretsu2Obj = {};
-for (let i of mapsStr) {
-  tetsudojikeiretsu2Obj[i] = new VectorTileLayer(new Tetsudoujikeiretsu2(i))
-}
+// function Tetsudoujikeiretsu2(mapName){
+//   this.name = 'tetsudojikeiretsu'
+//   // this.className = 'tetsudojikeiretsu'
+//   this.source = new VectorTileSource({
+//     crossOrigin: 'Anonymous',
+//     format: new MVT(),
+//     maxZoom:14,
+//     url: "https://kenzkenz3.xsrv.jp/mvt/tetsudojikeiretsu2/{z}/{x}/{y}.mvt",
+//   });
+//   this.style = tetsudojikeiretsuStyleFunction(mapName)
+//   // this.maxResolution = nantoraMaxResolution
+//   // this.declutter = true
+//   // this.overflow = true
+// }
+// export const tetsudojikeiretsu2Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N05-2023.html' target='_blank'>国土数値情報</a>"
+// export const tetsudojikeiretsu2Obj = {};
+// for (let i of mapsStr) {
+//   tetsudojikeiretsu2Obj[i] = new VectorTileLayer(new Tetsudoujikeiretsu2(i))
+// }
 function Tetsudoujikeiretsu(mapName){
   this.name = 'tetsudojikeiretsu'
   // this.className = 'tetsudojikeiretsu'
@@ -1819,7 +1819,7 @@ function Tetsudoujikeiretsu(mapName){
     crossOrigin: 'Anonymous',
     format: new MVT(),
     maxZoom:14,
-    url: "https://kenzkenz3.xsrv.jp/mvt/tetsudojikeiretsu/{z}/{x}/{y}.mvt",
+    url: "https://kenzkenz3.xsrv.jp/mvt/tetsudojikeiretsu2/{z}/{x}/{y}.mvt",
   });
   this.style = tetsudojikeiretsuStyleFunction(mapName)
   // this.maxResolution = nantoraMaxResolution
