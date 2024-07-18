@@ -106,14 +106,18 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
       }
       const lon = lonLat[0]
       const lat = lonLat[1]
-      let edit
-      if (layers[i].get('name') === 'drawLayer') {
-        edit = '<span style="display: inline-block;width: 110px;text-align: right;">' +
-            '<button class="edit-button">編集する</button>' +
-            '</span>'
-      } else {
-        edit = ''
+      let edit = ''
+      console.log(features0.length)
+      if (features0.length === 1) {
+        if (layers[i].get('name') === 'drawLayer') {
+          edit = '<span style="display: inline-block;width: 110px;text-align: right;">' +
+              '<button class="edit-button">編集する</button>' +
+              '</span>'
+        } else {
+          edit = ''
+        }
       }
+
       streetView = '<a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=' + lat + ',' + lon + '&hl=ja" target="_blank">StreetView</a>' +
           ' <a href="https://www.google.co.jp/maps?q=' + lat + ',' + lon + '&hl=ja" target="_blank">GoogleMap</a>' +
           edit +
@@ -1098,29 +1102,32 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           break
         case 'drawLayer':
         case 'drawLayer2':
-          let block = 'block'
-          if (prop.src) {
-            block = 'block'
-          } else {
-            block = 'none'
-          }
-          console.log(prop.description)
+          if (features0.length === 1) {
+            let block = 'block'
+            if (prop.src) {
+              block = 'block'
+            } else {
+              block = 'none'
+            }
+            console.log(prop.description)
 
-          cont += '<div style=width:300px;>' +
-              '<h4 id="drawLayer2-name">' + ru(prop.name) + '</h4>' +
-              '<span id="drawLayer2-setumei">' + ru(prop.description) + '</span>' +
-              '<a style="display: ' + block + '" id="drawLayer2-href" href="' + prop.src + '" target="_blank" ><img id="drawLayer2-src" src="' + prop.src + '" style="object-fit: cover;width: 300px;"></a><br>' +
-              '</div>'
-          // if (!prop.name) cont += ''
-          store.state.base.editFeature = features[0]
-          console.log(features[0].getProperties())
-          store.state.base.editFeatureName = features[0].getProperties().name
-          store.state.base.editFeatureSetumei = features[0].getProperties().description
-          store.state.base.editFeatureSrc = features[0].getProperties().src
-          if (document.querySelector('#dialog-edit0').style.display === 'block' ||
-              document.querySelector('#dialog-measure').style.display === 'block') {
-            store.state.base.dialogs.dialogEdit.style.display = 'block'
+            cont += '<div style=width:300px;>' +
+                '<h4 id="drawLayer2-name">' + ru(prop.name) + '</h4>' +
+                '<span id="drawLayer2-setumei">' + ru(prop.description) + '</span>' +
+                '<a style="display: ' + block + '" id="drawLayer2-href" href="' + prop.src + '" target="_blank" ><img id="drawLayer2-src" src="' + prop.src + '" style="object-fit: cover;width: 300px;"></a><br>' +
+                '</div>'
+            // if (!prop.name) cont += ''
+            store.state.base.editFeature = features[0]
+            console.log(features[0].getProperties())
+            store.state.base.editFeatureName = features[0].getProperties().name
+            store.state.base.editFeatureSetumei = features[0].getProperties().description
+            store.state.base.editFeatureSrc = features[0].getProperties().src
+            if (document.querySelector('#dialog-edit0').style.display === 'block' ||
+                document.querySelector('#dialog-measure').style.display === 'block') {
+              store.state.base.dialogs.dialogEdit.style.display = 'block'
+            }
           }
+
           break
         case 'mesh500':
         case 'mesh250':
