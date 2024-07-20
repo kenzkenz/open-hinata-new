@@ -7,7 +7,7 @@
       <b-form-select v-model="s_selectColor" :options="options" @change="selectChange"></b-form-select>
     </div>
     <div style="margin-top: 5px;">村名で抽出</div>
-    <b-form-input type='text' @change="onInput" v-model="s_sonmei" placeholder="村名"></b-form-input>
+    <b-form-input type='text' v-model="s_sonmei" placeholder="村名"></b-form-input>
     <hr>
     <div v-if="s_selectColor === '藩で色分け2'">
       <hr>
@@ -29,6 +29,8 @@
 <script>
 import * as LayersMvt from '@/js/layers-mvt'
 import * as permalink from '@/js/permalink'
+import {kinseiPolygonRasterObj} from "@/js/layers-mvt";
+import store from "@/js/store";
 
 export default {
   name: "Dialog-info-kinsei",
@@ -57,6 +59,23 @@ export default {
         // console.log(value)
         this.$store.state.info.sonmei[this.mapName] = value
         LayersMvt.kinseiPolygonMvtObj[this.mapName].getSource().changed()
+        this.storeUpdate()
+
+        if (value) {
+          if (window.innerWidth > 1000) {
+            LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(156543.03)
+            LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(156543.03)
+          }
+        } else {
+          if (window.innerWidth > 1000) {
+            LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(611.496226)	 //zoom8
+            LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(611.496226)
+          } else {
+            LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(305.748113)	 //zoom9
+            LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(305.748113)
+          }
+        }
+
       }
     },
     s_selectColor: {
@@ -70,10 +89,12 @@ export default {
     },
   },
   methods: {
-    onInput () {
-      LayersMvt.kinseiPolygonMvtObj[this.mapName].getSource().changed()
-      this.storeUpdate()
-    },
+    // onInput (value) {
+      // console.log(value)
+      // alert()
+      // LayersMvt.kinseiPolygonMvtObj[this.mapName].getSource().changed()
+      // this.storeUpdate()
+    // },
     selectChange (value) {
       LayersMvt.kinseiPolygonMvtObj[this.mapName].getSource().changed()
       this.storeUpdate()
@@ -86,11 +107,20 @@ export default {
     },
   },
   mounted ()  {
+    console.log(this.s_sonmei)
+    if (this.s_sonmei) {
+      if (window.innerWidth > 1000) {
+        LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(156543.03)
+        LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(156543.03)
+      }
+    }
     this.$nextTick(function () {
       LayersMvt.kinseiPolygonMvtObj[this.mapName].getSource().changed()
     })
   },
   watch: {
+    s_sonmei(newValue, oldValue) {
+    }
   }
 }
 </script>

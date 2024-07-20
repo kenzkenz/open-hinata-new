@@ -8245,6 +8245,9 @@ if (window.innerWidth > 1000) {
   kinseiPolygonMaxResolution = 305.748113	 //zoom9
   // kinseiPolygonMaxResolution = 400	 //zoom9
 }
+// if (store.state.info.sonmei['map01']) kinseiPolygonMaxResolution = 156543.03
+
+
 function KinseiPolygon(mapName) {
   this.useInterimTilesOnError = false
   this.name = 'kinseipolygon'
@@ -8414,10 +8417,6 @@ function kinseiPolygonStyleFunction(mapName) {
   }
 }
 
-
-
-
-
 function KinseiPoint() {
   this.useInterimTilesOnError = false
   this.name = 'kinseipoint'
@@ -8494,8 +8493,8 @@ for (let i of mapsStr) {
     layers: [
 
       // kinseiPointRasterObj[i],
-      kinseiPolygonMvtObj[i],
       kinseiPolygonRasterObj[i],
+      kinseiPolygonMvtObj[i],
       // kinseiPointMvtObj[i],
     ]
   })
