@@ -40,6 +40,8 @@ export default {
         { value: '藩で色分け', text: '藩で色分け' },
         { value: '藩で色分け2', text: '藩で色分け2' },
         { value: '国で色分け', text: '国で色分け' },
+        { value: '県で色分け', text: '県で色分け' },
+        { value: '郡で色分け', text: '郡で色分け' },
         { value: '色なし', text: '色なし' },
       ]
     }

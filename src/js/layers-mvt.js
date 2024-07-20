@@ -8319,6 +8319,14 @@ function kinseiPolygonStyleFunction(mapName) {
         rgb = d3.rgb(d3OridinalColor(prop.国名))
         rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
         break
+      case '郡で色分け':
+        rgb = d3.rgb(d3OridinalColor(prop.郡名))
+        rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
+        break
+      case '県で色分け':
+        rgb = d3.rgb(d3OridinalColor(prop.PREF_NAME))
+        rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
+        break
       case '色なし':
         rgba = 'rgba(0,0,0,0)'
         break
