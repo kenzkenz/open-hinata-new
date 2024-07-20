@@ -403,14 +403,16 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           }
           break
         case 'nougyou':
-          if (prop.LAYER_NO === 5) {
-            cont += '<div style=width:200px>' + '農業地域 ' + '</div><hr>'
-          } else {
-            cont += '<div style=width:200px>' + '農用地区域' + '</div><hr>'
+          if (cont.indexOf('nougyou99') === -1) {
+            if (prop.LAYER_NO === 5) {
+              cont += '<h4 class="nougyou99" style=width:200px>' + '農業地域 ' + '</h4><hr>'
+            } else {
+              cont += '<h4 class="nougyou99" style=width:200px>' + '農用地区域' + '</h4><hr>'
+            }
           }
           break
         case 'damh26':
-          cont += '<div style=width:200px>ダム名＝' + prop.W01_001 + '</div><hr>'
+          cont += '<h4 style=width:200px>ダム名＝' + prop.W01_001 + '</h4><hr>'
           break
         case 'city':
           if (cont.indexOf('city99') === -1) {
@@ -1110,10 +1112,20 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
               block = 'none'
             }
             console.log(prop.description)
-
+            let cont2 = ''
+            Object.keys(prop).forEach(function(key) {
+              if (key !== 'geometry') {
+                if (key !== 'distance' && key !== 'name' && key !== 'description' && key !== 'src') {
+                  if (key.slice(0, 1) !== '_') {
+                    cont2 += key + '=' + prop[key] + '<br>'
+                  }
+                }
+              }
+            })
             cont += '<div style=width:300px;>' +
                 '<h4 id="drawLayer2-name">' + ru(prop.name) + '</h4>' +
                 '<span id="drawLayer2-setumei">' + ru(prop.description) + '</span>' +
+                cont2 +
                 '<a style="display: ' + block + '" id="drawLayer2-href" href="' + prop.src + '" target="_blank" ><img id="drawLayer2-src" src="' + prop.src + '" style="object-fit: cover;width: 300px;"></a><br>' +
                 '</div>'
             // if (!prop.name) cont += ''
@@ -1496,6 +1508,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           if (cont.indexOf('kinseipoint') === -1) {
             cont += '<div class="kinseipoint" style=width:200px;>' +
                 '<h4>' + prop.村名 + '</h4>' +
+                '<h5>' + prop.よみ + '<h5/>' +
                 '<h5>領分１=' + prop.領分１ + '<h5/>' +
                 '<p>国名=' + prop.国名 + '</p>' +
                 '<p>国郡=' + prop.国郡 + '</p>' +
@@ -1508,6 +1521,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           if (cont.indexOf('kinseipolygon') === -1) {
             cont += '<div class="kinseipolygon" style=width:200px;>' +
                 '<h4>' + prop.村名 + '</h4>' +
+                '<h5>' + prop.よみ + '<h5/>' +
                 '<h5>領分１=' + prop.領分１ + '</h5>' +
                 '<p>国名=' + prop.国名 + '</p>' +
                 '<p>国郡=' + prop.国郡 + '</p>' +
@@ -1616,6 +1630,15 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
             cont += '<div class="tokubetsuyotoR05" style=width:200px;>' +
                 '<h4>' + prop.Type + '</h4>' +
                 '<h4>' + yotokubun + '</h4>' +
+                '<p>' + prop.Pref + prop.Cityname + '</p>' +
+                '</div><hr>'
+          }
+          break
+        case 'koenR05':
+          if (cont.indexOf('koenR05') === -1) {
+            cont += '<div class="koenR05" style=width:300px;>' +
+                '<h4>' + prop.名称 + '</h4>' +
+                '<p>告示番号=' + prop.告示番号L + '</p>' +
                 '<p>' + prop.Pref + prop.Cityname + '</p>' +
                 '</div><hr>'
           }

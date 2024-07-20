@@ -166,14 +166,11 @@ export default {
       return [this.s_toggleModify]
     }, function () {
       if (this.s_toggleModify) {
-        this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction2)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
         this.s_togglePoint = false
         MyMap.overlay['0'].setPosition(undefined)
       } else {
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction2)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
-
       }
     })
   }

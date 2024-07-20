@@ -234,16 +234,39 @@ export function permalinkEventSet (response) {
               newFeature = new Feature(polygon)
               newFeature.setProperties({distance: distance})
               // MyMap.drawLayer.getSource().addFeature(newFeature)
-            }
-            console.log(feature.properties)
-            if (feature.properties) {
-              Object.keys(feature.properties).forEach(function(key) {
-                console.log(key,feature.properties[key])
-                newFeature.setProperties({[key]: feature.properties[key]})
-              })
-            }
-            MyMap.drawLayer.getSource().addFeature(newFeature)
 
+            } else if (feature.geometry.type === 'MultiPolygon') {
+              const distance = feature.properties.distance
+              let coordinates = []
+              feature.geometry.coordinates[0].forEach((coord0) => {
+                coord0.forEach((coord) => {
+                  coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
+                })
+                const polygon = new Polygon([coordinates])
+                newFeature = new Feature(polygon)
+                newFeature.setProperties({distance: distance})
+                if (feature.properties) {
+                  Object.keys(feature.properties).forEach(function (key) {
+                    console.log(key, feature.properties[key])
+                    newFeature.setProperties({[key]: feature.properties[key]})
+                  })
+                }
+                MyMap.drawLayer.getSource().addFeature(newFeature)
+              })
+
+
+            }
+
+            if (feature.geometry.type !== 'MultiPolygon') {
+              console.log(feature.properties)
+              if (feature.properties) {
+                Object.keys(feature.properties).forEach(function(key) {
+                  console.log(key,feature.properties[key])
+                  newFeature.setProperties({[key]: feature.properties[key]})
+                })
+              }
+              MyMap.drawLayer.getSource().addFeature(newFeature)
+            }
           })
         }
 
@@ -474,7 +497,7 @@ export function moveEnd () {
 
   // console.log(geojsonT)
 
-  geojsonT = encodeURIComponent(geojsonT)
+  // geojsonT = encodeURIComponent(geojsonT)
 
   // ----------------------------------------------------------------------------------
   const map = store.state.base.maps.map01;
@@ -538,6 +561,7 @@ export function moveEnd () {
     // axios.post('/php/insert2.php', params)
         .then(response => {
           window.history.pushState(state, 'map', "#s" + response.data.urlid);
+          console.log('保存しました。')
           MyMap.history('moveend', window.location.href)
         })
         .catch(error => {

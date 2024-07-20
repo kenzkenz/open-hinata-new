@@ -2,10 +2,13 @@
   <v-dialog :dialog="s_dialogDokuji" id="dialog-dokuji">
     <div :style="contentSize">
       名称<br>
-      <input type='text' @input="onInput" v-model="s_dokujiName" style="width: 290px;"><br>
+      <input type='text' v-model="s_dokujiName" style="width: 290px;"><br>
       タイルURL<br>
-      <input type='text' @input="onInput" v-model="s_dokujiUrl" style="width: 290px;"><br>
+      <input type='text' v-model="s_dokujiUrl" style="width: 290px;"><br>
       <b-button style="margin-top: 5px;" class="olbtn" size="sm" @click="toroku">追加</b-button>
+      <br>
+      <br>
+      参考:<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">地理院タイル</a>
     </div>
   </v-dialog>
 </template>

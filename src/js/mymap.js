@@ -155,7 +155,7 @@ function drawLayerStylefunction (){
             text: new Text({
                 font: "16px sans-serif",
                 text: text,
-                offsetY: 30,
+                offsetY: 20,
                 fill:  new Fill({
                     color:"black"
                 }),
@@ -610,7 +610,7 @@ export function initMap (vm) {
                     }
                 })
                 // map.addLayer(drawLayer)
-                map.getView().fit(drawLayer.getSource().getExtent())
+                // map.getView().fit(drawLayer.getSource().getExtent())
             })
             map.addInteraction(dragAndDropInteraction)
         }

@@ -82,6 +82,40 @@ const mapsStr = ['map01','map02']
 //   fgbObj[i] = new VectorLayer(new fgb())
 // }
 // -----
+//R05公園------------------------------------------------------------------------------------------------
+function KoenR05(){
+  this.name = 'koenR05'
+  this.source = new VectorTileSource({
+    format: new MVT(),
+    maxZoom:14,
+    url: 'https://kenzkenz3.xsrv.jp/mvt/koen/r05/{z}/{x}/{y}.mvt'
+  });
+  // this.maxResolution = '152.874057' //zoom10
+  this.style = koenStyleFunction()
+}
+export  const koenR05Obj = {};
+for (let i of mapsStr) {
+  koenR05Obj[i] = new VectorTileLayer(new KoenR05())
+}
+export const koenR05Summ = "<a href='https://www.mlit.go.jp/toshi/tosiko/toshi_tosiko_tk_000087.html' target='_blank'>都市計画決定GISデータ</a>"
+function koenStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: 'rgba(0,128,0,0.7)'
+      }),
+      stroke: new Stroke({
+        color: "black",
+        width: 1
+      }),
+    })
+    styles.push(polygonStyle)
+    return styles
+  }
+}
 //R05特別用途地区------------------------------------------------------------------------------------------------
 function TokubetsuyotoR05(){
   this.name = 'tokubetsuyotoR05'
@@ -1819,7 +1853,7 @@ function Tetsudoujikeiretsu(mapName){
     crossOrigin: 'Anonymous',
     format: new MVT(),
     maxZoom:14,
-    url: "https://kenzkenz3.xsrv.jp/mvt/tetsudojikeiretsu2/{z}/{x}/{y}.mvt",
+    url: "https://kenzkenz3.xsrv.jp/mvt/tetsudojikeiretsu3/{z}/{x}/{y}.mvt",
   });
   this.style = tetsudojikeiretsuStyleFunction(mapName)
   // this.maxResolution = nantoraMaxResolution
@@ -8218,7 +8252,7 @@ function KinseiPolygon(mapName) {
     format: new MVT(),
     // minZoom: 11,
     maxZoom: 14,
-    url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/polygon/{z}/{x}/{y}.mvt',
+    url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/polygon2/{z}/{x}/{y}.mvt',
   });
   this.style = kinseiPolygonStyleFunction(mapName)
   this.maxResolution = kinseiPolygonMaxResolution
