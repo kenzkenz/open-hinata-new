@@ -340,6 +340,12 @@ const moduleInfo = {
       map03: 'all',
       map04: 'all'
     },
+    sonmei: {
+      map01: '',
+      map02: '',
+      map03: '',
+      map04: ''
+    },
     selectColor: {
       map01: '標準',
       map02: '標準',
@@ -578,9 +584,14 @@ const moduleInfo = {
           }
           break
         case 'kinsei':
-          variable = 'selectColor'
+          if (payload.order === 0) {
+            variable = 'selectColor'
+          } else if (payload.order === 1){
+            variable = 'sonmei'
+          }
           break
       }
+      console.log(payload.value)
       state[variable][payload.mapName] = payload.value
     },
 

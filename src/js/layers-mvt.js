@@ -8282,6 +8282,7 @@ const kinseiColor = d3.scaleOrdinal(d3.schemeCategory10);
 function kinseiPolygonStyleFunction(mapName) {
   return function (feature, resolution) {
     const selectColor = store.state.info.selectColor[mapName]
+    const sonmei = store.state.info.sonmei[mapName]
     const zoom = getZoom(resolution);
     const prop = feature.getProperties();
     const styles = []
@@ -8331,6 +8332,16 @@ function kinseiPolygonStyleFunction(mapName) {
         rgba = 'rgba(0,0,0,0)'
         break
     }
+
+
+    if (sonmei) {
+      if (prop.村名) {
+        if (prop.村名.indexOf(sonmei) !== -1) {
+
+        }
+      }
+    }
+
     let polygonStyle
     if (zoom > 10) {
       polygonStyle = new Style({
@@ -8384,9 +8395,20 @@ function kinseiPolygonStyleFunction(mapName) {
         // exceedLength:true
       })
     });
-    if (prop.村名)styles.push(polygonStyle);
-    if(zoom>=9) {
-      styles.push(textStyle);
+    if (sonmei) {
+      if (prop.村名) {
+        if (prop.村名.indexOf(sonmei) !== -1) {
+          styles.push(polygonStyle)
+          if(zoom>=9) {
+            styles.push(textStyle);
+          }
+        }
+      }
+    } else {
+      if (prop.村名)styles.push(polygonStyle)
+      if(zoom>=9) {
+        styles.push(textStyle);
+      }
     }
     return styles;
   }
