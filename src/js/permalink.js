@@ -1,7 +1,6 @@
 import store from './store'
 import { transform } from 'ol/proj.js'
 import * as Layers from '../js/layers'
-import * as LayersMvt from '@/js/layers-mvt'
 import * as MyMap from '../js/mymap'
 import axios from "axios";
 import {GeoJSON} from "ol/format";
@@ -9,7 +8,6 @@ import {Circle,LineString,Polygon,Point} from "ol/geom";
 import Feature from "ol/Feature";
 import OLCesium from "ol-cesium";
 import * as layers from "@/js/layers";
-import {dokujiObjAr} from "../js/layers";
 export function permalinkEventSet (response) {
   // 起動時の処理------------------------------------------------------------------------------
   // value.layerはオブジェクトになっており、map01から04が入っている。
@@ -74,12 +72,20 @@ export function permalinkEventSet (response) {
     // 場所、ズームを復帰
     const parts = hash.split('/');
     const map = store.state.base.maps.map01;
-    // if (parts.length === 3) {
-      const center = [ parseFloat(parts[1]), parseFloat(parts[2]) ];
-      const center3857 = transform(center,'EPSG:4326','EPSG:3857');
-      map.getView().setCenter(center3857);
-      // map.getView().setZoom(parseInt(parts[0], 10))
-      // console.log(parts)
+
+    // let startPositionCoord = localStorage.getItem('startPositionCoord')
+    // startPositionCoord = [Number(startPositionCoord.split(',')[0]),Number(startPositionCoord.split(',')[1])]
+    // const startPositionZoom = localStorage.getItem('startPositionZoom')
+    // console.log(startPositionCoord)
+
+    // if (startPositionCoord) {
+    //   map.getView().setCenter(startPositionCoord)
+    //   map.getView().setZoom(startPositionZoom)
+    // } else {
+      const center = [ parseFloat(parts[1]), parseFloat(parts[2]) ]
+      const center3857 = transform(center,'EPSG:4326','EPSG:3857')
+      console.log(center3857)
+      map.getView().setCenter(center3857)
       map.getView().setZoom(parts[0])
     // }
     // パラメータで復帰
@@ -138,8 +144,6 @@ export function permalinkEventSet (response) {
           //   }
           // })
           //--------------------------------------------------------------
-
-
 
           ol3d.setEnabled(true)
           // const json = JSON.parse(obj[key])
@@ -472,6 +476,16 @@ export function permalinkEventSet (response) {
           }
         }
       }
+    }
+  } else {
+    let startPositionCoord = localStorage.getItem('startPositionCoord')
+    startPositionCoord = [Number(startPositionCoord.split(',')[0]),Number(startPositionCoord.split(',')[1])]
+    const startPositionZoom = localStorage.getItem('startPositionZoom')
+    // console.log(startPositionCoord)
+    const map = store.state.base.maps.map01
+    if (startPositionCoord) {
+      map.getView().setCenter(startPositionCoord)
+      map.getView().setZoom(startPositionZoom)
     }
   }
   // マップ移動時イベント------------------------------------------------------------------------

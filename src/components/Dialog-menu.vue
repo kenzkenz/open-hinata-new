@@ -33,8 +33,9 @@
             <b-button v-if="s_splitFlg === 2" style="margin-left: 10px" class='olbtn' :size="btnSize" @click="printRight">画像保存と印刷（右画面）</b-button>
             <hr>
             <b-button class='olbtn' :size="btnSize" @click="openDialog">背景追加（XYZタイル）</b-button>
-            <br>
-            <br>
+            <hr>
+            <b-button class='olbtn' :size="btnSize" @click="startPosition">スタート時、リセット時の地点を記録</b-button>
+            <hr>
             <label for='jump-check'>背景選択時に設定地にジャンプする</label><input id='jump-check' type="checkbox" v-model="s_jumpFlg">
 
         </div>
@@ -85,6 +86,13 @@
       }
     },
     methods: {
+      startPosition () {
+        const map = this.$store.state.base.maps['map01']
+        localStorage.setItem('startPositionCoord',map.getView().getCenter())
+        localStorage.setItem('startPositionZoom',map.getView().getZoom())
+        alert('記憶しました。次回のスタート時、リセット時からこの座標を表示します。')
+        // localStorage.clear()
+      },
       openDialog () {
         const dialog = this.s_dialogDokuji
         if (dialog.style.display === 'block') {
@@ -117,8 +125,8 @@
         let url = window.location.href.split("#")[0];
         // url = url + "?"
         console.log(url)
-        history.pushState(null, null,url);
-        window.location.reload(true);
+        history.pushState(null, null,url)
+        window.location.reload(true)
       },
       reset02() {
         const url = decodeURIComponent(window.location.href).split("?")[0];
