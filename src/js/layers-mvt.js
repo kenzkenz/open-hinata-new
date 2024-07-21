@@ -5837,14 +5837,14 @@ function damStyleFunction () {
   };
 }
 //T9市町村------------------------------------------------------------------------------------------------
-function CityT9(){
+function CityT9(mapName){
   this.name = 'city'
   this.source = new VectorTileSource({
     format: new MVT(),
     maxZoom:13,
     url: "https://kenzkenz.github.io/city_t9/{z}/{x}/{y}.mvt"
   });
-  this.style = cityStyleFunction();
+  this.style = cityStyleFunction(mapName,'t09');
 }
 export const cityT9Obj = {};
 for (let i of mapsStr) {
@@ -5900,20 +5900,41 @@ for (let i of mapsStr) {
 export const cityR03Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html' target='_blank'>国土数値情報　行政区域データ</a>";
 
 //------------------------------------------
-function cityStyleFunction() {
+function cityStyleFunction(mapName,year) {
   return function (feature, resolution) {
     const zoom = getZoom(resolution);
     const prop = feature.getProperties();
+    let selectColor = store.state.info.t09citySelectColor[mapName]
+    const sonmei = store.state.info.t09citysonmei[mapName]
     const styles = []
     let id
     let font
-    if (prop.N03_007) {
-      id = Number(prop.N03_007.slice(0, 2))
-    } else {
-      id = 0
+    if (year !== 't09') {
+      selectColor = '県で色分け'
     }
+    switch (selectColor) {
+      case '標準':
+        id = prop.N03_004
+        break
+      case '県で色分け':
+        if (prop.N03_007) {
+          id = Number(prop.N03_007.slice(0, 2))
+        } else {
+          id = 0
+        }
+        break
+      case '色なし':
+        id = ''
+        break
+    }
+    // if (prop.N03_007) {
+    //   id = Number(prop.N03_007.slice(0, 2))
+    // } else {
+    //   id = 0
+    // }
     const rgb = d3.rgb(d3OridinalColor(id))
-    const rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
+    let rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
+    if (!id) rgba = 'rgba(0,0,0,0)'
     let polygonStyle
     if (zoom > 10) {
       polygonStyle = new Style({
@@ -5960,9 +5981,28 @@ function cityStyleFunction() {
         exceedLength:true
       })
     });
-    styles.push(polygonStyle);
-    if(zoom>=9) {
-      styles.push(textStyle);
+
+    if (year === 't09') {
+      if (sonmei) {
+        if (prop.N03_004) {
+          if (prop.N03_004.indexOf(sonmei) !== -1) {
+            styles.push(polygonStyle);
+            if(zoom>=9) {
+              styles.push(textStyle);
+            }
+          }
+        }
+      } else {
+        styles.push(polygonStyle);
+        if(zoom>=9) {
+          styles.push(textStyle);
+        }
+      }
+    } else {
+      styles.push(polygonStyle);
+      if(zoom>=9) {
+        styles.push(textStyle);
+      }
     }
     return styles;
   }

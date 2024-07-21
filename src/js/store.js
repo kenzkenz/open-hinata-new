@@ -352,6 +352,18 @@ const moduleInfo = {
       map03: '標準',
       map04: '標準'
     },
+    t09citysonmei: {
+      map01: '',
+      map02: '',
+      map03: '',
+      map04: ''
+    },
+    t09citySelectColor: {
+      map01: '標準',
+      map02: '標準',
+      map03: '標準',
+      map04: '標準'
+    },
     meijigunmei: {
       map01: '',
       map02: '',
@@ -607,6 +619,13 @@ const moduleInfo = {
             variable = 'meijigunSelectColor'
           } else if (payload.order === 1){
             variable = 'meijigunmei'
+          }
+          break
+        case 't09city':
+          if (payload.order === 0) {
+            variable = 't09citySelectColor'
+          } else if (payload.order === 1){
+            variable = 't09citysonmei'
           }
           break
       }

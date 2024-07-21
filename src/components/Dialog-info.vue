@@ -29,6 +29,7 @@
             <v-tansyashin :item="item" :mapName="mapName" v-else-if="item.component.name === 'tansyashin'"/>
             <v-kinsei :item="item" :mapName="mapName" v-else-if="item.component.name === 'kinsei'"/>
             <v-meijigun :item="item" :mapName="mapName" v-else-if="item.component.name === 'meijigun'"/>
+            <v-t09city :item="item" :mapName="mapName" v-else-if="item.component.name === 't09city'"/>
 
         </div>
     </div>
@@ -51,6 +52,7 @@
   import DialogInfoTansyashin from '@/components/dialog-info/Dialog-info-tansyashin'
   import DialogInfoKinsei from '@/components/dialog-info/Dialog-info-kinsei'
   import DialogInfoMeijigun from '@/components/dialog-info/Dialog-info-meijigun'
+  import DialogInfoT09city from '@/components/dialog-info/Dialog-info-t09city'
 
   export default {
     name: "v-dialog-info",
@@ -71,6 +73,7 @@
       'v-tansyashin':DialogInfoTansyashin,
       'v-kinsei':DialogInfoKinsei,
       'v-meijigun':DialogInfoMeijigun,
+      'v-t09city':DialogInfoT09city,
     },
     props: ['mapName'],
     computed: {
