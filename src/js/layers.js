@@ -13689,9 +13689,8 @@ export const Layers =
 
         { text: '幕末期近世の村', data: { id: "kinseipoint", layer: LayersMvt.kinseiPointObj, opacity: 1, summary: LayersMvt.kinseiSumm,component: {name: 'kinsei', values:[]} } },
 
-
-        { text: '明治中期の郡(県で色分け)', data: { id: "gun", layer: LayersMvt.gunObj, opacity: 1, summary: LayersMvt.gunSumm } },
-        { text: '明治中期の郡(国で色分け)', data: { id: "gunkuni", layer: LayersMvt.gunkuniObj, opacity: 1, summary: LayersMvt.gunSumm } },
+        { text: '明治中期の郡', data: { id: "gun", layer: LayersMvt.gunObj, opacity: 1, summary: LayersMvt.gunSumm,component: {name: 'meijigun', values:[]} } },
+        // { text: '明治中期の郡(国で色分け)', data: { id: "gunkuni", layer: LayersMvt.gunkuniObj, opacity: 1, summary: LayersMvt.gunSumm } },
         { text: 'T09市町村', data: { id: "cityT9", layer: LayersMvt.cityT9Obj, opacity: 1, summary: LayersMvt.cityT9Summ } },
         { text: 'S25市町村', data: { id: "cityS25", layer: LayersMvt.cityS25Obj, opacity: 1, summary: LayersMvt.cityS25Summ } },
         { text: 'H07市町村', data: { id: "cityH07", layer: LayersMvt.cityH07Obj, opacity: 1, summary: LayersMvt.cityH07Summ } },

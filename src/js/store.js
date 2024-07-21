@@ -352,6 +352,18 @@ const moduleInfo = {
       map03: '標準',
       map04: '標準'
     },
+    meijigunmei: {
+      map01: '',
+      map02: '',
+      map03: '',
+      map04: ''
+    },
+    meijigunSelectColor: {
+      map01: '標準',
+      map02: '標準',
+      map03: '標準',
+      map04: '標準'
+    },
     tansyashin: {
       map01: 'all',
       map02: 'all',
@@ -588,6 +600,13 @@ const moduleInfo = {
             variable = 'selectColor'
           } else if (payload.order === 1){
             variable = 'sonmei'
+          }
+          break
+        case 'meijigun':
+          if (payload.order === 0) {
+            variable = 'meijigunSelectColor'
+          } else if (payload.order === 1){
+            variable = 'meijigunmei'
           }
           break
       }

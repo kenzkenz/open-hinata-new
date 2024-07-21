@@ -28,6 +28,7 @@
             <v-kijyunten :item="item" :mapName="mapName" v-else-if="item.component.name === 'kijyunten'"/>
             <v-tansyashin :item="item" :mapName="mapName" v-else-if="item.component.name === 'tansyashin'"/>
             <v-kinsei :item="item" :mapName="mapName" v-else-if="item.component.name === 'kinsei'"/>
+            <v-meijigun :item="item" :mapName="mapName" v-else-if="item.component.name === 'meijigun'"/>
 
         </div>
     </div>
@@ -49,6 +50,7 @@
   import DialogInfoKijyunten from '@/components/dialog-info/Dialog-info-kijyunten'
   import DialogInfoTansyashin from '@/components/dialog-info/Dialog-info-tansyashin'
   import DialogInfoKinsei from '@/components/dialog-info/Dialog-info-kinsei'
+  import DialogInfoMeijigun from '@/components/dialog-info/Dialog-info-meijigun'
 
   export default {
     name: "v-dialog-info",
@@ -68,6 +70,7 @@
       'v-kijyunten':DialogInfoKijyunten,
       'v-tansyashin':DialogInfoTansyashin,
       'v-kinsei':DialogInfoKinsei,
+      'v-meijigun':DialogInfoMeijigun,
     },
     props: ['mapName'],
     computed: {

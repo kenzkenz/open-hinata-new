@@ -78,7 +78,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
       const prop = feature.getProperties()
       console.log(layers[i].get('name'))
       console.log(geoType)
-      console.log(geometry.getFlatCoordinates())
+      // console.log(geometry.getFlatCoordinates())
       console.log(prop)
       let lonLat
       if (geoType === 'Polygon' || geoType === 'MultiPolygon' || geoType === 'LineString' || geoType === 'MultiLineString') {

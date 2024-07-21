@@ -6971,7 +6971,7 @@ function hinanzyoStyleFunction(color) {
   }
 }
 //郡------------------------------------------------------------------------------------------------
-function Gun(){
+function Gun(mapName){
   this.name = 'gun'
   this.source = new VectorTileSource({
     format: new MVT(),
@@ -6980,63 +6980,59 @@ function Gun(){
     // url: "https://kenzkenz.github.io/gun2/{z}/{x}/{y}.mvt"
     url: 'https://kenzkenz3.xsrv.jp/mvt/gun115/{z}/{x}/{y}.mvt'
   });
-  this.style = gunStyleFunction('PREF');
+  this.style = gunStyleFunction(mapName);
 }
 export  const gunObj = {};
 for (let i of mapsStr) {
-  gunObj[i] = new VectorTileLayer(new Gun())
+  gunObj[i] = new VectorTileLayer(new Gun(i))
 }
-export const gunSumm = "郡地図ver1.1.5で作成しました。<br><a href='https://booth.pm/ja/items/3053727' target='_blank'>郡地図研究会</a>";
-// ----------------------------------------------------------------------
-function Gunkuni(){
-  this.name = 'gunkuni'
-  this.source = new VectorTileSource({
-    format: new MVT(),
-    maxZoom:13,
-    // url: "https://kenzkenz.github.io/gun2/{z}/{x}/{y}.mvt"
-    url: 'https://kenzkenz3.xsrv.jp/mvt/gun115/{z}/{x}/{y}.mvt'
-
-  });
-  this.style = gunStyleFunction('KUNI');
-}
-export  const gunkuniObj = {};
-for (let i of mapsStr) {
-  gunkuniObj[i] = new VectorTileLayer(new Gunkuni())
-}
+export const gunSumm = "郡地図ver1.1.5で作成しました。<a href='https://booth.pm/ja/items/3053727' target='_blank'>郡地図研究会</a>";
 //-----------------------------------------------------------------------
-function Gunbakumatu(){
-  this.name = 'gunbakumatu'
-  this.source = new VectorTileSource({
-    format: new MVT(),
-    maxZoom:13,
-    url: "https://kenzkenz.github.io/gun0/{z}/{x}/{y}.mvt"
-  });
-  this.style = gunStyleFunction('KUNI');
-}
-export  const gunbakumatuObj = {};
-for (let i of mapsStr) {
-  gunbakumatuObj[i] = new VectorTileLayer(new Gunbakumatu())
-}
+// function Gunbakumatu(){
+//   this.name = 'gunbakumatu'
+//   this.source = new VectorTileSource({
+//     format: new MVT(),
+//     maxZoom:13,
+//     url: "https://kenzkenz.github.io/gun0/{z}/{x}/{y}.mvt"
+//   });
+//   this.style = gunStyleFunction('KUNI');
+// }
+// export  const gunbakumatuObj = {};
+// for (let i of mapsStr) {
+//   gunbakumatuObj[i] = new VectorTileLayer(new Gunbakumatu())
+// }
 //-------------------------------------------------------------------------
-function gunStyleFunction(irowake) {
+function gunStyleFunction(mapName) {
   return function (feature, resolution) {
     const zoom = getZoom(resolution);
     const prop = feature.getProperties();
-    const styles = [];
+    const styles = []
+    const selectColor = store.state.info.meijigunSelectColor[mapName]
+    const gunmei = store.state.info.meijigunmei[mapName]
     // const rgb = d3.rgb(cityColor(prop[irowake]))
-    const result = store.state.base.prefId.find(el => el.pref === prop[irowake])
+    const result = store.state.base.prefId.find(el => el.pref === prop.PREF)
     let id
-    if (irowake === 'PREF') {
-      if (result) {
-        id = result.id
-      } else {
-        id = 0
-      }
-    } else{
-      id = prop[irowake]
+    switch (selectColor) {
+      case '標準':
+        id = prop.GUN
+        break
+      case '県で色分け':
+        if (result) {
+          id = result.id
+        } else {
+          id = 0
+        }
+        break
+      case '国で色分け':
+        id = prop.KUNI
+        break
+      case '色なし':
+        id = ''
+        break
     }
     const rgb = d3.rgb(d3OridinalColor(id))
-    const rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.8)"
+    let rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.8)"
+    if (!id) rgba = "rgba(0,0,0,0)"
     let polygonStyle
     if (zoom > 10) {
       polygonStyle = new Style({
@@ -7076,9 +7072,18 @@ function gunStyleFunction(irowake) {
         exceedLength:true
       })
     });
-    styles.push(polygonStyle);
-    if(zoom>=9) {
-      styles.push(textStyle);
+    if (gunmei) {
+      if ((prop.KUNI + prop.GUN).indexOf(gunmei) !== -1) {
+        styles.push(polygonStyle)
+        if(zoom>=9) {
+          styles.push(textStyle)
+        }
+      }
+    } else {
+      styles.push(polygonStyle)
+      if(zoom>=9) {
+        styles.push(textStyle)
+      }
     }
     return styles;
   }
@@ -8245,9 +8250,6 @@ if (window.innerWidth > 1000) {
   kinseiPolygonMaxResolution = 305.748113	 //zoom9
   // kinseiPolygonMaxResolution = 400	 //zoom9
 }
-// if (store.state.info.sonmei['map01']) kinseiPolygonMaxResolution = 156543.03
-
-
 function KinseiPolygon(mapName) {
   this.useInterimTilesOnError = false
   this.name = 'kinseipolygon'
