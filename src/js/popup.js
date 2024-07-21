@@ -428,10 +428,12 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           }
           break
         case 'kosyou':
-          cont += '<div style=width:200px>' + prop.W09_001 + '</div><hr>'
+          if (cont.indexOf('kosyou') === -1) {
+            cont += '<h4 class="kosyou" style=width:200px>' + prop.W09_001 + '</h4><hr>'
+          }
           break
         case 'chyouzyuu':
-          cont += '<div style=width:200px>' + prop.A15_001 + '</div><hr>'
+          cont += '<h4 style=width:200px>' + prop.A15_001 + '</h4><hr>'
           break
         case 'tatumaki':
           cont += '<div style=width:250px>' + prop.A30b_005 + prop.A30b_006 + prop.A30b_007 +

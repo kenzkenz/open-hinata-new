@@ -18,8 +18,6 @@
 <script>
 import * as LayersMvt from '@/js/layers-mvt'
 import * as permalink from '@/js/permalink'
-import store from "@/js/store";
-import {gunObj} from "@/js/layers-mvt";
 
 export default {
   name: "Dialog-info-maijigun",
