@@ -375,6 +375,7 @@ polygonInteraction.on('drawend', function (event) {
     const coordAr = feature.getGeometry().getCoordinates()
     const geoType = feature.getGeometry().getType()
     measure (geoType,feature,coordAr)
+    console.log(feature.getGeometry())
 })
 
 circleInteraction.on('drawend', function (event) {

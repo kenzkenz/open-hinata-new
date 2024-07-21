@@ -14,9 +14,6 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
   let layers0 = []
   let features00 = []
 
-
-
-
   // if (features) {
   //   let i = 0
   //   for(let feature of features){
@@ -81,6 +78,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
       const prop = feature.getProperties()
       console.log(layers[i].get('name'))
       console.log(geoType)
+      console.log(geometry.getFlatCoordinates())
       console.log(prop)
       let lonLat
       if (geoType === 'Polygon' || geoType === 'MultiPolygon' || geoType === 'LineString' || geoType === 'MultiLineString') {
@@ -871,13 +869,18 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           }
           break
         case 'Yohouku1':
-          cont += '<div style=width:200px;>'
-          Object.keys(prop).forEach(function(key) {
-            if (key !== 'geometry') {
-              cont += key + '=' + prop[key] + '<br>'
-            }
-          })
-          cont += '<div>'
+          // cont += '<div style=width:200px;>'
+          // Object.keys(prop).forEach(function(key) {
+          //   if (key !== 'geometry') {
+          //     cont += key + '=' + prop[key] + '<br>'
+          //   }
+          // })
+          // cont += '<div>'
+          cont += '<div style=width:200px;>' +
+              '<h4>' + prop.name + '</h4>' +
+              '<p>code=' + prop.code + '</p>' +
+              '</div><hr>'
+
           break
         case 'dobokuisan':
         case 'draganddrop':
