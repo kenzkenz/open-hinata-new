@@ -5852,14 +5852,14 @@ for (let i of mapsStr) {
 }
 export const cityT9Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html' target='_blank'>国土数値情報　行政区域データ</a>";
 //S25市町村------------------------------------------------------------------------------------------------
-function CityS25(){
+function CityS25(mapName){
   this.name = 'city'
   this.source = new VectorTileSource({
     format: new MVT(),
     maxZoom:13,
     url: "https://kenzkenz.github.io/city_s25/{z}/{x}/{y}.mvt"
   });
-  this.style = cityStyleFunction();
+  this.style = cityStyleFunction(mapName,'s25');
 }
 export const cityS25Obj = {};
 for (let i of mapsStr) {
@@ -5868,14 +5868,14 @@ for (let i of mapsStr) {
 export const cityS25Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html' target='_blank'>国土数値情報　行政区域データ</a>";
 
 //H07市町村------------------------------------------------------------------------------------------------
-function CityH07(){
+function CityH07(mapName){
   this.name = 'city'
   this.source = new VectorTileSource({
     format: new MVT(),
     maxZoom:13,
     url: "https://kenzkenz.github.io/city_h07/{z}/{x}/{y}.mvt"
   });
-  this.style = cityStyleFunction();
+  this.style = cityStyleFunction(mapName,'h07');
 }
 export const cityH07Obj = {};
 for (let i of mapsStr) {
@@ -5884,14 +5884,14 @@ for (let i of mapsStr) {
 export const cityH07Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html' target='_blank'>国土数値情報　行政区域データ</a>";
 
 //R03市町村------------------------------------------------------------------------------------------------
-function CityR03(){
+function CityR03(mapName){
   this.name = 'city'
   this.source = new VectorTileSource({
     format: new MVT(),
     maxZoom:13,
     url: "https://kenzkenz.github.io/city_r03/{z}/{x}/{y}.mvt"
   });
-  this.style = cityStyleFunction();
+  this.style = cityStyleFunction(mapName,'r03');
 }
 export const cityR03Obj = {};
 for (let i of mapsStr) {
@@ -5904,12 +5904,30 @@ function cityStyleFunction(mapName,year) {
   return function (feature, resolution) {
     const zoom = getZoom(resolution);
     const prop = feature.getProperties();
-    let selectColor = store.state.info.t09citySelectColor[mapName]
-    const sonmei = store.state.info.t09citysonmei[mapName]
+    let selectColor
+    let sonmei
+    switch (year) {
+      case 't09':
+        selectColor = store.state.info.t09citySelectColor[mapName]
+        sonmei = store.state.info.t09citysonmei[mapName]
+        break
+      case 's25':
+        selectColor = store.state.info.s25citySelectColor[mapName]
+        sonmei = store.state.info.s25citysichosonmei[mapName]
+        break
+      case 'h07':
+        selectColor = store.state.info.h07citySelectColor[mapName]
+        sonmei = store.state.info.h07citysichosonmei[mapName]
+        break
+      case 'r03':
+        selectColor = store.state.info.r03citySelectColor[mapName]
+        sonmei = store.state.info.r03citysichosonmei[mapName]
+        break
+    }
     const styles = []
     let id
     let font
-    if (year !== 't09') {
+    if (!year) {
       selectColor = '県で色分け'
     }
     switch (selectColor) {
@@ -5982,7 +6000,7 @@ function cityStyleFunction(mapName,year) {
       })
     });
 
-    if (year === 't09') {
+    if (year) {
       if (sonmei) {
         if (prop.N03_004) {
           if (prop.N03_004.indexOf(sonmei) !== -1) {

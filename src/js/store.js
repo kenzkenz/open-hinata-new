@@ -364,6 +364,42 @@ const moduleInfo = {
       map03: '標準',
       map04: '標準'
     },
+    s25citysichosonmei: {
+      map01: '',
+      map02: '',
+      map03: '',
+      map04: ''
+    },
+    h07citySelectColor: {
+      map01: '標準',
+      map02: '標準',
+      map03: '標準',
+      map04: '標準'
+    },
+    h07citysichosonmei: {
+      map01: '',
+      map02: '',
+      map03: '',
+      map04: ''
+    },
+    r03citySelectColor: {
+      map01: '標準',
+      map02: '標準',
+      map03: '標準',
+      map04: '標準'
+    },
+    r03citysichosonmei: {
+      map01: '',
+      map02: '',
+      map03: '',
+      map04: ''
+    },
+    s25citySelectColor: {
+      map01: '標準',
+      map02: '標準',
+      map03: '標準',
+      map04: '標準'
+    },
     meijigunmei: {
       map01: '',
       map02: '',
@@ -626,6 +662,27 @@ const moduleInfo = {
             variable = 't09citySelectColor'
           } else if (payload.order === 1){
             variable = 't09citysonmei'
+          }
+          break
+        case 's25city':
+          if (payload.order === 0) {
+            variable = 's25citySelectColor'
+          } else if (payload.order === 1){
+            variable = 's25citysichosonmei'
+          }
+          break
+        case 'h07city':
+          if (payload.order === 0) {
+            variable = 'h07citySelectColor'
+          } else if (payload.order === 1){
+            variable = 'h07citysichosonmei'
+          }
+          break
+        case 'r03city':
+          if (payload.order === 0) {
+            variable = 'r03citySelectColor'
+          } else if (payload.order === 1){
+            variable = 'r03citysichosonmei'
           }
           break
       }

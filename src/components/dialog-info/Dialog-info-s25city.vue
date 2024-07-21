@@ -6,8 +6,8 @@
       色分け選択
       <b-form-select v-model="s_selectColor" :options="options" @change="selectChange"></b-form-select>
     </div>
-    <div style="margin-top: 5px;">村名で抽出</div>
-    <b-form-input type='text' v-model="s_sonmei" placeholder="村名"></b-form-input>
+    <div style="margin-top: 5px;">市町村名で抽出</div>
+    <b-form-input type='text' v-model="s_sichosonmei" placeholder="市町村名"></b-form-input>
     <hr>
     <div>
       出典:<span v-html="item.summary"></span>
@@ -20,7 +20,7 @@ import * as LayersMvt from '@/js/layers-mvt'
 import * as permalink from '@/js/permalink'
 
 export default {
-  name: "Dialog-info-t09city",
+  name: "Dialog-info-s25city",
   props: ['mapName', 'item'],
   components: {
   },
@@ -34,42 +34,42 @@ export default {
     }
   },
   computed: {
-    s_sonmei: {
+    s_sichosonmei: {
       get() {
-        return this.$store.state.info.t09citysonmei[this.mapName]
+        return this.$store.state.info.s25citysichosonmei[this.mapName]
       },
       set(value) {
-        this.$store.state.info.t09citysonmei[this.mapName] = value
-        LayersMvt.cityT9Obj[this.mapName].getSource().changed()
+        this.$store.state.info.s25citysichosonmei[this.mapName] = value
+        LayersMvt.cityS25Obj[this.mapName].getSource().changed()
         this.storeUpdate()
       }
     },
     s_selectColor: {
       get() {
-        return this.$store.state.info.t09citySelectColor[this.mapName]
+        return this.$store.state.info.s25citySelectColor[this.mapName]
       },
       set(value) {
-        this.$store.state.info.t09citySelectColor[this.mapName] = value
-        LayersMvt.cityT9Obj[this.mapName].getSource().changed()
+        this.$store.state.info.s25citySelectColor[this.mapName] = value
+        LayersMvt.cityS25Obj[this.mapName].getSource().changed()
         this.storeUpdate()
       }
     },
   },
   methods: {
     selectChange (value) {
-      LayersMvt.cityT9Obj[this.mapName].getSource().changed()
+      LayersMvt.cityS25Obj[this.mapName].getSource().changed()
       this.storeUpdate()
     },
     storeUpdate () {
       const selectColor = this.s_selectColor
-      const sonmei = this.s_sonmei
-      this.$store.commit('base/updateListPart',{mapName: this.mapName, id:this.item.id, values: [selectColor,sonmei]});
+      const sichosonmei = this.s_sichosonmei
+      this.$store.commit('base/updateListPart',{mapName: this.mapName, id:this.item.id, values: [selectColor,sichosonmei]});
       permalink.moveEnd();
     },
   },
   mounted ()  {
     this.$nextTick(function () {
-      LayersMvt.cityT9Obj[this.mapName].getSource().changed()
+      LayersMvt.cityS25Obj[this.mapName].getSource().changed()
     })
   }
 }

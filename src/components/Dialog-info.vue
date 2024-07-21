@@ -30,6 +30,9 @@
             <v-kinsei :item="item" :mapName="mapName" v-else-if="item.component.name === 'kinsei'"/>
             <v-meijigun :item="item" :mapName="mapName" v-else-if="item.component.name === 'meijigun'"/>
             <v-t09city :item="item" :mapName="mapName" v-else-if="item.component.name === 't09city'"/>
+            <v-s25city :item="item" :mapName="mapName" v-else-if="item.component.name === 's25city'"/>
+            <v-h07city :item="item" :mapName="mapName" v-else-if="item.component.name === 'h07city'"/>
+            <v-r03city :item="item" :mapName="mapName" v-else-if="item.component.name === 'r03city'"/>
 
         </div>
     </div>
@@ -53,6 +56,10 @@
   import DialogInfoKinsei from '@/components/dialog-info/Dialog-info-kinsei'
   import DialogInfoMeijigun from '@/components/dialog-info/Dialog-info-meijigun'
   import DialogInfoT09city from '@/components/dialog-info/Dialog-info-t09city'
+  import DialogInfoS25city from '@/components/dialog-info/Dialog-info-s25city'
+  import DialogInfoH07city from '@/components/dialog-info/Dialog-info-h07city'
+  import DialogInfoR03city from '@/components/dialog-info/Dialog-info-r03city'
+
 
   export default {
     name: "v-dialog-info",
@@ -74,6 +81,9 @@
       'v-kinsei':DialogInfoKinsei,
       'v-meijigun':DialogInfoMeijigun,
       'v-t09city':DialogInfoT09city,
+      'v-s25city':DialogInfoS25city,
+      'v-h07city':DialogInfoH07city,
+      'v-r03city':DialogInfoR03city,
     },
     props: ['mapName'],
     computed: {
