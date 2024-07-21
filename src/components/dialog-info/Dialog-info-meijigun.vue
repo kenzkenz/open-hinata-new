@@ -6,8 +6,8 @@
       色分け選択
       <b-form-select v-model="s_selectColor" :options="options" @change="selectChange"></b-form-select>
     </div>
-    <div style="margin-top: 5px;">郡名で抽出</div>
-    <b-form-input type='text' v-model="s_gunmei" placeholder="村名"></b-form-input>
+    <div style="margin-top: 5px;">国名、郡名で抽出</div>
+    <b-form-input type='text' v-model="s_gunmei" placeholder="国名、郡名"></b-form-input>
     <hr>
     <div>
       <span v-html="item.summary"></span>
@@ -55,6 +55,7 @@ export default {
       set(value) {
         this.$store.state.info.meijigunSelectColor[this.mapName] = value
         LayersMvt.gunObj[this.mapName].getSource().changed()
+        this.storeUpdate()
       }
     },
   },
