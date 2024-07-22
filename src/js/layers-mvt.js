@@ -2390,7 +2390,7 @@ function iryoMvt(mapName){
     crossOrigin: 'Anonymous',
     format: new MVT(),
     maxZoom:14,
-    url: "https://kenzkenz3.xsrv.jp/mvt/iryo/{z}/{x}/{y}.mvt"
+    url: "https://kenzkenz3.xsrv.jp/mvt/iryo2/{z}/{x}/{y}.mvt"
   });
   this.style = iryoStyleFunction(mapName)
   this.maxResolution = 152.874057 //zoom10
