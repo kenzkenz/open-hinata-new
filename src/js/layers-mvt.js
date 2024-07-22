@@ -2383,7 +2383,7 @@ function zoseiStyleFunction() {
   }
 }
 // ----------------------------------------------------------------------------
-function iryoMvt(){
+function iryoMvt(mapName){
   this.name = 'iryoMvt'
   this.className = 'iryoMvt'
   this.source = new VectorTileSource({
@@ -2392,7 +2392,7 @@ function iryoMvt(){
     maxZoom:14,
     url: "https://kenzkenz3.xsrv.jp/mvt/iryo/{z}/{x}/{y}.mvt"
   });
-  this.style = iryoStyleFunction()
+  this.style = iryoStyleFunction(mapName)
   this.maxResolution = 152.874057 //zoom10
   // this.declutter = true
   // this.overflow = true
@@ -2400,7 +2400,7 @@ function iryoMvt(){
 export const iryoSumm = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-P04-v3_0.html' target='_blank'>国土数値情報</a>"
 export const iryoMvtObj = {};
 for (let i of mapsStr) {
-  iryoMvtObj[i] = new VectorTileLayer(new iryoMvt())
+  iryoMvtObj[i] = new VectorTileLayer(new iryoMvt(i))
 }
 function iryoRaster () {
   this.source = new XYZ({
@@ -2426,8 +2426,10 @@ for (let i of mapsStr) {
   iryoObj[i].values_['pointer'] = true
 }
 //--------------------------
-function iryoStyleFunction() {
+function iryoStyleFunction(mapName) {
   return function (feature, resolution) {
+    const syurui = Number(store.state.info.iryoukikansyurui[mapName])
+    const kamoku = store.state.info.iryoukikankamoku[mapName]
     const zoom = getZoom(resolution)
     const prop = feature.getProperties()
     let text = prop.P04_002
@@ -2453,7 +2455,6 @@ function iryoStyleFunction() {
     }
     const iconStyle = new Style({
       image: new Icon({
-        // anchor: [0.5, 1],
         src: require('@/assets/icon/whitecircle.png'),
         color: color,
         scale: zoom>=15 ? 1.5: 1
@@ -2469,10 +2470,32 @@ function iryoStyleFunction() {
           width: 3
         })
       })
-    });
-    styles.push(iconStyle);
-    if(zoom>=16) {
-      styles.push(textStyle);
+    })
+    if (syurui === 0 && !kamoku) {
+      styles.push(iconStyle);
+      if (zoom >= 16) {
+        styles.push(textStyle);
+      }
+    } else if (syurui === 0) {
+      if (prop.P04_004) {
+        if (prop.P04_004.indexOf(kamoku) !== -1) {
+          styles.push(iconStyle);
+          if (zoom >= 16) {
+            styles.push(textStyle);
+          }
+        }
+      }
+    } else {
+      if (prop.P04_001 === syurui) {
+        if (prop.P04_004) {
+          if (prop.P04_004.indexOf(kamoku) !== -1) {
+            styles.push(iconStyle);
+            if (zoom >= 16) {
+              styles.push(textStyle);
+            }
+          }
+        }
+      }
     }
     return styles;
   }
@@ -8328,7 +8351,6 @@ if (window.innerWidth > 1000) {
   kinseiPolygonMaxResolution = 611.496226	 //zoom8
 } else {
   kinseiPolygonMaxResolution = 305.748113	 //zoom9
-  // kinseiPolygonMaxResolution = 400	 //zoom9
 }
 function KinseiPolygon(mapName) {
   this.useInterimTilesOnError = false

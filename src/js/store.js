@@ -424,6 +424,18 @@ const moduleInfo = {
       map03: '標準',
       map04: '標準'
     },
+    iryoukikansyurui: {
+      map01: '0',
+      map02: '0',
+      map03: '0',
+      map04: '0'
+    },
+    iryoukikankamoku: {
+      map01: '',
+      map02: '',
+      map03: '',
+      map04: ''
+    },
     tansyashin: {
       map01: 'all',
       map02: 'all',
@@ -702,6 +714,13 @@ const moduleInfo = {
             variable = 'r05citySelectColor'
           } else if (payload.order === 1){
             variable = 'r05citysichosonmei'
+          }
+          break
+        case 'iryou':
+          if (payload.order === 0) {
+            variable = 'iryoukikansyurui'
+          } else if (payload.order === 1){
+            variable = 'iryoukikankamoku'
           }
           break
       }

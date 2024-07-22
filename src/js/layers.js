@@ -12781,7 +12781,7 @@ export const Layers =
           ]},
         { text: '医療機関',
           children: [
-            { text: 'R02医療機関', data: { id: "iryo", layer: LayersMvt.iryoObj, opacity: 1, summary: LayersMvt.iryoSumm } },
+            { text: 'R02医療機関', data: { id: "iryo", layer: LayersMvt.iryoObj, opacity: 1, summary: LayersMvt.iryoSumm,component: {name: 'iryou', values:[]} } },
           ]},
       ]},
     { text: '全国Q地図',
