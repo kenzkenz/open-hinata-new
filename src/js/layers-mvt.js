@@ -8416,7 +8416,9 @@ function kinseiPolygonStyleFunction(mapName) {
             rgba = 'rgba(127,127,127,0.7)'
           } else if (ryo.indexOf('藩') !== -1) {
             rgba = 'rgba(104,52,154,0.7)'
-          } else if (ryo === '皇室領' || ryo === '社寺領') {
+          } else if (ryo === '皇室領') {
+            rgba = 'rgba(255,215,0,0.7)'
+          } else if (ryo === '社寺領') {
             rgba = 'rgba(0,0,0,0.7)'
           } else {
             rgba = 'rgba(0,0,255,0.7)'
