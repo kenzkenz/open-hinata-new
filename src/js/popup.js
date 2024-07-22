@@ -1036,7 +1036,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           let href
           console.log(ru(description[3]).split('<br>').length)
           if (ru(description[3]).split('<br>').length > 1) {
-            href='<a href="' + url + '" target="_blank">神社と古事記を開く</a><hr>'
+            href='<a href="' + url + '" target="_blank">神社と古事記を開く</a>'
           } else  {
             href=''
           }

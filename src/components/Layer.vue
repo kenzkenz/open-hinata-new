@@ -7,11 +7,16 @@
 
               <div class="handle-div" ><i class="fa-solid fa-up-down fa-lg handle-icon"></i></div>
 
-              <label class="check-box" :for='mapName + "checkbox" + item.id'>
-                <div class="check-div" >
-                    <input :id='mapName + "checkbox" + item.id' type="checkbox" checked v-model="item.check" @change="checkLayer(item)">
-                    <span class="check-text"></span>
-                </div>
+<!--              <label class="check-box" :for='mapName + "checkbox" + item.id'>-->
+<!--                <div class="check-div" >-->
+<!--                    <input :id='mapName + "checkbox" + item.id' type="checkbox" checked v-model="item.check" @change="checkLayer(item)">-->
+<!--                    <span class="check-text"></span>-->
+<!--                </div>-->
+<!--              </label>-->
+
+              <label class="eye-label">
+                <input type="checkbox" class='checkbox' checked v-model="item.check" @change="checkLayer(item)">
+                <span class="checkbox-eye"></span>
               </label>
 
               <label :for='"checkbox2" + item.id'>
@@ -239,6 +244,15 @@
     .checkbox {
       display: none;
     }
+
+    .eye-label {
+      position: absolute;
+      top:3px;
+      left:26px;
+      width:15px;
+      color:rgba(0,60,136,0.5);
+      cursor: pointer;
+    }
     .bookmark-label{
       position: absolute;
       top:7px;
@@ -264,6 +278,32 @@
       color: white;
     }
     .checkbox-fontas:hover:before{
+      color: blue;
+    }
+
+    .checkbox-eye {
+      position: relative;
+      vertical-align: middle;
+      font-size: 20px;
+    }
+    .checkbox + .checkbox-eye:before {
+      font-weight: 550;
+      font-family: "Font Awesome 5 Free";
+      content: '\f070';
+      color:rgba(0,60,136,0.5);
+      cursor: pointer;
+    }
+    .checkbox:checked + .checkbox-eye:before {
+      font-weight: 550;
+      font-family: "Font Awesome 5 Free";
+      content: '\f06e';
+      color:rgba(0,60,136,0.5);
+
+    }
+    .checkbox-eye:hover:before{
+      color: blue;
+    }
+    .checkbox:checked + .checkbox-eye:hover:before {
       color: blue;
     }
 
@@ -295,6 +335,9 @@
         color: #fff;
         background-color: rgba(0,60,136,0.5);
         cursor: grab;
+    }
+    .handle-div:hover{
+      color: blue;
     }
     .handle-icon{
         margin: 10px 5px 0 8px;
@@ -369,7 +412,7 @@
       position: absolute;
       padding-top: 0px;
       padding-left: 5px;
-      left: 46px;
+      left: 47px;
       top:8px;
       height: 100%;
       cursor: pointer;
