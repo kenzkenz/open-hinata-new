@@ -901,7 +901,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
               '読み=' + prop.yomi + '<br>' +
               '所在地=' + prop.spot + '<br>' +
               '指定等=' + prop.status + '<br>' +
-              '<a href="' + prop.image + '" target="_blank"><img style="object-fit: cover;width: 300px;height:200px;" src="' + prop.image + '"></a><hr>' +
+              '<a href="' + prop.image + '" target="_blank"><img style="object-fit: cover;width: 300px;height:200px;" src="' + prop.image + '"></a>' +
               '</div><hr>'
           break
         case 'senkyoku':

@@ -33,6 +33,7 @@
             <v-s25city :item="item" :mapName="mapName" v-else-if="item.component.name === 's25city'"/>
             <v-h07city :item="item" :mapName="mapName" v-else-if="item.component.name === 'h07city'"/>
             <v-r03city :item="item" :mapName="mapName" v-else-if="item.component.name === 'r03city'"/>
+            <v-r05city :item="item" :mapName="mapName" v-else-if="item.component.name === 'r05city'"/>
 
         </div>
     </div>
@@ -59,6 +60,7 @@
   import DialogInfoS25city from '@/components/dialog-info/Dialog-info-s25city'
   import DialogInfoH07city from '@/components/dialog-info/Dialog-info-h07city'
   import DialogInfoR03city from '@/components/dialog-info/Dialog-info-r03city'
+  import DialogInfoR05city from '@/components/dialog-info/Dialog-info-r05city'
 
 
   export default {
@@ -84,6 +86,8 @@
       'v-s25city':DialogInfoS25city,
       'v-h07city':DialogInfoH07city,
       'v-r03city':DialogInfoR03city,
+      'v-r05city':DialogInfoR05city,
+
     },
     props: ['mapName'],
     computed: {

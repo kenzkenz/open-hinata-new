@@ -13695,6 +13695,8 @@ export const Layers =
         { text: 'S25市町村', data: { id: "cityS25", layer: LayersMvt.cityS25Obj, opacity: 1, summary: LayersMvt.cityS25Summ,component: {name: 's25city', values:[]} } },
         { text: 'H07市町村', data: { id: "cityH07", layer: LayersMvt.cityH07Obj, opacity: 1, summary: LayersMvt.cityH07Summ,component: {name: 'h07city', values:[]} } },
         { text: 'R03市町村', data: { id: "cityR03", layer: LayersMvt.cityR03Obj, opacity: 1, summary: LayersMvt.cityR03Summ,component: {name: 'r03city', values:[]} } },
+        { text: 'R05市町村', data: { id: "cityR05", layer: LayersMvt.cityR05Obj, opacity: 1, summary: LayersMvt.cityR05Summ,component: {name: 'r05city', values:[]} } },
+
       ]},
     { text: '各種地域',
       children: [

@@ -394,6 +394,18 @@ const moduleInfo = {
       map03: '',
       map04: ''
     },
+    r05citysichosonmei: {
+      map01: '',
+      map02: '',
+      map03: '',
+      map04: ''
+    },
+    r05citySelectColor: {
+      map01: '標準',
+      map02: '標準',
+      map03: '標準',
+      map04: '標準'
+    },
     s25citySelectColor: {
       map01: '標準',
       map02: '標準',
@@ -683,6 +695,13 @@ const moduleInfo = {
             variable = 'r03citySelectColor'
           } else if (payload.order === 1){
             variable = 'r03citysichosonmei'
+          }
+          break
+        case 'r05city':
+          if (payload.order === 0) {
+            variable = 'r05citySelectColor'
+          } else if (payload.order === 1){
+            variable = 'r05citysichosonmei'
           }
           break
       }

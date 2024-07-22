@@ -5850,7 +5850,7 @@ export const cityT9Obj = {};
 for (let i of mapsStr) {
   cityT9Obj[i] = new VectorTileLayer(new CityT9(i))
 }
-export const cityT9Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html' target='_blank'>国土数値情報　行政区域データ</a>";
+export const cityT9Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html' target='_blank'>国土数値情報</a>";
 //S25市町村------------------------------------------------------------------------------------------------
 function CityS25(mapName){
   this.name = 'city'
@@ -5865,7 +5865,7 @@ export const cityS25Obj = {};
 for (let i of mapsStr) {
   cityS25Obj[i] = new VectorTileLayer(new CityS25(i))
 }
-export const cityS25Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html' target='_blank'>国土数値情報　行政区域データ</a>";
+export const cityS25Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html' target='_blank'>国土数値情報</a>";
 
 //H07市町村------------------------------------------------------------------------------------------------
 function CityH07(mapName){
@@ -5881,7 +5881,7 @@ export const cityH07Obj = {};
 for (let i of mapsStr) {
   cityH07Obj[i] = new VectorTileLayer(new CityH07(i))
 }
-export const cityH07Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html' target='_blank'>国土数値情報　行政区域データ</a>";
+export const cityH07Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html' target='_blank'>国土数値情報</a>";
 
 //R03市町村------------------------------------------------------------------------------------------------
 function CityR03(mapName){
@@ -5897,7 +5897,24 @@ export const cityR03Obj = {};
 for (let i of mapsStr) {
   cityR03Obj[i] = new VectorTileLayer(new CityR03(i))
 }
-export const cityR03Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html' target='_blank'>国土数値情報　行政区域データ</a>";
+export const cityR03Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html' target='_blank'>国土数値情報</a>";
+
+//R05市町村------------------------------------------------------------------------------------------------
+function CityR05(mapName){
+  this.name = 'city'
+  this.source = new VectorTileSource({
+    format: new MVT(),
+    maxZoom:13,
+    // url: "https://kenzkenz.github.io/city_r03/{z}/{x}/{y}.mvt"
+    url: 'https://kenzkenz3.xsrv.jp/mvt/city/r05/{z}/{x}/{y}.mvt'
+  });
+  this.style = cityStyleFunction(mapName,'r05');
+}
+export const cityR05Obj = {};
+for (let i of mapsStr) {
+  cityR05Obj[i] = new VectorTileLayer(new CityR05(i))
+}
+export const cityR05Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html' target='_blank'>国土数値情報</a>";
 
 //------------------------------------------
 function cityStyleFunction(mapName,year) {
@@ -5922,6 +5939,10 @@ function cityStyleFunction(mapName,year) {
       case 'r03':
         selectColor = store.state.info.r03citySelectColor[mapName]
         sonmei = store.state.info.r03citysichosonmei[mapName]
+        break
+      case 'r05':
+        selectColor = store.state.info.r05citySelectColor[mapName]
+        sonmei = store.state.info.r05citysichosonmei[mapName]
         break
     }
     const styles = []
@@ -7068,18 +7089,19 @@ function gunStyleFunction(mapName) {
     const selectColor = store.state.info.meijigunSelectColor[mapName]
     const gunmei = store.state.info.meijigunmei[mapName]
     // const rgb = d3.rgb(cityColor(prop[irowake]))
-    const result = store.state.base.prefId.find(el => el.pref === prop.PREF)
+    // const result = store.state.base.prefId.find(el => el.pref === prop.PREF)
     let id
     switch (selectColor) {
       case '標準':
         id = prop.GUN
         break
       case '県で色分け':
-        if (result) {
-          id = result.id
-        } else {
-          id = 0
-        }
+        id = prop.PREF
+        // if (result) {
+        //   id = result.id
+        // } else {
+        //   id = 0
+        // }
         break
       case '国で色分け':
         id = prop.KUNI
