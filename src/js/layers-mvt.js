@@ -2429,7 +2429,7 @@ for (let i of mapsStr) {
 function iryoStyleFunction(mapName) {
   return function (feature, resolution) {
     const syurui = Number(store.state.info.iryoukikansyurui[mapName])
-    const kamoku = store.state.info.iryoukikankamoku[mapName]
+    let kamoku = store.state.info.iryoukikankamoku[mapName]
     const zoom = getZoom(resolution)
     const prop = feature.getProperties()
     let text = prop.P04_002
@@ -2471,6 +2471,18 @@ function iryoStyleFunction(mapName) {
         })
       })
     })
+
+    let kamokuAr = []
+    if (kamoku) {
+      kamoku = kamoku.replace(/　/gi,' ')
+      kamokuAr = kamoku.split(' ')
+    }
+    const result = kamokuAr.find((kamoku) => {
+      if (prop.P04_004) {
+        return prop.P04_004.indexOf(kamoku) !== -1
+      }
+    })
+
     if (syurui === 0 && !kamoku) {
       styles.push(iconStyle);
       if (zoom >= 16) {
@@ -2478,7 +2490,8 @@ function iryoStyleFunction(mapName) {
       }
     } else if (syurui === 0) {
       if (prop.P04_004) {
-        if (prop.P04_004.indexOf(kamoku) !== -1) {
+        // if (prop.P04_004.indexOf(kamoku) !== -1) {
+        if (result) {
           styles.push(iconStyle);
           if (zoom >= 16) {
             styles.push(textStyle);
@@ -2488,7 +2501,8 @@ function iryoStyleFunction(mapName) {
     } else {
       if (prop.P04_001 === syurui) {
         if (prop.P04_004) {
-          if (prop.P04_004.indexOf(kamoku) !== -1) {
+          // if (prop.P04_004.indexOf(kamoku) !== -1) {
+          if (result) {
             styles.push(iconStyle);
             if (zoom >= 16) {
               styles.push(textStyle);
@@ -3028,10 +3042,25 @@ function mesh1kColorFunction(mapName) {
         width: 1
       })
     })
+    let font
+    if (zoom <= 12) {
+      font = "6px sans-serif"
+    } else if (zoom <= 13) {
+      font = "10px sans-serif"
+    } else if (zoom <= 14) {
+      font = "14px sans-serif"
+    } else if (zoom <= 15) {
+      font = "16px sans-serif"
+    } else if (zoom <= 16) {
+      font = "18px sans-serif"
+    } else {
+      font = "20px sans-serif"
+    }
     const text = String(ru2(prop.jinko)) + '人'
     const textStyle = new Style({
       text: new Text({
-        font: zoom <= 15 ? "14px sans-serif" : "20px sans-serif",
+        // font: zoom <= 15 ? "14px sans-serif" : "20px sans-serif",
+        font: font,
         text: text,
         fill: new Fill({
           color: "black"
@@ -3045,7 +3074,7 @@ function mesh1kColorFunction(mapName) {
       })
     })
     styles.push(polygonStyle);
-    if (zoom>=14 && prop.jinko) styles.push(textStyle);
+    if (zoom>=13 && prop.jinko) styles.push(textStyle);
     return styles;
   }
 }

@@ -366,11 +366,12 @@
     }
     .info-div{
         position: absolute;
-        top:7px;
+        top:5px;
         left:70px;
         width:15px;
         cursor: pointer;
         color:rgba(0,60,136,0.5);
+        font-size: large;
     }
 
     /*.bookmark-div{*/

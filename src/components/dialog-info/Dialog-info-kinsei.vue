@@ -7,7 +7,7 @@
       <b-form-select v-model="s_selectColor" :options="options" @change="selectChange"></b-form-select>
     </div>
     <div style="margin-top: 5px;">村名、よみ、領分などで抽出</div>
-    <b-form-input type='text' v-model="s_sonmei" placeholder="村名、よみ、領分"></b-form-input>
+    <b-form-input type='text' v-model="s_sonmei" placeholder="空白でor抽出"></b-form-input>
     <hr>
     <div v-if="s_selectColor === '藩で色分け2'">
       <hr>

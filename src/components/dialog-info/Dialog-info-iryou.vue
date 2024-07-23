@@ -7,7 +7,7 @@
       <b-form-select v-model="s_iryoukikansyurui" :options="options" @change="selectChange"></b-form-select>
     </div>
     <div style="margin-top: 5px;">科目で抽出</div>
-    <b-form-input type='text' v-model="s_iryoukikankamoku" placeholder="科目"></b-form-input>
+    <b-form-input type='text' v-model="s_iryoukikankamoku" placeholder="空白でor抽出"></b-form-input>
     <hr>
     <div>
       出典:<span v-html="item.summary"></span>
