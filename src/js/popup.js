@@ -1531,7 +1531,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
             const ryobun6 = prop.領分６ ? '<h5>領分６=' + prop.領分６ + '</h5>' : ''
             const ryobun7 = prop.領分７ ? '<h5>領分７=' + prop.領分７ + '</h5>' : ''
             const ryobun8 = prop.領分８ ? '<h5>領分８=' + prop.領分８ + '</h5>' : ''
-            cont += '<div class="kinseipolygon" style=width:200px;>' +
+            cont += '<div class="kinseipolygon" style=width:300px;>' +
                 '<h4>' + prop.村名 + '</h4>' +
                 '<h5>' + prop.よみ + '<h5/>' +
                 '<h5>領分１=' + prop.領分１ + '</h5>' +

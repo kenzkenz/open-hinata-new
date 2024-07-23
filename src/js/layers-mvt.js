@@ -8419,6 +8419,7 @@ function kinseiPolygonStyleFunction(mapName) {
   return function (feature, resolution) {
     const selectColor = store.state.info.selectColor[mapName]
     let sonmei = store.state.info.sonmei[mapName]
+    const aikyuson = store.state.info.aikyuson[mapName]
     const zoom = getZoom(resolution);
     const prop = feature.getProperties();
     const styles = []
@@ -8525,6 +8526,7 @@ function kinseiPolygonStyleFunction(mapName) {
       })
     })
     const props = prop.村名 + prop.よみ + prop.領分１ + prop.国郡
+        + prop.領分２ + prop.領分３ + prop.領分４ + prop.領分５ + prop.領分６ + prop.領分７ + prop.領分８
     let sonmeiAr = []
     if (sonmei) {
       sonmei = sonmei.replace(/　/gi,' ')
@@ -8537,20 +8539,36 @@ function kinseiPolygonStyleFunction(mapName) {
     })
 
     if (sonmei) {
-      if (props) {
-        if (result) {
+      if (aikyuson) {
+        if (props) {
+          if (prop.領分２) {
+            if (result) {
+              styles.push(polygonStyle)
+              if(zoom>=9) {
+                styles.push(textStyle);
+              }
+            }
+          }
+        }
+      } else {
+        if (props) {
+          if (result) {
+            styles.push(polygonStyle)
+            if(zoom>=9) {
+              styles.push(textStyle);
+            }
+          }
+        }
+      }
+    } else {
+      if (aikyuson) {
+        if (prop.領分２) {
           styles.push(polygonStyle)
           if(zoom>=9) {
             styles.push(textStyle);
           }
         }
-      }
-    } else {
-      // if (props) styles.push(polygonStyle)
-      // if(zoom>=9) {
-      //   styles.push(textStyle);
-      // }
-      if (prop.領分３) {
+      } else {
         if (props) styles.push(polygonStyle)
         if(zoom>=9) {
           styles.push(textStyle);

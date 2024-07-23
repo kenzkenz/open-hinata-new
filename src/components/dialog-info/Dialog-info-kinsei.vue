@@ -8,9 +8,14 @@
     </div>
     <div style="margin-top: 5px;">村名、よみ、領分などで抽出</div>
     <b-form-input type='text' v-model="s_sonmei" placeholder="空白でor抽出"></b-form-input>
+
+    <div style="margin-top: 15px;">
+      <b-form-checkbox type="checkbox" v-model="s_aikyuson">
+        相給村を抽出　<a href="https://ja.wikipedia.org/wiki/%E7%9B%B8%E7%B5%A6" target="_blank">相給とは</a>
+      </b-form-checkbox>
+    </div>
     <hr>
     <div v-if="s_selectColor === '藩で色分け2'">
-      <hr>
       <p>「藩で色分け2」の凡例</p>
       <ul>
         <li>皇室領＝黄</li>
@@ -52,6 +57,30 @@ export default {
     }
   },
   computed: {
+    s_aikyuson: {
+      get() {
+        return this.$store.state.info.aikyuson[this.mapName]
+      },
+      set(value) {
+        // console.log(value)
+        this.$store.state.info.aikyuson[this.mapName] = value
+        LayersMvt.kinseiPolygonMvtObj[this.mapName].getSource().changed()
+        this.storeUpdate()
+        if (value) {
+          if (window.innerWidth > 1000) {
+            LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(156543.03)
+            LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(156543.03)
+          }
+        } else {
+          if (!this.s_sonmei) {
+            if (window.innerWidth > 1000) {
+              LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(611.496226)	 //zoom8
+              LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(611.496226)
+            }
+          }
+        }
+      }
+    },
     s_sonmei: {
       get() {
         return this.$store.state.info.sonmei[this.mapName]
@@ -61,22 +90,19 @@ export default {
         this.$store.state.info.sonmei[this.mapName] = value
         LayersMvt.kinseiPolygonMvtObj[this.mapName].getSource().changed()
         this.storeUpdate()
-
         if (value) {
           if (window.innerWidth > 1000) {
             LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(156543.03)
             LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(156543.03)
           }
         } else {
-          if (window.innerWidth > 1000) {
-            LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(611.496226)	 //zoom8
-            LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(611.496226)
-          } else {
-            LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(305.748113)	 //zoom9
-            LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(305.748113)
+          if (!this.s_aikyuson) {
+            if (window.innerWidth > 1000) {
+              LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(611.496226)	 //zoom8
+              LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(611.496226)
+            }
           }
         }
-
       }
     },
     s_selectColor: {
@@ -90,12 +116,6 @@ export default {
     },
   },
   methods: {
-    // onInput (value) {
-      // console.log(value)
-      // alert()
-      // LayersMvt.kinseiPolygonMvtObj[this.mapName].getSource().changed()
-      // this.storeUpdate()
-    // },
     selectChange (value) {
       LayersMvt.kinseiPolygonMvtObj[this.mapName].getSource().changed()
       this.storeUpdate()
@@ -103,13 +123,14 @@ export default {
     storeUpdate () {
       const selectColor = this.s_selectColor
       const sonmei = this.s_sonmei
-      this.$store.commit('base/updateListPart',{mapName: this.mapName, id:this.item.id, values: [selectColor,sonmei]});
+      const aikyuson = this.s_aikyuson
+      this.$store.commit('base/updateListPart',{mapName: this.mapName, id:this.item.id, values: [selectColor,sonmei,aikyuson]});
       permalink.moveEnd();
     },
   },
   mounted ()  {
     console.log(this.s_sonmei)
-    if (this.s_sonmei) {
+    if (this.s_sonmei || this.s_aikyuson) {
       if (window.innerWidth > 1000) {
         LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(156543.03)
         LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(156543.03)

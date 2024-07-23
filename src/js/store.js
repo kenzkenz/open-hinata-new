@@ -340,6 +340,12 @@ const moduleInfo = {
       map03: 'all',
       map04: 'all'
     },
+    aikyuson: {
+      map01: false,
+      map02: false,
+      map03: false,
+      map04: false
+    },
     sonmei: {
       map01: '',
       map02: '',
@@ -672,6 +678,8 @@ const moduleInfo = {
             variable = 'selectColor'
           } else if (payload.order === 1){
             variable = 'sonmei'
+          } else if (payload.order === 2){
+            variable = 'aikyuson'
           }
           break
         case 'meijigun':
@@ -719,7 +727,7 @@ const moduleInfo = {
         case 'iryou':
           if (payload.order === 0) {
             variable = 'iryoukikansyurui'
-          } else if (payload.order === 1){
+          } else if (payload.order === 1) {
             variable = 'iryoukikankamoku'
           }
           break
