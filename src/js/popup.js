@@ -1524,10 +1524,18 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           break
         case 'kinseipolygon':
           if (cont.indexOf('kinseipolygon') === -1) {
+            const ryobun2 = prop.領分２ ? '<h5>領分２=' + prop.領分２ + '</h5>' : ''
+            const ryobun3 = prop.領分３ ? '<h5>領分３=' + prop.領分３ + '</h5>' : ''
+            const ryobun4 = prop.領分４ ? '<h5>領分４=' + prop.領分４ + '</h5>' : ''
+            const ryobun5 = prop.領分５ ? '<h5>領分５=' + prop.領分５ + '</h5>' : ''
+            const ryobun6 = prop.領分６ ? '<h5>領分６=' + prop.領分６ + '</h5>' : ''
+            const ryobun7 = prop.領分７ ? '<h5>領分７=' + prop.領分７ + '</h5>' : ''
+            const ryobun8 = prop.領分８ ? '<h5>領分８=' + prop.領分８ + '</h5>' : ''
             cont += '<div class="kinseipolygon" style=width:200px;>' +
                 '<h4>' + prop.村名 + '</h4>' +
                 '<h5>' + prop.よみ + '<h5/>' +
                 '<h5>領分１=' + prop.領分１ + '</h5>' +
+                ryobun2 + ryobun3 + ryobun4+ ryobun5 + ryobun6 + ryobun7 + ryobun8 +
                 '<p>国名=' + prop.国名 + '</p>' +
                 '<p>国郡=' + prop.国郡 + '</p>' +
                 '<p>郡名=' + prop.郡名 + '</p>' +

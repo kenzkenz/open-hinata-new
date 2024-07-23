@@ -8538,7 +8538,6 @@ function kinseiPolygonStyleFunction(mapName) {
 
     if (sonmei) {
       if (props) {
-        // if (props.indexOf(sonmei) !== -1) {
         if (result) {
           styles.push(polygonStyle)
           if(zoom>=9) {
@@ -8547,9 +8546,15 @@ function kinseiPolygonStyleFunction(mapName) {
         }
       }
     } else {
-      if (props) styles.push(polygonStyle)
-      if(zoom>=9) {
-        styles.push(textStyle);
+      // if (props) styles.push(polygonStyle)
+      // if(zoom>=9) {
+      //   styles.push(textStyle);
+      // }
+      if (prop.領分３) {
+        if (props) styles.push(polygonStyle)
+        if(zoom>=9) {
+          styles.push(textStyle);
+        }
       }
     }
     return styles;
