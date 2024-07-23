@@ -8389,7 +8389,7 @@ const kinseiColor = d3.scaleOrdinal(d3.schemeCategory10);
 function kinseiPolygonStyleFunction(mapName) {
   return function (feature, resolution) {
     const selectColor = store.state.info.selectColor[mapName]
-    const sonmei = store.state.info.sonmei[mapName]
+    let sonmei = store.state.info.sonmei[mapName]
     const zoom = getZoom(resolution);
     const prop = feature.getProperties();
     const styles = []
@@ -8440,15 +8440,6 @@ function kinseiPolygonStyleFunction(mapName) {
       case '色なし':
         rgba = 'rgba(0,0,0,0)'
         break
-    }
-
-
-    if (sonmei) {
-      if (prop.村名) {
-        if (prop.村名.indexOf(sonmei) !== -1) {
-
-        }
-      }
     }
 
     let polygonStyle
@@ -8503,10 +8494,23 @@ function kinseiPolygonStyleFunction(mapName) {
         // overflow: true,
         // exceedLength:true
       })
-    });
+    })
+    const props = prop.村名 + prop.よみ + prop.領分１ + prop.国郡
+    let sonmeiAr = []
     if (sonmei) {
-      if (prop.村名) {
-        if (prop.村名.indexOf(sonmei) !== -1) {
+      sonmei = sonmei.replace(/　/gi,' ')
+      sonmeiAr = sonmei.split(' ')
+    }
+    const result = sonmeiAr.find((sonmei) => {
+      if (props) {
+        return props.indexOf(sonmei) !== -1
+      }
+    })
+
+    if (sonmei) {
+      if (props) {
+        // if (props.indexOf(sonmei) !== -1) {
+        if (result) {
           styles.push(polygonStyle)
           if(zoom>=9) {
             styles.push(textStyle);
@@ -8514,7 +8518,7 @@ function kinseiPolygonStyleFunction(mapName) {
         }
       }
     } else {
-      if (prop.村名)styles.push(polygonStyle)
+      if (props) styles.push(polygonStyle)
       if(zoom>=9) {
         styles.push(textStyle);
       }
