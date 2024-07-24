@@ -21,7 +21,9 @@
 
               <label :for='"checkbox2" + item.id'>
                 <div class="check2-div" >
-                  <input :id='"checkbox2" + item.id' type="checkbox" class='check-box' v-model="item.multipli" @change="multipliLayer(item)">
+<!--                  <input :id='"checkbox2" + item.id' type="checkbox" class='check-box' v-model="item.multipli" @change="multipliLayer(item)">-->
+                  <b-form-checkbox :id='"checkbox2" + item.id' type="checkbox" class='check-box' v-model="item.multipli" @change="multipliLayer(item)"></b-form-checkbox>
+
                   <b-popover   content="合成します。"
                                :target='"checkbox2" + item.id'
                                triggers="hover"
@@ -411,7 +413,7 @@
     }
     .check2-div{
       position: absolute;
-      padding-top: 0px;
+      margin-top: -2px;
       padding-left: 5px;
       left: 47px;
       top:8px;
