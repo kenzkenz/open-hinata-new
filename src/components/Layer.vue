@@ -19,19 +19,15 @@
                 <span class="checkbox-eye"></span>
               </label>
 
-              <label :for='"checkbox2" + item.id'>
-                <div class="check2-div" >
-<!--                  <input :id='"checkbox2" + item.id' type="checkbox" class='check-box' v-model="item.multipli" @change="multipliLayer(item)">-->
-                  <b-form-checkbox :id='"checkbox2" + item.id' type="checkbox" class='check-box' v-model="item.multipli" @change="multipliLayer(item)"></b-form-checkbox>
-
-                  <b-popover   content="合成します。"
-                               :target='"checkbox2" + item.id'
-                               triggers="hover"
-                               placement="left"
-                               boundary="viewport"
-                  />
-                </div>
-              </label>
+              <div :id='"checkbox2-div" + item.id' class="check2-div" >
+                <b-form-checkbox :id='"checkbox2" + item.id' class='check-box' v-model="item.multipli" @change="multipliLayer(item)"></b-form-checkbox>
+              </div>
+              <b-popover   content="合成します。"
+                           :target= '"checkbox2-div" + item.id'
+                           triggers="hover"
+                           placement="left"
+                           boundary="viewport"
+              />
 
               <div class="item-div">
                     <span class ="title-span" v-html="item.title"></span>
@@ -417,7 +413,8 @@
       padding-left: 5px;
       left: 47px;
       top:8px;
-      height: 100%;
+      width: 20px;
+      height: 20px;
       cursor: pointer;
     }
     .check3-div{
