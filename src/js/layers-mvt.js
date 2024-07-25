@@ -8387,8 +8387,8 @@ function KinseiPolygon(mapName) {
   this.source = new VectorTileSource({
     format: new MVT(),
     // minZoom: 11,
-    maxZoom: 14,
-    url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/polygon2/{z}/{x}/{y}.mvt',
+    maxZoom: 13,
+    url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/polygon4/{z}/{x}/{y}.mvt',
   });
   this.style = kinseiPolygonStyleFunction(mapName)
   this.maxResolution = kinseiPolygonMaxResolution
@@ -8525,7 +8525,7 @@ function kinseiPolygonStyleFunction(mapName) {
         // exceedLength:true
       })
     })
-    const props = prop.村名 + prop.よみ + prop.領分１ + prop.国郡
+    const props = prop.村名 + prop.よみ + prop.領分１ + prop.国郡名 + prop.令制国
         + prop.領分２ + prop.領分３ + prop.領分４ + prop.領分５ + prop.領分６ + prop.領分７ + prop.領分８
     let sonmeiAr = []
     if (sonmei) {
