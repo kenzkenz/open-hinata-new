@@ -8377,9 +8377,11 @@ function yubinkuColorStyleFunction() {
 // 幕末期近世村---------------------------------------------------------------
 let kinseiPolygonMaxResolution
 if (window.innerWidth > 1000) {
-  kinseiPolygonMaxResolution = 611.496226	 //zoom8
+  // kinseiPolygonMaxResolution = 611.496226	 //zoom8
+  kinseiPolygonMaxResolution = 156543.03	 //zoom1
 } else {
-  kinseiPolygonMaxResolution = 305.748113	 //zoom9
+  // kinseiPolygonMaxResolution = 305.748113	 //zoom9
+  kinseiPolygonMaxResolution = 360	 //zoom9
 }
 function KinseiPolygon(mapName) {
   this.useInterimTilesOnError = false
@@ -8426,6 +8428,12 @@ function kinseiPolygonStyleFunction(mapName) {
     let rgb
     let rgba = 'rgba(0,0,0,0)'
     let font
+    const d3Color = d3.scaleLinear()
+        .domain([0, 5000000])
+        .range(["white", "red"])
+    const d3Color2 = d3.scaleLinear()
+        .domain([0, 10000])
+        .range(["white", "red"])
     switch (selectColor) {
       case '標準':
         rgb = d3.rgb(d3OridinalColor(Number(prop.KEY)))
@@ -8467,6 +8475,16 @@ function kinseiPolygonStyleFunction(mapName) {
         rgb = d3.rgb(d3OridinalColor(prop.PREF_NAME))
         rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
         break
+      case '石高で色分け':
+        // console.log(prop.石高計 / prop.area)
+        rgb = d3.rgb(d3Color(prop.石高計 / prop.area))
+        rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
+        break
+      case '石高で色分け2':
+        console.log(prop.石高計)
+        rgb = d3.rgb(d3Color2(prop.石高計))
+        rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
+        break
       case '色なし':
         rgba = 'rgba(0,0,0,0)'
         break
@@ -8490,8 +8508,8 @@ function kinseiPolygonStyleFunction(mapName) {
           color: rgba
         }),
         stroke: new Stroke({
-          color: "black",
-          width: 1
+          color: "rgba(0,0,0,0)",
+          width: 0
         }),
         zIndex: 0
       });
@@ -8525,7 +8543,7 @@ function kinseiPolygonStyleFunction(mapName) {
         // exceedLength:true
       })
     })
-    const props = prop.村名 + prop.よみ + prop.領分１ + prop.国郡名 + prop.令制国
+    const props = prop.村名 + prop.よみ + prop.領分１ + prop.国郡名 + prop.令制国 + prop.PREF_NAME + prop.CITY_NAME
         + prop.領分２ + prop.領分３ + prop.領分４ + prop.領分５ + prop.領分６ + prop.領分７ + prop.領分８
     let sonmeiAr = []
     if (sonmei) {

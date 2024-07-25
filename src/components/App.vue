@@ -1944,6 +1944,19 @@
     }
 </style>
 <style>
+.popup-table {
+  margin-bottom: 10px;
+}
+
+.popup-table, .popup-table th, .popup-table td {
+  border: 1px solid darkgray;
+  border-collapse: collapse;
+  font-size: large;
+  padding: 5px;
+}
+.popup-table th {
+  text-align: center;
+}
     label{
       cursor: pointer!important;
     }

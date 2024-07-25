@@ -1524,13 +1524,13 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           break
         case 'kinseipolygon':
           if (cont.indexOf('kinseipolygon') === -1) {
-            const ryobun2 = prop.領分２ ? '<h6>領分２=' + prop.領分２ + ' / 石高=' + prop.石高２ + '</h6>' : ''
-            const ryobun3 = prop.領分３ ? '<h6>領分３=' + prop.領分３ + ' / 石高=' + prop.石高３ + '</h6>' : ''
-            const ryobun4 = prop.領分４ ? '<h6>領分４=' + prop.領分４ + ' / 石高=' + prop.石高４ + '</h6>' : ''
-            const ryobun5 = prop.領分５ ? '<h6>領分５=' + prop.領分５ + ' / 石高=' + prop.石高５ + '</h6>' : ''
-            const ryobun6 = prop.領分６ ? '<h6>領分６=' + prop.領分６ + ' / 石高=' + prop.石高６ + '</h6>' : ''
-            const ryobun7 = prop.領分７ ? '<h6>領分７=' + prop.領分７ + ' / 石高=' + prop.石高７ + '</h6>' : ''
-            const ryobun8 = prop.領分８ ? '<h6>領分８=' + prop.領分８ + ' / 石高=' + prop.石高８ + '</h6>' : ''
+            const ryobun2 = prop.領分２ ? '<tr><td>領分２</td><td>' + prop.領分２ + '</td><td>' + prop.石高２ + '</td></tr>' : ''
+            const ryobun3 = prop.領分３ ? '<tr><td>領分３</td><td>' + prop.領分３ + '</td><td>' + prop.石高３ + '</td></tr>' : ''
+            const ryobun4 = prop.領分４ ? '<tr><td>領分４</td><td>' + prop.領分４ + '</td><td>' + prop.石高４ + '</td></tr>' : ''
+            const ryobun5 = prop.領分５ ? '<tr><td>領分５</td><td>' + prop.領分５ + '</td><td>' + prop.石高５ + '</td></tr>' : ''
+            const ryobun6 = prop.領分６ ? '<tr><td>領分６</td><td>' + prop.領分６ + '</td><td>' + prop.石高６ + '</td></tr>' : ''
+            const ryobun7 = prop.領分７ ? '<tr><td>領分７</td><td>' + prop.領分７ + '</td><td>' + prop.石高７ + '</td></tr>' : ''
+            const ryobun8 = prop.領分８ ? '<tr><td>領分８</td><td>' + prop.領分８ + '</td><td>' + prop.石高８ + '</td></tr>' : ''
 
             // const kokudaka2 = prop.石高２ ? '<h5>石高２=' + prop.石高２ + '</h5>' : ''
             // const kokudaka3 = prop.石高３ ? '<h5>石高３=' + prop.石高３ + '</h5>' : ''
@@ -1540,11 +1540,13 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
             // const kokudaka7 = prop.石高７ ? '<h5>石高７=' + prop.石高７ + '</h5>' : ''
             // const kokudaka8 = prop.石高８ ? '<h5>石高８=' + prop.石高８ + '</h5>' : ''
             
-            cont += '<div class="kinseipolygon" style=width:330px;>' +
+            cont += '<div class="kinseipolygon" style=width:300px;>' +
                 '<h4>' + prop.村名 + '</h4>' +
                 '<h5>' + prop.よみ + '<h5/>' +
                 '<h5>石高計=' + prop.石高計 + '</h5>' +
-                '<h6>領分１=' + prop.領分１ + ' / 石高=' + prop.石高１ + '</h6>' +
+                '<table class="popup-table" align="center">' +
+                '<tr><th></th><th>領分</th><th>石高</th></tr>' +
+                '<tr><td>領分１</td><td>' + prop.領分１ + '</td><td>' + prop.石高１ + '</td></tr>' +
                 ryobun2 +
                 ryobun3 +
                 ryobun4 +
@@ -1552,11 +1554,12 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 ryobun6 +
                 ryobun7 +
                 ryobun8 +
+                '</table>' +
                 '<p>令制国=' + prop.令制国 + '</p>' +
                 '<p>国郡名=' + prop.国郡名 + '</p>' +
                 '<p>郡名=' + prop.郡名 + '</p>' +
-                '<p>面積=' + prop.area + '</p>' +
-                '<p>周長=' + prop.perimeter + '</p>' +
+                // '<p>面積=' + prop.area + '</p>' +
+                // '<p>周長=' + prop.perimeter + '</p>' +
                 '</div><hr>'
           }
           break

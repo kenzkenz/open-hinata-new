@@ -52,6 +52,8 @@ export default {
         { value: '国で色分け', text: '国で色分け' },
         { value: '県で色分け', text: '県で色分け' },
         { value: '郡で色分け', text: '郡で色分け' },
+        { value: '石高で色分け', text: '石高（面積割）で色分け' },
+        { value: '石高で色分け2', text: '石高で色分け' },
         { value: '色なし', text: '色なし' },
       ]
     }
@@ -66,19 +68,19 @@ export default {
         this.$store.state.info.aikyuson[this.mapName] = value
         LayersMvt.kinseiPolygonMvtObj[this.mapName].getSource().changed()
         this.storeUpdate()
-        if (value) {
-          if (window.innerWidth > 1000) {
-            LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(156543.03)
-            LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(156543.03)
-          }
-        } else {
-          if (!this.s_sonmei) {
-            if (window.innerWidth > 1000) {
-              LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(611.496226)	 //zoom8
-              LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(611.496226)
-            }
-          }
-        }
+        // if (value) {
+        //   if (window.innerWidth > 1000) {
+        //     LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(156543.03)
+        //     LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(156543.03)
+        //   }
+        // } else {
+        //   if (!this.s_sonmei) {
+        //     if (window.innerWidth > 1000) {
+        //       LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(611.496226)	 //zoom8
+        //       LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(611.496226)
+        //     }
+        //   }
+        // }
       }
     },
     s_sonmei: {
@@ -130,12 +132,12 @@ export default {
   },
   mounted ()  {
     console.log(this.s_sonmei)
-    if (this.s_sonmei || this.s_aikyuson) {
-      if (window.innerWidth > 700) {
-        LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(156543.03)
-        LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(156543.03)
-      }
-    }
+    // if (this.s_sonmei || this.s_aikyuson) {
+    //   if (window.innerWidth > 700) {
+    //     LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(156543.03)
+    //     LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(156543.03)
+    //   }
+    // }
     this.$nextTick(function () {
       LayersMvt.kinseiPolygonMvtObj[this.mapName].getSource().changed()
     })
