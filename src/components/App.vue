@@ -1957,6 +1957,11 @@
 .popup-table th {
   text-align: center;
 }
+
+.popup-table td:nth-of-type(3) {
+  text-align: right;
+}
+
     label{
       cursor: pointer!important;
     }

@@ -8390,7 +8390,7 @@ function KinseiPolygon(mapName) {
     format: new MVT(),
     // minZoom: 11,
     maxZoom: 13,
-    url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/polygon4/{z}/{x}/{y}.mvt',
+    url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/polygon5/{z}/{x}/{y}.mvt',
   });
   this.style = kinseiPolygonStyleFunction(mapName)
   this.maxResolution = kinseiPolygonMaxResolution
@@ -8521,7 +8521,7 @@ function kinseiPolygonStyleFunction(mapName) {
     } else {
       font = "20px sans-serif"
     }
-    let text = prop.村名
+    let text = prop.村名0
     if (text) {
       if (text.split('・').length > 1 ) {
         text = text.split('・')[0] + '(他' + (text.split('・').length -1) + '村)'
@@ -8543,7 +8543,7 @@ function kinseiPolygonStyleFunction(mapName) {
         // exceedLength:true
       })
     })
-    const props = prop.村名 + prop.よみ + prop.領分１ + prop.国郡名 + prop.令制国 + prop.PREF_NAME + prop.CITY_NAME
+    const props = prop.村名0 + prop.よみ0 + prop.領分１ + prop.国郡名 + prop.令制国 + prop.PREF_NAME + prop.CITY_NAME
         + prop.領分２ + prop.領分３ + prop.領分４ + prop.領分５ + prop.領分６ + prop.領分７ + prop.領分８
     let sonmeiAr = []
     if (sonmei) {

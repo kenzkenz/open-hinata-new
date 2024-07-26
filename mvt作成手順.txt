@@ -322,6 +322,7 @@ tippecanoe -rg -pk -pf -f -e tile3 t2c.geojson
 tippecanoe -rg -pk -pf -f -e tile2 n2.geojson
 tippecanoe -rg -pk -pf -f -e tile2 i.geojson
 tippecanoe -rg -pk -pf -f -e tile b.geojson
+tippecanoe -rg -pk -pf -f -e tile3 b3.geojson
 
 $ cd tile
 $ gzip -d -v -r -S .pbf *

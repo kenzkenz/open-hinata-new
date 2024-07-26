@@ -92,19 +92,19 @@ export default {
         this.$store.state.info.sonmei[this.mapName] = value
         LayersMvt.kinseiPolygonMvtObj[this.mapName].getSource().changed()
         this.storeUpdate()
-        if (value) {
-          if (window.innerWidth > 700) {
-            LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(156543.03)
-            LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(156543.03)
-          }
-        } else {
-          if (!this.s_aikyuson) {
-            if (window.innerWidth > 700) {
-              LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(611.496226)	 //zoom8
-              LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(611.496226)
-            }
-          }
-        }
+        // if (value) {
+        //   if (window.innerWidth > 700) {
+        //     LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(156543.03)
+        //     LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(156543.03)
+        //   }
+        // } else {
+        //   if (!this.s_aikyuson) {
+        //     if (window.innerWidth > 700) {
+        //       LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(611.496226)	 //zoom8
+        //       LayersMvt.kinseiPolygonRasterObj[this.mapName].setMinResolution(611.496226)
+        //     }
+        //   }
+        // }
       }
     },
     s_selectColor: {
