@@ -8446,7 +8446,7 @@ function KinseiPolygon(mapName) {
     format: new MVT(),
     // minZoom: 11,
     maxZoom: 13,
-    url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/polygon5/{z}/{x}/{y}.mvt',
+    url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/polygon6/{z}/{x}/{y}.mvt',
   });
   this.style = kinseiPolygonStyleFunction(mapName)
   this.maxResolution = kinseiPolygonMaxResolution
@@ -8520,7 +8520,7 @@ function kinseiPolygonStyleFunction(mapName) {
         }
         break
       case '国で色分け':
-        rgb = d3.rgb(d3OridinalColor(prop.国名))
+        rgb = d3.rgb(d3OridinalColor(prop.令制国))
         rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
         break
       case '郡で色分け':
@@ -8577,7 +8577,7 @@ function kinseiPolygonStyleFunction(mapName) {
     } else {
       font = "20px sans-serif"
     }
-    let text = prop.村名0
+    let text = prop.村名
     if (text) {
       if (text.split('・').length > 1 ) {
         text = text.split('・')[0] + '(他' + (text.split('・').length -1) + '村)'

@@ -31,7 +31,7 @@
               />
 
               <div class="item-div">
-                    <span class ="title-span" v-html="item.title"></span>
+                <span class ="title-span" v-html="item.title"></span>
               </div>
               <div class="range-div"><input type="range" min="0" max="1" step="0.01" class="range" v-model.number="item.opacity" @input="opacityChange(item)" /></div>
 <!--                <div class="info-div" @click="infoOpen(arguments[0],item)"><i class="fa-solid fa-circle-info hover"></i></div>-->
@@ -45,7 +45,8 @@
                 <span :id='"label" + item.id' class="checkbox-fontas"></span>
               </label>
 
-              <b-popover   content="ブックマーク"
+              <b-popover  v-if="innerWidth"
+                           content="ブックマーク"
                            :target='"label" + item.id'
                            triggers="hover"
                            placement="left"
@@ -201,7 +202,7 @@
     },
     computed: {
       innerWidth () {
-        if (window.innerWidth > 1000) {
+        if (window.innerWidth > 500) {
           return true
         } else {
           return false
@@ -375,15 +376,59 @@
         width:calc(100% - 127px);
     }
     .info-div{
-        position: absolute;
-        top:5px;
-        left:70px;
-        width:15px;
-        cursor: pointer;
-        color:rgba(0,60,136,0.5);
-        font-size: large;
+      position: absolute;
+      top:5px;
+      left:70px;
+      width:15px;
+      cursor: pointer;
+      color:rgba(0,60,136,0.5);
+      font-size: large;
     }
-
+    .check-div{
+      position: absolute;
+      padding-top: 0px;
+      padding-left: 5px;
+      left: 23px;
+      top:8px;
+      height: 100%;
+      cursor: pointer;
+    }
+    .check2-div{
+      position: absolute;
+      margin-top: -2px;
+      padding-left: 5px;
+      left: 47px;
+      top:8px;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+    @media screen and (max-width:500px) {
+      .range-div{
+        width:calc(100% - 180px);
+        left:125px;
+      }
+      .item-div{
+        left: 125px;
+        width:calc(100% - 180px);
+      }
+      .info-div{
+        top:2px;
+        left:95px;
+        width:15px;
+        font-size: x-large;
+      }
+      .eye-label {
+        left:32px;
+      }
+      .check2-div{
+        top:12px;
+        left: 60px;
+      }
+      .bookmark-label{
+        right:28px;
+      }
+    }
     /*.bookmark-div{*/
     /*  position: absolute;*/
     /*  top:13px;*/
@@ -409,25 +454,6 @@
     }
     .el-notification__content{
         display: block;
-    }
-    .check-div{
-      position: absolute;
-      padding-top: 0px;
-      padding-left: 5px;
-      left: 23px;
-      top:8px;
-      height: 100%;
-      cursor: pointer;
-    }
-    .check2-div{
-      position: absolute;
-      margin-top: -2px;
-      padding-left: 5px;
-      left: 47px;
-      top:8px;
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
     }
     .check3-div{
       position: absolute;

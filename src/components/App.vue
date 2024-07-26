@@ -1956,6 +1956,7 @@
 }
 .popup-table th {
   text-align: center;
+  font-weight: normal;
 }
 
 .popup-table td:nth-of-type(3) {

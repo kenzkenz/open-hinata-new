@@ -20,9 +20,9 @@
       <ul>
         <li>皇室領＝黄</li>
         <li>社寺領＝黒</li>
-        <li>幕府領＝赤</li>
+        <li>幕　領＝赤</li>
         <li>旗本領＝灰</li>
-        <li>藩領＝紫</li>
+        <li>藩　領＝紫</li>
         <li>その他＝青</li>
       </ul>
     </div>
@@ -35,8 +35,6 @@
 <script>
 import * as LayersMvt from '@/js/layers-mvt'
 import * as permalink from '@/js/permalink'
-import {kinseiPolygonRasterObj} from "@/js/layers-mvt";
-import store from "@/js/store";
 
 export default {
   name: "Dialog-info-kinsei",
@@ -49,7 +47,7 @@ export default {
         { value: '標準', text: '標準' },
         { value: '藩で色分け', text: '藩で色分け' },
         { value: '藩で色分け2', text: '藩で色分け2' },
-        { value: '国で色分け', text: '国で色分け' },
+        { value: '国で色分け', text: '国（令制国）で色分け' },
         { value: '県で色分け', text: '県で色分け' },
         { value: '郡で色分け', text: '郡で色分け' },
         { value: '石高で色分け', text: '石高（面積割）で色分け' },
