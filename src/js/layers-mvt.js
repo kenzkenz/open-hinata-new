@@ -82,6 +82,62 @@ const mapsStr = ['map01','map02']
 //   fgbObj[i] = new VectorLayer(new fgb())
 // }
 // -----
+
+// 鳥取県無線LAN---------------------------------------------------------------
+function TottorimusenLan() {
+  this.useInterimTilesOnError = false
+  this.name = 'tottorimusenlan'
+  this.source = new VectorSource({
+    url:'https://kenzkenz3.xsrv.jp/tottori/musenlan/musenlan.geojson',
+    format: new GeoJSON()
+  });
+  this.style = tottorimusenLanFunction()
+}
+export const tottorimusenLanSumm = "<a href='' target='_blank'></a>"
+export const tottorimusenLanObj = {};
+for (let i of mapsStr) {
+  tottorimusenLanObj[i] = new VectorLayer(new TottorimusenLan())
+}
+function tottorimusenLanFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    let font
+    let scale
+    if (zoom <= 15) {
+      font = "14px sans-serif"
+      scale = 0.04
+      // offsetY = 38
+    } else {
+      font = "16px sans-serif"
+      scale = 0.06
+      // offsetY = 42
+    }
+    const iconStyle = new Style({
+      image: new Icon({
+        src: require('@/assets/icon/wifi.png'),
+        scale: scale
+        // color: 'green'
+      })
+    })
+    const textStyle = new Style({
+      text: new Text({
+        font: font,
+        text: prop.名称,
+        offsetY: 20,
+        stroke: new Stroke({
+          color: "white",
+          width: 3
+        })
+      })
+    })
+    if (zoom >= 11) styles.push(textStyle)
+    styles.push(iconStyle)
+    return styles;
+  }
+}
+
 //R05公園------------------------------------------------------------------------------------------------
 function KoenR05(){
   this.name = 'koenR05'

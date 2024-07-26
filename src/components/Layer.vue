@@ -22,7 +22,8 @@
               <div :id='"checkbox2-div" + item.id' class="check2-div" >
                 <b-form-checkbox :id='"checkbox2" + item.id' class='check-box' v-model="item.multipli" @change="multipliLayer(item)"></b-form-checkbox>
               </div>
-              <b-popover   content="合成します。"
+              <b-popover v-if="innerWidth"
+                           content="合成します。"
                            :target= '"checkbox2-div" + item.id'
                            triggers="hover"
                            placement="left"
@@ -152,8 +153,12 @@
         console.log(this.mapName)
         const dialogEl = document.querySelector('#' + this.mapName + " .dialog-div")
         const top = dialogEl.offsetTop + 'px';
-        const left = (dialogEl.offsetLeft + dialogEl.offsetWidth + 5) + 'px';
-        //  const left = '10px'
+        let left
+        if (window.innerWidth > 1000) {
+          left = (dialogEl.offsetLeft + dialogEl.offsetWidth + 5) + 'px';
+        } else {
+          left = '10px'
+        }
         const result = this.s_dialogsINfo[this.mapName].find(el => el.id === item.id);
         this.$store.commit('base/incrDialogMaxZindex');
         if (!result) {
@@ -195,6 +200,13 @@
       }
     },
     computed: {
+      innerWidth () {
+        if (window.innerWidth > 1000) {
+          return true
+        } else {
+          return false
+        }
+      },
       // bookmarkStyle () {
       //   return {'color': 'red'}
       // },

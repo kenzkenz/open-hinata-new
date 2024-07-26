@@ -1677,6 +1677,14 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div><hr>'
           }
           break
+        case 'tottorimusenlan':
+          if (cont.indexOf('tottorimusenlan') === -1) {
+            cont += '<div class="tottorimusenlan" style=width:200px;>' +
+                '<h4>' + prop.名称 + '</h4>' +
+                '<p>所在地=' + prop.所在地_連結表記 + '</p>' +
+                '</div><hr>'
+          }
+          break
       }
     })
   }

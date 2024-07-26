@@ -20,7 +20,7 @@ import  * as MaskDep from './mask-dep'
 import  * as LayersMvt from './layers-mvt'
 // import BingMaps from 'ol/source/BingMaps'
 import * as d3 from "d3"
-import {gifuDetailObj, hokkaidoTsunamiMvtObj} from "./layers-mvt";
+import {gifuDetailObj, hokkaidoTsunamiMvtObj, tottorimusenLanSumm} from "./layers-mvt";
 const mapsStr = ['map01','map02']
 const transformE = extent => {
   function compareFunc(a, b) {
@@ -12712,6 +12712,22 @@ for (let i of mapsStr) {
 }
 const yamashiroSumm = '出典：<br><a href="https://mapwarper.h-gis.jp/maps/5643" target="_blank">日本版 Map Warper</a>';
 
+// ヤマシロマップ.---------------------------------------------------------------
+function tottorisakyu() {
+  this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://kenzkenz3.xsrv.jp/tottori/sakyu/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 19
+  })
+}
+const tottorisakyuiObj = {};
+for (let i of mapsStr) {
+  tottorisakyuiObj[i] = new TileLayer(new tottorisakyu())
+}
+const tottorisakyuSumm = '<a href="https://www.geospatial.jp/ckan/dataset/tottori-sanddunes-data" target="_blank">G空間情報センター</a>';
+
 
 // ここにレイヤーを全部書く。クリックするとストアのlayerListに追加されていく-------------------------
 export const Layers =
@@ -14007,6 +14023,12 @@ export const Layers =
         // { text: 'test', data: { id: "railroad", layer: LayersMvt.railroadObj, opacity: 1, summary: LayersMvt.railroadSumm} },
         { text: '道の駅', data: { id: "mitinoekiH30", layer: LayersMvt.mitinoekiH30Obj, opacity: 1, summary: LayersMvt.mitinoekiH30Summ } },
         { text: 'バスルートと停留所', data: { id: "bus", layer: LayersMvt.bus0Obj, opacity: 1, summary: LayersMvt.busSumm} },
+      ]},
+    { text: '鳥取県',
+      children: [
+        { text: '鳥取砂丘', data: { id: 'tottorisakyu', layer: tottorisakyuiObj, opacity: 1, zoom: 16, center: [134.22808189352367,35.541544325172794], summary: tottorisakyuSumm } },
+        { text: '鳥取県無線LAN', data: { id: 'tottorimusenlan', layer: LayersMvt.tottorimusenLanObj, opacity: 1, zoom: 13, summary: LayersMvt.tottorimusenLanSumm } },
+
       ]},
     { text: 'その他',
       children: [
