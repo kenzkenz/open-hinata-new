@@ -8658,12 +8658,12 @@ function KinseiPoint() {
   this.name = 'kinseipoint'
   this.source = new VectorTileSource({
     format: new MVT(),
-    minZoom: 11,
-    maxZoom: 14,
-    url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/point/mvt/{z}/{x}/{y}.mvt',
+    // minZoom: 11,
+    maxZoom: 13,
+    url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/point2/{z}/{x}/{y}.mvt',
   });
   this.style = kinseiPointStyleFunction()
-  this.maxResolution = 76.437028 //zoom11
+  // this.maxResolution = 76.437028 //zoom11
   // this.declutter = true
   // this.overflow = true
 }
@@ -8692,18 +8692,30 @@ function kinseiPointStyleFunction() {
     const zoom = getZoom(resolution);
     let text = prop.村名
     let font
+    let scale
     if (zoom <= 13) {
       font = "14px sans-serif"
     } else {
       font = "20px sans-serif"
     }
+    scale = prop.石高計 / 1000 * 3
     const styles = []
     const imageStyle = new Style({
-      image: new Icon({
-        src: require('@/assets/icon/whitecircle.png'),
-        color: 'blue',
-        scale: 1.5
-      }),
+      // image: new Icon({
+      //   src: require('@/assets/icon/whitecircle.png'),
+      //   color: 'darkorange',
+      //   scale: scale
+      // }),
+      image: new Circle({
+        radius: scale,
+        fill: new Fill({
+          color: 'darkorange'
+        }),
+        stroke: new Stroke({
+          color: "white",
+          width: 1
+        })
+      })
     })
     const textStyle = new Style({
       text: new Text({
@@ -8718,7 +8730,7 @@ function kinseiPointStyleFunction() {
       })
     })
     styles.push(imageStyle)
-    styles.push(textStyle)
+    if (zoom >= 12) styles.push(textStyle)
     return styles;
   }
 }
