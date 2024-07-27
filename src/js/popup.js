@@ -1558,6 +1558,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '<p>令制国=' + prop.令制国 + '</p>' +
                 '<p>国郡名=' + prop.国郡名 + '</p>' +
                 '<p>郡名=' + prop.郡名 + '</p>' +
+                '<p>KEY=' + prop.KEY + '</p>' +
                 // '<p>面積=' + prop.area + '</p>' +
                 // '<p>周長=' + prop.perimeter + '</p>' +
                 '</div><hr>'

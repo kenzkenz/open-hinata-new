@@ -9,11 +9,17 @@
     <div style="margin-top: 5px;">村名、よみ、領分などで抽出</div>
     <b-form-input type='text' v-model="s_sonmei" placeholder="空白でor抽出"></b-form-input>
 
+<!--    <div style="margin-top: 15px;">-->
+<!--      <b-form-checkbox type="checkbox" v-model="s_aikyuson">-->
+<!--        相給村を抽出　<a href="https://ja.wikipedia.org/wiki/%E7%9B%B8%E7%B5%A6" target="_blank">相給とは</a>-->
+<!--      </b-form-checkbox>-->
+<!--    </div>-->
+<!--    <b-button style="margin-top: 5px;" class='olbtn' size="sm" @click="kokudakakeisan">見えている範囲の石高計</b-button>-->
     <div style="margin-top: 15px;">
-      <b-form-checkbox type="checkbox" v-model="s_aikyuson">
-        相給村を抽出　<a href="https://ja.wikipedia.org/wiki/%E7%9B%B8%E7%B5%A6" target="_blank">相給とは</a>
-      </b-form-checkbox>
+      <p v-html="s_kokudakakei"></p>
     </div>
+
+
     <hr>
     <div v-if="s_selectColor === '藩で色分け2'">
       <p>「藩で色分け2」の凡例</p>
@@ -35,6 +41,7 @@
 <script>
 import * as LayersMvt from '@/js/layers-mvt'
 import * as permalink from '@/js/permalink'
+import axios from "axios"
 
 export default {
   name: "Dialog-info-kinsei",
@@ -43,6 +50,7 @@ export default {
   },
   data () {
     return {
+      kokudakakei: 0,
       options: [
         { value: '標準', text: '標準' },
         { value: '藩で色分け', text: '藩で色分け' },
@@ -57,6 +65,9 @@ export default {
     }
   },
   computed: {
+    s_kokudakakei () {
+      return '石高の総計=' + Math.round(this.$store.state.info.kokudakakei[this.mapName]).toLocaleString()
+    },
     s_aikyuson: {
       get() {
         return this.$store.state.info.aikyuson[this.mapName]
@@ -89,7 +100,9 @@ export default {
         // console.log(value)
         this.$store.state.info.sonmei[this.mapName] = value
         LayersMvt.kinseiPolygonMvtObj[this.mapName].getSource().changed()
+        this.kokudakakeisan()
         this.storeUpdate()
+
         // if (value) {
         //   if (window.innerWidth > 700) {
         //     LayersMvt.kinseiPolygonMvtObj[this.mapName].setMaxResolution(156543.03)
@@ -116,6 +129,28 @@ export default {
     },
   },
   methods: {
+    kokudakakeisan () {
+      const vm = this
+      this.$store.state.info.kokudakakei[this.mapName] = 0
+      let parameter
+      if (this.s_sonmei) {
+        parameter = this.s_sonmei.replace(/　/gi,' ').trim()
+      } else {
+        parameter = this.s_sonmei.trim()
+      }
+      // const parameter = 'かみくぜ'
+      axios
+          .get('https://kenzkenz.xsrv.jp/open-hinata/php/kokudakasokei.php', {
+            params: {
+              parameter: parameter
+            }
+          })
+          // .post('https://kenzkenz.xsrv.jp/open-hinata/php/insert2.php', params)
+          .then(function (response) {
+            console.log(response.data)
+            vm.$store.state.info.kokudakakei[vm.mapName] = response.data
+          })
+    },
     selectChange (value) {
       LayersMvt.kinseiPolygonMvtObj[this.mapName].getSource().changed()
       this.storeUpdate()
@@ -129,6 +164,7 @@ export default {
     },
   },
   mounted ()  {
+    this.kokudakakeisan()
     console.log(this.s_sonmei)
     // if (this.s_sonmei || this.s_aikyuson) {
     //   if (window.innerWidth > 700) {

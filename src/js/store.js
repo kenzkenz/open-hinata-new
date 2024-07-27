@@ -340,6 +340,12 @@ const moduleInfo = {
       map03: 'all',
       map04: 'all'
     },
+    kokudakakei: {
+      map01: 0,
+      map02: 0,
+      map03: 0,
+      map04: 0
+    },
     aikyuson: {
       map01: false,
       map02: false,
