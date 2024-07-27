@@ -8496,7 +8496,7 @@ export const kinseiPolygonRasterObj = {};
 for (let i of mapsStr) {
   kinseiPolygonRasterObj[i] = new TileLayer(new KinseiPolygonRaster())
 }
-const kinseiColor = d3.scaleOrdinal(d3.schemeCategory10);
+
 function kinseiPolygonStyleFunction(mapName) {
   return function (feature, resolution) {
     const selectColor = store.state.info.selectColor[mapName]
@@ -8676,7 +8676,12 @@ function kinseiPolygonStyleFunction(mapName) {
     return styles
   }
 }
-
+let kinseiPointMaxResolution
+if (window.innerWidth > 1000) {
+  kinseiPointMaxResolution = 156543.03	 //zoom1
+} else {
+  kinseiPointMaxResolution = 611.496226	 //zoom8
+}
 function KinseiPoint() {
   this.useInterimTilesOnError = false
   this.name = 'kinseipoint'
@@ -8687,7 +8692,7 @@ function KinseiPoint() {
     url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/point2/{z}/{x}/{y}.mvt',
   });
   this.style = kinseiPointStyleFunction()
-  // this.maxResolution = 76.437028 //zoom11
+  this.maxResolution = kinseiPointMaxResolution
   // this.declutter = true
   // this.overflow = true
 }
@@ -8710,6 +8715,7 @@ export const kinseiPointRasterObj = {};
 for (let i of mapsStr) {
   kinseiPointRasterObj[i] = new TileLayer(new KinseiPointRaster())
 }
+const kinseiPointColor = d3.scaleOrdinal(d3.schemeCategory10);
 function kinseiPointStyleFunction() {
   return function (feature,resolution) {
     const prop = feature.getProperties();
@@ -8722,12 +8728,16 @@ function kinseiPointStyleFunction() {
     } else {
       font = "20px sans-serif"
     }
-    scale = prop.石高計 / 100000
+    scale = Math.sqrt(prop.石高計) / 2000
     const styles = []
+    let rgb
+    if (prop.領分１) {
+      rgb = kinseiPointColor(prop.領分１)
+    }
     const imageStyle = new Style({
       image: new Icon({
         src: require('@/assets/icon/whitecirclebig.png'),
-        color: 'darkorange',
+        color: rgb,
         scale: scale
       }),
       // image: new Circle({
@@ -8754,7 +8764,7 @@ function kinseiPointStyleFunction() {
       })
     })
     styles.push(imageStyle)
-    if (zoom >= 12) styles.push(textStyle)
+    if (zoom >= 13) styles.push(textStyle)
     return styles;
   }
 }

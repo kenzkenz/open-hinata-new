@@ -1511,10 +1511,30 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           break
         case 'kinseipoint':
           if (cont.indexOf('kinseipoint') === -1) {
-            cont += '<div class="kinseipoint" style=width:200px;>' +
+            const ryobun2p = prop.領分２ ? '<tr><td>領分２</td><td>' + prop.領分２ + '</td><td>' + Math.round(prop.石高２).toLocaleString() + '</td></tr>' : ''
+            const ryobun3p = prop.領分３ ? '<tr><td>領分３</td><td>' + prop.領分３ + '</td><td>' + Math.round(prop.石高３).toLocaleString() + '</td></tr>' : ''
+            const ryobun4p = prop.領分４ ? '<tr><td>領分４</td><td>' + prop.領分４ + '</td><td>' + Math.round(prop.石高４).toLocaleString() + '</td></tr>' : ''
+            const ryobun5p = prop.領分５ ? '<tr><td>領分５</td><td>' + prop.領分５ + '</td><td>' + Math.round(prop.石高５).toLocaleString() + '</td></tr>' : ''
+            const ryobun6p = prop.領分６ ? '<tr><td>領分６</td><td>' + prop.領分６ + '</td><td>' + Math.round(prop.石高６).toLocaleString() + '</td></tr>' : ''
+            const ryobun7p = prop.領分７ ? '<tr><td>領分７</td><td>' + prop.領分７ + '</td><td>' + Math.round(prop.石高７).toLocaleString() + '</td></tr>' : ''
+            const ryobun8p = prop.領分８ ? '<tr><td>領分８</td><td>' + prop.領分８ + '</td><td>' + Math.round(prop.石高８).toLocaleString() + '</td></tr>' : ''
+
+            cont += '<div class="kinseipoint" style=width:250px;>' +
                 '<h4>' + prop.村名 + '</h4>' +
                 '<h5>' + prop.よみ + '<h5/>' +
                 '<h5>領分１=' + prop.領分１ + '<h5/>' +
+                '<h5>石高計=' + Math.round(prop.石高計).toLocaleString() + '</h5>' +
+                '<table class="popup-table" align="center">' +
+                '<tr><th></th><th>領分</th><th>石高</th></tr>' +
+                '<tr><td>領分１</td><td>' + prop.領分１ + '</td><td>' + Math.round(prop.石高１).toLocaleString() + '</td></tr>' +
+                ryobun2p +
+                ryobun3p +
+                ryobun4p +
+                ryobun5p +
+                ryobun6p +
+                ryobun7p +
+                ryobun8p +
+                '</table>' +
                 '<p>国名=' + prop.国名 + '</p>' +
                 '<p>国郡=' + prop.国郡 + '</p>' +
                 '<p>郡名=' + prop.郡名 + '</p>' +
@@ -1524,29 +1544,21 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           break
         case 'kinseipolygon':
           if (cont.indexOf('kinseipolygon') === -1) {
-            const ryobun2 = prop.領分２ ? '<tr><td>領分２</td><td>' + prop.領分２ + '</td><td>' + Math.round(prop.石高２) + '</td></tr>' : ''
-            const ryobun3 = prop.領分３ ? '<tr><td>領分３</td><td>' + prop.領分３ + '</td><td>' + Math.round(prop.石高３) + '</td></tr>' : ''
-            const ryobun4 = prop.領分４ ? '<tr><td>領分４</td><td>' + prop.領分４ + '</td><td>' + Math.round(prop.石高４) + '</td></tr>' : ''
-            const ryobun5 = prop.領分５ ? '<tr><td>領分５</td><td>' + prop.領分５ + '</td><td>' + Math.round(prop.石高５) + '</td></tr>' : ''
-            const ryobun6 = prop.領分６ ? '<tr><td>領分６</td><td>' + prop.領分６ + '</td><td>' + Math.round(prop.石高６) + '</td></tr>' : ''
-            const ryobun7 = prop.領分７ ? '<tr><td>領分７</td><td>' + prop.領分７ + '</td><td>' + Math.round(prop.石高７) + '</td></tr>' : ''
-            const ryobun8 = prop.領分８ ? '<tr><td>領分８</td><td>' + prop.領分８ + '</td><td>' + Math.round(prop.石高８) + '</td></tr>' : ''
+            const ryobun2 = prop.領分２ ? '<tr><td>領分２</td><td>' + prop.領分２ + '</td><td>' + Math.round(prop.石高２).toLocaleString() + '</td></tr>' : ''
+            const ryobun3 = prop.領分３ ? '<tr><td>領分３</td><td>' + prop.領分３ + '</td><td>' + Math.round(prop.石高３).toLocaleString() + '</td></tr>' : ''
+            const ryobun4 = prop.領分４ ? '<tr><td>領分４</td><td>' + prop.領分４ + '</td><td>' + Math.round(prop.石高４).toLocaleString() + '</td></tr>' : ''
+            const ryobun5 = prop.領分５ ? '<tr><td>領分５</td><td>' + prop.領分５ + '</td><td>' + Math.round(prop.石高５).toLocaleString() + '</td></tr>' : ''
+            const ryobun6 = prop.領分６ ? '<tr><td>領分６</td><td>' + prop.領分６ + '</td><td>' + Math.round(prop.石高６).toLocaleString() + '</td></tr>' : ''
+            const ryobun7 = prop.領分７ ? '<tr><td>領分７</td><td>' + prop.領分７ + '</td><td>' + Math.round(prop.石高７).toLocaleString() + '</td></tr>' : ''
+            const ryobun8 = prop.領分８ ? '<tr><td>領分８</td><td>' + prop.領分８ + '</td><td>' + Math.round(prop.石高８).toLocaleString() + '</td></tr>' : ''
 
-            // const kokudaka2 = prop.石高２ ? '<h5>石高２=' + prop.石高２ + '</h5>' : ''
-            // const kokudaka3 = prop.石高３ ? '<h5>石高３=' + prop.石高３ + '</h5>' : ''
-            // const kokudaka4 = prop.石高４ ? '<h5>石高４=' + prop.石高４ + '</h5>' : ''
-            // const kokudaka5 = prop.石高５ ? '<h5>石高５=' + prop.石高５ + '</h5>' : ''
-            // const kokudaka6 = prop.石高６ ? '<h5>石高６=' + prop.石高６ + '</h5>' : ''
-            // const kokudaka7 = prop.石高７ ? '<h5>石高７=' + prop.石高７ + '</h5>' : ''
-            // const kokudaka8 = prop.石高８ ? '<h5>石高８=' + prop.石高８ + '</h5>' : ''
-            
             cont += '<div class="kinseipolygon" style=width:300px;>' +
                 '<h4>' + prop.村名0 + '</h4>' +
                 '<h5>' + prop.よみ0 + '<h5/>' +
-                '<h5>石高計=' + Math.round(prop.石高計) + '</h5>' +
+                '<h5>石高計=' + Math.round(prop.石高計).toLocaleString() + '</h5>' +
                 '<table class="popup-table" align="center">' +
                 '<tr><th></th><th>領分</th><th>石高</th></tr>' +
-                '<tr><td>領分１</td><td>' + prop.領分１ + '</td><td>' + Math.round(prop.石高１) + '</td></tr>' +
+                '<tr><td>領分１</td><td>' + prop.領分１ + '</td><td>' + Math.round(prop.石高１).toLocaleString() + '</td></tr>' +
                 ryobun2 +
                 ryobun3 +
                 ryobun4 +

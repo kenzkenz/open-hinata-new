@@ -1946,6 +1946,7 @@
 <style>
 .popup-table {
   margin-bottom: 10px;
+  width: 100%;
 }
 
 .popup-table, .popup-table th, .popup-table td {
