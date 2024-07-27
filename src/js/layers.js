@@ -13704,7 +13704,7 @@ export const Layers =
         { text: '日本歴史地名大系', data: { id: "chimei", layer: LayersMvt.chimei0Obj, opacity: 1, summary: LayersMvt.chimeiSumm } },
 
         { text: '幕末期近世の村', data: { id: "kinseipoint", layer: LayersMvt.kinseiPointObj, opacity: 1, summary: LayersMvt.kinseiSumm,component: {name: 'kinsei', values:[]} } },
-        { text: '幕末期近世の村ポイント', data: { id: "kinseipoint2", layer: LayersMvt.kinseiPointMvtObj, opacity: 1, summary: LayersMvt.kinseiSumm,component: {name: 'kinsei', values:[]} } },
+        { text: '幕末期近世の村ポイント', data: { id: "kinseipoint2", layer: LayersMvt.kinseiPointMvtObj, opacity: 1, summary: LayersMvt.kinseiSumm } },
 
 
         { text: '明治中期の郡', data: { id: "gun", layer: LayersMvt.gunObj, opacity: 1, summary: LayersMvt.gunSumm,component: {name: 'meijigun', values:[]} } },

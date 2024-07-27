@@ -83,6 +83,30 @@ const mapsStr = ['map01','map02']
 // }
 // -----
 
+
+const sourceg = new VectorSource({
+  loader: async function () {
+    // Fetch the flatgeobuffer
+    const response = await fetch('https://wata909.github.io/fudepoly47/fude_tsukuba.fgb')
+    // ...and parse all its features
+    for await (let feature of flatgeobuf.deserialize(response.body)) {
+      console.log(feature)
+      feature.getGeometry().transform('EPSG:4326', 'EPSG:3857')
+      // add each feature to the map, after projecting it to
+      this.addFeature(feature)
+    }
+  }
+});
+// new ol.layer.Vector({
+//   source
+// })
+export const v = {};
+
+for (let i of mapsStr) {
+  v[i] = new VectorLayer({
+    sourceg
+  })
+}
 // 鳥取県無線LAN---------------------------------------------------------------
 function TottorimusenLan() {
   this.useInterimTilesOnError = false
@@ -8698,24 +8722,24 @@ function kinseiPointStyleFunction() {
     } else {
       font = "20px sans-serif"
     }
-    scale = prop.石高計 / 1000 * 3
+    scale = prop.石高計 / 100000
     const styles = []
     const imageStyle = new Style({
-      // image: new Icon({
-      //   src: require('@/assets/icon/whitecircle.png'),
-      //   color: 'darkorange',
-      //   scale: scale
-      // }),
-      image: new Circle({
-        radius: scale,
-        fill: new Fill({
-          color: 'darkorange'
-        }),
-        stroke: new Stroke({
-          color: "white",
-          width: 1
-        })
-      })
+      image: new Icon({
+        src: require('@/assets/icon/whitecirclebig.png'),
+        color: 'darkorange',
+        scale: scale
+      }),
+      // image: new Circle({
+      //   radius: scale,
+      //   fill: new Fill({
+      //     color: 'darkorange'
+      //   }),
+      //   stroke: new Stroke({
+      //     color: "white",
+      //     width: 1
+      //   })
+      // })
     })
     const textStyle = new Style({
       text: new Text({
