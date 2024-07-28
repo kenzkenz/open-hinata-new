@@ -6,8 +6,8 @@
       色分け選択
       <b-form-select v-model="s_selectColor" :options="options" @change="selectChange"></b-form-select>
     </div>
-    <div style="margin-top: 5px;">村名、よみ、領分などで抽出</div>
-    <b-form-input type='text' v-model="s_sonmei" placeholder="空白でor抽出"></b-form-input>
+    <div style="margin-top: 5px;">令制国、村名、よみ、領分などで抽出</div>
+    <b-form-input type='text' v-model="s_sonmei" @change="sonmeiChange" placeholder="空白でor抽出"></b-form-input>
 
 <!--    <div style="margin-top: 15px;">-->
 <!--      <b-form-checkbox type="checkbox" v-model="s_aikyuson">-->
@@ -66,7 +66,8 @@ export default {
   },
   computed: {
     s_kokudakakei () {
-      return '石高の総計=' + Math.round(this.$store.state.info.kokudakakei[this.mapName]).toLocaleString()
+      return '石高の総計=' + Math.round(this.$store.state.info.kokudakakei[this.mapName]).toLocaleString() +
+          '（' + Math.round(this.$store.state.info.sonsu[this.mapName]).toLocaleString() + '村）'
     },
     s_aikyuson: {
       get() {
@@ -129,6 +130,9 @@ export default {
     },
   },
   methods: {
+    sonmeiChange () {
+      this.kokudakakeisan()
+    },
     kokudakakeisan () {
       const vm = this
       this.$store.state.info.kokudakakei[this.mapName] = 0
@@ -140,7 +144,7 @@ export default {
       }
       // const parameter = 'かみくぜ'
       axios
-          .get('https://kenzkenz.xsrv.jp/open-hinata/php/kokudakasokei.php', {
+          .get('https://kenzkenz.xsrv.jp/open-hinata/php/kokudakasokei3.php', {
             params: {
               parameter: parameter
             }
@@ -148,7 +152,8 @@ export default {
           // .post('https://kenzkenz.xsrv.jp/open-hinata/php/insert2.php', params)
           .then(function (response) {
             console.log(response.data)
-            vm.$store.state.info.kokudakakei[vm.mapName] = response.data
+            vm.$store.state.info.kokudakakei[vm.mapName] = response.data.kokudaka
+            vm.$store.state.info.sonsu[vm.mapName] = response.data.sonsu
           })
     },
     selectChange (value) {
@@ -185,7 +190,7 @@ export default {
 
 <style scoped>
 .content-div{
-  width: 250px;
+  width: 295px;
   /*height: 390px;*/
   padding: 10px;
 }

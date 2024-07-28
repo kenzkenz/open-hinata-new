@@ -1553,8 +1553,8 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
             const ryobun8 = prop.領分８ ? '<tr><td>領分８</td><td>' + prop.領分８ + '</td><td>' + Math.round(prop.石高８).toLocaleString() + '</td></tr>' : ''
 
             cont += '<div class="kinseipolygon" style=width:300px;>' +
-                '<h4>' + prop.村名0 + '</h4>' +
-                '<h5>' + prop.よみ0 + '<h5/>' +
+                '<h4>' + prop.村名0 + '' +
+                '<span style="font-size: medium">(' + prop.よみ0 + ')<span/></h4>' +
                 '<h5>石高計=' + Math.round(prop.石高計).toLocaleString() + '</h5>' +
                 '<table class="popup-table" align="center">' +
                 '<tr><th></th><th>領分</th><th>石高</th></tr>' +
@@ -1567,10 +1567,11 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 ryobun7 +
                 ryobun8 +
                 '</table>' +
-                '<p>令制国=' + prop.令制国 + '</p>' +
+                '<p>令制国=' + prop.令制国 + '国</p>' +
                 '<p>国郡名=' + prop.国郡名 + '</p>' +
                 '<p>郡名=' + prop.郡名 + '</p>' +
                 '<p>KEY=' + prop.KEY + '</p>' +
+                '<p>' + prop.PREF_NAME + prop.CITY_NAME　+ '</p>' +
                 // '<p>面積=' + prop.area + '</p>' +
                 // '<p>周長=' + prop.perimeter + '</p>' +
                 '</div><hr>'

@@ -8623,7 +8623,7 @@ function kinseiPolygonStyleFunction(mapName) {
         // exceedLength:true
       })
     })
-    const props = prop.KEY + prop.村名0 + prop.よみ0 + prop.領分１ + prop.国郡名 + prop.令制国 + prop.PREF_NAME + prop.CITY_NAME
+    const props = prop.KEY + prop.村名0 + prop.よみ0 + prop.領分１ + prop.国郡名 + (prop.令制国 + '国') + prop.PREF_NAME + prop.CITY_NAME
         + prop.領分２ + prop.領分３ + prop.領分４ + prop.領分５ + prop.領分６ + prop.領分７ + prop.領分８
     let sonmeiAr = []
     if (sonmei) {

@@ -346,6 +346,12 @@ const moduleInfo = {
       map03: 0,
       map04: 0
     },
+    sonsu: {
+      map01: 0,
+      map02: 0,
+      map03: 0,
+      map04: 0
+    },
     aikyuson: {
       map01: false,
       map02: false,
