@@ -144,7 +144,7 @@ export default {
       }
       // const parameter = 'かみくぜ'
       axios
-          .get('https://kenzkenz.xsrv.jp/open-hinata/php/kokudakasokei3.php', {
+          .get('https://kenzkenz.xsrv.jp/open-hinata/php/kokudakasokei4.php', {
             params: {
               parameter: parameter
             }

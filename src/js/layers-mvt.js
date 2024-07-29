@@ -8601,7 +8601,7 @@ function kinseiPolygonStyleFunction(mapName) {
     } else {
       font = "20px sans-serif"
     }
-    let text = prop.村名
+    let text = prop.村名0
     if (text) {
       if (text.split('・').length > 1 ) {
         text = text.split('・')[0] + '(他' + (text.split('・').length -1) + '村)'
@@ -8673,6 +8673,7 @@ function kinseiPolygonStyleFunction(mapName) {
         }
       }
     }
+    // if (styles.length > 0) console.log(text)
     return styles
   }
 }

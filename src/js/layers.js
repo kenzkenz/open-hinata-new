@@ -12712,7 +12712,7 @@ for (let i of mapsStr) {
 }
 const yamashiroSumm = '出典：<br><a href="https://mapwarper.h-gis.jp/maps/5643" target="_blank">日本版 Map Warper</a>';
 
-// ヤマシロマップ.---------------------------------------------------------------
+// 鳥取砂丘.---------------------------------------------------------------
 function tottorisakyu() {
   this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
   this.preload = Infinity
@@ -12727,6 +12727,40 @@ for (let i of mapsStr) {
   tottorisakyuiObj[i] = new TileLayer(new tottorisakyu())
 }
 const tottorisakyuSumm = '<a href="https://www.geospatial.jp/ckan/dataset/tottori-sanddunes-data" target="_blank">G空間情報センター</a>';
+
+// 令和6年能登半島地震能登地区正射画像（2024年4月5日～4月26日撮影）---------------------------------------------------------------
+function Noto20240405() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/20240102noto_0405_0426do/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 18
+  })
+}
+const noto20240405Obj = {};
+for (let i of mapsStr) {
+  noto20240405Obj[i] = new TileLayer(new Noto20240405())
+}
+const noto20240405Summ = '<a href="https://maps.gsi.go.jp/development/ichiran.html#t20240102noto_0405_0426do" target="_blank">地理院タイル</a>';
+
+// 令和6年能登半島地震輪島西地区 正射画像（2024年1月17日撮影）---------------------------------------------------------------
+function Wajimanishi20240117() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/20240102noto_wazimanishi_0117do/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 18
+  })
+}
+const wajimanishi20240117Obj = {};
+for (let i of mapsStr) {
+  wajimanishi20240117Obj[i] = new TileLayer(new Wajimanishi20240117())
+}
+const wajimanishi20240117Summ = '<a href="https://maps.gsi.go.jp/development/ichiran.html#t20240102noto_0405_0426do" target="_blank">地理院タイル</a>';
+
+
 
 
 // ここにレイヤーを全部書く。クリックするとストアのlayerListに追加されていく-------------------------
@@ -12834,6 +12868,12 @@ export const Layers =
         { text: '富田林市航空写真', data: { id: 'tondaOrt', layer: tondaOrtObj, opacity: 1, zoom:13,center:[135.60006642031433, 34.50010582072453], summary: tondaOrtSumm } },
         { text: '鹿児島市航空写真', data: { id: 'kagosimasiort', layer: kagosimasiOrtObj, opacity: 1, zoom:12,center:[130.51208842259823, 31.58146097086727], summary: kagosimasiOrtSumm } },
         { text: 'PLATEAUオルソ', data: { id: 'plateauOrt', layer: plateauOrtObj, opacity: 1, summary: plateauOrtObjSumm } },
+        { text: '令和6年能登半島地震',
+          children: [
+              { text: '能登地区（2024年4月5日～26日撮影）', data: { id: 'noto20240405Ort', layer: noto20240405Obj, opacity: 1, summary: noto20240405Summ } },
+            { text: '輪島西地区（2024年1月17日撮影）', data: { id: 'wajimanishi20240117Ort', layer: wajimanishi20240117Obj, opacity: 1, summary: wajimanishi20240117Summ } },
+
+          ]},
       ]},
     { text: '過去の航空写真',
       children: [
