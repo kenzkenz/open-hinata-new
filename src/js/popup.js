@@ -3270,3 +3270,23 @@ export function popUpHcokkaidoTsunami(rgba) {
   if (cont) cont = '<span style="color: red">' + cont + '</span>'
   return cont
 }
+
+//----------------------------------------------------------------------------------------
+export function popUpEkijoka17(rgba) {
+  const r = rgba[0]
+  const g = rgba[1]
+  const b = rgba[2]
+  let cont
+  if(r===238 && g===0 && b===3) {
+    cont = "<div style=width:200px>液状化危険度＝高い</div>"
+  }else if(r===222 && g===89 && b===205) {
+    cont = "<div style=width:200px>液状化危険度＝やや高い</div>"
+  }else if(r===230 && g===234 && b===102) {
+    cont = "<div style=width:200px>液状化危険度＝やや低い</div>"
+  }else if(r===79 && g===214 && b===237) {
+    cont = "<div style=width:200px>液状化危険度＝低い</div>"
+  }else if(r===255 && g===255 && b===255) {
+    cont = "<div style=width:200px>液状化危険度＝ほとんどない</div>"
+  }
+  return cont
+}

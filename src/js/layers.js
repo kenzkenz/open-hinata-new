@@ -422,11 +422,11 @@ function Pale () {
   })
   this.useInterimTilesOnError = false
 }
-const paleObj = {}
+export const paleObj = {}
 for (let i of mapsStr) {
   paleObj[i] = new TileLayer(new Pale())
 }
-const paleSumm = '国土地理院作成のタイルです。<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">リンク</a>'
+export const paleSumm = '国土地理院作成のタイルです。<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">リンク</a>'
 // 淡色地図------------------------------------------------------------------------------------
 function Palegray () {
   this.preload = Infinity
@@ -4615,23 +4615,23 @@ const ekizyouka0Summ =   '<div style=width:300px;font-size:smaller>これまで�
 // for (let i of mapsStr) {
 //   ekizyouka16Obj[i] = new TileLayer(new Ekizyouka16())
 // }
-// // 液状化危険度分布図（石川県）-------------------------------------------------------------------------------
-// function Ekizyouka17 () {
-//   this.preload = Infinity
-//   this.name = 'ekizyouka17'
-//   this.extent = transformE([135.8825, 37.6381, 137.5069, 35.8833])
-//   this.pointer = true
-//   this.source = new XYZ({
-//     url: 'https://disaportal.gsi.go.jp/raster/08_03_ekijoka_pref/17_ishikawa/{z}/{x}/{y}.png',
-//     crossOrigin: 'Anonymous',
-//     minZoom: 5,
-//     maxZoom: 15
-//   })
-// }
-// const ekizyouka17Obj = {};
-// for (let i of mapsStr) {
-//   ekizyouka17Obj[i] = new TileLayer(new Ekizyouka17())
-// }
+// 液状化危険度分布図（石川県）-------------------------------------------------------------------------------
+function Ekizyouka17 () {
+  this.preload = Infinity
+  this.name = 'ekizyouka17'
+  this.extent = transformE([135.8825, 37.6381, 137.5069, 35.8833])
+  this.pointer = true
+  this.source = new XYZ({
+    url: 'https://disaportal.gsi.go.jp/raster/08_03_ekijoka_pref/17_ishikawa/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    minZoom: 5,
+    maxZoom: 15
+  })
+}
+const ekizyouka17Obj = {};
+for (let i of mapsStr) {
+  ekizyouka17Obj[i] = new TileLayer(new Ekizyouka17())
+}
 // // 液状化危険度分布図（福井県）-------------------------------------------------------------------------------
 // function Ekizyouka18 () {
 //   this.preload = Infinity
@@ -5200,7 +5200,7 @@ const ekizyouka0Summ =   '<div style=width:300px;font-size:smaller>これまで�
 //   ekizyouka00Obj[i].values_['name'] = 'ekizyouka'
 //   ekizyouka00Obj[i].values_['pointer'] = true
 // }
-// const ekizyoukaSumm = '出典：<br><a href="https://disaportal.gsi.go.jp/hazardmap/copyright/opendata.html" target="_blank">ハザードマップポータルサイト</a>';
+const ekizyoukaSumm = '出典：<br><a href="https://disaportal.gsi.go.jp/hazardmap/copyright/opendata.html" target="_blank">ハザードマップポータルサイト</a>';
 // 宮崎市ハザードマップ-------------------------------------------------------------------------------
 function MiyazakisiHm () {
   this.preload = Infinity
@@ -12856,10 +12856,217 @@ for (let i of mapsStr) {
 }
 const wajimanaka20240111Summ = '<a href="https://maps.gsi.go.jp/development/ichiran.html#t20240102noto_0405_0426do" target="_blank">地理院タイル</a>';
 
+// 令和6年能登半島地震輪島西地区正射画像（2024年1月11日撮影）---------------------------------------------------------------
+function Wajimanishi20240111() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/20240102noto_wazimanishi_0111do/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 18
+  })
+}
+const wajimanishi20240111Obj = {};
+for (let i of mapsStr) {
+  wajimanishi20240111Obj[i] = new TileLayer(new Wajimanishi20240111())
+}
+const wajimanishi20240111Summ = '<a href="https://maps.gsi.go.jp/development/ichiran.html#t20240102noto_0405_0426do" target="_blank">地理院タイル</a>';
+
+// 令和6年能登半島地震穴水地区正射画像（2024年1月11日撮影）---------------------------------------------------------------
+function Anamizu20240111() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/20240102noto_anamizu_0111do/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 18
+  })
+}
+const anamizu20240111Obj = {};
+for (let i of mapsStr) {
+  anamizu20240111Obj[i] = new TileLayer(new Anamizu20240111())
+}
+const anamizu20240111Summ = '<a href="https://maps.gsi.go.jp/development/ichiran.html#t20240102noto_0405_0426do" target="_blank">地理院タイル</a>';
+
+// 令和6年能登半島地震珠洲地区正射画像（2024年1月5日撮影））---------------------------------------------------------------
+function Suzu20240105() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/20240102_noto_suzu_0105do/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 18
+  })
+}
+const suzu20240105Obj = {};
+for (let i of mapsStr) {
+  suzu20240105Obj[i] = new TileLayer(new Suzu20240105())
+}
+const suzu20240105Summ = '<a href="https://maps.gsi.go.jp/development/ichiran.html#t20240102noto_0405_0426do" target="_blank">地理院タイル</a>';
+
+// 令和6年能登半島地震輪島中地区正射画像（2024年1月5日撮影）---------------------------------------------------------------
+function Wajimanaka20240105() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/20240102_noto_wazimanaka_0105do/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 18
+  })
+}
+const wajimanaka20240105Obj = {};
+for (let i of mapsStr) {
+  wajimanaka20240105Obj[i] = new TileLayer(new Wajimanaka20240105())
+}
+const wajimanaka20240105Summ = '<a href="https://maps.gsi.go.jp/development/ichiran.html#t20240102noto_0405_0426do" target="_blank">地理院タイル</a>';
+
+// 令和6年能登半島地震穴水地区正射画像（2024年1月5日撮影）---------------------------------------------------------------
+function Anamizu20240105() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/20240102_noto_anamizu_0105do/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 18
+  })
+}
+const anamizu20240105Obj = {};
+for (let i of mapsStr) {
+  anamizu20240105Obj[i] = new TileLayer(new Anamizu20240105())
+}
+const anamizu20240105Summ = '<a href="https://maps.gsi.go.jp/development/ichiran.html#t20240102noto_0405_0426do" target="_blank">地理院タイル</a>';
+
+// 令和6年能登半島地震七尾地区正射画像（2024年1月5日撮影）---------------------------------------------------------------
+function Nanao20240105() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/20240102_noto_nanao_0105do/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 18
+  })
+}
+const nanao20240105Obj = {};
+for (let i of mapsStr) {
+  nanao20240105Obj[i] = new TileLayer(new Nanao20240105())
+}
+const nanao20240105Summ = '<a href="https://maps.gsi.go.jp/development/ichiran.html#t20240102noto_0405_0426do" target="_blank">地理院タイル</a>';
+
+// 令和6年能登半島地震珠洲地区正射画像（2024年1月2日撮影）---------------------------------------------------------------
+function Suzu20240102() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/20240102noto_suzu_0102do/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 18
+  })
+}
+const suzu20240102Obj = {};
+for (let i of mapsStr) {
+  suzu20240102Obj[i] = new TileLayer(new Suzu20240102())
+}
+const suzu20240102Summ = '<a href="https://maps.gsi.go.jp/development/ichiran.html#t20240102noto_0405_0426do" target="_blank">地理院タイル</a>';
+
+// 令和6年能登半島地震輪島中地区正射画像（2024年1月2日撮影））---------------------------------------------------------------
+function Wajimanaka20240102() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/20240102noto_wazimanaka_0102do/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 18
+  })
+}
+const wajimanaka20240102Obj = {};
+for (let i of mapsStr) {
+  wajimanaka20240102Obj[i] = new TileLayer(new Wajimanaka20240102())
+}
+const wajimanaka20240102Summ = '<a href="https://maps.gsi.go.jp/development/ichiran.html#t20240102noto_0405_0426do" target="_blank">地理院タイル</a>';
+
+// 令和6年能登半島地震輪島東地区正射画像（2024年1月2日撮影）---------------------------------------------------------------
+function Wajimahigashi20240102() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/20240102noto_wazimahigashi_0102do/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 18
+  })
+}
+const wajimahigashi20240102Obj = {};
+for (let i of mapsStr) {
+  wajimahigashi20240102Obj[i] = new TileLayer(new Wajimahigashi20240102())
+}
+const wajimahigashi20240102Summ = '<a href="https://maps.gsi.go.jp/development/ichiran.html#t20240102noto_0405_0426do" target="_blank">地理院タイル</a>';
+
+// 能登CS立体図林野庁---------------------------------------------------------------
+function Notocsrinya() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://rinya.geospatial.jp/tile/csmaptile_noto/{z}/{x}/{y}.png',
+    // crossOrigin: 'Anonymous',
+    maxZoom: 18
+  })
+}
+const notocsrinyaObj = {};
+for (let i of mapsStr) {
+  notocsrinyaObj[i] = new TileLayer(new Notocsrinya())
+}
+const notocsrinyaSumm = '<a href="https://www.geospatial.jp/ckan/dataset/2024noto_rinya" target="_blank">G空間情報センター</a>';
+
+// 能登傾斜図林野庁---------------------------------------------------------------
+function Notokeisyarinya() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://rinya.geospatial.jp/tile/slopetile_noto/{z}/{x}/{y}.png',
+    // crossOrigin: 'Anonymous',
+    maxZoom: 18
+  })
+}
+const notokeisyarinyaObj = {};
+for (let i of mapsStr) {
+  notokeisyarinyaObj[i] = new TileLayer(new Notokeisyarinya())
+}
+const notokeisyarinyaSumm = '<a href="https://www.geospatial.jp/ckan/dataset/2024noto_rinya" target="_blank">G空間情報センター</a>';
+
 
 // ここにレイヤーを全部書く。クリックするとストアのlayerListに追加されていく-------------------------
 export const Layers =
   [
+    { text: '<span style="color: red;">令和6年能登半島地震まとめ</span>',
+      children: [
+        { text: '能登CS立体図（発災前:森林総合研究所）', data: { id: 'notocs', layer: notoCsObj, opacity: 1, summary: notoCsSumm } },
+        { text: '能登CS立体図（発災後:林野庁）', data: { id: 'notocsrinya', layer: notocsrinyaObj, opacity: 1, summary: notocsrinyaSumm } },
+        { text: '能登傾斜区分図（発災後:林野庁）', data: { id: 'notokeisyarinya', layer: notokeisyarinyaObj, opacity: 1, summary: notokeisyarinyaSumm } },
+
+        { text: '能登西部赤色立体地図', data: { id: 'notoseibu', layer: notoSeibuObj, opacity: 1, summary: notoSeubuSumm } },
+        { text: '液状化危険度分布図（石川県）', data: { id: 'ekizyouka17', layer: ekizyouka17Obj, opacity: 1, summary: ekizyoukaSumm } },
+        { text: '17石川県農地', data: { id: 'hude17', layer: LayersMvt.hude17Obj, opacity: 1, summary: LayersMvt.hude17Summ } },
+        { text: '戦前地形図5万分の１', data: { id: 'mw5', layer: mw5Obj, opacity: 1, summary: mw5Summ } },
+        { text: '17石川県古地図(大正14年)', data: { id: 'kotizu17isikawa', layer: kotizu17isikawaObj, opacity: 1, summary: kotizu17isikawaSumm } },
+
+
+        { text: '<span style="color: red;">能登地区（2024年4月5日～26日撮影）</span>', data: { id: 'noto20240405Ort', layer: noto20240405Obj, opacity: 1, summary: noto20240405Summ } },
+        { text: '輪島西地区（2024年1月17日撮影）', data: { id: 'wajimanishi20240117Ort', layer: wajimanishi20240117Obj, opacity: 1, summary: wajimanishi20240117Summ } },
+        { text: '穴水地区（2024年1月17日撮影）', data: { id: 'anami20240117Ort', layer: anami20240117Obj, opacity: 1, summary: anami20240117Summ } },
+        { text: '七尾地区（2024年1月17日撮影）', data: { id: 'nanao20240117Ort', layer: nanao20240117Obj, opacity: 1, summary: nanao20240117Summ } },
+        { text: '珠洲地区（2024年1月14日撮影）', data: { id: 'suzu20240114Ort', layer: suzu20240114Obj, opacity: 1, summary: suzu20240114Summ } },
+        { text: '輪島東地区（2024年1月14日撮影）', data: { id: 'wajimahigashi20240114Ort', layer: wajimahigashi20240114Obj, opacity: 1, summary: wajimahigashi20240114Summ } },
+        { text: '穴水地区（2024年1月14日撮影）', data: { id: 'anamizu20240114Ort', layer: anamizu20240114Obj, opacity: 1, summary: anamizu20240114Summ } },
+        { text: '輪島中地区（2024年1月11日撮影）', data: { id: 'wajimanaka20240111Ort', layer: wajimanaka20240111Obj, opacity: 1, summary: wajimanaka20240111Summ } },
+        { text: '輪島西地区（2024年1月11日撮影）', data: { id: 'wajimanishi20240111Ort', layer: wajimanishi20240111Obj, opacity: 1, summary: wajimanishi20240111Summ } },
+        { text: '穴水地区（2024年1月11日撮影）', data: { id: 'anamizu20240111Ort', layer: anamizu20240111Obj, opacity: 1, summary: anamizu20240111Summ } },
+        { text: '珠洲地区（2024年1月5日撮影）', data: { id: 'suzu20240105rt', layer: suzu20240105Obj, opacity: 1, summary: suzu20240105Summ } },
+        { text: '輪島中地区（2024年1月5日撮影）', data: { id: 'wajimanaka20240105rt', layer: wajimanaka20240105Obj, opacity: 1, summary: wajimanaka20240105Summ } },
+        { text: '穴水地区（2024年1月5日撮影）', data: { id: 'anamizu20240105rt', layer: anamizu20240105Obj, opacity: 1, summary: anamizu20240105Summ } },
+        { text: '七尾地区（2024年1月5日撮影）', data: { id: 'nanao20240105rt', layer: nanao20240105Obj, opacity: 1, summary: nanao20240105Summ } },
+        { text: '珠洲地区（2024年1月2日撮影）', data: { id: 'suzu20240102rt', layer: suzu20240102Obj, opacity: 1, summary: suzu20240102Summ } },
+        { text: '輪島中地区（2024年1月2日撮影）', data: { id: 'wajimanaka20240102rt', layer: wajimanaka20240102Obj, opacity: 1, summary: wajimanaka20240102Summ } },
+        { text: '輪島東地区（2024年1月2日撮影）', data: { id: 'wajimahigashi20240102rt', layer: wajimahigashi20240102Obj, opacity: 1, summary: wajimahigashi20240102Summ } },
+      ]},
     { text: 'OpenStreetMap', data: { id: 0, layer: osmObj, opacity: 1, summary: osmSumm } },
     { text: '国土地理院',
       children: [
@@ -12917,7 +13124,6 @@ export const Layers =
           children: [
             { text: 'R05小学校区', data: { id: "syougakkoukur05", layer: LayersMvt.syougakkoukuR05Obj, opacity: 1, summary: LayersMvt.syougakkoukuR05Summ,component: {name: 'syogakkoR05', values:[]} } },
             { text: 'R03小学校区', data: { id: "syougakkouku", layer: LayersMvt.syougakkouku0Obj, opacity: 1, summary: LayersMvt.syougakkoukuSumm,component: {name: 'syogakkoR03', values:[]} } },
-
           ]},
         { text: '幼稚園、保育園',
           children: [
@@ -12971,8 +13177,16 @@ export const Layers =
             { text: '珠洲地区（2024年1月14日撮影）', data: { id: 'suzu20240114Ort', layer: suzu20240114Obj, opacity: 1, summary: suzu20240114Summ } },
             { text: '輪島東地区（2024年1月14日撮影）', data: { id: 'wajimahigashi20240114Ort', layer: wajimahigashi20240114Obj, opacity: 1, summary: wajimahigashi20240114Summ } },
             { text: '穴水地区（2024年1月14日撮影）', data: { id: 'anamizu20240114Ort', layer: anamizu20240114Obj, opacity: 1, summary: anamizu20240114Summ } },
-            { text: '輪島中地区（2024年1月1１日撮影）', data: { id: 'wajimanaka20240111Ort', layer: wajimanaka20240111Obj, opacity: 1, summary: wajimanaka20240111Obj } },
-
+            { text: '輪島中地区（2024年1月11日撮影）', data: { id: 'wajimanaka20240111Ort', layer: wajimanaka20240111Obj, opacity: 1, summary: wajimanaka20240111Summ } },
+            { text: '輪島西地区（2024年1月11日撮影）', data: { id: 'wajimanishi20240111Ort', layer: wajimanishi20240111Obj, opacity: 1, summary: wajimanishi20240111Summ } },
+            { text: '穴水地区（2024年1月11日撮影）', data: { id: 'anamizu20240111Ort', layer: anamizu20240111Obj, opacity: 1, summary: anamizu20240111Summ } },
+            { text: '珠洲地区（2024年1月5日撮影）', data: { id: 'suzu20240105rt', layer: suzu20240105Obj, opacity: 1, summary: suzu20240105Summ } },
+            { text: '輪島中地区（2024年1月5日撮影）', data: { id: 'wajimanaka20240105rt', layer: wajimanaka20240105Obj, opacity: 1, summary: wajimanaka20240105Summ } },
+            { text: '穴水地区（2024年1月5日撮影）', data: { id: 'anamizu20240105rt', layer: anamizu20240105Obj, opacity: 1, summary: anamizu20240105Summ } },
+            { text: '七尾地区（2024年1月5日撮影）', data: { id: 'nanao20240105rt', layer: nanao20240105Obj, opacity: 1, summary: nanao20240105Summ } },
+            { text: '珠洲地区（2024年1月2日撮影）', data: { id: 'suzu20240102rt', layer: suzu20240102Obj, opacity: 1, summary: suzu20240102Summ } },
+            { text: '輪島中地区（2024年1月2日撮影）', data: { id: 'wajimanaka20240102rt', layer: wajimanaka20240102Obj, opacity: 1, summary: wajimanaka20240102Summ } },
+            { text: '輪島東地区（2024年1月2日撮影）', data: { id: 'wajimahigashi20240102rt', layer: wajimahigashi20240102Obj, opacity: 1, summary: wajimahigashi20240102Summ } },
           ]},
       ]},
     { text: '過去の航空写真',

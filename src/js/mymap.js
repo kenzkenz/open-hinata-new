@@ -36,6 +36,7 @@ import Icon from 'ol/style/Icon'
 import * as d3 from "d3"
 import PrintDialog from 'ol-ext/control/PrintDialog.js'
 import muni from './muni'
+import {popUpEkijoka17} from "./popup";
 
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
@@ -777,6 +778,10 @@ export function initMap (vm) {
                             server = 'https://kenzkenz3.xsrv.jp/mvt/miyazaki/hyuganadatotatsuraster/'
                             zoom = 15
                             break
+                        case 'ekizyouka17':
+                            server = 'https://disaportal.gsi.go.jp/raster/08_03_ekijoka_pref/17_ishikawa/'
+                            zoom = 15
+                            break
                     }
                     if (server) return getRgb0(evt,server,zoom)
                 })
@@ -984,6 +989,11 @@ export function initMap (vm) {
                             server = 'https://kenzkenz3.xsrv.jp/mvt/miyazaki/hyuganadatotatsuraster/'
                             zoom = 15
                             func = PopUp.popUpHyuganadaToutatsu
+                            break
+                        case 'ekizyouka17':
+                            server = 'https://disaportal.gsi.go.jp/raster/08_03_ekijoka_pref/17_ishikawa/'
+                            zoom = 15
+                            func = PopUp.popUpEkijoka17
                             break
                     }
                     if (server) return getRgb0(evt,server,zoom,func)

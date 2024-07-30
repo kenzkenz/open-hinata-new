@@ -15,9 +15,9 @@ export function permalinkEventSet (response) {
     value: {
       id: 2,
       title: '淡色地図',
-      layer: Layers.Layers[1].children[1].data.layer,
+      layer: Layers.paleObj,
       opacity: 1,
-      summary: Layers.Layers[1].children[1].data.summary,
+      summary: Layers.paleSumm,
       component: ''
     },
     mapName: 'map01'
@@ -26,9 +26,9 @@ export function permalinkEventSet (response) {
     value: {
       id: 2,
       title: '淡色地図',
-      layer: Layers.Layers[1].children[1].data.layer,
+      layer: Layers.paleObj,
       opacity: 1,
-      summary: Layers.Layers[1].children[1].data.summary,
+      summary: Layers.paleSumm,
       component: ''
     },
     mapName: 'map02'
@@ -37,9 +37,9 @@ export function permalinkEventSet (response) {
     value: {
       id: 2,
       title: '淡色地図',
-      layer: Layers.Layers[1].children[1].data.layer,
+      layer: Layers.paleObj,
       opacity: 1,
-      summary: Layers.Layers[1].children[1].data.summary,
+      summary: Layers.paleSumm,
       component: ''
     },
     mapName: 'map03'
@@ -48,9 +48,9 @@ export function permalinkEventSet (response) {
     value: {
       id: 2,
       title: '淡色地図',
-      layer: Layers.Layers[1].children[1].data.layer,
+      layer: Layers.paleObj,
       opacity: 1,
-      summary: Layers.Layers[1].children[1].data.summary,
+      summary: Layers.paleSumm,
       component: ''
     },
     mapName: 'map04'
