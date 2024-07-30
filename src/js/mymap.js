@@ -514,6 +514,20 @@ export function initMap (vm) {
         olPopup.addEventListener('click', (e) => {
             if (e.target && e.target.classList.contains("edit-button")) {
                 store.state.base.dialogs.dialogEdit.style.display = 'block'
+
+                const geoType = store.state.base.editFeature.getGeometry().getType()
+                let color
+                if (geoType === 'Point' || geoType === 'LineString') {
+                    color = store.state.base.editFeature.values_._color
+                    if (!color) color = 'rgba(0,0,0,1)'
+                } else if (geoType === 'Polygon' || geoType === 'Circle') {
+                    color = store.state.base.editFeature.values_._fillColor
+                    if (!color) color = 'rgba(0,0,0,0.5)'
+                }
+                const rgba = d3.rgb(color)
+                const colorP = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.opacity }
+                store.state.base.editFeatureColor = colorP
+
                 // overlay[i].setPosition(undefined)
                 moveEnd()
             }
