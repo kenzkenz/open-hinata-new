@@ -196,7 +196,7 @@ export default {
       // this.$store.state.base.maps['map02'].addInteraction(MyMap.modifyInteraction)
     },
     drawReset () {
-      const result = window.confirm('全て除しますか。');
+      const result = window.confirm('全て削除しますか。');
       if( !result ) return
       this.s_toggleLine = false
       this.s_togglePoint = false

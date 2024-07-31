@@ -1274,6 +1274,7 @@ export function initMap (vm) {
         const removeLastPoint = function(evt){
             // console.log(evt.keyCode)
             if(evt.keyCode == 27){
+                console.log('ESCキー')
                 // const selectCollection = selectInteraction.getFeatures();
                 // drawLayer.getSource().removeFeature(selectCollection.item(0))
                 lineInteraction.removeLastPoint()
