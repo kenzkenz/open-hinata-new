@@ -16,10 +16,23 @@
 
 <!--      <b-button style="margin-top: 5px;" :pressed.sync="toggleDelete" class='olbtn' :size="btnSize">{{ toggleDelete ? '削除' : '削除' }}</b-button>-->
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawReset">全て削除</b-button>
+
+      <div class="range-div">
+        <label class="eye-label">
+          <input type="checkbox" class='checkbox' checked v-model="s_drawVisible">
+          <span class="checkbox-eye"></span>
+        </label>
+        <input type="range" min="0" max="1" step="0.01" class="range" v-model="s_drawOpacity" />
+      </div>
+
+
       <hr>
       <b-button style="margin-top: 5px;" class='olbtn' :size="btnSize" @click="saveGeojson">geojson保存</b-button>
       <b-button style="margin-top: 5px;margin-left: 10px;" class='olbtn' :size="btnSize" @click="saveGpx">GPX保存</b-button>
       <b-button style="margin-top: 5px;margin-left: 10px;" class='olbtn' :size="btnSize" @click="saveKml">kml保存</b-button>
+
+
+
 
       <a id="download" download="draw.geojson"></a>
       <a id="download-gpx" download="draw.gpx"></a>
@@ -36,6 +49,8 @@ import GeoJSON from 'ol/format/GeoJSON'
 import GPX from 'ol/format/GPX'
 import KML from 'ol/format/KML'
 import {moveEnd} from "@/js/permalink"
+import * as permalink from "@/js/permalink";
+import store from "@/js/store";
 
 export default {
   name: "dialog-measure",
@@ -64,6 +79,22 @@ export default {
   computed: {
     S_measureDialog () {
       return this.$store.state.base.dialogs.measureDialog
+    },
+    s_drawVisible: {
+      get() {
+        return this.$store.state.base.drawVisible
+      },
+      set(value) {
+        this.$store.state.base.drawVisible = value
+      }
+    },
+    s_drawOpacity: {
+      get() {
+        return this.$store.state.base.drawOpacity
+      },
+      set(value) {
+        this.$store.state.base.drawOpacity = value
+      }
     },
     s_togglePoint0: {
       get() {
@@ -99,6 +130,10 @@ export default {
     },
   },
   methods: {
+    // opacityChange () {
+    //   // MyMap.drawLayer.setOpacity(Number(this.s_drawOpacity))
+    //   // permalink.moveEnd()
+    // },
     saveKml () {
       const features = drawLayer.getSource().getFeatures()
       const features2 = features.filter((feature) => {
@@ -177,6 +212,16 @@ export default {
     distance (){
       MyMap.addDrawInteraction(this.$store.state.base.maps['map01'])
     },
+  },
+  watch: {
+    s_drawOpacity(newValue) {
+      MyMap.drawLayer.setOpacity(Number(newValue))
+      permalink.moveEnd()
+    },
+    s_drawVisible(newValue) {
+      MyMap.drawLayer.setVisible(Number(newValue))
+      permalink.moveEnd()
+    }
   },
   mounted () {
     // const mapName = 'map01'
@@ -389,5 +434,49 @@ export default {
 }
 .btn-secondary:hover{
   background-color: rgba(0,60,136,0.7);
+}
+.range-div {
+  margin-top: 5px;
+  position: relative;
+}
+.range {
+  width: 200px;
+  margin-left: 40px;
+}
+.eye-label {
+  position: absolute;
+  top:0px;
+  left:5px;
+  width:30px;
+  color:rgba(0,60,136,0.5);
+  cursor: pointer;
+}
+.checkbox {
+  display: none;
+}
+.checkbox-eye {
+  position: relative;
+  vertical-align: middle;
+  font-size: 20px;
+}
+.checkbox + .checkbox-eye:before {
+  font-weight: 550;
+  font-family: "Font Awesome 5 Free";
+  content: '\f070';
+  color:rgba(0,60,136,0.5);
+  cursor: pointer;
+}
+.checkbox:checked + .checkbox-eye:before {
+  font-weight: 550;
+  font-family: "Font Awesome 5 Free";
+  content: '\f06e';
+  color:rgba(0,60,136,0.5);
+
+}
+.checkbox-eye:hover:before{
+  color: blue;
+}
+.checkbox:checked + .checkbox-eye:hover:before {
+  color: blue;
 }
 </style>

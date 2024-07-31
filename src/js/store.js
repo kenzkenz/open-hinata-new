@@ -93,6 +93,8 @@ const moduleBase = {
       nensyo: 0
     },
     ssdsStatName: '',
+    drawVisible: true,
+    drawOpacity: 1,
     togglePoint: false,
     togglePoint0: false,
     toggleLine: false,

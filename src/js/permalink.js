@@ -103,14 +103,14 @@ export function permalinkEventSet (response) {
       // const maps = ['map01','map02','map03','map04']
       const maps = ['map01']
       maps.forEach((map) => {
-        if (key==='3d' + map) {
+        if (key === '3d' + map) {
           store.state.base.ol3d[map] = new OLCesium({map: store.state.base.maps[map]})
           const ol3d = store.state.base.ol3d[map]
           const scene = ol3d.getCesiumScene()
           const json = JSON.parse(obj[key])
           // console.log(obj[key])
           // console.log(json)
-          const terrainProvider = new Cesium.PngElevationTileTerrainProvider( {
+          const terrainProvider = new Cesium.PngElevationTileTerrainProvider({
             url: 'https://gsj-seamless.jp/labs/elev2/elev/{z}/{y}/{x}.png?prj=latlng&size=257',
             // url: 'https://tiles.gsj.jp/tiles/elev/mixed/{z}/{y}/{x}.png',
             // url: 'https://gsj-seamless.jp/labs/elev2/elev/gsi10m_latlng_257/{z}/{y}/{x}.png',
@@ -177,7 +177,7 @@ export function permalinkEventSet (response) {
       //   ol3d.getCamera().setTilt(json.tilt)
       //   ol3d.getCamera().setHeading(json.heading)
       // }
-      if (key==='DL') {
+      if (key === 'DL') {
         // store.state.info.dokujiUrl['map01'] = JSON.parse(obj[key]).url
         // store.state.info.dokujiName['map01'] = JSON.parse(obj[key]).name
         store.state.info.dokujiLayers = JSON.parse(obj[key])
@@ -187,7 +187,7 @@ export function permalinkEventSet (response) {
       // if (key==='DN') {
       //   store.state.info.dokujiName['map01'] = obj[key]
       // }
-      if (key==='GJ') {
+      if (key === 'GJ') {
 
         // console.log(decodeURIComponent(obj[key]))
 
@@ -265,8 +265,8 @@ export function permalinkEventSet (response) {
             if (feature.geometry.type !== 'MultiPolygon') {
               console.log(feature.properties)
               if (feature.properties) {
-                Object.keys(feature.properties).forEach(function(key) {
-                  console.log(key,feature.properties[key])
+                Object.keys(feature.properties).forEach(function (key) {
+                  console.log(key, feature.properties[key])
                   newFeature.setProperties({[key]: feature.properties[key]})
                 })
               }
@@ -281,10 +281,22 @@ export function permalinkEventSet (response) {
         // store.state.base.maps.map01.addInteraction(MyMap.transformInteraction)
         store.state.base.maps.map01.addLayer(MyMap.drawLayer)
       }
-      if (key==='S') {
+      if (key === 'GJO'){
+        store.state.base.drawOpacity = Number(obj[key])
+      }
+      if (key === 'GJV'){
+        let bool
+        if (obj[key] === 'true') {
+          bool = true
+        } else {
+          bool = false
+        }
+        store.state.base.drawVisible = bool
+      }
+      if (key ==='S') {
         store.commit('base/updateSplitFlg',obj[key])
       }
-      if (key==='L') {
+      if (key ==='L') {
         // 初期レイヤーをリセット
         store.commit('base/updateList', {value: [], mapName: 'map01'});
         store.commit('base/updateList', {value: [], mapName: 'map02'});
@@ -538,6 +550,8 @@ export function moveEnd () {
 
   // console.log(store.getters['base/layerLists'])
   parameter += '&GJ=' + geojsonT
+  parameter += '&GJO=' + store.state.base.drawOpacity
+  parameter += '&GJV=' + store.state.base.drawVisible
 
   const maps = ['map01','map02','map03','map04']
   maps.forEach((map) => {

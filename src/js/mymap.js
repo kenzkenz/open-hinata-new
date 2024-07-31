@@ -85,6 +85,7 @@ export const selectInteraction = new Select({
 function drawLayerStylefunction (){
     return function (feature, resolution) {
         const prop = feature.getProperties()
+        const zoom = getZoom(resolution)
         const geoType = feature.getGeometry().getType()
         // console.log(prop.distance)
         // console.log(prop)
@@ -177,7 +178,7 @@ function drawLayerStylefunction (){
         styles.push(polygonStyle)
         if (geoType === 'Point') styles.push(pointStyle)
         if (geoType === 'LineString') styles.push(lineStyle)
-        styles.push(textStyle)
+        if (zoom >= 12) styles.push(textStyle)
         if (geoType === 'Circle') styles.push(textStyle2)
         return styles
     }
