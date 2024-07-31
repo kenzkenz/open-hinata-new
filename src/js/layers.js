@@ -13060,21 +13060,15 @@ export const Layers =
 
         { text: '新潟県長岡CS立体図（発災後:林野庁）', data: { id: 'nagaokacsrinya', layer: nagaokaCsObj, opacity: 1, summary: nagaokaCsSumm } },
 
-
-
         { text: '能登傾斜区分図（発災後:林野庁）', data: { id: 'notokeisyarinya', layer: notokeisyarinyaObj, opacity: 1, summary: notokeisyarinyaSumm } },
         { text: '能登斜面崩壊', data: { id: 'notosyamenhokai', layer: LayersMvt.notosyamenhokaiObj, opacity: 1, summary: LayersMvt.notosyamenhokaiSumm } },
         { text: '陸化したと思われる港', data: { id: 'notominato', layer: LayersMvt.notominatoObj, opacity: 1, summary: LayersMvt.notominatoSumm } },
-
-
 
         { text: '能登西部赤色立体地図', data: { id: 'notoseibu', layer: notoSeibuObj, opacity: 1, summary: notoSeubuSumm } },
         { text: '液状化危険度分布図（石川県）', data: { id: 'ekizyouka17', layer: ekizyouka17Obj, opacity: 1, summary: ekizyoukaSumm } },
         { text: '17石川県農地', data: { id: 'hude17', layer: LayersMvt.hude17Obj, opacity: 1, summary: LayersMvt.hude17Summ } },
         { text: '戦前地形図5万分の１', data: { id: 'mw5', layer: mw5Obj, opacity: 1, summary: mw5Summ } },
         { text: '17石川県古地図(大正14年)', data: { id: 'kotizu17isikawa', layer: kotizu17isikawaObj, opacity: 1, summary: kotizu17isikawaSumm } },
-
-
         { text: '<span style="color: red;">能登地区（2024年4月5日～26日撮影）</span>', data: { id: 'noto20240405Ort', layer: noto20240405Obj, opacity: 1, summary: noto20240405Summ } },
         { text: '輪島西地区（2024年1月17日撮影）', data: { id: 'wajimanishi20240117Ort', layer: wajimanishi20240117Obj, opacity: 1, summary: wajimanishi20240117Summ } },
         { text: '穴水地区（2024年1月17日撮影）', data: { id: 'anami20240117Ort', layer: anami20240117Obj, opacity: 1, summary: anami20240117Summ } },

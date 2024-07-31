@@ -308,6 +308,7 @@ export function permalinkEventSet (response) {
         // store.state.base.maps.map04.removeLayer(store.state.base.maps.map04.getLayers().getArray()[0]);
         const urlLayerListArr = JSON.parse(obj[key]);
         // console.log(urlLayerListArr)
+        let count = 0
         for (let i = 0; i < urlLayerListArr.length; i++) {
           // 逆ループ
           for (let j = urlLayerListArr[i].length - 1; j >= 0; j--) {
@@ -410,16 +411,12 @@ export function permalinkEventSet (response) {
                           console.log(c.name)
                         }
                       } else {
-                        top = '60px'
-                        left = '10px'
+                        const top0 = (60 + (40 * count)) + 'px'
+                        const left0 = (10 + (40 * count)) + 'px'
+                        top = top0
+                        left = left0
                         bottom = ''
-                        // if (c) {
-                        //   switch (c.name) {
-                        //     case 'ssdsPref':
-                        //       maxHeight = '400px'
-                        //       break
-                        //   }
-                        // }
+                        count++
                       }
                       const infoDialog =
                           {

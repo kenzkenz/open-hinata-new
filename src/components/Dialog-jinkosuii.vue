@@ -30,13 +30,13 @@ export default {
     resasD3()
     function resasD3 () {
       const elements = document.querySelectorAll('.v-dialog2-div')
-        const len = elements.length
-        if (len>1) {
-          elements[len-1].style.top = Number(elements[len-2].style.top.replace('px','')) + 40 + 'px'
-          if (window.innerWidth > 600) {
-            elements[len-1].style.left = Number(elements[len-2].style.left.replace('px','')) - 40 + 'px'
-          }
+      const len = elements.length
+      if (len>1) {
+        elements[len-1].style.top = Number(elements[len-2].style.top.replace('px','')) + 40 + 'px'
+        if (window.innerWidth > 600) {
+          elements[len-1].style.left = Number(elements[len-2].style.left.replace('px','')) - 40 + 'px'
         }
+      }
       // 1. データの準備
 
       let datasetAll
