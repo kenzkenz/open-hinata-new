@@ -1699,6 +1699,13 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div><hr>'
           }
           break
+        case 'notominato':
+          if (cont.indexOf('notominato') === -1) {
+            cont += '<div class="notominato" style=width:200px;>' +
+                '<h4>' + prop.name + '</h4>' +
+                '</div><hr>'
+          }
+          break
       }
     })
   }

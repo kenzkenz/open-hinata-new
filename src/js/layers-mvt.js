@@ -107,6 +107,62 @@ for (let i of mapsStr) {
     sourceg
   })
 }
+// 能登港---------------------------------------------------------------
+function NotoMinato() {
+  this.useInterimTilesOnError = false
+  this.name = 'notominato'
+  this.source = new VectorSource({
+    url:'https://kenzkenz3.xsrv.jp/geojson/minato.geojson',
+    format: new GeoJSON()
+  });
+  this.style = notominatoFunction()
+}
+export const notominatoSumm = "<a href='https://www.gsi.go.jp/BOUSAI/20240101_noto_earthquake.html' target='_blank'>令和6年(2024年)能登半島地震に関する情報</a>"
+export const notominatoObj = {};
+for (let i of mapsStr) {
+  notominatoObj[i] = new VectorLayer(new NotoMinato())
+}
+function notominatoFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    let font
+    if (zoom <= 14) {
+      font = "14px sans-serif"
+    } else {
+      font = "16px sans-serif"
+    }
+    const iconStyle = new Style({
+      image: new Icon({
+        src: require('@/assets/icon/whitecircle.png'),
+        scale: 1.5,
+        color: 'red'
+      })
+    })
+    const textStyle = new Style({
+      text: new Text({
+        font: font,
+        text: prop.name,
+        offsetY: 20,
+        stroke: new Stroke({
+          color: "white",
+          width: 3
+        })
+      })
+    })
+    const lineStyle = new Style({
+      stroke: new Stroke({
+        color: 'blue',
+        width: 4,
+      }),
+    })
+    styles.push(lineStyle)
+    styles.push(iconStyle)
+    styles.push(textStyle)
+    return styles
+  }
+}
 // 能登地震斜面崩壊---------------------------------------------------------------
 function Notosyamenhokai() {
   this.useInterimTilesOnError = false
