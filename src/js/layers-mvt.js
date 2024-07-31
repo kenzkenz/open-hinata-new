@@ -107,6 +107,41 @@ for (let i of mapsStr) {
     sourceg
   })
 }
+// 能登地震斜面崩壊---------------------------------------------------------------
+function Notosyamenhokai() {
+  this.useInterimTilesOnError = false
+  // this.name = 'tottorimusenlan'
+  this.source = new VectorSource({
+    url:'https://kenzkenz3.xsrv.jp/geojson/hokai.geojson',
+    format: new GeoJSON()
+  });
+  this.style = notosyamenhokaiFunction()
+}
+export const notosyamenhokaiSumm = "<a href='https://www.gsi.go.jp/BOUSAI/20240101_noto_earthquake.html#6-2' target='_blank'>令和6年(2024年)能登半島地震に関する情報</a>"
+export const notosyamenhokaiObj = {};
+for (let i of mapsStr) {
+  notosyamenhokaiObj[i] = new VectorLayer(new Notosyamenhokai())
+}
+function notosyamenhokaiFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: 'rgba(0,128,0,0.7)'
+      }),
+      stroke: new Stroke({
+        color: "black",
+        width: 1
+      }),
+    })
+    styles.push(polygonStyle)
+    return styles
+  }
+}
+
+
 // 鳥取県無線LAN---------------------------------------------------------------
 function TottorimusenLan() {
   this.useInterimTilesOnError = false

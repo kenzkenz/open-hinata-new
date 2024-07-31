@@ -240,7 +240,8 @@ export function permalinkEventSet (response) {
               // MyMap.drawLayer.getSource().addFeature(newFeature)
 
             } else if (feature.geometry.type === 'MultiPolygon') {
-              const distance = feature.properties.distance
+              let distance
+              if (feature.properties) distance = feature.properties.distance
               let coordinates = []
               feature.geometry.coordinates[0].forEach((coord0) => {
                 coord0.forEach((coord) => {
@@ -248,7 +249,7 @@ export function permalinkEventSet (response) {
                 })
                 const polygon = new Polygon([coordinates])
                 newFeature = new Feature(polygon)
-                newFeature.setProperties({distance: distance})
+                if (distance) newFeature.setProperties({distance: distance})
                 if (feature.properties) {
                   Object.keys(feature.properties).forEach(function (key) {
                     console.log(key, feature.properties[key])

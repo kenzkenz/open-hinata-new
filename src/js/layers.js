@@ -13032,6 +13032,23 @@ for (let i of mapsStr) {
 }
 const notokeisyarinyaSumm = '<a href="https://www.geospatial.jp/ckan/dataset/2024noto_rinya" target="_blank">G空間情報センター</a>';
 
+// 新潟県長岡地域CS立体図---------------------------------------------------------------
+function NagaokaCs() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://rinya.geospatial.jp/tile/csmaptile_nagaoka/{z}/{x}/{y}.png',
+    // crossOrigin: 'Anonymous',
+    maxZoom: 17
+  })
+}
+const nagaokaCsObj = {};
+for (let i of mapsStr) {
+  nagaokaCsObj[i] = new TileLayer(new NagaokaCs())
+}
+const nagaokaCsSumm = '<a href="https://www.geospatial.jp/ckan/dataset/2024nagaoka_rinya" target="_blank">G空間情報センター</a>';
+
+
 
 // ここにレイヤーを全部書く。クリックするとストアのlayerListに追加されていく-------------------------
 export const Layers =
@@ -13040,7 +13057,15 @@ export const Layers =
       children: [
         { text: '能登CS立体図（発災前:森林総合研究所）', data: { id: 'notocs', layer: notoCsObj, opacity: 1, summary: notoCsSumm } },
         { text: '能登CS立体図（発災後:林野庁）', data: { id: 'notocsrinya', layer: notocsrinyaObj, opacity: 1, summary: notocsrinyaSumm } },
+
+        { text: '新潟県長岡CS立体図（発災後:林野庁）', data: { id: 'nagaokacsrinya', layer: nagaokaCsObj, opacity: 1, summary: nagaokaCsSumm } },
+
+
+
         { text: '能登傾斜区分図（発災後:林野庁）', data: { id: 'notokeisyarinya', layer: notokeisyarinyaObj, opacity: 1, summary: notokeisyarinyaSumm } },
+        { text: '能登斜面崩壊', data: { id: 'notosyamenhokai', layer: LayersMvt.notosyamenhokaiObj, opacity: 1, summary: LayersMvt.notosyamenhokaiSumm } },
+
+
 
         { text: '能登西部赤色立体地図', data: { id: 'notoseibu', layer: notoSeibuObj, opacity: 1, summary: notoSeubuSumm } },
         { text: '液状化危険度分布図（石川県）', data: { id: 'ekizyouka17', layer: ekizyouka17Obj, opacity: 1, summary: ekizyoukaSumm } },

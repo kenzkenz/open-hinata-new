@@ -482,6 +482,11 @@ export function initMap (vm) {
             store.state.base.togglePoint0 = false
             store.state.base.dialogs.dialogEdit.style.display = 'block'
             overlay[i].setPosition(undefined)
+            if (store.state.base.editFeatureColor.rgba) {
+                const c = store.state.base.editFeatureColor.rgba
+                const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
+                feature.setProperties({_color: rgba})
+            }
             moveEnd()
         })
         lineInteraction.on('drawend', function (event) {
@@ -491,6 +496,11 @@ export function initMap (vm) {
             store.state.base.toggleLine = false
             store.state.base.dialogs.dialogEdit.style.display = 'block'
             overlay[i].setPosition(undefined)
+            if (store.state.base.editFeatureColor.rgba) {
+                const c = store.state.base.editFeatureColor.rgba
+                const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
+                feature.setProperties({_color: rgba})
+            }
             moveEnd()
         })
         polygonInteraction.on('drawend', function (event) {
@@ -499,6 +509,11 @@ export function initMap (vm) {
             store.state.base.toggleMenseki = false
             store.state.base.dialogs.dialogEdit.style.display = 'block'
             overlay[i].setPosition(undefined)
+            if (store.state.base.editFeatureColor.rgba) {
+                const c = store.state.base.editFeatureColor.rgba
+                const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
+                feature.setProperties({_fillColor: rgba})
+            }
             moveEnd()
         })
         circleInteraction.on('drawend', function (event) {
@@ -507,6 +522,11 @@ export function initMap (vm) {
             store.state.base.toggleCircle = false
             store.state.base.dialogs.dialogEdit.style.display = 'block'
             overlay[i].setPosition(undefined)
+            if (store.state.base.editFeatureColor.rgba) {
+                const c = store.state.base.editFeatureColor.rgba
+                const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
+                feature.setProperties({_fillColor: rgba})
+            }
             moveEnd()
         })
 
