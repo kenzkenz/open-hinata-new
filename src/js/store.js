@@ -537,6 +537,12 @@ const moduleInfo = {
       map03: 100000,
       map04: 100000
     },
+    divs: [
+      { id: 0, rgb: 0, m: 5 },
+      { id: 1, rgb: 1, m: 10 },
+      { id: 2, rgb: 2, m: 15 },
+      { id: 3, rgb: 3, m: 20 },
+    ],
     floodColors: {
     },
     floodColors2: {

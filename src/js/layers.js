@@ -13048,6 +13048,25 @@ for (let i of mapsStr) {
 }
 const nagaokaCsSumm = '<a href="https://www.geospatial.jp/ckan/dataset/2024nagaoka_rinya" target="_blank">G空間情報センター</a>';
 
+// 新潟県長岡地域傾斜区分図---------------------------------------------------------------
+function NagaokaKeisya() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://rinya.geospatial.jp/tile/slopetile_nagaoka/{z}/{x}/{y}.png',
+    // crossOrigin: 'Anonymous',
+    maxZoom: 17
+  })
+}
+const nagaokaKeisyaObj = {};
+for (let i of mapsStr) {
+  nagaokaKeisyaObj[i] = new TileLayer(new NagaokaKeisya())
+}
+const nagaokaKeisyaSumm = '<a href="https://www.geospatial.jp/ckan/dataset/2024nagaoka_rinya" target="_blank">G空間情報センター</a>';
+
+
+
+
 
 
 // ここにレイヤーを全部書く。クリックするとストアのlayerListに追加されていく-------------------------
@@ -13059,11 +13078,12 @@ export const Layers =
         { text: '能登CS立体図（発災後:林野庁）', data: { id: 'notocsrinya', layer: notocsrinyaObj, opacity: 1, summary: notocsrinyaSumm } },
 
         { text: '新潟県長岡CS立体図（発災後:林野庁）', data: { id: 'nagaokacsrinya', layer: nagaokaCsObj, opacity: 1, summary: nagaokaCsSumm } },
+        { text: '新潟県長岡傾斜区分図（発災後:林野庁）', data: { id: 'nagaokakaieys', layer: nagaokaKeisyaObj, opacity: 1, summary: nagaokaKeisyaSumm } },
+
 
         { text: '能登傾斜区分図（発災後:林野庁）', data: { id: 'notokeisyarinya', layer: notokeisyarinyaObj, opacity: 1, summary: notokeisyarinyaSumm } },
         { text: '能登斜面崩壊', data: { id: 'notosyamenhokai', layer: LayersMvt.notosyamenhokaiObj, opacity: 1, summary: LayersMvt.notosyamenhokaiSumm } },
         { text: '陸化したと思われる港', data: { id: 'notominato', layer: LayersMvt.notominatoObj, opacity: 1, summary: LayersMvt.notominatoSumm } },
-
         { text: '能登西部赤色立体地図', data: { id: 'notoseibu', layer: notoSeibuObj, opacity: 1, summary: notoSeubuSumm } },
         { text: '液状化危険度分布図（石川県）', data: { id: 'ekizyouka17', layer: ekizyouka17Obj, opacity: 1, summary: ekizyoukaSumm } },
         { text: '17石川県農地', data: { id: 'hude17', layer: LayersMvt.hude17Obj, opacity: 1, summary: LayersMvt.hude17Summ } },
@@ -14418,6 +14438,9 @@ export const Layers =
         { text: '基準点', data: { id: "kizyunten", layer: LayersMvt.kizyuntenObj, opacity: 1, summary: LayersMvt.kizyuntenSumm, component: {name: 'kijyunten', values:[]} } },
 
         { text: '基準点v2', data: { id: "kizyuntenv2", layer: LayersMvt.kizyunten2Obj, opacity: 1, summary: LayersMvt.kizyunten2Summ } },
+
+
+        { text: 'test', data: { id: "test", layer: LayersMvt.tatumakiH23Obj, opacity: 1, summary: LayersMvt.tatumakiH23Summ, component: {name: 'hyokozu', values:[]} } },
 
 
         { text: 'ウィキメディア・コモンズ', data: { id: "wiki", layer: LayersMvt.wikiObj, opacity: 1, summary: LayersMvt.wikiSumm } },

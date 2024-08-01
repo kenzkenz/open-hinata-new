@@ -114,9 +114,9 @@
             id: 2,
             check: true,
             title: '淡色地図',
-            layer: Layers.Layers[1].children[1].data.layer[this.mapName],
+            layer: Layers.paleObj['map01'],
             opacity: 1,
-            summary: Layers.Layers[1].children[1].data.summary,
+            summary: Layers.paleSumm['map01'],
             component: ''
           }],
           mapName: this.mapName

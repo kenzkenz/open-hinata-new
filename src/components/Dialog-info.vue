@@ -35,6 +35,7 @@
             <v-r03city :item="item" :mapName="mapName" v-else-if="item.component.name === 'r03city'"/>
             <v-r05city :item="item" :mapName="mapName" v-else-if="item.component.name === 'r05city'"/>
             <v-iryou :item="item" :mapName="mapName" v-else-if="item.component.name === 'iryou'"/>
+            <v-hyokozu :item="item" :mapName="mapName" v-else-if="item.component.name === 'hyokozu'"/>
 
 
         </div>
@@ -64,6 +65,7 @@
   import DialogInfoR03city from '@/components/dialog-info/Dialog-info-r03city'
   import DialogInfoR05city from '@/components/dialog-info/Dialog-info-r05city'
   import DialogInfoIryou from '@/components/dialog-info/Dialog-info-iryou'
+  import DialogInfoHyokozu from '@/components/dialog-info/Dialog-info-hyokozu'
 
 
   export default {
@@ -91,6 +93,7 @@
       'v-r03city':DialogInfoR03city,
       'v-r05city':DialogInfoR05city,
       'v-iryou':DialogInfoIryou,
+      'v-hyokozu':DialogInfoHyokozu,
 
     },
     props: ['mapName'],
