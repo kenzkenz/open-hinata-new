@@ -4,7 +4,7 @@
     <b-button class='olbtn' size="sm" @click="reply"><i class="fa-sharp fa-solid fa-reply-all hover"></i></b-button>
 
     <hr>
-    <div v-for="div in divs" v-bind:key="div.id" class="hyoko-div">
+    <div v-for="div in divs[mapName]" v-bind:key="div.id" class="hyoko-div">
 <!--      {{ div.m }}-->
 <!--      <b-form-input type='text' :value="div.m" @input="div.m = Number($event.target.value)"></b-form-input>-->
       <input class= "input-m" :value="div.m" @input="div.m = Number($event.target.value)" @change="changeM" type="number">
@@ -33,18 +33,23 @@ export default {
   },
   data () {
     return {
-      divs: [
-        // { id: 0, rgb: 0, m: 5 },
-        // { id: 1, rgb: 1, m: 10 },
-        // { id: 2, rgb: 2, m: 15 },
-        // { id: 3, rgb: 3, m: 20 },
-      ],
-      divsDefault: [
-        { id: 0, rgb: 'blue', m: 5 },
-        { id: 1, rgb: 'red', m: 10 },
-        { id: 2, rgb: 'gray', m: 15 },
-        { id: 3, rgb: 'orange', m: 20 },
-      ],
+      divs: {},
+      divsDefault:{
+        map01:
+            [
+              { id: 0, rgb: 'blue', m: 5 },
+              { id: 1, rgb: 'red', m: 10 },
+              { id: 2, rgb: 'black', m: 15 },
+              { id: 3, rgb: 'orange', m: 20 },
+            ],
+        map02:
+            [
+              { id: 0, rgb: 'blue', m: 5 },
+              { id: 1, rgb: 'red', m: 10 },
+              { id: 2, rgb: 'black', m: 15 },
+              { id: 3, rgb: 'orange', m: 20 },
+            ]
+      },
     }
   },
   computed: {
@@ -106,7 +111,10 @@ export default {
   },
   methods: {
     reply () {
-      this.divs = [...this.divsDefault]
+      this.divs =
+          {
+            [this.mapName]: [...this.divsDefault[this.mapName]],
+          }
     },
     changeM () {
       this.divs.sort(function(a, b) {
@@ -118,27 +126,27 @@ export default {
       })
     },
     deleteDiv (id) {
-      if (this.divs.length > 2) {
-        this.divs = this.divs.filter((div) => {
+      if (this.divs[this.mapName].length > 2) {
+        this.divs[this.mapName] = this.divs[this.mapName].filter((div) => {
           return div.id !== id
         })
       }
     },
     appendDiv (id) {
-      let maxId = d3.max(this.divs, function(d){ return d.id; })
+      let maxId = d3.max(this.divs[this.mapName], function(d){ return d.id; })
       let order
-      this.divs.find((div,i) => {
+      this.divs[this.mapName].find((div,i) => {
         order = i
         return div.id === id
       })
-      if (order !== this.divs.length-1) {
-        const tyukan = this.divs[order].m + (this.divs[order + 1].m - this.divs[order].m) / 2
-        this.divs.splice(order + 1, 0, { id: maxId + 1, rgb: this.divs[order].rgb, m: tyukan })
+      if (order !== this.divs[this.mapName].length-1) {
+        const tyukan = this.divs[this.mapName][order].m + (this.divs[this.mapName][order + 1].m - this.divs[this.mapName][order].m) / 2
+        this.divs[this.mapName].splice(order + 1, 0, { id: maxId + 1, rgb: this.divs[this.mapName][order].rgb, m: tyukan })
       } else {
         console.log(this.divs)
-        const saigo = this.divs[order].m + this.divs[order].m
+        const saigo = this.divs[this.mapName][order].m + this.divs[this.mapName][order].m
         console.log(saigo)
-        this.divs.push({id: maxId + 1, rgb: this.divs[order].rgb, m: saigo})
+        this.divs[this.mapName].push({id: maxId + 1, rgb: this.divs[this.mapName][order].rgb, m: saigo})
       }
     },
     storeUpdate () {

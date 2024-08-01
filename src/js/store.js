@@ -537,12 +537,22 @@ const moduleInfo = {
       map03: 100000,
       map04: 100000
     },
-    divs: [
-      { id: 0, rgb: 'blue', m: 5 },
-      { id: 1, rgb: 'red', m: 10 },
-      { id: 2, rgb: 'black', m: 15 },
-      { id: 3, rgb: 'orange', m: 20 },
-    ],
+    divs:{
+      map01:
+          [
+            { id: 0, rgb: 'blue', m: 5 },
+            { id: 1, rgb: 'red', m: 10 },
+            { id: 2, rgb: 'black', m: 15 },
+            { id: 3, rgb: 'orange', m: 20 },
+          ],
+      map02:
+          [
+            { id: 0, rgb: 'blue', m: 5 },
+            { id: 1, rgb: 'red', m: 10 },
+            { id: 2, rgb: 'black', m: 15 },
+            { id: 3, rgb: 'orange', m: 20 },
+          ]
+    },
     floodColors: {
     },
     floodColors2: {
