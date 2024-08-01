@@ -43,7 +43,7 @@ export default {
         { id: 0, rgb: 'blue', m: 5 },
         { id: 1, rgb: 'red', m: 10 },
         { id: 2, rgb: 'gray', m: 15 },
-        { id: 3, rgb: 'ornge', m: 20 },
+        { id: 3, rgb: 'orange', m: 20 },
       ],
     }
   },
@@ -131,11 +131,13 @@ export default {
         order = i
         return div.id === id
       })
-      if (order !== maxId) {
+      if (order !== this.divs.length-1) {
         const tyukan = this.divs[order].m + (this.divs[order + 1].m - this.divs[order].m) / 2
         this.divs.splice(order + 1, 0, { id: maxId + 1, rgb: this.divs[order].rgb, m: tyukan })
       } else {
-        const saigo = this.divs[order].m + this.divs[order].m - this.divs[order-1].m
+        console.log(this.divs)
+        const saigo = this.divs[order].m + this.divs[order].m
+        console.log(saigo)
         this.divs.push({id: maxId + 1, rgb: this.divs[order].rgb, m: saigo})
       }
     },
