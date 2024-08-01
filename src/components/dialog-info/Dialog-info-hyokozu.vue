@@ -8,7 +8,7 @@
 <!--      {{ div.m }}-->
 <!--      <b-form-input type='text' :value="div.m" @input="div.m = Number($event.target.value)"></b-form-input>-->
       <input class= "input-m" :value="div.m" @input="div.m = Number($event.target.value)" @change="changeM" type="number">
-
+      <div class="div-color" :style="{ 'background-color': div.rgb }"> </div>
       <b-button class='olbtn delete-btn' size="sm" @click="deleteDiv(div.id)"><i class="fa-sharp fa-solid fa-trash-arrow-up hover"></i></b-button>
       <b-button class='olbtn tsuika-btn' size="sm" @click="appendDiv(div.id)"><i class="fa-sharp fa-solid fa-plus hover"></i></b-button>
     </div>
@@ -40,10 +40,10 @@ export default {
         // { id: 3, rgb: 3, m: 20 },
       ],
       divsDefault: [
-        { id: 0, rgb: 0, m: 5 },
-        { id: 1, rgb: 1, m: 10 },
-        { id: 2, rgb: 2, m: 15 },
-        { id: 3, rgb: 3, m: 20 },
+        { id: 0, rgb: 'blue', m: 5 },
+        { id: 1, rgb: 'red', m: 10 },
+        { id: 2, rgb: 'gray', m: 15 },
+        { id: 3, rgb: 'ornge', m: 20 },
       ],
     }
   },
@@ -106,7 +106,7 @@ export default {
   },
   methods: {
     reply () {
-      this.divs = this.divsDefault
+      this.divs = [...this.divsDefault]
     },
     changeM () {
       this.divs.sort(function(a, b) {
@@ -133,10 +133,10 @@ export default {
       })
       if (order !== maxId) {
         const tyukan = this.divs[order].m + (this.divs[order + 1].m - this.divs[order].m) / 2
-        this.divs.splice(order + 1, 0, { id: maxId + 1, rgb: 99, m: tyukan })
+        this.divs.splice(order + 1, 0, { id: maxId + 1, rgb: this.divs[order].rgb, m: tyukan })
       } else {
         const saigo = this.divs[order].m + this.divs[order].m - this.divs[order-1].m
-        this.divs.push({id: maxId + 1, rgb: 99, m: saigo})
+        this.divs.push({id: maxId + 1, rgb: this.divs[order].rgb, m: saigo})
       }
     },
     storeUpdate () {
@@ -168,14 +168,21 @@ export default {
 
 <style scoped>
 .hyoko-div {
-  height: 35px;
-  width: 200px;
-  /*border: 1px solid #333333;*/
+  height: 100%;/*border: 1px solid #333333;*/
   position: relative;
 }
 .input-m {
   width: 100px;
   text-align: right;
+}
+.div-color {
+  position: absolute;
+  left: 105px;
+  TOP:0;
+
+  height: 28px;
+  width:40px;
+  /*background-color:red;*/
 }
 .tsuika-btn {
   position: absolute;

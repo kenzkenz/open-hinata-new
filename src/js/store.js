@@ -538,10 +538,10 @@ const moduleInfo = {
       map04: 100000
     },
     divs: [
-      { id: 0, rgb: 0, m: 5 },
-      { id: 1, rgb: 1, m: 10 },
-      { id: 2, rgb: 2, m: 15 },
-      { id: 3, rgb: 3, m: 20 },
+      { id: 0, rgb: 'blue', m: 5 },
+      { id: 1, rgb: 'red', m: 10 },
+      { id: 2, rgb: 'black', m: 15 },
+      { id: 3, rgb: 'orange', m: 20 },
     ],
     floodColors: {
     },
