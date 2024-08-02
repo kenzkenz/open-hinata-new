@@ -151,7 +151,9 @@ function hyokozu(pixels, data) {
     // console.log(floodColors)
       if (height < 0) height = 0
       let rgb = hyokozuColors[height]
-      if (!rgb) rgb = {r: 255, g: 0, b: 0, opacity: 1}
+      if (height > 0) {
+        if (!rgb) rgb = {r: 255, g: 0, b: 0, opacity: 1}
+      }
 
       // console.log(rgb)
       if (rgb) pixel[0] = rgb.r;

@@ -53,11 +53,13 @@ export default {
           const rgb = 'rgb(' + value.rgba.r + ',' + value.rgba.g + ',' + value.rgba.b + ')'
           result.rgb = rgb
           // ---------------------------------------------------------------
-          const maxM = d3.max(this.s_divs[this.mapName], function(d){ return d.m; })
-          const mArr = this.s_divs[this.mapName].map((v) => {
+          const divs = this.s_divs[this.mapName]
+          const maxM = d3.max(divs, function(d){ return d.m; })
+          const minM = d3.min(divs, function(d){ return d.m; })
+          const mArr = divs.map((v) => {
             return v.m
           })
-          const rgbArr = this.s_divs[this.mapName].map((v) => {
+          const rgbArr = divs.map((v) => {
             return v.rgb
           })
           const hyokozuColor = d3.scaleLinear().domain(mArr).range(rgbArr)

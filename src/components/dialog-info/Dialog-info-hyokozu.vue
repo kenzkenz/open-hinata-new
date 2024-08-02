@@ -148,13 +148,13 @@ export default {
       // --------------------------------------------------------------------
       const divs = this.s_divs[this.mapName]
       const maxM = d3.max(divs, function(d){ return d.m; })
+      const minM = d3.min(divs, function(d){ return d.m; })
       const mArr = divs.map((v) => {
         return v.m
       })
       const rgbArr = divs.map((v) => {
         return v.rgb
       })
-      console.log(maxM)
       const hyokozuColor = d3.scaleLinear().domain(mArr).range(rgbArr)
       this.$store.state.info.hyokozuColors[this.mapName] = []
       for (let i = 0; i < maxM; i++) {
