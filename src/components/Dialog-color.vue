@@ -65,7 +65,7 @@ export default {
           const hyokozuColor = d3.scaleLinear().domain(mArr).range(rgbArr)
 
           for (let i = 0; i < maxM; i++) {
-            this.$store.state.info.hyokozuColors[i] = d3.rgb(hyokozuColor(i))
+            this.$store.state.info.hyokozuColors[this.mapName][i] = d3.rgb(hyokozuColor(i))
           }
           Layer.hyokozu1Obj[this.mapName].getSource().changed()
           // ---------------------------------------------------------------

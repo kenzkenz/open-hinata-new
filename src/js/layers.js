@@ -321,7 +321,7 @@ for (let i of mapsStr) {
   hyokozu1Obj[i].getSource().on('beforeoperations', function(event) {
     // event.data.level = Number(document.querySelector('#' + i  + " .flood-range10m").value)
     event.data.colors = store.state.info.colors
-    event.data.hyokozuColors = store.state.info.hyokozuColors
+    event.data.hyokozuColors = store.state.info.hyokozuColors[i]
     event.data.floodColors2 = store.state.info.floodColors2
   })
 }
