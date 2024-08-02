@@ -146,11 +146,12 @@ export default {
     },
     colorChange () {
       // --------------------------------------------------------------------
-      const maxM = d3.max(this.s_divs[this.mapName], function(d){ return d.m; })
-      const mArr = this.s_divs[this.mapName].map((v) => {
+      const divs = this.s_divs[this.mapName]
+      const maxM = d3.max(divs, function(d){ return d.m; })
+      const mArr = divs.map((v) => {
         return v.m
       })
-      const rgbArr = this.s_divs[this.mapName].map((v) => {
+      const rgbArr = divs.map((v) => {
         return v.rgb
       })
       console.log(maxM)
@@ -160,7 +161,6 @@ export default {
         this.$store.state.info.hyokozuColors[this.mapName][i] = d3.rgb(hyokozuColor(i))
       }
       Layer.hyokozu1Obj[this.mapName].getSource().changed()
-      // alert(this.mapName)
       //------------------------------------------------------------------
     },
     openDialog (div) {
