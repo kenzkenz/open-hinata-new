@@ -74,7 +74,9 @@
                 <v-dialog-measure v-if="mapName === 'map01'"/>
                 <v-dialog-main-info v-if="mapName === 'map01'"/>
                 <v-dialog-edit v-if="mapName === 'map01'"/>
-                <v-dialog-color v-if="mapName === 'map01'"/>
+<!--                <v-dialog-color v-if="mapName === 'map01'"/>-->
+                <v-dialog-color :mapName=mapName />
+
                 <v-dialog-dokuji v-if="mapName === 'map01'"/>
 
 <!--                <div class="zoom-div">{{ zoom[mapName] }}</div>-->

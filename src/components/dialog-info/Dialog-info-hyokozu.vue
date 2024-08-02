@@ -160,14 +160,22 @@ export default {
         this.$store.state.info.hyokozuColors[i] = d3.rgb(hyokozuColor(i))
       }
       Layer.hyokozu1Obj[this.mapName].getSource().changed()
+      // alert(this.mapName)
       //------------------------------------------------------------------
     },
     openDialog (div) {
-      const dialog = this.s_dialogs['dialogColor']
+      const dialog = this.s_dialogs['dialogColor'][this.mapName]
       const element = document.querySelector('#' + this.mapName + '-div-color-' + div.id)
-      console.log(element.getBoundingClientRect().right)
+
+      let left
+      if (this.mapName === 'map01') {
+        left = element.getBoundingClientRect().right + 'px'
+      } else {
+        left = element.getBoundingClientRect().right - (window.innerWidth / 2) + 'px'
+      }
+
       dialog.style.right = ''
-      dialog.style.left = element.getBoundingClientRect().right + 'px'
+      dialog.style.left = left
       dialog.style.top = element.getBoundingClientRect().top + 'px'
       this.$store.commit('base/incrDialogMaxZindex');
       dialog.style["z-index"] = this.s_dialogMaxZindex;
@@ -247,7 +255,7 @@ export default {
     //------------------------------------------------------------------
 
 
-    this.divs = this.$store.state.info.divs
+    // this.divs = this.$store.state.info.divs
     // this.$nextTick(function () {
     //   LayersMvt.iryoMvtObj[this.mapName].getSource().changed()
     // })
