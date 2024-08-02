@@ -1648,7 +1648,10 @@
           MyMap.dialog.show({
             content:
                    '<ul>' +
-                   '<li>「令和6年能登半島地震まとめ」のカテゴリを新設しました。</li>' +
+                   '<li>「' +
+                   '<a href="https://kenzkenz.xsrv.jp/open-hinata/#soPUta3" target="_blank">自分で作る色別標高図</a>' +
+                   '」' +
+                   '</li>' +
                    '<li>「' +
                    '<a href="https://kenzkenz.xsrv.jp/open-hinata/#s3PHDc" target="_blank">R2国勢調査小地域人口ピラミッド</a>' +
                    '」' +

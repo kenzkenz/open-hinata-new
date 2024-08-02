@@ -548,22 +548,30 @@ const moduleInfo = {
     divs:{
       map01:
           [
-            { id: 0, rgb: 'blue', m: 5 },
-            { id: 1, rgb: 'red', m: 10 },
-            { id: 2, rgb: 'black', m: 15 },
-            { id: 3, rgb: 'orange', m: 20 },
+            { id: 0, rgb: 'rgb(13,13,237)', m: 5 },
+            { id: 1, rgb: 'rgb(75,153,238)', m: 10 },
+            { id: 2, rgb: 'rgb(116,235,244)', m: 50 },
+            { id: 3, rgb: 'rgb(176,252,79)', m: 100 },
+            { id: 4, rgb: 'rgb(254,254,84)', m: 500 },
+            { id: 5, rgb: 'rgb(241,152,55)', m: 1500 },
+            { id: 6, rgb: 'rgb(255,0,0)', m: 4000 },
           ],
       map02:
           [
-            { id: 0, rgb: 'blue', m: 5 },
-            { id: 1, rgb: 'red', m: 10 },
-            { id: 2, rgb: 'black', m: 15 },
-            { id: 3, rgb: 'orange', m: 20 },
+            { id: 0, rgb: 'rgb(13,13,237)', m: 5 },
+            { id: 1, rgb: 'rgb(75,153,238)', m: 10 },
+            { id: 2, rgb: 'rgb(116,235,244)', m: 50 },
+            { id: 3, rgb: 'rgb(176,252,79)', m: 100 },
+            { id: 4, rgb: 'rgb(254,254,84)', m: 500 },
+            { id: 5, rgb: 'rgb(241,152,55)', m: 1500 },
+            { id: 6, rgb: 'rgb(255,0,0)', m: 4000 },
           ]
     },
     floodColors: {
     },
     floodColors2: {
+    },
+    hyokozuColors: {
     },
     colors: {
       // m20: {r: 187,g: 0,b:187,a:122/255 },

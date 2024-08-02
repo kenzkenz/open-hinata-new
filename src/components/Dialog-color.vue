@@ -13,6 +13,8 @@ import {moveEnd} from "@/js/permalink"
 import store from "@/js/store";
 import {Chrome} from 'vue-color'
 import {Compact} from 'vue-color'
+import * as d3 from "d3";
+import * as Layer from "@/js/layers";
 export default {
   name: "dialog-color",
   data () {
@@ -28,6 +30,9 @@ export default {
   computed: {
     s_dialogColor () {
       return this.$store.state.base.dialogs.dialogColor
+    },
+    s_divs () {
+      return this.$store.state.info.divs
     },
     s_featureColor: {
       get () {
@@ -45,6 +50,23 @@ export default {
           })
           const rgb = 'rgb(' + value.rgba.r + ',' + value.rgba.g + ',' + value.rgba.b + ')'
           result.rgb = rgb
+
+
+          // ---------------------------------------------------------------
+          const maxM = d3.max(this.s_divs[mapName], function(d){ return d.m; })
+          const mArr = this.s_divs[mapName].map((v) => {
+            return v.m
+          })
+          const rgbArr = this.s_divs[mapName].map((v) => {
+            return v.rgb
+          })
+          const hyokozuColor = d3.scaleLinear().domain(mArr).range(rgbArr)
+          for (let i = 0; i < maxM; i++) {
+            this.$store.state.info.hyokozuColors[i] = d3.rgb(hyokozuColor(i))
+          }
+          Layer.hyokozu1Obj[mapName].getSource().changed()
+          // ---------------------------------------------------------------
+
         } else {
           this.$store.state.base.editFeatureColor = value
           const rgb = 'rgb(' + this.s_featureColor.rgba.r + ',' + this.s_featureColor.rgba.g + ',' + this.s_featureColor.rgba.b + ')'

@@ -62,6 +62,23 @@ for (let i = 0; i < 20000; i++) {
   store.state.info.floodColors2[i] = d3.rgb(floodColor2(i))
 }
 
+
+// const hyokozuColor = d3.scaleLinear()
+//     .domain([0, 100, 1000, 2500,9000, 20000])
+//     .range([
+//       "#00FF00",
+//       // "#00FF66",
+//       // "#ffff00",
+//       "#ffff00",
+//       "#ff8c00",
+//       "#ff4400",
+//       "red",
+//       "#880000"
+//     ])
+// for (let i = 0; i < 20000; i++) {
+//   store.state.info.hyokozuColors[i] = d3.rgb(hyokozuColor(i))
+// }
+
 function flood(pixels, data) {
   const pixel = pixels[0]
   if (pixel[3]) {
@@ -82,23 +99,6 @@ function flood(pixels, data) {
       if (rgb) pixel[1] = rgb.g;
       if (rgb) pixel[2] = rgb.b;
       if (rgb) pixel[3] = 255
-
-      // const c = data.colors
-      // if (sinsui <= 10) {
-      //   pixel[0] = c.m5.r; pixel[1] = c.m5.g; pixel[2] = c.m5.b; pixel[3] = c.m5.a*255
-      // } else if (sinsui <= 50) {
-      //   pixel[0] = c.m10.r; pixel[1] = c.m10.g; pixel[2] = c.m10.b; pixel[3] = c.m10.a*255
-      // } else if (sinsui <= 100) {
-      //   pixel[0] = c.m50.r; pixel[1] = c.m50.g; pixel[2] = c.m50.b; pixel[3] = c.m50.a*255
-      // } else if (sinsui <= 500) {
-      //   pixel[0] = c.m100.r; pixel[1] = c.m100.g; pixel[2] = c.m100.b; pixel[3] = c.m100.a*255
-      // } else if (sinsui <= 1000) {
-      //   pixel[0] = c.m500.r; pixel[1] = c.m500.g; pixel[2] = c.m500.b; pixel[3] = c.m500.a*255
-      // } else if (sinsui <= 2500) {
-      //   pixel[0] = c.m1500.r;pixel[1] = c.m1500.g;pixel[2] = c.m1500.b;pixel[3] = c.m1500.a * 255
-      // } else {
-      //   pixel[0] = c.m2500.r;pixel[1] = c.m2500.g;pixel[2] = c.m2500.b;pixel[3] = c.m2500.a * 255
-      // }
     } else { //海面下
       // let sinsui = - height + data.level
       let sinsui = -height + data.level
@@ -111,22 +111,6 @@ function flood(pixels, data) {
       if (rgb) pixel[1] = rgb.g;
       if (rgb) pixel[2] = rgb.b;
       if (rgb) pixel[3] = 255
-      // const c = data.colors
-      // if (sinsui >= -10) {
-      //   pixel[0] = c.sea10.r; pixel[1] = c.sea10.g; pixel[2] = c.sea10.b; pixel[3] = c.sea10.a*255
-      // } else if (sinsui >= -50) {
-      //   pixel[0] = c.sea50.r; pixel[1] = c.sea50.g; pixel[2] = c.sea50.b; pixel[3] = c.sea50.a*255
-      // } else if (sinsui >= -100) {
-      //   pixel[0] = c.sea100.r; pixel[1] = c.sea100.g; pixel[2] = c.sea100.b; pixel[3] = c.sea100.a*255
-      // } else if (sinsui >= -500) {
-      //   pixel[0] = c.sea500.r; pixel[1] = c.sea500.g; pixel[2] = c.sea500.b; pixel[3] = c.sea500.a*255
-      // } else if (sinsui >= -1000) {
-      //   pixel[0] = c.sea1500.r; pixel[1] = c.sea1500.g; pixel[2] = c.sea1500.b; pixel[3] = c.sea1500.a*255
-      // } else if (sinsui >= -2500) {
-      //   pixel[0] = c.sea2500.r;pixel[1] = c.sea2500.g;pixel[2] = c.sea2500.b;pixel[3] = c.sea2500.a*255
-      // } else {
-      //   pixel[0] = c.sea3500.r;pixel[1] = c.sea3500.g;pixel[2] = c.sea3500.b;pixel[3] = c.sea3500.a*255
-      // }
     }
   }
   return pixel
@@ -146,6 +130,47 @@ function flood2(pixels, data) {
       const c = data.colors
       pixel[0] = c.paleSea.r; pixel[1] = c.paleSea.g; pixel[2] = c.paleSea.b; pixel[3] = c.paleSea.a*255
     }
+  }
+  return pixel
+}
+function hyokozu(pixels, data) {
+  const pixel = pixels[0]
+  if (pixel[3]) {
+    let height
+    if (pixel[3] === 255) {
+      height = pixel[0] * 256 * 256 + pixel[1] * 256 + pixel[2]
+      height = (height < 8323072) ? height : height - 16777216
+      height /= 100 //他のDEMを使う時はこれ
+    }
+    // console.log(height)
+    // if (height >= data.level) { // 陸上
+    //   let sinsui = height
+      // console.log(height,data.level)
+      height = Math.floor(height)
+      const hyokozuColors = data.hyokozuColors
+    // console.log(floodColors)
+      if (height < 0) height = 0
+      let rgb = hyokozuColors[height]
+      if (!rgb) rgb = {r: 255, g: 0, b: 0, opacity: 1}
+
+      // console.log(rgb)
+      if (rgb) pixel[0] = rgb.r;
+      if (rgb) pixel[1] = rgb.g;
+      if (rgb) pixel[2] = rgb.b;
+      if (rgb) pixel[3] = 255
+    // } else { //海面下
+    //   // let sinsui = - height + data.level
+    //   let sinsui = -height + data.level
+    //
+    //   sinsui = Math.floor(sinsui)
+    //   const floodColors2 = data.floodColors2
+    //   const rgb = floodColors2[sinsui]
+    //   // console.log(rgb)
+    //   if (rgb) pixel[0] = rgb.r;
+    //   if (rgb) pixel[1] = rgb.g;
+    //   if (rgb) pixel[2] = rgb.b;
+    //   if (rgb) pixel[3] = 255
+    // }
   }
   return pixel
 }
@@ -278,6 +303,43 @@ for (let i of mapsStr) {
   })
   floodSinpleObj[i].values_['multiply'] = true
 }
+
+
+// ----------------------------------------------
+function DemHyokozu () {
+  this.multiply = true
+  this.source = new RasterSource({
+    sources:[elevation15],
+    operation:hyokozu
+  })
+  // this.maxResolution = 19.109257
+}
+
+export const hyokozu1Obj = {}
+for (let i of mapsStr) {
+  hyokozu1Obj[i] = new ImageLaye(new DemHyokozu())
+  hyokozu1Obj[i].getSource().on('beforeoperations', function(event) {
+    // event.data.level = Number(document.querySelector('#' + i  + " .flood-range10m").value)
+    event.data.colors = store.state.info.colors
+    event.data.hyokozuColors = store.state.info.hyokozuColors
+    event.data.floodColors2 = store.state.info.floodColors2
+  })
+}
+export const hyokozuObj = {};
+for (let i of mapsStr) {
+  hyokozuObj[i] = new LayerGroup({
+    layers: [
+      hyokozu1Obj[i],
+    ]
+  })
+  hyokozuObj[i].values_['multiply'] = true
+}
+// ----------------------------------------------
+
+
+
+
+
 
 //dem5---------------------------------------------------------------------------------
 const elevation5 = new XYZ({
@@ -13244,6 +13306,8 @@ export const Layers =
       ]},
     { text: '立体図、地質図等',
       children: [
+        { text: '自分で作る色別標高図', data: { id: "myhokozu", layer: hyokozuObj, opacity: 1, summary: '', component: {name: 'hyokozu', values:[]} } },
+
         // { text: 'シームレス地質図', data: { id: 'seamless', layer: seamlessObj, opacity: 1, summary: seamlessSumm,component: {name: 'seamless', values:[]} } },
         { text: 'シームレス地質図', data: { id: 'seamless', layer: seamelesChisituObj, opacity: 1, summary: seamlessSumm } },
 
@@ -14438,10 +14502,6 @@ export const Layers =
         { text: '基準点', data: { id: "kizyunten", layer: LayersMvt.kizyuntenObj, opacity: 1, summary: LayersMvt.kizyuntenSumm, component: {name: 'kijyunten', values:[]} } },
 
         { text: '基準点v2', data: { id: "kizyuntenv2", layer: LayersMvt.kizyunten2Obj, opacity: 1, summary: LayersMvt.kizyunten2Summ } },
-
-
-        { text: 'test', data: { id: "test", layer: LayersMvt.tatumakiH23Obj, opacity: 1, summary: LayersMvt.tatumakiH23Summ, component: {name: 'hyokozu', values:[]} } },
-
 
         { text: 'ウィキメディア・コモンズ', data: { id: "wiki", layer: LayersMvt.wikiObj, opacity: 1, summary: LayersMvt.wikiSumm } },
         { text: '気象庁予報区（一次細分区域等 ）', data: { id: "yohouku1", layer: LayersMvt.yohouku1Obj, opacity: 1, summary: LayersMvt.yohoukuSumm } },
