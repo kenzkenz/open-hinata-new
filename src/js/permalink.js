@@ -296,6 +296,9 @@ export function permalinkEventSet (response) {
       if (key ==='S') {
         store.commit('base/updateSplitFlg',obj[key])
       }
+      if (key ==='H') {
+        store.state.info.divs = JSON.parse(obj[key])
+      }
       if (key ==='L') {
         // 初期レイヤーをリセット
         store.commit('base/updateList', {value: [], mapName: 'map01'});
@@ -549,6 +552,7 @@ export function moveEnd () {
   parameter += '&GJ=' + geojsonT
   parameter += '&GJO=' + store.state.base.drawOpacity
   parameter += '&GJV=' + store.state.base.drawVisible
+  parameter += '&H=' + JSON.stringify(store.state.info.divs)
 
   const maps = ['map01','map02','map03','map04']
   maps.forEach((map) => {

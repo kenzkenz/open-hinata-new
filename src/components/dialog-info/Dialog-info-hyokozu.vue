@@ -123,6 +123,13 @@ export default {
 
       const dialog = this.s_dialogs['dialogColor']
       console.log(this.s_dialogs['dialogColor'])
+
+      const element = document.querySelector('#' + this.mapName + '-div-color-' + div.id)
+      console.log(element.getBoundingClientRect().right)
+      dialog.style.right = ''
+      dialog.style.left = element.getBoundingClientRect().right + 'px'
+      dialog.style.top = element.getBoundingClientRect().top + 'px'
+
       // if (dialog.style.display === 'block') {
       //   dialog.style.display = 'none'
       // } else {
@@ -154,7 +161,7 @@ export default {
     //
     // },
     changeM () {
-      this.divs.sort(function(a, b) {
+      this.s_divs[this.mapName].sort(function(a, b) {
         if (a.m > b.m) {
           return 1;
         } else {
