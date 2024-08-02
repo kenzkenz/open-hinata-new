@@ -79,7 +79,7 @@ export default {
   methods: {
     openDialog () {
       this.$store.state.base.editDiv = ''
-      const dialog = this.s_dialogs['dialogColor']
+      const dialog = this.s_dialogs['dialogColor']['map01']
       console.log(dialog)
       if (dialog.style.display === 'block') {
         dialog.style.display = 'none'
@@ -99,7 +99,7 @@ export default {
         }
         const rgba = d3.rgb(color)
         const colorP = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.opacity }
-        this.$store.state.base.editFeatureColor = colorP
+        this.$store.state.base.editFeatureColor['map01'] = colorP
       }
     },
     color(){

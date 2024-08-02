@@ -185,7 +185,7 @@ export default {
       let color = div.rgb
       const rgba = d3.rgb(color)
       const colorP = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.opacity }
-      this.$store.state.base.editFeatureColor = colorP
+      this.$store.state.base.editFeatureColor[this.mapName] = colorP
     },
     reply () {
       const result = window.confirm('初期値に戻しますか。')

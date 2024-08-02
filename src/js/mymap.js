@@ -483,8 +483,8 @@ export function initMap (vm) {
             store.state.base.togglePoint0 = false
             store.state.base.dialogs.dialogEdit.style.display = 'block'
             overlay[i].setPosition(undefined)
-            if (store.state.base.editFeatureColor.rgba) {
-                const c = store.state.base.editFeatureColor.rgba
+            if (store.state.base.editFeatureColor['map01'].rgba) {
+                const c = store.state.base.editFeatureColor['map01'].rgba
                 const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
                 feature.setProperties({_color: rgba})
             }
@@ -497,8 +497,8 @@ export function initMap (vm) {
             store.state.base.toggleLine = false
             store.state.base.dialogs.dialogEdit.style.display = 'block'
             overlay[i].setPosition(undefined)
-            if (store.state.base.editFeatureColor.rgba) {
-                const c = store.state.base.editFeatureColor.rgba
+            if (store.state.base.editFeatureColor['map01'].rgba) {
+                const c = store.state.base.editFeatureColor['map01'].rgba
                 const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
                 feature.setProperties({_color: rgba})
             }
@@ -510,8 +510,9 @@ export function initMap (vm) {
             store.state.base.toggleMenseki = false
             store.state.base.dialogs.dialogEdit.style.display = 'block'
             overlay[i].setPosition(undefined)
-            if (store.state.base.editFeatureColor.rgba) {
-                const c = store.state.base.editFeatureColor.rgba
+            console.log(store.state.base.editFeatureColor['map01'])
+            if (store.state.base.editFeatureColor['map01'].rgba) {
+                const c = store.state.base.editFeatureColor['map01'].rgba
                 const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
                 feature.setProperties({_fillColor: rgba})
             }
@@ -523,8 +524,8 @@ export function initMap (vm) {
             store.state.base.toggleCircle = false
             store.state.base.dialogs.dialogEdit.style.display = 'block'
             overlay[i].setPosition(undefined)
-            if (store.state.base.editFeatureColor.rgba) {
-                const c = store.state.base.editFeatureColor.rgba
+            if (store.state.base.editFeatureColor['map01'].rgba) {
+                const c = store.state.base.editFeatureColor['map01'].rgba
                 const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
                 feature.setProperties({_fillColor: rgba})
             }
@@ -547,7 +548,7 @@ export function initMap (vm) {
                 }
                 const rgba = d3.rgb(color)
                 const colorP = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.opacity }
-                store.state.base.editFeatureColor = colorP
+                store.state.base.editFeatureColor['map01'] = colorP
 
                 // overlay[i].setPosition(undefined)
                 moveEnd()

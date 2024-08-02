@@ -39,7 +39,7 @@ export default {
     s_featureColor: {
       get () {
         console.log(this.$store.state.base.editFeatureColor)
-        return this.$store.state.base.editFeatureColor
+        return this.$store.state.base.editFeatureColor[this.mapName]
       },
       set (value) {
         console.log(value)
@@ -52,8 +52,6 @@ export default {
           })
           const rgb = 'rgb(' + value.rgba.r + ',' + value.rgba.g + ',' + value.rgba.b + ')'
           result.rgb = rgb
-
-
           // ---------------------------------------------------------------
           const maxM = d3.max(this.s_divs[this.mapName], function(d){ return d.m; })
           const mArr = this.s_divs[this.mapName].map((v) => {
@@ -71,9 +69,10 @@ export default {
           // ---------------------------------------------------------------
 
         } else {
-          this.$store.state.base.editFeatureColor = value
-          const rgb = 'rgb(' + this.s_featureColor.rgba.r + ',' + this.s_featureColor.rgba.g + ',' + this.s_featureColor.rgba.b + ')'
-          const rgba = 'rgba(' + this.s_featureColor.rgba.r + ',' + this.s_featureColor.rgba.g + ',' + this.s_featureColor.rgba.b + ',' + this.s_featureColor.rgba.a + ')'
+          this.$store.state.base.editFeatureColor[this.mapName] = value
+          console.log(value)
+          // const rgb = 'rgb(' + this.s_featureColor.rgba.r + ',' + this.s_featureColor.rgba.g + ',' + this.s_featureColor.rgba.b + ')'
+          const rgba = 'rgba(' + value.rgba.r + ',' + value.rgba.g + ',' + value.rgba.b + ',' + value.rgba.a + ')'
           // this.$store.state.base.editFeatureColor = rgba
           const feature = this.$store.state.base.editFeature
           console.log(feature.getGeometry().getType())
