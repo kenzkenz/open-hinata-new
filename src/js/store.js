@@ -101,6 +101,14 @@ const moduleBase = {
     toggleMenseki: false,
     toggleCircle: false,
     toggleModify: false,
+    // hyokozuDiv: {
+    //   map01: {},
+    //   map02: {},
+    //   map03: {},
+    //   map04: {}
+    // },
+    editDiv: '',
+    editMap: '',
     editFeature:'',
     editFeatureName:'',
     editFeatureSetumei:'',

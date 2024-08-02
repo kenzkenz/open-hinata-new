@@ -36,15 +36,39 @@ export default {
       },
       set (value) {
         console.log(value)
-        this.$store.state.base.editFeatureColor = value
-        const rgb = 'rgb(' + this.s_featureColor.rgba.r + ',' + this.s_featureColor.rgba.g + ',' + this.s_featureColor.rgba.b + ')'
-        const rgba = 'rgba(' + this.s_featureColor.rgba.r + ',' + this.s_featureColor.rgba.g + ',' + this.s_featureColor.rgba.b + ',' + this.s_featureColor.rgba.a + ')'
-        // this.$store.state.base.editFeatureColor = rgba
-        const feature = this.$store.state.base.editFeature
-        console.log(feature.getGeometry().getType())
-        const geoType = feature.getGeometry().getType()
-        if (geoType === 'Point' || geoType === 'LineString') feature.setProperties({_color: rgba})
-        if (geoType === 'Polygon' || geoType === 'Circle') feature.setProperties({_fillColor: rgba})
+        if (this.$store.state.base.editDiv) {
+          const id = this.$store.state.base.editDiv.id
+          const mapName = this.$store.state.base.editMap
+          console.log(id)
+          const result = this.$store.state.info.divs[mapName].find((div) => {
+            return div.id === id
+          })
+          const rgb = 'rgb(' + value.rgba.r + ',' + value.rgba.g + ',' + value.rgba.b + ')'
+          result.rgb = rgb
+        } else {
+          this.$store.state.base.editFeatureColor = value
+          const rgb = 'rgb(' + this.s_featureColor.rgba.r + ',' + this.s_featureColor.rgba.g + ',' + this.s_featureColor.rgba.b + ')'
+          const rgba = 'rgba(' + this.s_featureColor.rgba.r + ',' + this.s_featureColor.rgba.g + ',' + this.s_featureColor.rgba.b + ',' + this.s_featureColor.rgba.a + ')'
+          // this.$store.state.base.editFeatureColor = rgba
+          const feature = this.$store.state.base.editFeature
+          console.log(feature.getGeometry().getType())
+          const geoType = feature.getGeometry().getType()
+          if (geoType === 'Point' || geoType === 'LineString') feature.setProperties({_color: rgba})
+          if (geoType === 'Polygon' || geoType === 'Circle') feature.setProperties({_fillColor: rgba})
+        }
+        // this.$store.state.base.editDiv = ''
+
+        // ----------------------------------------------
+
+
+
+        // this.$store.state.info.divs
+
+
+
+
+
+
         moveEnd()
       }
     },

@@ -78,7 +78,9 @@ export default {
   },
   methods: {
     openDialog () {
+      this.$store.state.base.editDiv = ''
       const dialog = this.s_dialogs['dialogColor']
+      console.log(dialog)
       if (dialog.style.display === 'block') {
         dialog.style.display = 'none'
       } else {
