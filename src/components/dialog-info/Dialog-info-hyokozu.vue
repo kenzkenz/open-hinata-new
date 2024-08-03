@@ -19,19 +19,29 @@
       <b-button v-if="index !== s_divs[mapName].length - 1" class='olbtn tsuika-btn' size="sm" @click="appendDiv(div.id)"><i class="fa-sharp fa-solid fa-plus hover"></i></b-button>
     </div>
 
+    <modal name="modal-auto" width="300" height="350" :clickToClose="false">
+      <div class="dialog-close-btn-div" @click="autoCansel"><i class="fa-solid fa-xmark hover close-btn"></i></div>
 
-
-
-      <modal name="modal-auto" width="300" height="350" :clickToClose="false">
         <div class="modal-body">
-          <div class="dialog-close-btn-div" @click="autoCansel"><i class="fa-solid fa-xmark hover close-btn"></i></div>
-          画面中心を基準に10段階の標高図を自動作成します。<br>
-          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('1m')">1m刻み</b-button><br>
-          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('5m')">5m刻み</b-button><br>
-          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('10m')">10m刻み</b-button><br>
-          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('15m')">15m刻み</b-button><br>
-          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('50m')">50m刻み</b-button><br>
-          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="autoCansel">キャンセル</b-button><br>
+<!--          <div class="dialog-close-btn-div" @click="autoCansel"><i class="fa-solid fa-xmark hover close-btn"></i></div>-->
+          <ul>
+            <li>画面中心を基準に12段階の標高図を自動作成します。</li>
+          </ul>
+          <b-form-select v-model="kizami" :options="options" @change="auto2()"></b-form-select>
+          <br><br>
+          <hr>
+          <br>
+          <ul>
+            <li>画面中心を基準に7段階の標高図を自動作成します。</li>
+          </ul>
+          <b-button style="margin-top: 0px;" class='olbtn' v-on:click="auto3()">7段階標高図</b-button>
+
+<!--          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('1m')">1m刻み</b-button><br>-->
+<!--          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('5m')">5m刻み</b-button><br>-->
+<!--          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('10m')">10m刻み</b-button><br>-->
+<!--          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('15m')">15m刻み</b-button><br>-->
+<!--          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('50m')">50m刻み</b-button><br>-->
+<!--          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="autoCansel">キャンセル</b-button><br>-->
         </div>
       </modal>
 
@@ -59,7 +69,16 @@ export default {
   },
   data () {
     return {
-      // divs: {},
+      kizami : '',
+      options: [
+        { value: '', text: '選択してください。' },
+        { value: '1m', text: '1m刻み' },
+        { value: '5m', text: '5m刻み' },
+        { value: '10m', text: '10m刻み' },
+        { value: '15m', text: '15m刻み' },
+        { value: '50m', text: '50m刻み' },
+
+      ],
       divsDefault:{
         map01:
             [
@@ -107,11 +126,12 @@ export default {
       }
       this.$modal.show('modal-auto')
     },
-    auto2 (kizami) {
+    auto2 () {
+      if(!this.kizami) return
       const centerHyoko = this.$store.state.base.hyokou
       let firstM
       let bai
-      switch (kizami) {
+      switch (this.kizami) {
         case '1m':
           firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 1
           bai = 0.2
@@ -150,7 +170,34 @@ export default {
           ]
       this.s_divs[this.mapName] = aaa
       this.colorChange()
-      // this.$modal.hide('modal-auto')
+    },
+    auto3 () {
+      const centerHyoko = this.$store.state.base.hyokou
+      let firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 5
+
+      const aaa =
+          [
+              { id: 0, rgb: 'rgb(13,13,237)', m: firstM },
+              { id: 1, rgb: 'rgb(75,153,238)', m: firstM + 5 },
+              { id: 2, rgb: 'rgb(116,235,244)', m: firstM + 45 },
+              { id: 3, rgb: 'rgb(176,252,79)', m: firstM + 95 },
+              { id: 4, rgb: 'rgb(254,254,84)', m: firstM + 495 },
+              { id: 5, rgb: 'rgb(241,152,55)', m: firstM + 1495 },
+              { id: 9999, rgb: 'rgb(234,92,50)', m: 9999},
+          ]
+      this.s_divs[this.mapName] = aaa
+      this.colorChange()
+
+
+      // [
+      //   { id: 0, rgb: 'rgb(13,13,237)', m: 5 },
+      //   { id: 1, rgb: 'rgb(75,153,238)', m: 10 },
+      //   { id: 2, rgb: 'rgb(116,235,244)', m: 50 },
+      //   { id: 3, rgb: 'rgb(176,252,79)', m: 100 },
+      //   { id: 4, rgb: 'rgb(254,254,84)', m: 500 },
+      //   { id: 5, rgb: 'rgb(241,152,55)', m: 1500 },
+      //   { id: 9999, rgb: 'rgb(234,92,50)', m: 9999},
+      // ]
     },
     autoCansel () {
       this.$modal.hide('modal-auto')
@@ -310,16 +357,7 @@ export default {
     },
   },
   mounted ()  {
-
-    // --------------------------------------------------------------------
     this.colorChange()
-    //------------------------------------------------------------------
-
-
-    // this.divs = this.$store.state.info.divs
-    // this.$nextTick(function () {
-    //   LayersMvt.iryoMvtObj[this.mapName].getSource().changed()
-    // })
   }
 }
 </script>
@@ -373,15 +411,18 @@ export default {
   /*height: 390px;*/
   padding: 10px;
 }
-#modal-auto {
-  height: auto;
+.modal-body{
+  width: 95%;
 }
 .dialog-close-btn-div {
   position: absolute;
-  top: 5px;
-  right: 13px;
+  top: 2px;
+  right: 12px;
   cursor: pointer;
   z-index: 2;
   font-size:1.5em;
+}
+ul {
+  margin-left: -30px
 }
 </style>
