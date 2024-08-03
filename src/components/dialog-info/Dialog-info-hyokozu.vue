@@ -20,6 +20,24 @@
     </div>
 
 
+
+
+      <modal name="modal-auto" width="300" height="350" :clickToClose="false">
+        <div class="modal-body">
+          <div class="dialog-close-btn-div" @click="autoCansel"><i class="fa-solid fa-xmark hover close-btn"></i></div>
+          画面中心を基準に10段階の標高図を自動作成します。<br>
+          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('1m')">1m刻み</b-button><br>
+          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('5m')">5m刻み</b-button><br>
+          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('10m')">10m刻み</b-button><br>
+          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('15m')">15m刻み</b-button><br>
+          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('50m')">50m刻み</b-button><br>
+          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="autoCansel">キャンセル</b-button><br>
+        </div>
+      </modal>
+
+
+
+
 <!--    <div>-->
 <!--      出典:<span v-html="item.summary"></span>-->
 <!--    </div>-->
@@ -82,27 +100,60 @@ export default {
   },
   methods: {
     auto () {
-      const result = window.confirm('画面中心を基準に5m刻み10段階の標高図を自動作成します。')
-      if (!result) return
       const centerHyoko = this.$store.state.base.hyokou
-      const firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 5
+      if (centerHyoko < 0) {
+        alert('中心の標高が0m以下です。標高図を作れません。')
+        return
+      }
+      this.$modal.show('modal-auto')
+    },
+    auto2 (kizami) {
+      const centerHyoko = this.$store.state.base.hyokou
+      let firstM
+      let bai
+      switch (kizami) {
+        case '1m':
+          firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 1
+          bai = 0.2
+          break
+        case '5m':
+          firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 5
+          bai = 1
+          break
+        case '10m':
+          firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 10
+          bai = 2
+          break
+        case '15m':
+          firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 15
+          bai = 3
+          break
+        case '50m':
+          firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 50
+          bai = 10
+          break
+      }
       const aaa =
           [
             { id: 0, rgb: 'rgb(0,0,255)', m: firstM + 0 },
-            { id: 1, rgb: 'rgb(0,100,255)', m: firstM + 5 },
-            { id: 2, rgb: 'rgb(75,153,238)', m: firstM + 10 },
-            { id: 3, rgb: 'rgb(116,235,244)', m: firstM + 15 },
-            { id: 4, rgb: 'rgb(176,252,79)', m: firstM + 20 },
-            { id: 5, rgb: 'rgb(254,254,84)', m: firstM + 25 },
-            { id: 6, rgb: 'rgb(241,152,55)', m: firstM + 30 },
-            { id: 7, rgb: 'rgb(241,113,55)', m: firstM + 35 },
-            { id: 8, rgb: 'rgb(224,74,74)', m: firstM + 40 },
-            { id: 9, rgb: 'rgb(193,50,50)', m: firstM + 45 },
-            { id: 10, rgb: 'rgb(173,10,10)', m: firstM + 55 },
+            { id: 1, rgb: 'rgb(0,100,255)', m: firstM + (5 * bai) },
+            { id: 2, rgb: 'rgb(75,153,238)', m: firstM + (10 * bai) },
+            { id: 3, rgb: 'rgb(116,235,244)', m: firstM + (15 * bai) },
+            { id: 4, rgb: 'rgb(176,252,79)', m: firstM + (20 * bai) },
+            { id: 5, rgb: 'rgb(254,254,84)', m: firstM + (25 * bai) },
+            { id: 6, rgb: 'rgb(241,152,55)', m: firstM + (30 * bai) },
+            { id: 7, rgb: 'rgb(241,113,55)', m: firstM + (35 * bai) },
+            { id: 8, rgb: 'rgb(224,74,74)', m: firstM + (40 * bai) },
+            { id: 9, rgb: 'rgb(193,50,50)', m: firstM + (45 * bai) },
+            { id: 10, rgb: 'rgb(173,10,10)', m: firstM + (50 * bai) },
             { id: 9999, rgb: 'rgb(144,7,17)', m: 9999},
           ]
       this.s_divs[this.mapName] = aaa
       this.colorChange()
+      // this.$modal.hide('modal-auto')
+    },
+    autoCansel () {
+      this.$modal.hide('modal-auto')
     },
     colorChange () {
       // --------------------------------------------------------------------
@@ -185,19 +236,21 @@ export default {
       this.colorChange()
     },
     changeM (index,div) {
-      let prevM
-      if (index === 0) {
-        prevM = -0.1
-      } else {
-        prevM = this.s_divs[this.mapName][index - 1].m
-      }
-      if (div.m <= prevM) {
-        this.s_divs[this.mapName][index].m = prevM + 0.1
-      }
-      const nextM = this.s_divs[this.mapName][index + 1].m
-      if (div.m >= nextM) {
-        this.s_divs[this.mapName][index].m = nextM - 0.1
-      }
+      // let prevM
+      // if (index === 0) {
+      //   prevM = -0.1
+      // } else {
+      //   prevM = this.s_divs[this.mapName][index - 1].m
+      // }
+      // if (div.m <= prevM) {
+      //   this.s_divs[this.mapName][index].m = prevM + 0.1
+      // }
+      // const nextM = this.s_divs[this.mapName][index + 1].m
+      // if (div.m >= nextM) {
+      //   this.s_divs[this.mapName][index].m = nextM - 0.1
+      // }
+
+      // 上下とちらかを使う。もしくは使わない。
 
       // this.s_divs[this.mapName].sort(function(a, b) {
       //   if (a.m > b.m) {
@@ -319,5 +372,16 @@ export default {
   width: 250px;
   /*height: 390px;*/
   padding: 10px;
+}
+#modal-auto {
+  height: auto;
+}
+.dialog-close-btn-div {
+  position: absolute;
+  top: 5px;
+  right: 13px;
+  cursor: pointer;
+  z-index: 2;
+  font-size:1.5em;
 }
 </style>
