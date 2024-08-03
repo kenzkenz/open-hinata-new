@@ -3,24 +3,16 @@
     <div style="position: relative">
       <b-button class='olbtn' size="sm" @click="reply"><i class="fa-sharp fa-solid fa-reply-all hover"></i></b-button>
       <!--    <b-button style="margin-left: 5px;" class='olbtn' size="sm" @click="kojyun">降準</b-button>-->
-      <b-button style="margin-left: 5px;" class='olbtn' size="sm" @click="syozyun">昇順</b-button>
+      <!--    <b-button style="margin-left: 5px;" class='olbtn' size="sm" @click="syozyun">昇順</b-button>-->
       <b-form-checkbox class='check-box-gradation' v-model="s_gradationCheck">グラデーション</b-form-checkbox>
     </div>
     <hr>
     <div v-for="(div,index) in s_divs[mapName]" v-bind:key="div.id" class="hyoko-div">
-<!--      {{ div.m }}-->
-<!--      <b-form-input type='text' :value="div.m" @input="div.m = Number($event.target.value)"></b-form-input>-->
-
-      <!--      <input class= "input-m" :value="div.m" @input="div.m = Number($event.target.value)" @change="changeM" type="number">-->
-
       <div class="m-start-div" v-if="s_divs[mapName][index - 1]">{{ s_divs[mapName][index - 1].m + '〜' }}</div>
-
       <div class= "input-m-div" v-if="index !== s_divs[mapName].length - 1">
-        <input class= "input-m" :value="div.m" @input="div.m = Number($event.target.value);changeM()"  type="number">
+        <input :id="mapName + '-input-' + div.id" class= "input-m" :value="div.m" @input="div.m = Number($event.target.value);inputM()" @change="changeM(index,div)" type="number" step="0.1">
       </div>
-
       <div :id="mapName + '-div-color-' + div.id" class="div-color" :style="{ 'background-color': div.rgb }" @click="openDialog(div)"></div>
-
       <b-button v-if="index !== s_divs[mapName].length - 1" class='olbtn delete-btn' size="sm" @click="deleteDiv(div.id)"><i class="fa-sharp fa-solid fa-trash-arrow-up hover"></i></b-button>
       <b-button v-if="index !== s_divs[mapName].length - 1" class='olbtn tsuika-btn' size="sm" @click="appendDiv(div.id)"><i class="fa-sharp fa-solid fa-plus hover"></i></b-button>
     </div>
@@ -120,7 +112,6 @@ export default {
         return div.id !== 6
       })
       this.$store.state.info.divs2[this.mapName] = divs2
-      console.log(this.$store.state.info.divs2[this.mapName])
       //-----------------------
       let divs = JSON.parse(JSON.stringify(this.s_divs[this.mapName]))
       divs.sort(function(a, b) {
@@ -133,7 +124,6 @@ export default {
       const aaa = divs.find((div) => {
         return div.id === 6
       })
-      console.log(d3.rgb(aaa.rgb))
       this.$store.state.info.maxRgb[this.mapName] = d3.rgb(aaa.rgb)
       divs = divs.filter((div) => {
         return div.id !== 6
@@ -149,9 +139,11 @@ export default {
       })
       const hyokozuColor = d3.scaleLinear().domain(mArr).range(rgbArr)
       this.$store.state.info.hyokozuColors[this.mapName] = []
+
       for (let i = 0; i < maxM; i++) {
         this.$store.state.info.hyokozuColors[this.mapName][i] = d3.rgb(hyokozuColor(i))
       }
+      
       Layer.hyokozu1Obj[this.mapName].getSource().changed()
       permalink.moveEnd()
 
@@ -187,7 +179,23 @@ export default {
       this.$store.state.info.divs[this.mapName] = JSON.parse(JSON.stringify(this.divsDefault[this.mapName]))
       this.colorChange()
     },
-    changeM () {
+    inputM () {
+      this.colorChange()
+    },
+    changeM (index,div) {
+      let prevM
+      if (index === 0) {
+        prevM = -0.1
+      } else {
+        prevM = this.s_divs[this.mapName][index - 1].m
+      }
+      if (div.m <= prevM) {
+        this.s_divs[this.mapName][index].m = prevM + 0.1
+      }
+      const nextM = this.s_divs[this.mapName][index + 1].m
+      if (div.m >= nextM) {
+        this.s_divs[this.mapName][index].m = nextM - 0.1
+      }
       this.colorChange()
     },
     deleteDiv (id) {
@@ -234,16 +242,7 @@ export default {
   },
   watch: {
     divs(newValue) {
-      console.log(newValue)
-
-
-
-      // function compareFunc(a, b) {
-      //   return a - b;
-      // }
-      // newValue.sort(compareFunc);
-      // this.divs = newValue
-      // permalink.moveEnd()
+      // console.log(newValue)
     },
   },
   mounted ()  {
@@ -264,7 +263,7 @@ export default {
 <style scoped>
 .check-box-gradation {
   position:absolute;
-  left:90px;
+  left:45px;
   top:0;
 }
 .hyoko-div {
