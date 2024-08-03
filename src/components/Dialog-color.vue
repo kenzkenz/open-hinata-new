@@ -42,7 +42,6 @@ export default {
         return this.$store.state.base.editFeatureColor[this.mapName]
       },
       set (value) {
-        console.log(value)
         if (this.$store.state.base.editDiv) {
           const id = this.$store.state.base.editDiv.id
           const result = this.$store.state.info.divs[this.mapName].find((div) => {
@@ -51,18 +50,16 @@ export default {
           const rgb = 'rgb(' + value.rgba.r + ',' + value.rgba.g + ',' + value.rgba.b + ')'
           result.rgb = rgb
           // ---------------------------------------------------------------
-
           let divs2 = JSON.parse(JSON.stringify(this.s_divs[this.mapName]))
           divs2.forEach((div) => {
+            div.m = div.m * 10
             div.rgb = d3.rgb(div.rgb)
           })
           divs2 = divs2.filter((div) => {
             return div.id !== 6
           })
           this.$store.state.info.divs2[this.mapName] = divs2
-
           // ---------------------------------------------------------------
-
           let divs = JSON.parse(JSON.stringify(this.s_divs[this.mapName]))
           divs.sort(function(a, b) {
             if (a.m > b.m) {
@@ -71,23 +68,18 @@ export default {
               return -1;
             }
           })
-
           const aaa = divs.find((div) => {
             return div.id === 6
           })
-          console.log(aaa.rgb)
           this.$store.state.info.maxRgb[this.mapName] = d3.rgb(aaa.rgb)
-
-          // divs.pop()
           divs = divs.filter((div) => {
             return div.id !== 6
           })
-
-          const maxM = d3.max(divs, function(d){ return d.m; })
+          const maxM = d3.max(divs, function(d){ return d.m; }) * 10
           this.$store.state.info.maxM[this.mapName] = maxM
           const minM = d3.min(divs, function(d){ return d.m; })
           const mArr = divs.map((v) => {
-            return v.m
+            return v.m * 10
           })
           const rgbArr = divs.map((v) => {
             return v.rgb

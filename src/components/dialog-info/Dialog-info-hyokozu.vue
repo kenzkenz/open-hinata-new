@@ -78,7 +78,6 @@ export default {
       },
       set(value) {
         this.$store.state.info.gradationCheck[this.mapName] = value
-        console.log(this.$store.state.info.gradationCheck)
         this.colorChange()
       }
     },
@@ -106,6 +105,7 @@ export default {
       // --------------------------------------------------------------------
       let divs2 = JSON.parse(JSON.stringify(this.s_divs[this.mapName]))
       divs2.forEach((div) => {
+        div.m = div.m * 10
         div.rgb = d3.rgb(div.rgb)
       })
       divs2 = divs2.filter((div) => {
@@ -128,11 +128,11 @@ export default {
       divs = divs.filter((div) => {
         return div.id !== 6
       })
-      const maxM = d3.max(divs, function(d){ return d.m; })
+      const maxM = d3.max(divs, function(d){ return d.m; }) * 10
       this.$store.state.info.maxM[this.mapName] = maxM
       const minM = d3.min(divs, function(d){ return d.m; })
       const mArr = divs.map((v) => {
-        return v.m
+        return v.m * 10
       })
       const rgbArr = divs.map((v) => {
         return v.rgb
@@ -143,7 +143,7 @@ export default {
       for (let i = 0; i < maxM; i++) {
         this.$store.state.info.hyokozuColors[this.mapName][i] = d3.rgb(hyokozuColor(i))
       }
-      
+
       Layer.hyokozu1Obj[this.mapName].getSource().changed()
       permalink.moveEnd()
 
