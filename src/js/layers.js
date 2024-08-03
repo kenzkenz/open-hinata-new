@@ -142,50 +142,21 @@ function hyokozu(pixels, data) {
       height = (height < 8323072) ? height : height - 16777216
       height /= 100 //他のDEMを使う時はこれ
     }
-    // console.log(height)
-    // if (height >= data.level) { // 陸上
-    //   let sinsui = height
-      // console.log(height,data.level)
-      height = Math.floor(height)
-      const hyokozuColors = data.hyokozuColors
-    // console.log(floodColors)
-      if (height < 0) height = 0
-      let rgb = hyokozuColors[height]
+    height = Math.floor(height)
+    const hyokozuColors = data.hyokozuColors
+    if (height < 0) height = 0
+    let rgb = hyokozuColors[height]
 
-      // if (height > 0) {
-      //   if (!rgb) rgb = {r: 255, g: 0, b: 0, opacity: 1}
-      // }
-
-
-      if (height >= data.maxM) {
-        const maxRgb = data.maxRgb
-        // rgb = {r: 255, g: 0, b: 0, opacity: 1}
-        rgb = maxRgb
-      }
-
-
-      // console.log(rgb)
-      if (rgb) pixel[0] = rgb.r;
-      if (rgb) pixel[1] = rgb.g;
-      if (rgb) pixel[2] = rgb.b;
-      if (rgb) {
-        pixel[3] = 255
-      } else {
-        pixel[3] = 0
-      }
-    // } else { //海面下
-    //   // let sinsui = - height + data.level
-    //   let sinsui = -height + data.level
-    //
-    //   sinsui = Math.floor(sinsui)
-    //   const floodColors2 = data.floodColors2
-    //   const rgb = floodColors2[sinsui]
-    //   // console.log(rgb)
-    //   if (rgb) pixel[0] = rgb.r;
-    //   if (rgb) pixel[1] = rgb.g;
-    //   if (rgb) pixel[2] = rgb.b;
-    //   if (rgb) pixel[3] = 255
-    // }
+    if (height >= data.maxM) rgb = data.maxRgb
+    // console.log(rgb)
+    if (rgb) pixel[0] = rgb.r;
+    if (rgb) pixel[1] = rgb.g;
+    if (rgb) pixel[2] = rgb.b;
+    if (rgb) {
+      pixel[3] = 255
+    } else {
+      pixel[3] = 0
+    }
   }
   return pixel
 }
