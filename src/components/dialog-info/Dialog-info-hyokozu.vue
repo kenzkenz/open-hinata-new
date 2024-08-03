@@ -86,6 +86,7 @@ export default {
       },
       set(value) {
         this.$store.state.info.gradationCheck[this.mapName] = value
+        console.log(this.$store.state.info.gradationCheck)
         this.colorChange()
       }
     },
@@ -236,11 +237,13 @@ export default {
       //------------------------------------------------------------------
     },
     deleteDiv (id) {
-      if (this.s_divs[this.mapName].length > 2) {
+      if (this.s_divs[this.mapName].length > 3) {
         this.s_divs[this.mapName] = this.s_divs[this.mapName].filter((div) => {
           return div.id !== id
         })
         this.colorChange()
+      } else {
+        alert('これ以上削除できません。')
       }
     },
     appendDiv (id) {

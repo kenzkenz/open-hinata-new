@@ -299,6 +299,9 @@ export function permalinkEventSet (response) {
       if (key ==='H') {
         store.state.info.divs = JSON.parse(obj[key])
       }
+      if (key === 'HG'){
+        store.state.info.gradationCheck = JSON.parse(obj[key])
+      }
       if (key ==='L') {
         // 初期レイヤーをリセット
         store.commit('base/updateList', {value: [], mapName: 'map01'});
@@ -553,8 +556,11 @@ export function moveEnd () {
   parameter += '&GJO=' + store.state.base.drawOpacity
   parameter += '&GJV=' + store.state.base.drawVisible
   parameter += '&H=' + JSON.stringify(store.state.info.divs)
+  parameter += '&HG=' + JSON.stringify(store.state.info.gradationCheck)
 
-  const maps = ['map01','map02','map03','map04']
+
+  // const maps = ['map01','map02','map03','map04']
+  const maps = ['map01','map02']
   maps.forEach((map) => {
     if (store.state.base.ol3d[map]) {
       const json = {
