@@ -151,15 +151,28 @@ function hyokozu(pixels, data) {
     // console.log(floodColors)
       if (height < 0) height = 0
       let rgb = hyokozuColors[height]
-      if (height > 0) {
-        if (!rgb) rgb = {r: 255, g: 0, b: 0, opacity: 1}
+
+      // if (height > 0) {
+      //   if (!rgb) rgb = {r: 255, g: 0, b: 0, opacity: 1}
+      // }
+
+
+      if (height >= data.maxM) {
+        const maxRgb = data.maxRgb
+        // rgb = {r: 255, g: 0, b: 0, opacity: 1}
+        rgb = maxRgb
       }
+
 
       // console.log(rgb)
       if (rgb) pixel[0] = rgb.r;
       if (rgb) pixel[1] = rgb.g;
       if (rgb) pixel[2] = rgb.b;
-      if (rgb) pixel[3] = 255
+      if (rgb) {
+        pixel[3] = 255
+      } else {
+        pixel[3] = 0
+      }
     // } else { //海面下
     //   // let sinsui = - height + data.level
     //   let sinsui = -height + data.level
@@ -324,7 +337,8 @@ for (let i of mapsStr) {
     // event.data.level = Number(document.querySelector('#' + i  + " .flood-range10m").value)
     event.data.colors = store.state.info.colors
     event.data.hyokozuColors = store.state.info.hyokozuColors[i]
-    event.data.floodColors2 = store.state.info.floodColors2
+    event.data.maxM = store.state.info.maxM[i]
+    event.data.maxRgb = store.state.info.maxRgb[i]
   })
 }
 export const hyokozuObj = {};

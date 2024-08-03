@@ -53,8 +53,28 @@ export default {
           const rgb = 'rgb(' + value.rgba.r + ',' + value.rgba.g + ',' + value.rgba.b + ')'
           result.rgb = rgb
           // ---------------------------------------------------------------
-          const divs = this.s_divs[this.mapName]
+          let divs = JSON.parse(JSON.stringify(this.s_divs[this.mapName]))
+          divs.sort(function(a, b) {
+            if (a.m > b.m) {
+              return 1;
+            } else {
+              return -1;
+            }
+          })
+
+          const aaa = divs.find((div) => {
+            return div.id === 6
+          })
+          console.log(aaa.rgb)
+          this.$store.state.info.maxRgb[this.mapName] = d3.rgb(aaa.rgb)
+
+          // divs.pop()
+          divs = divs.filter((div) => {
+            return div.id !== 6
+          })
+
           const maxM = d3.max(divs, function(d){ return d.m; })
+          this.$store.state.info.maxM[this.mapName] = maxM
           const minM = d3.min(divs, function(d){ return d.m; })
           const mArr = divs.map((v) => {
             return v.m

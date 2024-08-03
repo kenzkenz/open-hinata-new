@@ -2,7 +2,7 @@
   <div class="content-div">
 <!--    <p v-html="item.title"></p>-->
     <b-button class='olbtn' size="sm" @click="reply"><i class="fa-sharp fa-solid fa-reply-all hover"></i></b-button>
-    <b-button style="margin-left: 5px;" class='olbtn' size="sm" @click="kojyun">降準</b-button>
+<!--    <b-button style="margin-left: 5px;" class='olbtn' size="sm" @click="kojyun">降準</b-button>-->
     <b-button style="margin-left: 5px;" class='olbtn' size="sm" @click="syozyun">昇順</b-button>
     <hr>
     <div v-for="(div,index) in s_divs[mapName]" v-bind:key="div.id" class="hyoko-div">
@@ -13,14 +13,14 @@
 
       <div class="m-start-div" v-if="s_divs[mapName][index - 1]">{{ s_divs[mapName][index - 1].m + '〜' }}</div>
 
-      <div class= "input-m-div">
+      <div class= "input-m-div" v-if="index !== s_divs[mapName].length - 1">
         <input class= "input-m" :value="div.m" @input="div.m = Number($event.target.value);changeM()"  type="number">
       </div>
 
       <div :id="mapName + '-div-color-' + div.id" class="div-color" :style="{ 'background-color': div.rgb }" @click="openDialog(div)"></div>
 
-      <b-button class='olbtn delete-btn' size="sm" @click="deleteDiv(div.id)"><i class="fa-sharp fa-solid fa-trash-arrow-up hover"></i></b-button>
-      <b-button class='olbtn tsuika-btn' size="sm" @click="appendDiv(div.id)"><i class="fa-sharp fa-solid fa-plus hover"></i></b-button>
+      <b-button v-if="index !== s_divs[mapName].length - 1" class='olbtn delete-btn' size="sm" @click="deleteDiv(div.id)"><i class="fa-sharp fa-solid fa-trash-arrow-up hover"></i></b-button>
+      <b-button v-if="index !== s_divs[mapName].length - 1" class='olbtn tsuika-btn' size="sm" @click="appendDiv(div.id)"><i class="fa-sharp fa-solid fa-plus hover"></i></b-button>
     </div>
 
 
@@ -59,7 +59,7 @@ export default {
               { id: 3, rgb: 'rgb(176,252,79)', m: 100 },
               { id: 4, rgb: 'rgb(254,254,84)', m: 500 },
               { id: 5, rgb: 'rgb(241,152,55)', m: 1500 },
-              { id: 6, rgb: 'rgb(255,0,0)', m: 4000 },
+              { id: 6, rgb: 'rgb(234,92,50)', m: 9999},
             ],
         map02:
             [
@@ -69,7 +69,7 @@ export default {
               { id: 3, rgb: 'rgb(176,252,79)', m: 100 },
               { id: 4, rgb: 'rgb(254,254,84)', m: 500 },
               { id: 5, rgb: 'rgb(241,152,55)', m: 1500 },
-              { id: 6, rgb: 'rgb(255,0,0)', m: 4000 },
+              { id: 6, rgb: 'rgb(234,92,50)', m: 9999},
             ]
       },
     }
@@ -146,8 +146,29 @@ export default {
     },
     colorChange () {
       // --------------------------------------------------------------------
-      const divs = this.s_divs[this.mapName]
+      let divs = JSON.parse(JSON.stringify(this.s_divs[this.mapName]))
+      divs.sort(function(a, b) {
+        if (a.m > b.m) {
+          return 1;
+        } else {
+          return -1;
+        }
+      })
+
+      const aaa = divs.find((div) => {
+        return div.id === 6
+      })
+      console.log(d3.rgb(aaa.rgb))
+      this.$store.state.info.maxRgb[this.mapName] = d3.rgb(aaa.rgb)
+
+      // divs.pop()
+
+      divs = divs.filter((div) => {
+        return div.id !== 6
+      })
+
       const maxM = d3.max(divs, function(d){ return d.m; })
+      this.$store.state.info.maxM[this.mapName] = maxM
       const minM = d3.min(divs, function(d){ return d.m; })
       const mArr = divs.map((v) => {
         return v.m
@@ -161,6 +182,7 @@ export default {
         this.$store.state.info.hyokozuColors[this.mapName][i] = d3.rgb(hyokozuColor(i))
       }
       Layer.hyokozu1Obj[this.mapName].getSource().changed()
+      permalink.moveEnd()
       //------------------------------------------------------------------
     },
     openDialog (div) {
@@ -216,14 +238,21 @@ export default {
         order = i
         return div.id === id
       })
-      if (order !== this.s_divs[this.mapName].length-1) {
+      if (order !== this.s_divs[this.mapName].length-2) {
         const tyukan = this.s_divs[this.mapName][order].m + (this.s_divs[this.mapName][order + 1].m - this.s_divs[this.mapName][order].m) / 2
         this.s_divs[this.mapName].splice(order + 1, 0, { id: maxId + 1, rgb: this.s_divs[this.mapName][order].rgb, m: tyukan })
       } else {
         console.log(this.s_divs)
-        const saigo = this.s_divs[this.mapName][order].m + this.s_divs[this.mapName][order].m
+        const saigo = this.s_divs[this.mapName][order].m + this.s_divs[this.mapName][order].m - this.s_divs[this.mapName][order-1].m
         console.log(saigo)
         this.s_divs[this.mapName].push({id: maxId + 1, rgb: this.s_divs[this.mapName][order].rgb, m: saigo})
+        this.s_divs[this.mapName].sort(function(a, b) {
+          if (a.m > b.m) {
+            return 1;
+          } else {
+            return -1;
+          }
+        })
       }
       this.colorChange()
     },
@@ -231,7 +260,7 @@ export default {
       const syurui = this.s_iryoukikansyurui
       const kamoku = this.s_iryoukikankamoku
       this.$store.commit('base/updateListPart',{mapName: this.mapName, id:this.item.id, values: [syurui,kamoku]});
-      permalink.moveEnd();
+      permalink.moveEnd()
     },
   },
   watch: {
