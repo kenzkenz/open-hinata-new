@@ -1651,7 +1651,7 @@
             content:
                    '<ul>' +
                    '<li>「' +
-                   '<a href="https://kenzkenz.xsrv.jp/open-hinata/#soPUta3" target="_blank">自分で作る色別標高図</a>' +
+                   '<a href="https://kenzkenz.xsrv.jp/open-hinata/#srfDduk" target="_blank">自分で作る色別標高図</a>' +
                    '」' +
                    '</li>' +
                    '<li>「' +

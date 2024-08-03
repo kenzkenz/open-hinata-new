@@ -4,6 +4,8 @@
       <b-button class='olbtn' size="sm" @click="reply"><i class="fa-sharp fa-solid fa-reply-all hover"></i></b-button>
       <!--    <b-button style="margin-left: 5px;" class='olbtn' size="sm" @click="kojyun">降準</b-button>-->
       <!--    <b-button style="margin-left: 5px;" class='olbtn' size="sm" @click="syozyun">昇順</b-button>-->
+      <b-button style="margin-left: 5px;" class='olbtn' size="sm" @click="auto">自動</b-button>
+
       <b-form-checkbox class='check-box-gradation' v-model="s_gradationCheck">グラデーション</b-form-checkbox>
     </div>
     <hr>
@@ -25,15 +27,11 @@
 </template>
 
 <script>
-import * as LayersMvt from '@/js/layers-mvt'
 import * as Layer from '@/js/layers'
 import * as permalink from '@/js/permalink'
 import * as d3 from "d3"
 import * as MyMap from "@/js/mymap";
 import {Chrome} from 'vue-color'
-import store from "@/js/store";
-import layer from "@/components/Layer";
-import {hyokozu1Obj} from "@/js/layers";
 
 export default {
   name: "Dialog-info-hyokozu",
@@ -53,7 +51,7 @@ export default {
               { id: 3, rgb: 'rgb(176,252,79)', m: 100 },
               { id: 4, rgb: 'rgb(254,254,84)', m: 500 },
               { id: 5, rgb: 'rgb(241,152,55)', m: 1500 },
-              { id: 6, rgb: 'rgb(234,92,50)', m: 9999},
+              { id: 9999, rgb: 'rgb(234,92,50)', m: 9999},
             ],
         map02:
             [
@@ -63,7 +61,7 @@ export default {
               { id: 3, rgb: 'rgb(176,252,79)', m: 100 },
               { id: 4, rgb: 'rgb(254,254,84)', m: 500 },
               { id: 5, rgb: 'rgb(241,152,55)', m: 1500 },
-              { id: 6, rgb: 'rgb(234,92,50)', m: 9999},
+              { id: 9999, rgb: 'rgb(234,92,50)', m: 9999},
             ]
       },
     }
@@ -83,23 +81,28 @@ export default {
     },
   },
   methods: {
-    syozyun () {
-      this.s_divs[this.mapName].sort(function(a, b) {
-        if (a.m > b.m) {
-          return 1;
-        } else {
-          return -1;
-        }
-      })
-    },
-    kojyun () {
-      this.s_divs[this.mapName].sort(function(a, b) {
-        if (a.m < b.m) {
-          return 1;
-        } else {
-          return -1;
-        }
-      })
+    auto () {
+      const result = window.confirm('画面中心を基準に5m刻み10段階の標高図を自動作成します。')
+      if (!result) return
+      const centerHyoko = this.$store.state.base.hyokou
+      const firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 5
+      const aaa =
+          [
+            { id: 0, rgb: 'rgb(0,0,255)', m: firstM + 0 },
+            { id: 1, rgb: 'rgb(0,100,255)', m: firstM + 5 },
+            { id: 2, rgb: 'rgb(75,153,238)', m: firstM + 10 },
+            { id: 3, rgb: 'rgb(116,235,244)', m: firstM + 15 },
+            { id: 4, rgb: 'rgb(176,252,79)', m: firstM + 20 },
+            { id: 5, rgb: 'rgb(254,254,84)', m: firstM + 25 },
+            { id: 6, rgb: 'rgb(241,152,55)', m: firstM + 30 },
+            { id: 7, rgb: 'rgb(241,113,55)', m: firstM + 35 },
+            { id: 8, rgb: 'rgb(224,74,74)', m: firstM + 40 },
+            { id: 9, rgb: 'rgb(193,50,50)', m: firstM + 45 },
+            { id: 10, rgb: 'rgb(173,10,10)', m: firstM + 55 },
+            { id: 9999, rgb: 'rgb(144,7,17)', m: 9999},
+          ]
+      this.s_divs[this.mapName] = aaa
+      this.colorChange()
     },
     colorChange () {
       // --------------------------------------------------------------------
@@ -109,7 +112,7 @@ export default {
         div.rgb = d3.rgb(div.rgb)
       })
       divs2 = divs2.filter((div) => {
-        return div.id !== 6
+        return div.id !== 9999
       })
       this.$store.state.info.divs2[this.mapName] = divs2
       //-----------------------
@@ -122,11 +125,11 @@ export default {
         }
       })
       const aaa = divs.find((div) => {
-        return div.id === 6
+        return div.id === 9999
       })
       this.$store.state.info.maxRgb[this.mapName] = d3.rgb(aaa.rgb)
       divs = divs.filter((div) => {
-        return div.id !== 6
+        return div.id !== 9999
       })
       const maxM = d3.max(divs, function(d){ return d.m; }) * 10
       this.$store.state.info.maxM[this.mapName] = maxM
@@ -143,10 +146,9 @@ export default {
       for (let i = 0; i < maxM; i++) {
         this.$store.state.info.hyokozuColors[this.mapName][i] = d3.rgb(hyokozuColor(i))
       }
-
       Layer.hyokozu1Obj[this.mapName].getSource().changed()
+      Layer.hyokozu2Obj[this.mapName].getSource().changed()
       permalink.moveEnd()
-
       //------------------------------------------------------------------
     },
     openDialog (div) {
@@ -196,6 +198,15 @@ export default {
       if (div.m >= nextM) {
         this.s_divs[this.mapName][index].m = nextM - 0.1
       }
+
+      // this.s_divs[this.mapName].sort(function(a, b) {
+      //   if (a.m > b.m) {
+      //     return 1;
+      //   } else {
+      //     return -1;
+      //   }
+      // })
+
       this.colorChange()
     },
     deleteDiv (id) {
@@ -263,7 +274,7 @@ export default {
 <style scoped>
 .check-box-gradation {
   position:absolute;
-  left:45px;
+  left:90px;
   top:0;
 }
 .hyoko-div {
@@ -283,7 +294,7 @@ export default {
   top:0px;
 }
 .input-m {
-  width: 70px;
+  width: 65px;
   text-align: right;
 }
 .div-color {

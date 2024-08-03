@@ -56,7 +56,7 @@ export default {
             div.rgb = d3.rgb(div.rgb)
           })
           divs2 = divs2.filter((div) => {
-            return div.id !== 6
+            return div.id !== 9999
           })
           this.$store.state.info.divs2[this.mapName] = divs2
           // ---------------------------------------------------------------
@@ -69,11 +69,11 @@ export default {
             }
           })
           const aaa = divs.find((div) => {
-            return div.id === 6
+            return div.id === 9999
           })
           this.$store.state.info.maxRgb[this.mapName] = d3.rgb(aaa.rgb)
           divs = divs.filter((div) => {
-            return div.id !== 6
+            return div.id !== 9999
           })
           const maxM = d3.max(divs, function(d){ return d.m; }) * 10
           this.$store.state.info.maxM[this.mapName] = maxM
@@ -90,6 +90,7 @@ export default {
             this.$store.state.info.hyokozuColors[this.mapName][i] = d3.rgb(hyokozuColor(i))
           }
           Layer.hyokozu1Obj[this.mapName].getSource().changed()
+          Layer.hyokozu2Obj[this.mapName].getSource().changed()
           // ---------------------------------------------------------------
 
         } else {

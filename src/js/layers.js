@@ -133,44 +133,7 @@ function flood2(pixels, data) {
   }
   return pixel
 }
-function hyokozu(pixels, data) {
-  const pixel = pixels[0]
-  if (pixel[3]) {
-    let height
-    if (pixel[3] === 255) {
-      height = pixel[0] * 256 * 256 + pixel[1] * 256 + pixel[2]
-      height = (height < 8323072) ? height : height - 16777216
-      height /= 100 //他のDEMを使う時はこれ
-    }
-    height = height * 10
-    height = Math.floor(height)
-    let rgb
-    if (data.gradationCheck) {
-      const hyokozuColors = data.hyokozuColors
-      if (height < 0) height = 0
-      rgb = hyokozuColors[height]
-    } else {
-      data.divs2.forEach((value,index) => {
-        if (index === 0) {
-          if (height <= value.m) rgb = value.rgb
-        } else {
-          if (height <= value.m && height > data.divs2[index-1].m) rgb = value.rgb
-        }
-      })
-    }
 
-    if (height >= data.maxM) rgb = data.maxRgb
-    if (rgb) pixel[0] = rgb.r;
-    if (rgb) pixel[1] = rgb.g;
-    if (rgb) pixel[2] = rgb.b;
-    if (rgb) {
-      pixel[3] = 255
-    } else {
-      pixel[3] = 0
-    }
-  }
-  return pixel
-}
 //dem10---------------------------------------------------------------------------------
 // const url = 'https://cyberjapandata.gsi.go.jp/xyz/dem_png/{z}/{x}/{y}.png'
 // const url = 'https://tiles.gsj.jp/tiles/elev/land/{z}/{y}/{x}.png' // 陸のみ
@@ -302,6 +265,44 @@ for (let i of mapsStr) {
 }
 
 // 自分で作る標高図----------------------------------------------
+function hyokozu(pixels, data) {
+  const pixel = pixels[0]
+  if (pixel[3]) {
+    let height
+    if (pixel[3] === 255) {
+      height = pixel[0] * 256 * 256 + pixel[1] * 256 + pixel[2]
+      height = (height < 8323072) ? height : height - 16777216
+      height /= 100 //他のDEMを使う時はこれ
+    }
+    height = height * 10
+    height = Math.floor(height)
+    let rgb
+    if (data.gradationCheck) {
+      const hyokozuColors = data.hyokozuColors
+      if (height < 0) height = 0
+      rgb = hyokozuColors[height]
+    } else {
+      data.divs2.forEach((value,index) => {
+        if (index === 0) {
+          if (height <= value.m) rgb = value.rgb
+        } else {
+          if (height <= value.m && height > data.divs2[index-1].m) rgb = value.rgb
+        }
+      })
+    }
+
+    if (height >= data.maxM) rgb = data.maxRgb
+    if (rgb) pixel[0] = rgb.r;
+    if (rgb) pixel[1] = rgb.g;
+    if (rgb) pixel[2] = rgb.b;
+    if (rgb) {
+      pixel[3] = 255
+    } else {
+      pixel[3] = 0
+    }
+  }
+  return pixel
+}
 const elevationHyokozu = new XYZ({
   url:'https://tiles.gsj.jp/tiles/elev/land/{z}/{y}/{x}.png',
   maxZoom:15,

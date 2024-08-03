@@ -1355,6 +1355,7 @@ export function initMap (vm) {
                 // const zoom = String(Math.floor(map.getView().getZoom() * 100) / 100)
                 if (h !=='e') {
                     // console.log(h)
+                    store.state.base.hyokou = h
                     vm.zoom[mapName] = 'zoom=' + zoom + '  中心の標高' + h + 'm'
                 } else {
                     // vm.zoom[mapName] = 'zoom=' + zoom
