@@ -301,23 +301,50 @@ for (let i of mapsStr) {
   floodSinpleObj[i].values_['multiply'] = true
 }
 
-
-// ----------------------------------------------
+// 自分で作る標高図----------------------------------------------
+const elevationHyokozu = new XYZ({
+  url:'https://tiles.gsj.jp/tiles/elev/land/{z}/{y}/{x}.png',
+  maxZoom:15,
+  crossOrigin:'anonymous',
+  interpolate: false,
+})
+const elevationHyokozu2 = new XYZ({
+  url:'https://tiles.gsj.jp/tiles/elev/land/{z}/{y}/{x}.png',
+  maxZoom:11,
+  crossOrigin:'anonymous',
+  interpolate: false,
+})
 function DemHyokozu () {
   this.multiply = true
   this.source = new RasterSource({
-    sources:[elevation15],
+    sources:[elevationHyokozu],
     operation:hyokozu
   })
-  // this.maxResolution = 19.109257
+  this.maxResolution = 19.109257
 }
-
+function DemHyokozu2 () {
+  this.multiply = true
+  this.source = new RasterSource({
+    sources:[elevationHyokozu2],
+    operation:hyokozu
+  })
+  this.minResolution = 19.109257
+}
 export const hyokozu1Obj = {}
 for (let i of mapsStr) {
   hyokozu1Obj[i] = new ImageLaye(new DemHyokozu())
   hyokozu1Obj[i].getSource().on('beforeoperations', function(event) {
-    // event.data.level = Number(document.querySelector('#' + i  + " .flood-range10m").value)
-    event.data.colors = store.state.info.colors
+    event.data.gradationCheck = store.state.info.gradationCheck[i]
+    event.data.hyokozuColors = store.state.info.hyokozuColors[i]
+    event.data.divs2 = store.state.info.divs2[i]
+    event.data.maxM = store.state.info.maxM[i]
+    event.data.maxRgb = store.state.info.maxRgb[i]
+  })
+}
+export const hyokozu2Obj = {}
+for (let i of mapsStr) {
+  hyokozu2Obj[i] = new ImageLaye(new DemHyokozu2())
+  hyokozu2Obj[i].getSource().on('beforeoperations', function(event) {
     event.data.gradationCheck = store.state.info.gradationCheck[i]
     event.data.hyokozuColors = store.state.info.hyokozuColors[i]
     event.data.divs2 = store.state.info.divs2[i]
@@ -330,15 +357,12 @@ for (let i of mapsStr) {
   hyokozuObj[i] = new LayerGroup({
     layers: [
       hyokozu1Obj[i],
+      hyokozu2Obj[i],
     ]
   })
   hyokozuObj[i].values_['multiply'] = true
 }
 // ----------------------------------------------
-
-
-
-
 
 
 //dem5---------------------------------------------------------------------------------
