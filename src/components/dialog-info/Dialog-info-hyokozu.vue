@@ -90,50 +90,6 @@ export default {
         this.colorChange()
       }
     },
-    s_iryoukikankamoku: {
-      get() {
-        return this.$store.state.info.iryoukikankamoku[this.mapName]
-      },
-      set(value) {
-        this.$store.state.info.iryoukikankamoku[this.mapName] = value
-        LayersMvt.iryoMvtObj[this.mapName].getSource().changed()
-        this.storeUpdate()
-        console.log(value)
-        if (value) {
-          if (window.innerWidth > 1000) {
-            LayersMvt.iryoMvtObj[this.mapName].setMaxResolution(156543.03)
-            LayersMvt.iryoRasterObj[this.mapName].setMinResolution(156543.03)
-          }
-        } else if (!value && this.s_iryoukikansyurui === 0) {
-          if (window.innerWidth > 1000) {
-            LayersMvt.iryoMvtObj[this.mapName].setMaxResolution(152.874057)	 //zoom10
-            LayersMvt.iryoRasterObj[this.mapName].setMinResolution(152.874057)
-          }
-        }
-      }
-    },
-    s_iryoukikansyurui: {
-      get() {
-        return this.$store.state.info.iryoukikansyurui[this.mapName]
-      },
-      set(value) {
-        this.$store.state.info.iryoukikansyurui[this.mapName] = value
-        LayersMvt.iryoMvtObj[this.mapName].getSource().changed()
-        this.storeUpdate()
-        console.log(value)
-        if (value !== 0) {
-          if (window.innerWidth > 1000) {
-            LayersMvt.iryoMvtObj[this.mapName].setMaxResolution(156543.03)
-            LayersMvt.iryoRasterObj[this.mapName].setMinResolution(156543.03)
-          }
-        } else if (value === 0 && !this.s_iryoukikankamoku) {
-          if (window.innerWidth > 1000) {
-            LayersMvt.iryoMvtObj[this.mapName].setMaxResolution(152.874057)	 //zoom10
-            LayersMvt.iryoRasterObj[this.mapName].setMinResolution(152.874057)
-          }
-        }
-      }
-    },
   },
   methods: {
     syozyun () {
@@ -232,9 +188,7 @@ export default {
       this.colorChange()
     },
     changeM () {
-      // --------------------------------------------------------------------
       this.colorChange()
-      //------------------------------------------------------------------
     },
     deleteDiv (id) {
       if (this.s_divs[this.mapName].length > 3) {

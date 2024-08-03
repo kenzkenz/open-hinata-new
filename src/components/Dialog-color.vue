@@ -45,14 +45,24 @@ export default {
         console.log(value)
         if (this.$store.state.base.editDiv) {
           const id = this.$store.state.base.editDiv.id
-          const mapName = this.$store.state.base.editMap
-          console.log(id)
           const result = this.$store.state.info.divs[this.mapName].find((div) => {
             return div.id === id
           })
           const rgb = 'rgb(' + value.rgba.r + ',' + value.rgba.g + ',' + value.rgba.b + ')'
           result.rgb = rgb
           // ---------------------------------------------------------------
+
+          let divs2 = JSON.parse(JSON.stringify(this.s_divs[this.mapName]))
+          divs2.forEach((div) => {
+            div.rgb = d3.rgb(div.rgb)
+          })
+          divs2 = divs2.filter((div) => {
+            return div.id !== 6
+          })
+          this.$store.state.info.divs2[this.mapName] = divs2
+
+          // ---------------------------------------------------------------
+
           let divs = JSON.parse(JSON.stringify(this.s_divs[this.mapName]))
           divs.sort(function(a, b) {
             if (a.m > b.m) {
