@@ -1,9 +1,11 @@
 <template>
   <div class="content-div">
-<!--    <p v-html="item.title"></p>-->
-    <b-button class='olbtn' size="sm" @click="reply"><i class="fa-sharp fa-solid fa-reply-all hover"></i></b-button>
-<!--    <b-button style="margin-left: 5px;" class='olbtn' size="sm" @click="kojyun">降準</b-button>-->
-    <b-button style="margin-left: 5px;" class='olbtn' size="sm" @click="syozyun">昇順</b-button>
+    <div style="position: relative">
+      <b-button class='olbtn' size="sm" @click="reply"><i class="fa-sharp fa-solid fa-reply-all hover"></i></b-button>
+      <!--    <b-button style="margin-left: 5px;" class='olbtn' size="sm" @click="kojyun">降準</b-button>-->
+      <b-button style="margin-left: 5px;" class='olbtn' size="sm" @click="syozyun">昇順</b-button>
+      <b-form-checkbox class='check-box-gradation' v-model="s_gradationCheck">グラデーション</b-form-checkbox>
+    </div>
     <hr>
     <div v-for="(div,index) in s_divs[mapName]" v-bind:key="div.id" class="hyoko-div">
 <!--      {{ div.m }}-->
@@ -77,8 +79,15 @@ export default {
   computed: {
     s_dialogMaxZindex () { return this.$store.state.base.dialogMaxZindex},
     s_dialogs () { return this.$store.state.base.dialogs},
-    s_divs () {
-      return this.$store.state.info.divs
+    s_divs () { return this.$store.state.info.divs},
+    s_gradationCheck: {
+      get() {
+        return this.$store.state.info.gradationCheck[this.mapName]
+      },
+      set(value) {
+        this.$store.state.info.gradationCheck[this.mapName] = value
+        this.colorChange()
+      }
     },
     s_iryoukikankamoku: {
       get() {
@@ -146,6 +155,16 @@ export default {
     },
     colorChange () {
       // --------------------------------------------------------------------
+      let divs2 = JSON.parse(JSON.stringify(this.s_divs[this.mapName]))
+      divs2.forEach((div) => {
+        div.rgb = d3.rgb(div.rgb)
+      })
+      divs2 = divs2.filter((div) => {
+        return div.id !== 6
+      })
+      this.$store.state.info.divs2[this.mapName] = divs2
+      console.log(this.$store.state.info.divs2[this.mapName])
+      //-----------------------
       let divs = JSON.parse(JSON.stringify(this.s_divs[this.mapName]))
       divs.sort(function(a, b) {
         if (a.m > b.m) {
@@ -154,19 +173,14 @@ export default {
           return -1;
         }
       })
-
       const aaa = divs.find((div) => {
         return div.id === 6
       })
       console.log(d3.rgb(aaa.rgb))
       this.$store.state.info.maxRgb[this.mapName] = d3.rgb(aaa.rgb)
-
-      // divs.pop()
-
       divs = divs.filter((div) => {
         return div.id !== 6
       })
-
       const maxM = d3.max(divs, function(d){ return d.m; })
       this.$store.state.info.maxM[this.mapName] = maxM
       const minM = d3.min(divs, function(d){ return d.m; })
@@ -183,6 +197,7 @@ export default {
       }
       Layer.hyokozu1Obj[this.mapName].getSource().changed()
       permalink.moveEnd()
+
       //------------------------------------------------------------------
     },
     openDialog (div) {
@@ -215,9 +230,6 @@ export default {
       this.$store.state.info.divs[this.mapName] = JSON.parse(JSON.stringify(this.divsDefault[this.mapName]))
       this.colorChange()
     },
-    // inputM () {
-    //
-    // },
     changeM () {
       // --------------------------------------------------------------------
       this.colorChange()
@@ -293,6 +305,11 @@ export default {
 </script>
 
 <style scoped>
+.check-box-gradation {
+  position:absolute;
+  left:90px;
+  top:0;
+}
 .hyoko-div {
   height: 35px;
   position: relative;

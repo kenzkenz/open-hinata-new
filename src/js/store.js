@@ -465,6 +465,10 @@ const moduleInfo = {
       map03: '0',
       map04: '0'
     },
+    gradationCheck: {
+      map01: true,
+      map02: true,
+    },
     iryoukikankamoku: {
       map01: '',
       map02: '',
@@ -572,6 +576,7 @@ const moduleInfo = {
             { id: 6, rgb: 'rgb(234,92,50)', m: 9999},
           ]
     },
+    divs2:{},
     floodColors: {
     },
     floodColors2: {

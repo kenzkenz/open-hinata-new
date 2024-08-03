@@ -143,12 +143,22 @@ function hyokozu(pixels, data) {
       height /= 100 //他のDEMを使う時はこれ
     }
     height = Math.floor(height)
-    const hyokozuColors = data.hyokozuColors
-    if (height < 0) height = 0
-    let rgb = hyokozuColors[height]
+    let rgb
+    if (data.gradationCheck) {
+      const hyokozuColors = data.hyokozuColors
+      if (height < 0) height = 0
+      rgb = hyokozuColors[height]
+    } else {
+      data.divs2.forEach((value,index) => {
+        if (index === 0) {
+          if (height <= value.m) rgb = value.rgb
+        } else {
+          if (height <= value.m && height > data.divs2[index-1].m) rgb = value.rgb
+        }
+      })
+    }
 
     if (height >= data.maxM) rgb = data.maxRgb
-    // console.log(rgb)
     if (rgb) pixel[0] = rgb.r;
     if (rgb) pixel[1] = rgb.g;
     if (rgb) pixel[2] = rgb.b;
@@ -307,7 +317,9 @@ for (let i of mapsStr) {
   hyokozu1Obj[i].getSource().on('beforeoperations', function(event) {
     // event.data.level = Number(document.querySelector('#' + i  + " .flood-range10m").value)
     event.data.colors = store.state.info.colors
+    event.data.gradationCheck = store.state.info.gradationCheck[i]
     event.data.hyokozuColors = store.state.info.hyokozuColors[i]
+    event.data.divs2 = store.state.info.divs2[i]
     event.data.maxM = store.state.info.maxM[i]
     event.data.maxRgb = store.state.info.maxRgb[i]
   })
