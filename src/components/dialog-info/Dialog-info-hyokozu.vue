@@ -283,6 +283,8 @@ export default {
       this.colorChange()
     },
     changeM (index,div) {
+      if (this.s_divs[this.mapName][index].m < 0 ) this.s_divs[this.mapName][index].m = 0
+
       // let prevM
       // if (index === 0) {
       //   prevM = -0.1
