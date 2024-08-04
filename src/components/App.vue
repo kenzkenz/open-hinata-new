@@ -1652,7 +1652,7 @@
                    '<ul>' +
                    '<li>「' +
                    '<a href="https://kenzkenz.xsrv.jp/open-hinata/#sq14oBV" target="_blank">自分で作る色別標高図</a>' +
-                   '」' +
+                   '」是非作ってみてください。' +
                    '</li>' +
                    '<li>「' +
                    '<a href="https://kenzkenz.xsrv.jp/open-hinata/#s3PHDc" target="_blank">R2国勢調査小地域人口ピラミッド</a>' +
