@@ -297,6 +297,7 @@ export function permalinkEventSet (response) {
         store.commit('base/updateSplitFlg',obj[key])
       }
       if (key ==='H') {
+        store.state.info.divsDefault = JSON.parse(JSON.stringify(store.state.info.divs))
         store.state.info.divs = JSON.parse(obj[key])
       }
       if (key === 'HG'){

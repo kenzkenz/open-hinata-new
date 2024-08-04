@@ -576,6 +576,7 @@ const moduleInfo = {
             { id: 9999, rgb: 'rgb(234,92,50)', m: 9999},
           ]
     },
+    divsDefault: {},
     divs2:{},
     floodColors: {
     },

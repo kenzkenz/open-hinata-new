@@ -2,10 +2,7 @@
   <div class="content-div">
     <div style="position: relative">
       <b-button class='olbtn' size="sm" @click="reply"><i class="fa-sharp fa-solid fa-reply-all hover"></i></b-button>
-      <!--    <b-button style="margin-left: 5px;" class='olbtn' size="sm" @click="kojyun">降準</b-button>-->
-      <!--    <b-button style="margin-left: 5px;" class='olbtn' size="sm" @click="syozyun">昇順</b-button>-->
       <b-button style="margin-left: 5px;" class='olbtn' size="sm" @click="auto">自動</b-button>
-
       <b-form-checkbox class='check-box-gradation' v-model="s_gradationCheck">グラデーション</b-form-checkbox>
     </div>
     <hr>
@@ -21,32 +18,20 @@
 
     <modal name="modal-auto" width="300" height="350" :clickToClose="false">
       <div class="dialog-close-btn-div" @click="autoCansel"><i class="fa-solid fa-xmark hover close-btn"></i></div>
-
-        <div class="modal-body">
-<!--          <div class="dialog-close-btn-div" @click="autoCansel"><i class="fa-solid fa-xmark hover close-btn"></i></div>-->
-          <ul>
-            <li>画面中心を基準に12段階の標高図を自動作成します。</li>
-          </ul>
-          <b-form-select v-model="kizami" :options="options" @change="auto2()"></b-form-select>
-          <br><br>
-          <hr>
-          <br>
-          <ul>
-            <li>画面中心を基準に7段階の標高図を自動作成します。</li>
-          </ul>
-          <b-button style="margin-top: 0px;" class='olbtn' v-on:click="auto3()">7段階標高図</b-button>
-
-<!--          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('1m')">1m刻み</b-button><br>-->
-<!--          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('5m')">5m刻み</b-button><br>-->
-<!--          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('10m')">10m刻み</b-button><br>-->
-<!--          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('15m')">15m刻み</b-button><br>-->
-<!--          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="auto2('50m')">50m刻み</b-button><br>-->
-<!--          <b-button style="margin-top: 5px;" class='olbtn' v-on:click="autoCansel">キャンセル</b-button><br>-->
-        </div>
-      </modal>
-
-
-
+      <div class="modal-body">
+        <ul>
+          <li>画面中心を基準に12段階の標高図を自動作成します。</li>
+        </ul>
+        <b-form-select v-model="kizami" :options="options" @change="auto2()"></b-form-select>
+        <br><br>
+        <hr>
+        <br>
+        <ul>
+          <li>画面中心を基準に7段階の標高図を自動作成します。</li>
+        </ul>
+        <b-button style="margin-top: 0px;" class='olbtn' v-on:click="auto3()">7段階標高図</b-button>
+      </div>
+    </modal>
 
 <!--    <div>-->
 <!--      出典:<span v-html="item.summary"></span>-->
@@ -59,13 +44,11 @@ import * as Layer from '@/js/layers'
 import * as permalink from '@/js/permalink'
 import * as d3 from "d3"
 import * as MyMap from "@/js/mymap";
-import {Chrome} from 'vue-color'
 
 export default {
   name: "Dialog-info-hyokozu",
   props: ['mapName', 'item'],
   components: {
-    'chrome-picker': Chrome
   },
   data () {
     return {
@@ -77,30 +60,7 @@ export default {
         { value: '10m', text: '10m刻み' },
         { value: '15m', text: '15m刻み' },
         { value: '50m', text: '50m刻み' },
-
       ],
-      divsDefault:{
-        map01:
-            [
-              { id: 0, rgb: 'rgb(13,13,237)', m: 5 },
-              { id: 1, rgb: 'rgb(75,153,238)', m: 10 },
-              { id: 2, rgb: 'rgb(116,235,244)', m: 50 },
-              { id: 3, rgb: 'rgb(176,252,79)', m: 100 },
-              { id: 4, rgb: 'rgb(254,254,84)', m: 500 },
-              { id: 5, rgb: 'rgb(241,152,55)', m: 1500 },
-              { id: 9999, rgb: 'rgb(234,92,50)', m: 9999},
-            ],
-        map02:
-            [
-              { id: 0, rgb: 'rgb(13,13,237)', m: 5 },
-              { id: 1, rgb: 'rgb(75,153,238)', m: 10 },
-              { id: 2, rgb: 'rgb(116,235,244)', m: 50 },
-              { id: 3, rgb: 'rgb(176,252,79)', m: 100 },
-              { id: 4, rgb: 'rgb(254,254,84)', m: 500 },
-              { id: 5, rgb: 'rgb(241,152,55)', m: 1500 },
-              { id: 9999, rgb: 'rgb(234,92,50)', m: 9999},
-            ]
-      },
     }
   },
   computed: {
@@ -174,7 +134,6 @@ export default {
     auto3 () {
       const centerHyoko = this.$store.state.base.hyokou
       let firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 5
-
       const aaa =
           [
               { id: 0, rgb: 'rgb(13,13,237)', m: firstM },
@@ -187,17 +146,6 @@ export default {
           ]
       this.s_divs[this.mapName] = aaa
       this.colorChange()
-
-
-      // [
-      //   { id: 0, rgb: 'rgb(13,13,237)', m: 5 },
-      //   { id: 1, rgb: 'rgb(75,153,238)', m: 10 },
-      //   { id: 2, rgb: 'rgb(116,235,244)', m: 50 },
-      //   { id: 3, rgb: 'rgb(176,252,79)', m: 100 },
-      //   { id: 4, rgb: 'rgb(254,254,84)', m: 500 },
-      //   { id: 5, rgb: 'rgb(241,152,55)', m: 1500 },
-      //   { id: 9999, rgb: 'rgb(234,92,50)', m: 9999},
-      // ]
     },
     autoCansel () {
       this.$modal.hide('modal-auto')
@@ -240,7 +188,6 @@ export default {
       })
       const hyokozuColor = d3.scaleLinear().domain(mArr).range(rgbArr)
       this.$store.state.info.hyokozuColors[this.mapName] = []
-
       for (let i = 0; i < maxM; i++) {
         this.$store.state.info.hyokozuColors[this.mapName][i] = d3.rgb(hyokozuColor(i))
       }
@@ -276,7 +223,7 @@ export default {
     reply () {
       const result = window.confirm('初期値に戻しますか。')
       if (!result) return
-      this.$store.state.info.divs[this.mapName] = JSON.parse(JSON.stringify(this.divsDefault[this.mapName]))
+      this.$store.state.info.divs[this.mapName] = JSON.parse(JSON.stringify(this.$store.state.info.divsDefault[this.mapName]))
       this.colorChange()
     },
     inputM () {
@@ -358,7 +305,10 @@ export default {
       // console.log(newValue)
     },
   },
-  mounted ()  {
+  created () {
+    // this.divsDefault = JSON.parse(JSON.stringify(this.$store.state.info.divs))
+  },
+  mounted () {
     this.colorChange()
   }
 }
