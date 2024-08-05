@@ -274,7 +274,7 @@ function hyokozu(pixels, data) {
       height = (height < 8323072) ? height : height - 16777216
       height /= 100 //他のDEMを使う時はこれ
     }
-    height = height * 10
+    height = height * 100
     height = Math.floor(height)
     let rgb
     if (data.gradationCheck) {

@@ -50,9 +50,10 @@ export default {
           const rgb = 'rgb(' + value.rgba.r + ',' + value.rgba.g + ',' + value.rgba.b + ')'
           result.rgb = rgb
           // ---------------------------------------------------------------
+          const bai = 100
           let divs2 = JSON.parse(JSON.stringify(this.s_divs[this.mapName]))
           divs2.forEach((div) => {
-            div.m = div.m * 10
+            div.m = div.m * 100
             div.rgb = d3.rgb(div.rgb)
           })
           divs2 = divs2.filter((div) => {
@@ -75,11 +76,11 @@ export default {
           divs = divs.filter((div) => {
             return div.id !== 9999
           })
-          const maxM = d3.max(divs, function(d){ return d.m; }) * 10
+          const maxM = d3.max(divs, function(d){ return d.m; }) * bai
           this.$store.state.info.maxM[this.mapName] = maxM
           const minM = d3.min(divs, function(d){ return d.m; })
           const mArr = divs.map((v) => {
-            return v.m * 10
+            return v.m * bai
           })
           const rgbArr = divs.map((v) => {
             return v.rgb
