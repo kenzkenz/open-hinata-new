@@ -20,7 +20,7 @@ import  * as MaskDep from './mask-dep'
 import  * as LayersMvt from './layers-mvt'
 // import BingMaps from 'ol/source/BingMaps'
 import * as d3 from "d3"
-import {gifuDetailObj, hokkaidoTsunamiMvtObj, tottorimusenLanSumm} from "./layers-mvt";
+import {gifuDetailObj, hokkaidoTsunamiMvtObj, tokyoTochiriyoObj, tottorimusenLanSumm} from "./layers-mvt";
 const mapsStr = ['map01','map02']
 const transformE = extent => {
   function compareFunc(a, b) {
@@ -12829,7 +12829,7 @@ const noto20240405Obj = {};
 for (let i of mapsStr) {
   noto20240405Obj[i] = new TileLayer(new Noto20240405())
 }
-const noto20240405Summ = '<a href="https://maps.gsi.go.jp/development/ichiran.html#t20240102noto_0405_0426do" target="_blank">地理院タイル</a>';
+const noto20240405Summ = '<a href="https://maps.gsi.go.jp/development/ichiran.html#t20240102noto_0405_0426do" target="_blank">地理院タイル</a>'
 
 // 令和6年能登半島地震輪島西地区 正射画像（2024年1月17日撮影）---------------------------------------------------------------
 function Wajimanishi20240117() {
@@ -13151,9 +13151,37 @@ for (let i of mapsStr) {
 }
 const nagaokaKeisyaSumm = '<a href="https://www.geospatial.jp/ckan/dataset/2024nagaoka_rinya" target="_blank">G空間情報センター</a>';
 
+// 京都府オルソ---------------------------------------------------------------
+function KyotoOrtho() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://tiles.osmf.jp/kyoto-fu/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 19
+  })
+}
+const kyotoOrthoObj = {};
+for (let i of mapsStr) {
+  kyotoOrthoObj[i] = new TileLayer(new KyotoOrtho())
+}
+const kyotoOrthoSumm = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho-tiles" target="_blank">OSMFJ/ortho-tiles</a>'
 
-
-
+// 大阪市オルソ---------------------------------------------------------------
+function Osaka20230rtho() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://tiles.osmf.jp/osaka-shi/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 19
+  })
+}
+const Osaka2023Obj = {};
+for (let i of mapsStr) {
+  Osaka2023Obj[i] = new TileLayer(new Osaka20230rtho())
+}
+const Osaka2023Summ = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho-tiles" target="_blank">OSMFJ/ortho-tiles</a>'
 
 
 // ここにレイヤーを全部書く。クリックするとストアのlayerListに追加されていく-------------------------
@@ -13295,9 +13323,12 @@ export const Layers =
         { text: '富田林市航空写真', data: { id: 'tondaOrt', layer: tondaOrtObj, opacity: 1, zoom:13,center:[135.60006642031433, 34.50010582072453], summary: tondaOrtSumm } },
         { text: '鹿児島市航空写真', data: { id: 'kagosimasiort', layer: kagosimasiOrtObj, opacity: 1, zoom:12,center:[130.51208842259823, 31.58146097086727], summary: kagosimasiOrtSumm } },
         { text: 'PLATEAUオルソ', data: { id: 'plateauOrt', layer: plateauOrtObj, opacity: 1, summary: plateauOrtObjSumm } },
+        { text: '京都府航空写真', data: { id: 'kyotohuOrt', layer: kyotoOrthoObj, opacity: 1, summary: kyotoOrthoSumm } },
+        { text: '大阪市航空写真2023', data: { id: 'osaka2023Ort', layer: Osaka2023Obj, opacity: 1, summary: Osaka2023Summ } },
+
         { text: '令和6年能登半島地震',
           children: [
-              { text: '能登地区（2024年4月5日～26日撮影）', data: { id: 'noto20240405Ort', layer: noto20240405Obj, opacity: 1, summary: noto20240405Summ } },
+            { text: '能登地区（2024年4月5日～26日撮影）', data: { id: 'noto20240405Ort', layer: noto20240405Obj, opacity: 1, summary: noto20240405Summ } },
             { text: '輪島西地区（2024年1月17日撮影）', data: { id: 'wajimanishi20240117Ort', layer: wajimanishi20240117Obj, opacity: 1, summary: wajimanishi20240117Summ } },
             { text: '穴水地区（2024年1月17日撮影）', data: { id: 'anami20240117Ort', layer: anami20240117Obj, opacity: 1, summary: anami20240117Summ } },
             { text: '七尾地区（2024年1月17日撮影）', data: { id: 'nanao20240117Ort', layer: nanao20240117Obj, opacity: 1, summary: nanao20240117Summ } },
@@ -14218,6 +14249,8 @@ export const Layers =
         { text: 'R05土地区画整理事業', data: { id: "kukakuseirir05", layer: LayersMvt.kukakuseiriR05Obj, opacity: 1, summary: LayersMvt.kukakuseiriR05Summ } },
         { text: 'R05特別用途地区', data: { id: "tokubetsuyoto05", layer: LayersMvt.tokubetsuyotoR05Obj, opacity: 1, summary: LayersMvt.tokubetsuyotoR05Summ } },
         { text: 'R05公園', data: { id: "koenr05", layer: LayersMvt.koenR05Obj, opacity: 1, summary: LayersMvt.koenR05Summ } },
+        { text: 'R05東京都土地利用現況調査', data: { id: "tokyotochiriyo", layer: LayersMvt.tokyoTochiriyoObj, opacity: 1, summary: LayersMvt.tokyoTochiriyoSumm } },
+
 
 
         { text: '医療圏',

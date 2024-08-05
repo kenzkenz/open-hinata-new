@@ -20,12 +20,12 @@
       <div class="dialog-close-btn-div" @click="autoCansel"><i class="fa-solid fa-xmark hover close-btn"></i></div>
       <div class="modal-body">
         <ul>
-          <li>画面中心を基準に12段階の標高図を自動作成します。</li>
+          <li><input class= "input-m-start" type="number" step="0.1" v-model="s_hyokou"> mを基準に12段階の標高図を自動作成します。</li>
         </ul>
         <b-form-select v-model="kizami" :options="options" @change="auto2()"></b-form-select>
         <hr>
         <ul>
-          <li>画面中心を基準に7段階の標高図を自動作成します。</li>
+          <li><input class= "input-m-start" type="number" step="0.1" v-model="s_hyokou"> mを基準に7段階の標高図を自動作成します。</li>
         </ul>
         <b-button style="margin-top: 0px;" class='olbtn' v-on:click="auto3()">7段階標高図</b-button>
       </div>
@@ -76,6 +76,14 @@ export default {
         this.colorChange()
       }
     },
+    s_hyokou: {
+      get () {
+        return this.$store.state.base.hyokou
+      },
+      set (value) {
+        this.$store.state.base.hyokou = value
+      }
+    }
   },
   methods: {
     auto () {
@@ -123,39 +131,35 @@ export default {
           bai = 10
           break
       }
-      firstM = Math.round(firstM * 10) / 10
-      const aaa =
-          [
-            { id: 0, rgb: 'rgb(0,0,255)', m: firstM + 0 },
-            { id: 1, rgb: 'rgb(0,100,255)', m: firstM + (5 * bai) },
-            { id: 2, rgb: 'rgb(75,153,238)', m: firstM + (10 * bai) },
-            { id: 3, rgb: 'rgb(116,235,244)', m: firstM + (15 * bai) },
-            { id: 4, rgb: 'rgb(176,252,79)', m: firstM + (20 * bai) },
-            { id: 5, rgb: 'rgb(254,254,84)', m: firstM + (25 * bai) },
-            { id: 6, rgb: 'rgb(241,152,55)', m: firstM + (30 * bai) },
-            { id: 7, rgb: 'rgb(241,113,55)', m: firstM + (35 * bai) },
-            { id: 8, rgb: 'rgb(224,74,74)', m: firstM + (40 * bai) },
-            { id: 9, rgb: 'rgb(193,50,50)', m: firstM + (45 * bai) },
-            { id: 10, rgb: 'rgb(173,10,10)', m: firstM + (50 * bai) },
-            { id: 9999, rgb: 'rgb(144,7,17)', m: 9999},
-          ]
-      this.s_divs[this.mapName] = aaa
+      this.s_divs[this.mapName] = [
+        { id: 0, rgb: 'rgb(0,0,255)', m: firstM + 0 },
+        { id: 1, rgb: 'rgb(0,100,255)', m: Math.floor((firstM + (5 * bai))*10)/10 },
+        { id: 2, rgb: 'rgb(75,153,238)', m: Math.floor((firstM + (10 * bai))*10)/10 },
+        { id: 3, rgb: 'rgb(116,235,244)', m: Math.floor((firstM + (15 * bai))*10)/10 },
+        { id: 4, rgb: 'rgb(176,252,79)', m: Math.floor((firstM + (20 * bai))*10)/10 },
+        { id: 5, rgb: 'rgb(254,254,84)', m: Math.floor((firstM + (25 * bai))*10)/10 },
+        { id: 6, rgb: 'rgb(241,152,55)', m: Math.floor((firstM + (30 * bai))*10)/10 },
+        { id: 7, rgb: 'rgb(241,113,55)', m: Math.floor((firstM + (35 * bai))*10)/10 },
+        { id: 8, rgb: 'rgb(224,74,74)', m: Math.floor((firstM + (40 * bai))*10)/10 },
+        { id: 9, rgb: 'rgb(193,50,50)', m: Math.floor((firstM + (45 * bai))*10)/10 },
+        { id: 10, rgb: 'rgb(173,10,10)', m: Math.floor((firstM + (50 * bai))*10)/10 },
+        { id: 9999, rgb: 'rgb(144,7,17)', m: 9999},
+      ]
       this.colorChange()
     },
     auto3 () {
       const centerHyoko = this.$store.state.base.hyokou
       let firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 5
-      const aaa =
-          [
-              { id: 0, rgb: 'rgb(13,13,237)', m: firstM },
-              { id: 1, rgb: 'rgb(75,153,238)', m: firstM + 5 },
-              { id: 2, rgb: 'rgb(116,235,244)', m: firstM + 45 },
-              { id: 3, rgb: 'rgb(176,252,79)', m: firstM + 95 },
-              { id: 4, rgb: 'rgb(254,254,84)', m: firstM + 495 },
-              { id: 5, rgb: 'rgb(241,152,55)', m: firstM + 1495 },
-              { id: 9999, rgb: 'rgb(234,92,50)', m: 9999},
-          ]
-      this.s_divs[this.mapName] = aaa
+      firstM = Math.round(firstM * 100) / 100
+      this.s_divs[this.mapName] = [
+        { id: 0, rgb: 'rgb(13,13,237)', m: firstM },
+        { id: 1, rgb: 'rgb(75,153,238)', m: firstM + 5 },
+        { id: 2, rgb: 'rgb(116,235,244)', m: firstM + 45 },
+        { id: 3, rgb: 'rgb(176,252,79)', m: firstM + 95 },
+        { id: 4, rgb: 'rgb(254,254,84)', m: firstM + 495 },
+        { id: 5, rgb: 'rgb(241,152,55)', m: firstM + 1495 },
+        { id: 9999, rgb: 'rgb(234,92,50)', m: 9999},
+      ]
       this.colorChange()
     },
     autoCansel () {
@@ -287,14 +291,13 @@ export default {
         order = i
         return div.id === id
       })
-      if (order !== this.s_divs[this.mapName].length-2) {
+      const cyukannRgb = d3.scaleLinear().domain([0,2]).range([this.s_divs[this.mapName][order].rgb, this.s_divs[this.mapName][order + 1].rgb])(1)
+      if (order !== this.s_divs[this.mapName].length - 2) {
         const tyukan = this.s_divs[this.mapName][order].m + (this.s_divs[this.mapName][order + 1].m - this.s_divs[this.mapName][order].m) / 2
-        this.s_divs[this.mapName].splice(order + 1, 0, { id: maxId + 1, rgb: this.s_divs[this.mapName][order].rgb, m: tyukan })
+        this.s_divs[this.mapName].splice(order + 1, 0, { id: maxId + 1, rgb: cyukannRgb, m: tyukan })
       } else {
-        console.log(this.s_divs)
         const saigo = this.s_divs[this.mapName][order].m + this.s_divs[this.mapName][order].m - this.s_divs[this.mapName][order-1].m
-        console.log(saigo)
-        this.s_divs[this.mapName].push({id: maxId + 1, rgb: this.s_divs[this.mapName][order].rgb, m: saigo})
+        this.s_divs[this.mapName].push({id: maxId + 1, rgb: cyukannRgb, m: saigo})
         this.s_divs[this.mapName].sort(function(a, b) {
           if (a.m > b.m) {
             return 1;
@@ -385,6 +388,10 @@ export default {
   cursor: pointer;
   z-index: 2;
   font-size:1.5em;
+}
+.input-m-start {
+  width: 80px;
+  text-align: right;
 }
 ul {
   margin-left: -30px

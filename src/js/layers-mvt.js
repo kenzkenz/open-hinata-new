@@ -23,10 +23,6 @@ import  * as Tilegrid from 'ol/tilegrid'
 import * as Loadingstrategy from 'ol/loadingstrategy'
 import src from "@/assets/icon/blackpin.png";
 // import image from "ol-ext/legend/Image";
-
-// const transformE = extent => {
-//   return transformExtent(extent,'EPSG:4326','EPSG:3857')
-// }
 const transformE = extent => {
   function compareFunc(a, b) {
     return a - b;
@@ -107,6 +103,42 @@ for (let i of mapsStr) {
     sourceg
   })
 }
+
+//東京都土地利用現況調査------------------------------------------------------------------------------------------------
+function TokyoTochiriyo(){
+  this.name = 'tokyotochiriyo'
+  this.source = new VectorTileSource({
+    format: new MVT(),
+    maxZoom:14,
+    url: 'https://kenzkenz3.xsrv.jp/mvt/tokyotochiriyo/{z}/{x}/{y}.mvt'
+  });
+  // this.maxResolution = '152.874057' //zoom10
+  this.style = tokyoTochiriyoStyleFunction()
+}
+export  const tokyoTochiriyoObj = {};
+for (let i of mapsStr) {
+  tokyoTochiriyoObj[i] = new VectorTileLayer(new TokyoTochiriyo())
+}
+export const tokyoTochiriyoSumm = "<a href='' target='_blank'>東京都土地利用現況調査</a>"
+function tokyoTochiriyoStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: 'rgba(0,128,0,0.7)'
+      }),
+      stroke: new Stroke({
+        color: "black",
+        width: 1
+      }),
+    })
+    styles.push(polygonStyle)
+    return styles
+  }
+}
+
 // 能登港---------------------------------------------------------------
 function NotoMinato() {
   this.useInterimTilesOnError = false
@@ -196,7 +228,6 @@ function notosyamenhokaiFunction() {
     return styles
   }
 }
-
 
 // 鳥取県無線LAN---------------------------------------------------------------
 function TottorimusenLan() {

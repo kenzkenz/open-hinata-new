@@ -1261,8 +1261,6 @@
                 return {year:value.year,rate:value.seisanRate,sousu:value.value,seisan:value.seisan}
               })
               vm.$store.state.base.jinkosuiiDatasetEstat['datasetSeisan'] = seisan
-              console.log(seisan)
-
               vm.$store.commit('base/incrDialog2Id');
               vm.$store.commit('base/incrDialogMaxZindex');
               let width
