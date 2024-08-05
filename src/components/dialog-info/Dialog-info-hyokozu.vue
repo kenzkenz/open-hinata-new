@@ -23,9 +23,7 @@
           <li>画面中心を基準に12段階の標高図を自動作成します。</li>
         </ul>
         <b-form-select v-model="kizami" :options="options" @change="auto2()"></b-form-select>
-        <br><br>
         <hr>
-        <br>
         <ul>
           <li>画面中心を基準に7段階の標高図を自動作成します。</li>
         </ul>
@@ -125,6 +123,7 @@ export default {
           bai = 10
           break
       }
+      firstM = Math.round(firstM * 10) / 10
       const aaa =
           [
             { id: 0, rgb: 'rgb(0,0,255)', m: firstM + 0 },
