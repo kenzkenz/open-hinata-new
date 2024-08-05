@@ -55,6 +55,7 @@ export default {
       kizami : '',
       options: [
         { value: '', text: '選択してください。' },
+        { value: '0.1m', text: '0.1m刻み' },
         { value: '0.5m', text: '0.5m刻み' },
         { value: '1m', text: '1m刻み' },
         { value: '5m', text: '5m刻み' },
@@ -93,12 +94,18 @@ export default {
       let firstM
       let bai
       switch (this.kizami) {
+        case '0.1m':
+          firstM = Math.floor((centerHyoko * 10)) / 10 + 0.1
+          bai = 0.02
+          break
         case '0.5m':
-          firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 0.5
+          // firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 0.5
+          firstM = Math.floor((centerHyoko * 10)) / 10 + 0.5
           bai = 0.1
           break
         case '1m':
-          firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 1
+          // firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 1
+          firstM = Math.floor((centerHyoko * 10)) / 10 + 1
           bai = 0.2
           break
         case '5m':
