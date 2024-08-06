@@ -13216,6 +13216,8 @@ for (let i of mapsStr) {
 const kochiOrthoSumm = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho-tiles" target="_blank">OSMFJ/ortho-tiles</a>'
 
 
+
+
 // ここにレイヤーを全部書く。クリックするとストアのlayerListに追加されていく-------------------------
 export const Layers =
   [
@@ -13226,7 +13228,6 @@ export const Layers =
 
         { text: '新潟県長岡CS立体図（発災後:林野庁）', data: { id: 'nagaokacsrinya', layer: nagaokaCsObj, opacity: 1, summary: nagaokaCsSumm } },
         { text: '新潟県長岡傾斜区分図（発災後:林野庁）', data: { id: 'nagaokakaieys', layer: nagaokaKeisyaObj, opacity: 1, summary: nagaokaKeisyaSumm } },
-
 
         { text: '能登傾斜区分図（発災後:林野庁）', data: { id: 'notokeisyarinya', layer: notokeisyarinyaObj, opacity: 1, summary: notokeisyarinyaSumm } },
         { text: '能登斜面崩壊', data: { id: 'notosyamenhokai', layer: LayersMvt.notosyamenhokaiObj, opacity: 1, summary: LayersMvt.notosyamenhokaiSumm } },
