@@ -88,10 +88,11 @@ export default {
   methods: {
     auto () {
       const centerHyoko = this.$store.state.base.hyokou
-      if (centerHyoko < 0) {
-        alert('中心の標高が0m以下です。標高図を作れません。')
-        return
-      }
+      if (centerHyoko <= 0) this.$store.state.base.hyokou = 0
+      // if (centerHyoko < 0) {
+      //   alert('中心の標高が0m以下です。標高図を作れません。')
+      //   return
+      // }
       this.$modal.show('modal-auto')
     },
     auto2 () {
@@ -131,6 +132,7 @@ export default {
           bai = 10
           break
       }
+      firstM = Math.round(firstM * 10) / 10
       this.s_divs[this.mapName] = [
         { id: 0, rgb: 'rgb(0,0,255)', m: firstM + 0 },
         { id: 1, rgb: 'rgb(0,100,255)', m: Math.floor((firstM + (5 * bai))*10)/10 },

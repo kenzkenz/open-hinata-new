@@ -13183,6 +13183,38 @@ for (let i of mapsStr) {
 }
 const Osaka2023Summ = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho-tiles" target="_blank">OSMFJ/ortho-tiles</a>'
 
+// 姫路市オルソ---------------------------------------------------------------
+function Himeji0rtho() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://tiles.osmf.jp/himeji-shi/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 19
+  })
+}
+const himejiOrthoObj = {};
+for (let i of mapsStr) {
+  himejiOrthoObj[i] = new TileLayer(new Himeji0rtho())
+}
+const himejiOrthoSumm = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho-tiles" target="_blank">OSMFJ/ortho-tiles</a>'
+
+// 高知市オルソ---------------------------------------------------------------
+// function Kochi0rtho() {
+//   // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+//   this.preload = Infinity
+//   this.source = new XYZ({
+//     url: 'https://tiles.osmf.jp/kouchi-shi/{z}/{x}/{y}.png',
+//     crossOrigin: 'Anonymous',
+//     maxZoom: 19
+//   })
+// }
+// const kochiOrthoObj = {};
+// for (let i of mapsStr) {
+//   [i] = new TileLayer(new Kochi0rtho())
+// }
+// const kochiOrthoSumm = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho-tiles" target="_blank">OSMFJ/ortho-tiles</a>'
+
 
 // ここにレイヤーを全部書く。クリックするとストアのlayerListに追加されていく-------------------------
 export const Layers =
@@ -13199,7 +13231,7 @@ export const Layers =
         { text: '能登傾斜区分図（発災後:林野庁）', data: { id: 'notokeisyarinya', layer: notokeisyarinyaObj, opacity: 1, summary: notokeisyarinyaSumm } },
         { text: '能登斜面崩壊', data: { id: 'notosyamenhokai', layer: LayersMvt.notosyamenhokaiObj, opacity: 1, summary: LayersMvt.notosyamenhokaiSumm } },
         { text: '陸化したと思われる港', data: { id: 'notominato', layer: LayersMvt.notominatoObj, opacity: 1, summary: LayersMvt.notominatoSumm } },
-        { text: '能登西部赤色立体地図', data: { id: 'notoseibu', layer: notoSeibuObj, opacity: 1, summary: notoSeubuSumm } },
+        { text: '能登西部赤色立kochiOrthoObj体地図', data: { id: 'notoseibu', layer: notoSeibuObj, opacity: 1, summary: notoSeubuSumm } },
         { text: '液状化危険度分布図（石川県）', data: { id: 'ekizyouka17', layer: ekizyouka17Obj, opacity: 1, summary: ekizyoukaSumm } },
         { text: '17石川県農地', data: { id: 'hude17', layer: LayersMvt.hude17Obj, opacity: 1, summary: LayersMvt.hude17Summ } },
         { text: '戦前地形図5万分の１', data: { id: 'mw5', layer: mw5Obj, opacity: 1, summary: mw5Summ } },
@@ -13325,6 +13357,9 @@ export const Layers =
         { text: 'PLATEAUオルソ', data: { id: 'plateauOrt', layer: plateauOrtObj, opacity: 1, summary: plateauOrtObjSumm } },
         { text: '京都府航空写真', data: { id: 'kyotohuOrt', layer: kyotoOrthoObj, opacity: 1, summary: kyotoOrthoSumm } },
         { text: '大阪市航空写真2023', data: { id: 'osaka2023Ort', layer: Osaka2023Obj, opacity: 1, summary: Osaka2023Summ } },
+        { text: '姫路市航空写真', data: { id: 'himejiOrt', layer: himejiOrthoObj, opacity: 1, summary: himejiOrthoSumm } },
+        // { text: '高知市航空写真', data: { id: 'kochiOrt', layer: kochiOrthoObj, opacity: 1, summary: kochiOrthoSumm } },
+
 
         { text: '令和6年能登半島地震',
           children: [

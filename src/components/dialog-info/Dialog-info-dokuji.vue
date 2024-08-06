@@ -2,6 +2,7 @@
   <div style="padding: 10px;">
     名称変更<br>
     <input type='text' @input="henko" v-model="s_name" style="width: 300px;"><br>
+    <span v-html="s_url">あ</span>
 <!--    タイルURL<br>-->
 <!--    <input type='text' @input="onInput" v-model="s_url" style="width: 300px;"><br>-->
 <!--    <b-button style="margin-top: 5px;" class="olbtn" size="sm" @click="henko">変更</b-button>-->
@@ -9,7 +10,7 @@
  </div>
 </template>
 <script>
-import * as permalink from '../../js/permalink'
+import * as permalink from '@/js/permalink'
 import store from "@/js/store";
 export default {
   name: "Dialog-info-dokuji",
