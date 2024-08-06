@@ -13215,7 +13215,37 @@ for (let i of mapsStr) {
 }
 const kochiOrthoSumm = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho-tiles" target="_blank">OSMFJ/ortho-tiles</a>'
 
+// 滋賀県長浜市オルソ---------------------------------------------------------------
+function Nagahama0rtho() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://tiles.osmf.jp/nagahama-shi/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 19
+  })
+}
+const nagahamaOrthoObj = {};
+for (let i of mapsStr) {
+  nagahamaOrthoObj[i] = new TileLayer(new Nagahama0rtho())
+}
+const nagahamaOrthoSumm = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho-tiles" target="_blank">OSMFJ/ortho-tiles</a>'
 
+// 新潟県長岡市オルソ---------------------------------------------------------------
+function Nagaoka0rtho() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://tiles.osmf.jp/nagaoka-shi/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 19
+  })
+}
+const nagaokaOrthoObj = {};
+for (let i of mapsStr) {
+  nagaokaOrthoObj[i] = new TileLayer(new Nagaoka0rtho())
+}
+const nagaokaOrthoSumm = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho-tiles" target="_blank">OSMFJ/ortho-tiles</a>'
 
 
 // ここにレイヤーを全部書く。クリックするとストアのlayerListに追加されていく-------------------------
@@ -13360,6 +13390,8 @@ export const Layers =
         { text: '大阪市航空写真2023', data: { id: 'osaka2023Ort', layer: Osaka2023Obj, opacity: 1, summary: Osaka2023Summ } },
         { text: '姫路市航空写真', data: { id: 'himejiOrt', layer: himejiOrthoObj, opacity: 1, summary: himejiOrthoSumm } },
         { text: '高知市航空写真', data: { id: 'kochiOrt', layer: kochiOrthoObj, opacity: 1, summary: kochiOrthoSumm } },
+        { text: '長浜市航空写真', data: { id: 'nagahamaOrt', layer: nagahamaOrthoObj, opacity: 1, summary: nagahamaOrthoSumm } },
+        { text: '長岡市航空写真', data: { id: 'nagaokaOrt', layer: nagaokaOrthoObj, opacity: 1, summary: nagaokaOrthoSumm } },
 
 
         { text: '令和6年能登半島地震',
