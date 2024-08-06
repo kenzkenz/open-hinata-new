@@ -13200,20 +13200,20 @@ for (let i of mapsStr) {
 const himejiOrthoSumm = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho-tiles" target="_blank">OSMFJ/ortho-tiles</a>'
 
 // 高知市オルソ---------------------------------------------------------------
-// function Kochi0rtho() {
-//   // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
-//   this.preload = Infinity
-//   this.source = new XYZ({
-//     url: 'https://tiles.osmf.jp/kouchi-shi/{z}/{x}/{y}.png',
-//     crossOrigin: 'Anonymous',
-//     maxZoom: 19
-//   })
-// }
-// const kochiOrthoObj = {};
-// for (let i of mapsStr) {
-//   [i] = new TileLayer(new Kochi0rtho())
-// }
-// const kochiOrthoSumm = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho-tiles" target="_blank">OSMFJ/ortho-tiles</a>'
+function Kochi0rtho() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://tiles.osmf.jp/kouchi-shi/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 19
+  })
+}
+const kochiOrthoObj = {};
+for (let i of mapsStr) {
+  kochiOrthoObj[i] = new TileLayer(new Kochi0rtho())
+}
+const kochiOrthoSumm = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho-tiles" target="_blank">OSMFJ/ortho-tiles</a>'
 
 
 // ここにレイヤーを全部書く。クリックするとストアのlayerListに追加されていく-------------------------
@@ -13358,7 +13358,7 @@ export const Layers =
         { text: '京都府航空写真', data: { id: 'kyotohuOrt', layer: kyotoOrthoObj, opacity: 1, summary: kyotoOrthoSumm } },
         { text: '大阪市航空写真2023', data: { id: 'osaka2023Ort', layer: Osaka2023Obj, opacity: 1, summary: Osaka2023Summ } },
         { text: '姫路市航空写真', data: { id: 'himejiOrt', layer: himejiOrthoObj, opacity: 1, summary: himejiOrthoSumm } },
-        // { text: '高知市航空写真', data: { id: 'kochiOrt', layer: kochiOrthoObj, opacity: 1, summary: kochiOrthoSumm } },
+        { text: '高知市航空写真', data: { id: 'kochiOrt', layer: kochiOrthoObj, opacity: 1, summary: kochiOrthoSumm } },
 
 
         { text: '令和6年能登半島地震',
