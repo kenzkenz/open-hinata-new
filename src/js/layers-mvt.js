@@ -110,7 +110,7 @@ function TokyoTochiriyo(){
   this.source = new VectorTileSource({
     format: new MVT(),
     maxZoom:14,
-    url: 'https://kenzkenz3.xsrv.jp/mvt/tokyotochiriyo2/{z}/{x}/{y}.mvt'
+    url: 'https://kenzkenz3.xsrv.jp/mvt/tokyotochiriyo/{z}/{x}/{y}.mvt'
   });
   // this.maxResolution = '152.874057' //zoom10
   this.style = tokyoTochiriyoStyleFunction()
