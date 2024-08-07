@@ -36,6 +36,7 @@ export default {
     s_divs () {
       return this.$store.state.info.divs
     },
+    // 重要
     s_featureColor: {
       get () {
         console.log(this.$store.state.base.editFeatureColor)
