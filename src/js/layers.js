@@ -13247,6 +13247,38 @@ for (let i of mapsStr) {
 }
 const nagaokaOrthoSumm = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho-tiles" target="_blank">OSMFJ/ortho-tiles</a>'
 
+// 兵庫県朝来市オルソ---------------------------------------------------------------
+function Asago0rtho() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://tiles.osmf.jp/asago-shi/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 19
+  })
+}
+const asagoOrthoObj = {};
+for (let i of mapsStr) {
+  asagoOrthoObj[i] = new TileLayer(new Asago0rtho())
+}
+const asagoOrthoSumm = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho-tiles" target="_blank">OSMFJ/ortho-tiles</a>'
+
+// 愛知県半田市オルソ---------------------------------------------------------------
+function Handa0rtho() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://tiles.osmf.jp/handa-shi/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 19
+  })
+}
+const handaOrthoObj = {};
+for (let i of mapsStr) {
+  handaOrthoObj[i] = new TileLayer(new Handa0rtho())
+}
+const handaOrthoSumm = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho-tiles" target="_blank">OSMFJ/ortho-tiles</a>'
+
 
 // ここにレイヤーを全部書く。クリックするとストアのlayerListに追加されていく-------------------------
 export const Layers =
@@ -13392,6 +13424,8 @@ export const Layers =
         { text: '高知市航空写真', data: { id: 'kochiOrt', layer: kochiOrthoObj, opacity: 1, summary: kochiOrthoSumm } },
         { text: '長浜市航空写真', data: { id: 'nagahamaOrt', layer: nagahamaOrthoObj, opacity: 1, summary: nagahamaOrthoSumm } },
         { text: '長岡市航空写真', data: { id: 'nagaokaOrt', layer: nagaokaOrthoObj, opacity: 1, summary: nagaokaOrthoSumm } },
+        { text: '朝来市航空写真', data: { id: 'asagoOrt', layer: asagoOrthoObj, opacity: 1, summary: asagoOrthoSumm } },
+        { text: '半田市航空写真', data: { id: 'handaOrt', layer: handaOrthoObj, opacity: 1, summary: handaOrthoSumm } },
 
 
         { text: '令和6年能登半島地震',
