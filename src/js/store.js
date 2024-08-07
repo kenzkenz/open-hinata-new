@@ -109,6 +109,7 @@ const moduleBase = {
     //   map03: {},
     //   map04: {}
     // },
+    editGColorElm: '',
     editDiv: '',
     editMap: '',
     editFeature:'',

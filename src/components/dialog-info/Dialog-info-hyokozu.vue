@@ -345,7 +345,7 @@ export default {
       this.$store.commit('base/incrDialogMaxZindex')
       dialog.style["z-index"] = this.s_dialogMaxZindex
       dialog.style.display = 'block'
-      // this.$store.state.base.editDiv = div
+      this.$store.state.base.editGColorElm = element
       this.$store.state.base.editMap = this.mapName
       let color
 
