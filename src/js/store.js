@@ -556,9 +556,13 @@ const moduleInfo = {
       map03: 100000,
       map04: 100000
     },
-    gColor: {
-      map01: ['white','red'],
-      map02: ['white','red']
+    gColor0: {
+      map01: 'white',
+      map02: 'white'
+    },
+    gColor1: {
+      map01: 'red',
+      map02: 'red'
     },
     divs:{
       map01:

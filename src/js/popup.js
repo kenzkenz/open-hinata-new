@@ -2978,12 +2978,13 @@ export function popUpTisitu(rgba) {
 }
 //----------------------------------------------------------------------------------------
 export function popUpNantora(rgba) {
+  console.log(rgba)
   let r = rgba[0]
   let g = rgba[1]
   let b = rgba[2]
   let a = rgba[3]
   if (a === 0) return
-
+  if (rgba === 'err') return
  console.log(rgba)
 
 
@@ -3050,6 +3051,7 @@ export function popUpNantoraShindo(rgba) {
   let b = rgba[2]
   let a = rgba[3]
   if (a === 0) return
+  if (rgba === 'err') return
   const palette = [
     {r: 211, g: 235, b: 249},
     {r: 117, g: 251, b: 253},
@@ -3090,6 +3092,7 @@ export function popUpNantoraEkijyoka(rgba) {
   let b = rgba[2]
   let a = rgba[3]
   if (a === 0) return
+  if (rgba === 'err') return
   const palette = [
     {r: 0, g: 0, b: 0},
     {r: 192, g: 192, b: 192},
@@ -3122,6 +3125,7 @@ export function popUpHyugaTsunami(rgba) {
   let b = rgba[2]
   let a = rgba[3]
   if (a === 0) return
+  if (rgba === 'err') return
   const palette = [
     {r: 255, g: 255, b: 179},
     {r: 247, g: 245, b: 169},
@@ -3166,6 +3170,7 @@ export function popUpHyugaShindo(rgba) {
   let b = rgba[2]
   let a = rgba[3]
   if (a === 0) return
+  if (rgba === 'err') return
   const palette = [
     {r: 211, g: 235, b: 249},
     {r: 117, g: 251, b: 253},
@@ -3206,6 +3211,7 @@ export function popUpHyuganadaToutatsu(rgba) {
   let b = rgba[2]
   let a = rgba[3]
   if (a === 0) return
+  if (rgba === 'err') return
   const palette = [
     {r: 192, g: 21, b: 27},
     {r: 241, g: 74, b: 55},
@@ -3240,6 +3246,7 @@ export function popUpHcokkaidoTsunami(rgba) {
   let b = rgba[2]
   let a = rgba[3]
   if (a === 0) return
+  if (rgba === 'err') return
   const palette = [
     {r: 255, g: 255, b: 179},
     {r: 247, g: 245, b: 169},

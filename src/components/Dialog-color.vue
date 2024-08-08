@@ -47,15 +47,11 @@ export default {
           const targetElm = this.$store.state.base.editGColorElm
           const rgb = 'rgb(' + value.rgba.r + ',' + value.rgba.g + ',' + value.rgba.b + ')'
           targetElm.style.backgroundColor = rgb
-
-          console.log(this.$store.state.base.editGColoraaa)
-          this.$store.state.info.gColor[this.mapName][1] = rgb
-
-          console.log(this.$store.state.info.gColor[this.mapName])
-
-          // this.$store.state.info.gColor[this.mapName][this.$store.state.base.editGColoraaa] = rgb
-
-          // this.$store.state.base.editGColorElm = ''
+          if (this.$store.state.base.editGColoraaa === 0) {
+            this.$store.state.info.gColor0[this.mapName]  = rgb
+          } else {
+            this.$store.state.info.gColor1[this.mapName]  = rgb
+          }
         } else if (this.$store.state.base.editDiv) {
           const id = this.$store.state.base.editDiv.id
           const result = this.$store.state.info.divs[this.mapName].find((div) => {

@@ -30,12 +30,12 @@
         <b-button style="margin-top: 0px;" class='olbtn' v-on:click="auto3()">7段階標高図</b-button>
         <hr>
 
-        <div style="position: relative">
-          <div :id="mapName + '-div-color-g0'" class="div-color-g0" :style="{ 'background-color': s_gColor0 }" @click="openDialog2(0)"></div>
-          <div :id="mapName + '-div-color-g1'" class="div-color-g1" :style="{ 'background-color': s_gColor1 }" @click="openDialog2(1)"></div>
-        </div>
+<!--        <div style="position: relative">-->
+<!--          <div :id="mapName + '-div-color-g0'" class="div-color-g0" :style="{ 'background-color': s_gColor0 }" @click="openDialog2(0)"></div>-->
+<!--          <div :id="mapName + '-div-color-g1'" class="div-color-g1" :style="{ 'background-color': s_gColor1 }" @click="openDialog2(1)"></div>-->
+<!--        </div>-->
 
-        <b-form-select v-model="kizami" :options="options" @change="auto4(mapName)"></b-form-select>
+<!--        <b-form-select v-model="kizami" :options="options" @change="auto4(mapName)"></b-form-select>-->
 
 
       </div>
@@ -81,23 +81,11 @@ export default {
     s_dialogMaxZindex () { return this.$store.state.base.dialogMaxZindex},
     s_dialogs () { return this.$store.state.base.dialogs},
     s_divs () { return this.$store.state.info.divs},
-    s_gColor0: {
-      get() {
-        return this.$store.state.info.gColor[this.mapName][0]
-      },
-      set(value) {
-        this.$store.state.info.gColor[this.mapName][0] = value
-      }
+    s_gColor0 () {
+      return this.$store.state.info.gColor0[this.mapName]
     },
-    s_gColor1: {
-      get() {
-        alert(999)
-        console.log(this.$store.state.info.gColor[this.mapName][1])
-        return this.$store.state.info.gColor[this.mapName][1]
-      },
-      set(value) {
-        this.$store.state.info.gColor[this.mapName][1] = value
-      }
+    s_gColor1 () {
+      return this.$store.state.info.gColor1[this.mapName]
     },
     s_gradationCheck: {
       get() {
@@ -121,12 +109,6 @@ export default {
     auto () {
       const centerHyoko = this.$store.state.base.hyokou
       if (centerHyoko <= 0) this.$store.state.base.hyokou = 0
-      // if (centerHyoko < 0) {
-      //   alert('中心の標高が0m以下です。標高図を作れません。')
-      //   return
-      // }
-      alert()
-      console.log(this.$store.state.info.gColor[this.mapName][1])
       this.$modal.show('modal-auto')
     },
     auto2 () {
@@ -140,12 +122,10 @@ export default {
           bai = 0.02
           break
         case '0.5m':
-          // firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 0.5
           firstM = Math.floor((centerHyoko * 10)) / 10 + 0.5
           bai = 0.1
           break
         case '1m':
-          // firstM = Math.round(Math.floor(centerHyoko)/10) * 10 + 1
           firstM = Math.floor((centerHyoko * 10)) / 10 + 1
           bai = 0.2
           break
@@ -351,8 +331,6 @@ export default {
       dialog.style.display = 'block'
       this.$store.state.base.editGColorElm = element
       this.$store.state.base.editGColoraaa = aaa
-
-      console.log(this.$store.state.base.editGColorElm)
       this.$store.state.base.editMap = this.mapName
       let color
 
@@ -447,9 +425,6 @@ export default {
     },
   },
   watch: {
-    divs(newValue) {
-      // console.log(newValue)
-    },
   },
   created () {
     // this.divsDefault = JSON.parse(JSON.stringify(this.$store.state.info.divs))

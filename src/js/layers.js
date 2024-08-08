@@ -13283,7 +13283,19 @@ const handaOrthoSumm = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho
 // ここにレイヤーを全部書く。クリックするとストアのlayerListに追加されていく-------------------------
 export const Layers =
   [
-    { text: '<span style="color: red;">令和6年能登半島地震まとめ</span>',
+    { text: '<span style="color: red;">宮崎県ハザードマップ</span>',
+      children: [
+        { text: '宮崎県南海トラフ地震津波浸水想定', data: { id: 'miyazakinantora', layer: LayersMvt.nantoraObj, opacity: 1, summary: LayersMvt.nantoraSumm } },
+        { text: '宮崎県南海トラフ地震震度分布', data: { id: 'miyazakinantorashindo', layer: LayersMvt.nantoraShindoObj, opacity: 1, summary: LayersMvt.nantoraShindoSumm } },
+        { text: '宮崎県南海トラフ地震液状化可能性', data: { id: 'miyazakinantoraekijyoka', layer: LayersMvt.nantoraEkijyokaObj, opacity: 1, summary: LayersMvt.nantoraShindoSumm } },
+        { text: '宮崎県日向灘地震津波浸水想定', data: { id: 'hyugatsunami', layer: LayersMvt.hyugaTsunamiObj, opacity: 1, summary: LayersMvt.hyugaTsunamiSumm } },
+        { text: '宮崎県日向灘地震震度分布', data: { id: 'hyugashindo', layer: LayersMvt.hyuganadaShindoObj, opacity: 1, summary: LayersMvt.hyuganadaShindoSumm } },
+        { text: '宮崎県日向灘地震津波到達時間', data: { id: 'hyugatotatsu', layer: LayersMvt. hyuganadaTsunamiTotatsu, opacity: 1, summary: LayersMvt.hyuganadaTsunamiTotatsuSumm } },
+        { text: '宮崎市洪水ハザードマップﾟ', data: { id: 'miyazakisiHm', layer: miyazakisiHmObj, opacity: 1, zoom: 13, center: [131.42054548436312, 31.907339493919977], summary: miyazakisiHmSumm } },
+        // { text: '都城市洪水ハザードマップﾟ', data: { id: 'miyakonozyousiHm', layer: miyakonozyousiHmObj, opacity: 1, zoom: 13, center: [131.07797970576192, 31.78882205640913], summary: miyakonozyousiHmSumm } },
+        // { text: '日向市防災ハザードマップﾟ', data: { id: 'hyuugasiHm', layer: hyuugasiHmObj, opacity: 1, zoom: 13, center: [131.6400086045909, 32.395198966795306], summary: hyuugasiHmSumm } },
+      ]},
+    { text: '令和6年能登半島地震まとめ',
       children: [
         { text: '能登CS立体図（発災前:森林総合研究所）', data: { id: 'notocs', layer: notoCsObj, opacity: 1, summary: notoCsSumm } },
         { text: '能登CS立体図（発災後:林野庁）', data: { id: 'notocsrinya', layer: notocsrinyaObj, opacity: 1, summary: notocsrinyaSumm } },
