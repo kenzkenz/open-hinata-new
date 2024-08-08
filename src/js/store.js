@@ -109,6 +109,7 @@ const moduleBase = {
     //   map03: {},
     //   map04: {}
     // },
+    editGColoraaa: '',
     editGColorElm: '',
     editDiv: '',
     editMap: '',
@@ -556,8 +557,8 @@ const moduleInfo = {
       map04: 100000
     },
     gColor: {
-      map01: ['white','black'],
-      map02: ['white','black']
+      map01: ['white','red'],
+      map02: ['white','red']
     },
     divs:{
       map01:

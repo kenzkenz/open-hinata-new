@@ -91,6 +91,7 @@ export default {
     },
     s_gColor1: {
       get() {
+        alert(999)
         console.log(this.$store.state.info.gColor[this.mapName][1])
         return this.$store.state.info.gColor[this.mapName][1]
       },
@@ -124,6 +125,8 @@ export default {
       //   alert('中心の標高が0m以下です。標高図を作れません。')
       //   return
       // }
+      alert()
+      console.log(this.$store.state.info.gColor[this.mapName][1])
       this.$modal.show('modal-auto')
     },
     auto2 () {
@@ -255,6 +258,7 @@ export default {
       this.colorChange()
     },
     autoCansel () {
+      this.$store.state.base.editGColorElm = ''
       this.$modal.hide('modal-auto')
     },
     colorChange () {
@@ -346,6 +350,9 @@ export default {
       dialog.style["z-index"] = this.s_dialogMaxZindex
       dialog.style.display = 'block'
       this.$store.state.base.editGColorElm = element
+      this.$store.state.base.editGColoraaa = aaa
+
+      console.log(this.$store.state.base.editGColorElm)
       this.$store.state.base.editMap = this.mapName
       let color
 
