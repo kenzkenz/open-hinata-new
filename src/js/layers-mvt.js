@@ -1956,7 +1956,7 @@ function nantoraRaster() {
   this.name = 'nantoraraster'
   this.preload = Infinity
   this.source = new XYZ({
-    url: 'https://kenzkenz3.xsrv.jp/mvt/miyazaki/nantoraraster/{z}/{x}/{y}.png',
+    url: 'https://kenzkenz3.xsrv.jp/mvt/miyazaki/nantoraraster2/{z}/{x}/{y}.png',
     crossOrigin: 'anonymous',
     minZoom: 0,
     maxZoom: 15
