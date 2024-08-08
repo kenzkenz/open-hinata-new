@@ -16,7 +16,7 @@
       <b-button v-if="index !== s_divs[mapName].length - 1" class='olbtn tsuika-btn' size="sm" @click="appendDiv(div.id)"><i class="fa-sharp fa-solid fa-plus hover"></i></b-button>
     </div>
 
-    <modal name="modal-auto" width="300" height="350" :clickToClose="false">
+    <modal name="modal-auto" width="300" height="500" :clickToClose="false">
       <div class="dialog-close-btn-div" @click="autoCansel"><i class="fa-solid fa-xmark hover close-btn"></i></div>
       <div class="modal-body">
         <ul>
@@ -29,15 +29,13 @@
         </ul>
         <b-button style="margin-top: 0px;" class='olbtn' v-on:click="auto3()">7段階標高図</b-button>
         <hr>
-
-<!--        <div style="position: relative">-->
-<!--          <div :id="mapName + '-div-color-g0'" class="div-color-g0" :style="{ 'background-color': s_gColor0 }" @click="openDialog2(0)"></div>-->
-<!--          <div :id="mapName + '-div-color-g1'" class="div-color-g1" :style="{ 'background-color': s_gColor1 }" @click="openDialog2(1)"></div>-->
-<!--        </div>-->
-
-<!--        <b-form-select v-model="kizami" :options="options" @change="auto4(mapName)"></b-form-select>-->
-
-
+        <ul>
+          <li><input class= "input-m-start" type="number" step="0.1" v-model="s_hyokou"> mを基準に下の色を使った12段階の標高図を自動作成します。</li>
+        </ul>        <div style="position: relative; height: 50px;">
+          <div :id="mapName + '-div-color-g0'" class="div-color-g0" :style="{ 'background-color': s_gColor0 }" @click="openDialog2(0)"></div>
+          <div :id="mapName + '-div-color-g1'" class="div-color-g1" :style="{ 'background-color': s_gColor1 }" @click="openDialog2(1)"></div>
+        </div>
+        <b-form-select v-model="kizami" :options="options" @change="auto4(mapName)"></b-form-select>
       </div>
     </modal>
 
@@ -509,6 +507,7 @@ ul {
   height: 28px;
   width:40px;
   cursor: pointer;
+  border: solid 1px gray;
 }
 .div-color-g1 {
   position: absolute;
@@ -517,5 +516,6 @@ ul {
   height: 28px;
   width:40px;
   cursor: pointer;
+  border: solid 1px gray;
 }
 </style>
