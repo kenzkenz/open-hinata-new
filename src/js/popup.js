@@ -1357,7 +1357,6 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                   '</div><hr>'
 
             }
-
           }
           break
         case 'hyugatsunamimvt':
@@ -1794,7 +1793,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
     // console.log(cont)
     // console.log(maxWidth)
     // console.log(cont.match(/width:(.*?)px/g))
-    cont = cont.replace(/width:(.*?)px/,'width:' + maxWidth + 'px')
+    cont = cont.replace(/width:(.*?)px/gi,'width:' + maxWidth + 'px')
     // console.log(cont)
     if (maxWidth) {
       document.querySelector('#' + map.values_.target + ' .ol-popup').style.left = -(maxWidth / 2) - 16 + 'px'

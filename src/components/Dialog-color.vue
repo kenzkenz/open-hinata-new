@@ -39,7 +39,6 @@ export default {
     // 重要
     s_featureColor: {
       get () {
-        console.log(this.$store.state.base.editFeatureColor)
         return this.$store.state.base.editFeatureColor[this.mapName]
       },
       set (value) {
@@ -106,12 +105,10 @@ export default {
 
         } else {
           this.$store.state.base.editFeatureColor[this.mapName] = value
-          console.log(value)
           // const rgb = 'rgb(' + this.s_featureColor.rgba.r + ',' + this.s_featureColor.rgba.g + ',' + this.s_featureColor.rgba.b + ')'
           const rgba = 'rgba(' + value.rgba.r + ',' + value.rgba.g + ',' + value.rgba.b + ',' + value.rgba.a + ')'
           // this.$store.state.base.editFeatureColor = rgba
           const feature = this.$store.state.base.editFeature
-          console.log(feature.getGeometry().getType())
           const geoType = feature.getGeometry().getType()
           if (geoType === 'Point' || geoType === 'LineString') feature.setProperties({_color: rgba})
           if (geoType === 'Polygon' || geoType === 'Circle') feature.setProperties({_fillColor: rgba})

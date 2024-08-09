@@ -15,7 +15,6 @@
       <b-button v-if="index !== s_divs[mapName].length - 1" class='olbtn delete-btn' size="sm" @click="deleteDiv(div.id)"><i class="fa-sharp fa-solid fa-trash-arrow-up hover"></i></b-button>
       <b-button v-if="index !== s_divs[mapName].length - 1" class='olbtn tsuika-btn' size="sm" @click="appendDiv(div.id)"><i class="fa-sharp fa-solid fa-plus hover"></i></b-button>
     </div>
-
     <modal name="modal-auto" width="300" height="500" :clickToClose="false">
       <div class="dialog-close-btn-div" @click="autoCansel"><i class="fa-solid fa-xmark hover close-btn"></i></div>
       <div class="modal-body">
@@ -38,7 +37,6 @@
         <b-form-select v-model="kizami" :options="options" @change="auto4(mapName)"></b-form-select>
       </div>
     </modal>
-
 <!--    <div>-->
 <!--      出典:<span v-html="item.summary"></span>-->
 <!--    </div>-->
@@ -180,8 +178,6 @@ export default {
       const colorDiv0 = document.querySelector('#' + mapName + '-div-color-g0')
       const colorDiv1 = document.querySelector('#' + mapName + '-div-color-g1')
       const hyokozuColor = d3.scaleLinear().domain([0,11]).range([colorDiv0.style.backgroundColor,colorDiv1.style.backgroundColor])
-      console.log(colorDiv1.style.backgroundColor)
-      console.log(hyokozuColor(0))
       if(!this.kizami) return
       const centerHyoko = this.$store.state.base.hyokou
       let firstM
