@@ -128,6 +128,7 @@ function Kotujiko(){
   })
   this.style = kotujikoStyleFunction()
 }
+export const kotujikoSumm = "<a href='https://github.com/shiwaku/npa-traffic-accident-data-2023-converter' target='_blank'>npa-traffic-accident-data-2023-converter</a>"
 export  const kotujikoObj = {};
 for (let i of mapsStr) {
   kotujikoObj[i] = new VectorTileLayer(new Kotujiko())
