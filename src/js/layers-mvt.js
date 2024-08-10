@@ -106,6 +106,20 @@ for (let i of mapsStr) {
   })
 }
 // 交通事故-------------------------------------
+
+const rasterLayer = new WebGLTile({
+  source: new olpmtiles.PMTilesRasterSource({
+    url:"https://r2-public.protomaps.com/protomaps-sample-datasets/terrarium_z9.pmtiles",
+    tileSize: [512,512]
+  })
+});
+export const r = {};
+for (let i of mapsStr) {
+  r[i] = rasterLayer
+}
+
+
+
 function Kotujiko(){
   this.name = 'kotujiko'
   this.source = new olpmtiles.PMTilesVectorSource({

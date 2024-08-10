@@ -2058,7 +2058,8 @@ function SizuokaCs50cm () {
   this.preload = Infinity
   this.extent = transformE([137.47545,34.59443,139.1504,35.64359])
   this.source = new XYZ({
-    url: 'https://kenzkenz2.xsrv.jp/sizuoka2/{z}/{x}/{y}.png',
+    // url: 'https://kenzkenz2.xsrv.jp/sizuoka2/{z}/{x}/{y}.png',
+    url: 'https://kenzkenz3.xsrv.jp/cs/shizuoka/{z}/{x}/{y}.png',
     crossOrigin: 'Anonymous',
     minZoom: 1,
     maxZoom: 18
