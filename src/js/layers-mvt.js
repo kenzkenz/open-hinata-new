@@ -26,6 +26,8 @@ import src from "@/assets/icon/blackpin.png";
 import WebGLTile from "ol/layer/WebGLTile"
 // import { PMTiles } from "pmtiles"
 import { useGeographic } from 'ol/proj';
+// import { PMTilesVectorSource } from "ol-pmtiles/dist/olpmtiles.js";
+
 
 const transformE = extent => {
   function compareFunc(a, b) {
