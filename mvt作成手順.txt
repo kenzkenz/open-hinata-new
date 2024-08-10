@@ -331,6 +331,8 @@ tippecanoe -zg --drop-densest-as-needed -S10 -f -e test2 t.geojson
 tippecanoe -o output.pmtiles k.geojson
 tippecanoe -pk -pf -f -o output2.pmtiles t.geojson
 
+
+
 $ cd tile
 $ gzip -d -v -r -S .pbf *
 $ find . -type f -exec mv -v '{}' '{}'.mvt \;
