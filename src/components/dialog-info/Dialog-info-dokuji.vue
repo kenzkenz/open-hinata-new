@@ -2,9 +2,8 @@
   <div style="padding: 10px;">
     名称変更<br>
     <input type='text' @input="henko" v-model="s_name" style="width: 300px;"><br>
-    <span v-html="s_url">あ</span>
-<!--    タイルURL<br>-->
-<!--    <input type='text' @input="onInput" v-model="s_url" style="width: 300px;"><br>-->
+    タイルURL変更<br>
+    <input type='text' @input="henko" v-model="s_url" style="width: 300px;"><br>
 <!--    <b-button style="margin-top: 5px;" class="olbtn" size="sm" @click="henko">変更</b-button>-->
 
  </div>
@@ -48,16 +47,14 @@ export default {
       const aaa = store.state.base.layerLists['map01'].find((layer) => {
         return layer.id === store.state.info.layerId
       })
-      console.log(aaa.layer.values_.source.urls[0])
-      // aaa.layer.values_.source.urls[0] = this.s_url
+      aaa.layer.values_.source.setUrls([this.s_url])
       aaa.title = this.s_name
 
       const bbb = store.state.info.dokujiLayers.find((value) => {
         return value.id === store.state.info.layerId
       })
-      console.log(bbb)
       bbb.name = this.s_name
-      // bbb.url = this.s_url
+      bbb.url = this.s_url
       permalink.moveEnd()
     },
   },

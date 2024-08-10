@@ -84,7 +84,7 @@ export function permalinkEventSet (response) {
     // } else {
       const center = [ parseFloat(parts[1]), parseFloat(parts[2]) ]
       const center3857 = transform(center,'EPSG:4326','EPSG:3857')
-      console.log(center3857)
+      // console.log(center3857)
       map.getView().setCenter(center3857)
       map.getView().setZoom(parts[0])
     // }
@@ -252,7 +252,7 @@ export function permalinkEventSet (response) {
                 if (distance) newFeature.setProperties({distance: distance})
                 if (feature.properties) {
                   Object.keys(feature.properties).forEach(function (key) {
-                    console.log(key, feature.properties[key])
+                    // console.log(key, feature.properties[key])
                     newFeature.setProperties({[key]: feature.properties[key]})
                   })
                 }
@@ -263,10 +263,10 @@ export function permalinkEventSet (response) {
             }
 
             if (feature.geometry.type !== 'MultiPolygon') {
-              console.log(feature.properties)
+              // console.log(feature.properties)
               if (feature.properties) {
                 Object.keys(feature.properties).forEach(function (key) {
-                  console.log(key, feature.properties[key])
+                  // console.log(key, feature.properties[key])
                   newFeature.setProperties({[key]: feature.properties[key]})
                 })
               }
@@ -334,7 +334,7 @@ export function permalinkEventSet (response) {
                     let bookMark = JSON.parse(localStorage.getItem('bookmark'))
                     if (!bookMark) bookMark = []
 
-                    console.log(node.data.id)
+                    // console.log(node.data.id)
                     let bookMarkFlg
                     if (bookMark.indexOf(node.data.id) !== -1) {
                       bookMarkFlg = true
@@ -463,9 +463,9 @@ export function permalinkEventSet (response) {
             store.state.info.dokujiLayers.forEach((value,i) =>{
               // store.state.info.dokujiUrl['map01'] = value.url
               // store.state.info.dokujiName['map01'] = value.name
-              console.log(value)
+              // console.log(value)
               layers.dokujiLayerTsuika(i)
-              console.log(layers.dokujiObjAr[i].map01)
+              // console.log(layers.dokujiObjAr[i].map01)
               layers.dokujiObjAr[i].map01.getSource().setUrl(value.url)
               layers.dokujiObjAr[i].map02.getSource().setUrl(value.url)
               Layers.Layers.push({
@@ -477,7 +477,7 @@ export function permalinkEventSet (response) {
                   summary: '',
                 }})
             })
-            console.log(Layers.Layers)
+            // console.log(Layers.Layers)
 
             // layers.dokujiLayerTsuika(0)
             // layers.dokujiObjAr[0].map01.getSource().setUrl(store.state.info.dokujiUrl['map01'])

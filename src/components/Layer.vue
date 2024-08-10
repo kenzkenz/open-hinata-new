@@ -181,6 +181,8 @@
           //-------------------------------------------------------
           this.$store.state.info.layerId = item.id
           this.$store.state.info.layerTitle = item.title
+          this.$store.state.info.layerUrl = item.layer.getSource().getUrls()[0]
+          console.log(item.layer.getSource().getUrls()[0])
           // const result = layers.Layers.find((value) => {
           //   if (value.data) if (value.data.id) return value.data.id === item.id
           // })
