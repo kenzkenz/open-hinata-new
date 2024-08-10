@@ -884,10 +884,12 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
               '</div><hr>'
 
           break
+        case 'kotujiko':
         case 'dobokuisan':
         case 'draganddrop':
           cont += '<div style=width:300px;font-size:small;>'
           Object.keys(prop).forEach(function(key) {
+            // console.log(key)
             if (key !== 'geometry') {
               cont += key + '=' + prop[key] + '<br>'
             }

@@ -20,7 +20,14 @@ import  * as MaskDep from './mask-dep'
 import  * as LayersMvt from './layers-mvt'
 // import BingMaps from 'ol/source/BingMaps'
 import * as d3 from "d3"
-import {gifuDetailObj, hokkaidoTsunamiMvtObj, tokyoTochiriyoObj, tottorimusenLanSumm} from "./layers-mvt";
+import {
+  gifuDetailObj,
+  hokkaidoTsunamiMvtObj,
+  kotujikoObj,
+  testpmObj,
+  tokyoTochiriyoObj,
+  tottorimusenLanSumm
+} from "./layers-mvt";
 const mapsStr = ['map01','map02']
 const transformE = extent => {
   function compareFunc(a, b) {
@@ -14667,7 +14674,7 @@ export const Layers =
         { text: '登記所備付地図データ(宮崎市)', data: { id: "homusyomiyazakishi", layer: LayersMvt.homusyomiyazaki2024Obj, opacity: 1, summary: LayersMvt.homusyomiyazaki2024Summ } },
         { text: '2021土地利用細分メッシュ(100m)', data: { id: "tochiriyosaibun", layer: LayersMvt.mesh100mTochiriyoObj, opacity: 1, summary: LayersMvt.mesh1kmObjSumm } },
 
-        // { text: 'test', data: { id: "kouzuimesyu9syu", layer: LayersMvt.geoLandGifu01Obj, opacity: 1, summary: LayersMvt.kozuiMesh9syuSumm} },
+        { text: '交通事故', data: { id: "kotujiko", layer: LayersMvt.kotujikoObj, opacity: 1, summary: LayersMvt.kozuiMesh9syuSumm} },
 
         // { text: '一等三角点', data: { id: "itto", layer: LayersMvt.ittosankakutenObj, opacity: 1, summary: LayersMvt.ittosankakutenSumm } },
 

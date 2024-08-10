@@ -6,4 +6,8 @@ module.exports = {
       favicon32: 'favicon.ico',
     }
   },
+  configureWebpack: {
+    plugins: [
+    ]
+  }
 }

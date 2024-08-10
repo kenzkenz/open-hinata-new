@@ -326,10 +326,10 @@ tippecanoe -rg -pk -pf -f -e tile3 b3.geojson
 tippecanoe -rg -pk -pf -f -e tile4 b4.geojson
 tippecanoe -rg -pk -pf -f -e tile bp.geojson
 tippecanoe -S10 -rg -pk -pf -f -e tile2 t.geojson
-tippecanoe –drop-densest-as-needed -S100 -rg -pk -pf -f -e test t.geojson
-
 tippecanoe -zg --drop-densest-as-needed -S10 -f -e test2 t.geojson
 
+tippecanoe -o output.pmtiles k.geojson
+tippecanoe -pk -pf -f -o output2.pmtiles t.geojson
 
 $ cd tile
 $ gzip -d -v -r -S .pbf *

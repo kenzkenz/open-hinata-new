@@ -23,6 +23,10 @@ import  * as Tilegrid from 'ol/tilegrid'
 import * as Loadingstrategy from 'ol/loadingstrategy'
 import src from "@/assets/icon/blackpin.png";
 // import image from "ol-ext/legend/Image";
+import WebGLTile from "ol/layer/WebGLTile"
+// import { PMTiles } from "pmtiles"
+import { useGeographic } from 'ol/proj';
+
 const transformE = extent => {
   function compareFunc(a, b) {
     return a - b;
@@ -83,7 +87,7 @@ const mapsStr = ['map01','map02']
 const sourceg = new VectorSource({
   loader: async function () {
     // Fetch the flatgeobuffer
-    const response = await fetch('https://wata909.github.io/fudepoly47/fude_tsukuba.fgb')
+    const response = await fetch('https://flatgeobuf.org/test/data/UScounties.fgb')
     // ...and parse all its features
     for await (let feature of flatgeobuf.deserialize(response.body)) {
       console.log(feature)
@@ -93,17 +97,41 @@ const sourceg = new VectorSource({
     }
   }
 });
-// new ol.layer.Vector({
-//   source
-// })
 export const v = {};
-
 for (let i of mapsStr) {
   v[i] = new VectorLayer({
     sourceg
   })
 }
-
+// 交通事故-------------------------------------
+function Kotujiko(){
+  this.name = 'kotujiko'
+  this.source = new olpmtiles.PMTilesVectorSource({
+    // url:"https://cyberjapandata.gsi.go.jp/xyz/optimal_bvmap-v1/optimal_bvmap-v1.pmtiles",
+    url:'https://xs489works.xsrv.jp/pmtiles-data/traffic-accident/honhyo_2019-2023_convert.pmtiles'
+  })
+  this.style = kotujikoStyleFunction()
+}
+export  const kotujikoObj = {};
+for (let i of mapsStr) {
+  kotujikoObj[i] = new VectorTileLayer(new Kotujiko())
+}
+function kotujikoStyleFunction() {
+  return function (feature,resolution) {
+    const prop = feature.getProperties();
+    const zoom = getZoom(resolution);
+    const styles = []
+    const imageStyle = new Style({
+      image: new Icon({
+        src: require('@/assets/icon/whitecircle.png'),
+        color: 'green',
+        scale: 1.1
+      }),
+    })
+    styles.push(imageStyle)
+    return styles;
+  }
+}
 //東京都土地利用現況調査------------------------------------------------------------------------------------------------
 function TokyoTochiriyo(){
   this.name = 'tokyotochiriyo'
