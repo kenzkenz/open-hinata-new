@@ -14371,7 +14371,7 @@ export const Layers =
         { text: 'R05土地区画整理事業', data: { id: "kukakuseirir05", layer: LayersMvt.kukakuseiriR05Obj, opacity: 1, summary: LayersMvt.kukakuseiriR05Summ } },
         { text: 'R05特別用途地区', data: { id: "tokubetsuyoto05", layer: LayersMvt.tokubetsuyotoR05Obj, opacity: 1, summary: LayersMvt.tokubetsuyotoR05Summ } },
         { text: 'R05公園', data: { id: "koenr05", layer: LayersMvt.koenR05Obj, opacity: 1, summary: LayersMvt.koenR05Summ } },
-        { text: 'R05東京都土地利用現況調査', data: { id: "tokyotochiriyo", layer: LayersMvt.tokyoTochiriyoObj, opacity: 1, summary: LayersMvt.tokyoTochiriyoSumm } },
+        { text: '東京都土地利用現況調査', data: { id: "tokyotochiriyo", layer: LayersMvt.tokyoTochiriyoObj, opacity: 1, summary: LayersMvt.tokyoTochiriyoSumm } },
 
 
 

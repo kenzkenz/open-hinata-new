@@ -330,7 +330,11 @@ tippecanoe -zg --drop-densest-as-needed -S10 -f -e test2 t.geojson
 
 tippecanoe -o output.pmtiles k.geojson
 tippecanoe -pk -pf -f -o output2.pmtiles t.geojson
+tippecanoe  --drop-densest-as-needed -f -o output0.pmtiles t.geojson
 
+gdal_merge.py -o OUTPUT.tif -ot Float32 -co COMPRESS=LZW -co BIGTIFF=YES INPUT1.tif INPUT2.tif INPUT3.tif
+
+rio mbtiles shizuokacs.vrt outpuy.mbtiles --format PNG --zoom-levels 0..18 --tile-size 512 --resampling bilinear
 
 
 $ cd tile

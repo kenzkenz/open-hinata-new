@@ -887,14 +887,16 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
         case 'kotujiko':
         case 'dobokuisan':
         case 'draganddrop':
-          cont += '<div style=width:300px;font-size:small;>'
-          Object.keys(prop).forEach(function(key) {
-            // console.log(key)
-            if (key !== 'geometry') {
-              cont += key + '=' + prop[key] + '<br>'
-            }
-          })
-          cont += '<div><hr>'
+          if (cont.indexOf('default-popup') === -1) {
+            cont += '<div class="default-popup" style=width:300px;font-size:small;>'
+            Object.keys(prop).forEach(function(key) {
+              console.log(key)
+              if (key !== 'geometry') {
+                cont += key + '=' + prop[key] + '<br>'
+              }
+            })
+            cont += '<div><hr>'
+          }
           break
         case 'nihonisanheatmap':
         case 'nihonisan':
@@ -1704,6 +1706,179 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           if (cont.indexOf('notominato') === -1) {
             cont += '<div class="notominato" style=width:200px;>' +
                 '<h4>' + prop.name + '</h4>' +
+                '</div><hr>'
+          }
+          break
+        case 'tokyotochiriyo':
+          if (cont.indexOf('tokyotochiriyo') === -1) {
+            let shisetsu = ''
+            switch (prop.LU_1) {
+              case '111': //官公庁施設
+                shisetsu = '官公庁施設'
+                break
+              case '112': //教育文化施設
+                switch (prop.LU_2) {
+                  case '1': //教育施設
+                    shisetsu = '教育施設'
+                    break
+                  case '2': //文化施設
+                    shisetsu = '文化施設'
+                    break
+                  case '3': //宗教施設
+                    shisetsu = '宗教施設'
+                    break
+                }
+                break
+              case '113': //厚生医療施設
+                switch (prop.LU_2) {
+                  case '1': //医療施設
+                    shisetsu = '医療施設'
+                    break
+                  case '2': //厚生施設
+                    shisetsu = '厚生施設'
+                    break
+                }
+                break
+              case '114': //供給処理施設
+                switch (prop.LU_2) {
+                  case '1': //供給施設
+                    shisetsu = '供給施設'
+                    break
+                  case '2': //処理施設
+                    shisetsu = '処理施設'
+                    break
+                }
+                break
+              case '121': //事務所建築物
+                shisetsu = '事務所建築物'
+                break
+              case '122': //専用商業施設
+                switch (prop.LU_2) {
+                  case '1': //商業施設
+                    shisetsu = '専用商業施設'
+                    break
+                  case '2': //公衆浴場等
+                    shisetsu = '公衆浴場等'
+                    break
+                }
+                break
+              case '123': //住商併用建物
+                shisetsu = '住商併用建物'
+                break
+              case '124': //宿泊・遊興施設
+                switch (prop.LU_2) {
+                  case '1': //宿泊施設
+                    shisetsu = '宿泊施設'
+                    break
+                  case '2': //遊興施設
+                    shisetsu = '遊興施設'
+                    break
+                }
+                break
+              case '125': //スポーツ・興行施設
+                switch (prop.LU_2) {
+                  case '1': //スポーツ施設
+                    shisetsu = 'スポーツ施設'
+                    break
+                  case '2': //興行施設
+                    shisetsu = '興行施設'
+                    break
+                }
+                break
+              case '131': //独立住宅
+                shisetsu = '独立住宅'
+                break
+              case '132': //集合住宅
+                shisetsu = '集合住宅'
+                break
+              case '141': //専用工場
+                shisetsu = '専用工場'
+                break
+              case '142': //住居併用工場
+                shisetsu = '住居併用工場'
+                break
+              case '143': //倉庫運輸関係施設
+                switch (prop.LU_2) {
+                  case '1': //運輸施設等
+                    shisetsu = '運輸施設等'
+                    break
+                  case '2': //倉庫施設等
+                    shisetsu = '倉庫施設等'
+                    break
+                }
+                break
+              case '150': //農林漁業施設
+                shisetsu = '農林漁業施設'
+                break
+              case '210': //屋外利用地・仮設建物
+                switch (prop.LU_2) {
+                  case '1': //太陽光発電
+                    shisetsu = '太陽光発電'
+                    break
+                  case '2': //屋外駐車場
+                    shisetsu = '屋外駐車場'
+                    break
+                  case '3': //その他
+                    shisetsu = '屋外利用地・仮設建物、その他'
+                    break
+                }
+                break
+              case '300': //公園、運動場等
+                switch (prop.LU_2) {
+                  case '1': //ゴルフ場
+                    shisetsu = 'ゴルフ場'
+                    break
+                  case '2': //その他
+                    shisetsu = '公園、運動場等、その他'
+                    break
+                }
+                break
+              case '400': //未利用地等
+                shisetsu = '未利用地等'
+                break
+              case '510': //道路
+                shisetsu = '道路'
+                break
+              case '520': //鉄道・港湾等
+                shisetsu = '鉄道・港湾等'
+                break
+              case '611': //田
+                shisetsu = '田'
+                break
+              case '612': //畑
+                shisetsu = '畑'
+                break
+              case '613': //樹園地
+                shisetsu = '樹園地'
+                break
+              case '620': //採草放牧地
+                shisetsu = '採草放牧地'
+                break
+              case '700': //水面・河川・水路
+                shisetsu = '水面・河川・水路'
+                break
+              case '800': //原野
+                shisetsu = '原野'
+                break
+              case '900': //森林
+                shisetsu = '森林'
+                break
+              case '220': //その他
+                shisetsu = 'その他'
+                break
+              case '0': //不明
+                shisetsu = '不明'
+                break
+              case '9': //不整合
+                shisetsu = '不整合'
+                break
+            }
+            
+            
+            cont += '<div class="tokyotochiriyo" style=width:200px;>' +
+                '<h4>' + shisetsu + '</h4>' +
+                '<p>' + prop.NAME1 + prop.NAME2 + '</p>' +
+                '<p>' + Math.floor(prop.AREA) + 'm2</p>' +
                 '</div><hr>'
           }
           break

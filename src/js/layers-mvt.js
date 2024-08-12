@@ -26,7 +26,7 @@ import src from "@/assets/icon/blackpin.png";
 import WebGLTile from "ol/layer/WebGLTile"
 // import { PMTiles } from "pmtiles"
 import { useGeographic } from 'ol/proj';
-// import { PMTilesVectorSource } from "ol-pmtiles/dist/olpmtiles.js";
+import {applyStyle} from 'ol-mapbox-style';
 
 
 const transformE = extent => {
@@ -129,7 +129,7 @@ function Kotujiko(){
   this.style = kotujikoStyleFunction()
 }
 export const kotujikoSumm = "<a href='https://github.com/shiwaku/npa-traffic-accident-data-2023-converter' target='_blank'>npa-traffic-accident-data-2023-converter</a>"
-export  const kotujikoObj = {};
+export  const kotujikoObj = {}
 for (let i of mapsStr) {
   kotujikoObj[i] = new VectorTileLayer(new Kotujiko())
 }
@@ -150,32 +150,207 @@ function kotujikoStyleFunction() {
   }
 }
 //東京都土地利用現況調査------------------------------------------------------------------------------------------------
+let tokyotochiroyoaxResolution
+if (window.innerWidth > 1000) {
+  tokyotochiroyoaxResolution = 156543.03	//zoom0
+} else {
+  tokyotochiroyoaxResolution = 	2.388657	 //zoom16
+}
 function TokyoTochiriyo(){
   this.name = 'tokyotochiriyo'
-  this.source = new VectorTileSource({
-    format: new MVT(),
-    maxZoom:14,
-    url: 'https://kenzkenz3.xsrv.jp/mvt/tokyotochiriyo/{z}/{x}/{y}.mvt'
-  });
-  // this.maxResolution = '152.874057' //zoom10
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/tokyotochiriyo/output.pmtiles'
+  })
+  this.maxResolution = tokyotochiroyoaxResolution
   this.style = tokyoTochiriyoStyleFunction()
 }
+export const tokyoTochiriyoSumm = "<a href='https://github.com/shiwaku/npa-traffic-accident-data-2023-converter' target='_blank'>npa-traffic-accident-data-2023-converter</a>"
 export  const tokyoTochiriyoObj = {};
 for (let i of mapsStr) {
   tokyoTochiriyoObj[i] = new VectorTileLayer(new TokyoTochiriyo())
 }
-export const tokyoTochiriyoSumm = "<a href='' target='_blank'>東京都土地利用現況調査</a>"
+
 function tokyoTochiriyoStyleFunction() {
   return function (feature, resolution) {
     const zoom = getZoom(resolution)
     const prop = feature.getProperties()
+    let rgb = 'black'
     const styles = []
+
+    switch (prop.LU_1) {
+      case '111': //官公庁施設
+        rgb = 'rgb(128,128,128,0.7)'
+        break
+      case '112': //教育文化施設
+          switch (prop.LU_2) {
+            case '1': //教育施設
+              rgb = 'rgb(0,192,255,0.7)'
+              break
+            case '2': //文化施設
+              rgb = 'rgb(240,230,140,0.7)'
+              break
+            case '3': //宗教施設
+              rgb = 'rgb(255,215,0,0.7)'
+              break
+          }
+        break
+      case '113': //厚生医療施設
+        switch (prop.LU_2) {
+          case '1': //医療施設
+            rgb = 'rgb(255,192,203,0.7)'
+            break
+          case '2': //厚生施設
+            rgb = 'rgb(219,112,147,0.7)'
+            break
+        }
+        break
+      case '114': //供給処理施設
+        switch (prop.LU_2) {
+          case '1': //供給施設
+            rgb = 'rgb(0,0,255,0.7)'
+            break
+          case '2': //処理施設
+            rgb = 'rgb(0,0,139,0.7)'
+            break
+        }
+        break
+      case '121': //事務所建築物
+        rgb = 'rgb(255,127,80,0.7)'
+        break
+      case '122': //専用商業施設
+        switch (prop.LU_2) {
+          case '1': //商業施設
+            rgb = 'rgb(255,0,0,0.7)'
+            break
+          case '2': //公衆浴場等
+            rgb = 'rgb(255,99,71,0.7)'
+            break
+        }
+        break
+      case '123': //住商併用建物
+        rgb = 'rgb(255,69,0,0.7)'
+        break
+      case '124': //宿泊・遊興施設
+        switch (prop.LU_2) {
+          case '1': //宿泊施設
+            rgb = 'rgb(0,255,127,0.7)'
+            break
+          case '2': //遊興施設
+            rgb = 'rgb(124,255,2,0.7)'
+            break
+        }
+        break
+      case '125': //スポーツ・興行施設
+        switch (prop.LU_2) {
+          case '1': //スポーツ施設
+            rgb = 'rgb(0,255,255,0.7)'
+            break
+          case '2': //興行施設
+            rgb = 'rgb(64,224,208,0.7)'
+            break
+        }
+        break
+      case '131': //独立住宅
+        rgb = 'rgb(0,100,0,0.7)'
+        break
+      case '132': //集合住宅
+        rgb = 'rgb(0,128,0,0.7)'
+        break
+      case '141': //専用工場
+        rgb = 'rgb(105,105,105,0.7)'
+        break
+      case '142': //住居併用工場
+        rgb = 'rgb(169,169,169,0.7)'
+        break
+      case '143': //倉庫運輸関係施設
+        switch (prop.LU_2) {
+          case '1': //運輸施設等
+            rgb = 'rgb(32,178,120,0.7)'
+            break
+          case '2': //倉庫施設等
+            rgb = 'rgb(95,158,160,0.7)'
+            break
+        }
+        break
+      case '150': //農林漁業施設
+        rgb = 'rgb(85,107,47,0.7)'
+        break
+      case '210': //屋外利用地・仮設建物
+        switch (prop.LU_2) {
+          case '1': //太陽光発電
+            rgb = 'rgb(250,250,120,0.7)'
+            break
+          case '2': //屋外駐車場
+            rgb = 'rgb(119,136,153,0.7)'
+            break
+          case '3': //その他
+            rgb = 'rgb(176,196,222,0.7)'
+            break
+        }
+        break
+      case '300': //公園、運動場等
+        switch (prop.LU_2) {
+          case '1': //ゴルフ場
+            rgb = 'rgb(120,100,100,0.7)'
+            break
+          case '2': //その他
+            rgb = 'rgb(154,205,50,0.7)'
+            break
+        }
+        break
+      case '400': //未利用地等
+        rgb = 'rgb(255,222,173,0.7)'
+        break
+      case '510': //道路
+        rgb = 'rgb(192,192,192,0.7)'
+        break
+      case '520': //鉄道・港湾等
+        rgb = 'rgb(105,105,105,0.7)'
+        break
+      case '611': //田
+        rgb = 'rgb(255,165,0,0.7)'
+        break
+      case '612': //畑
+        rgb = 'rgb(255,165,122,0.7)'
+        break
+      case '613': //樹園地
+        rgb = 'rgb(128,0,0,0.7)'
+        break
+      case '620': //採草放牧地
+        rgb = 'rgb(34,139,34,0.7)'
+        break
+      case '700': //水面・河川・水路
+        rgb = 'rgb(0,0,205,0.7)'
+        break
+      case '800': //原野
+        rgb = 'rgb(128,128,0,0.7)'
+        break
+      case '900': //森林
+        rgb = 'rgb(107,142,35,0.7)'
+        break
+      case '220': //その他
+        rgb = 'rgb(106,90,205,0.7)'
+        break
+      case '0': //不明
+        rgb = 'rgb(128,0,128,0.7)'
+        break
+      case '9': //不整合
+        rgb = 'rgb(75,0,130,0.7)'
+        break
+    }
+    let strokeColor = 'black'
+    if (zoom >= 16) {
+      strokeColor = 'black'
+    } else {
+      strokeColor = 'rgba(0,0,0,0)'
+    }
     const polygonStyle = new Style({
       fill: new Fill({
-        color: 'rgba(0,128,0,0.7)'
+        // color: 'rgba(0,128,0,0.7)'
+        color: rgb
       }),
       stroke: new Stroke({
-        color: "black",
+        color: strokeColor,
         width: 1
       }),
     })
