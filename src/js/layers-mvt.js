@@ -27,7 +27,7 @@ import WebGLTile from "ol/layer/WebGLTile"
 // import { PMTiles } from "pmtiles"
 import { useGeographic } from 'ol/proj';
 import {applyStyle} from 'ol-mapbox-style';
-
+// import { gsiOptVtLayer } from '@cieloazul310/ol-gsi-vt'
 
 const transformE = extent => {
   function compareFunc(a, b) {

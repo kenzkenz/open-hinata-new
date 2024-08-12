@@ -1,5 +1,9 @@
 module.exports = {
-  //  ビルドしたときのパス 空文字にして相対パスにする。
+  transpileDependencies: [
+    // "ol",
+    // "color-parse",
+    "@cieloazul310/ol-gsi-vt",
+  ],
   publicPath: process.env.NODE_ENV === 'production' ? '' : '',
   pwa: {
     iconPaths: {
