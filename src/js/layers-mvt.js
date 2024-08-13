@@ -8799,28 +8799,34 @@ function yubinkuColorStyleFunction() {
 // 幕末期近世村---------------------------------------------------------------
 let kinseiPolygonMaxResolution
 if (window.innerWidth > 1000) {
-  // kinseiPolygonMaxResolution = 611.496226	 //zoom8
   kinseiPolygonMaxResolution = 156543.03	 //zoom1
 } else {
-  // kinseiPolygonMaxResolution = 305.748113	 //zoom9
   kinseiPolygonMaxResolution = 360	 //zoom9
+  kinseiPolygonMaxResolution = 156543.03	 //zoom1
 }
-function KinseiPolygon(mapName) {
-  this.useInterimTilesOnError = false
+function KinseiPolygon(mapName){
   this.name = 'kinseipolygon'
-  this.source = new VectorTileSource({
-    format: new MVT(),
-    // minZoom: 11,
-    maxZoom: 13,
-    url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/polygon6/{z}/{x}/{y}.mvt',
-  });
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/bakumatsu/output.pmtiles'
+  })
   this.style = kinseiPolygonStyleFunction(mapName)
   this.maxResolution = kinseiPolygonMaxResolution
-  // this.maxResolution = 611.496226	 //zoom8
-  // this.maxResolution = 305.748113	 //zoom9
   this.declutter = true
-  // this.overflow = true
 }
+// function KinseiPolygon(mapName) {
+//   this.useInterimTilesOnError = false
+//   this.name = 'kinseipolygon'
+//   this.source = new VectorTileSource({
+//     format: new MVT(),
+//     // minZoom: 11,
+//     maxZoom: 13,
+//     url:'https://kenzkenz3.xsrv.jp/mvt/kinsei/polygon6/{z}/{x}/{y}.mvt',
+//
+//   });
+//   this.style = kinseiPolygonStyleFunction(mapName)
+//   this.maxResolution = kinseiPolygonMaxResolution
+//   this.declutter = true
+// }
 export const kinseiPolygonMvtObj = {};
 for (let i of mapsStr) {
   kinseiPolygonMvtObj[i] = new VectorTileLayer(new KinseiPolygon(i))
