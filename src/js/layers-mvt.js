@@ -15,19 +15,14 @@ import TileWMS from 'ol/source/TileWMS.js'
 import Icon from 'ol/style/Icon'
 import VectorSource from "ol/source/Vector"
 import VectorLayer from "ol/layer/Vector"
-// import {Heatmap} from 'ol/layer'
 import MVTFormat from 'ol/format/MVT'
 // import WebGLPointsLayer from 'ol/layer/WebGLPoints'
 import WikiCommons from 'ol-ext/source/WikiCommons'
 import  * as Tilegrid from 'ol/tilegrid'
 import * as Loadingstrategy from 'ol/loadingstrategy'
-import src from "@/assets/icon/blackpin.png";
-// import image from "ol-ext/legend/Image";
 import WebGLTile from "ol/layer/WebGLTile"
-// import { PMTiles } from "pmtiles"
-import { useGeographic } from 'ol/proj';
-// import {applyStyle} from 'ol-mapbox-style';
 // import { gsiOptVtLayer } from '@cieloazul310/ol-gsi-vt'
+// import { gsiOptVtStyle } from "@cieloazul310/ol-gsi-vt-style";
 
 const transformE = extent => {
   function compareFunc(a, b) {
@@ -117,8 +112,6 @@ export const r = {};
 for (let i of mapsStr) {
   r[i] = rasterLayer
 }
-
-
 
 function Kotujiko(){
   this.name = 'kotujiko'
@@ -3575,23 +3568,35 @@ function mesh1kRonenColorFunction(mapName) {
 let syochiikiMaxResolution
 if (window.innerWidth > 1000) {
   syochiikiMaxResolution = 76.437028 //zoom11
+  syochiikiMaxResolution = 156543.03 //zoom1
 } else {
-  syochiikiMaxResolution = 38.218514 //zoom12
+  syochiikiMaxResolution = 152.874057 //zoom10
+  // syochiikiMaxResolution = 156543.03 //zoom1
 }
 function Syochiiki2020(){
   this.name = 'syochiki2020'
   this.className = 'syochiki2020'
-  this.source = new VectorTileSource({
-    crossOrigin: 'Anonymous',
-    format: new MVT(),
-    maxZoom:13,
-    url: "https://kenzkenz3.xsrv.jp/mvt/syochiiki/2020/{z}/{x}/{y}.mvt"
-  });
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/syochiiki/zenkoku.pmtiles'
+  })
   this.style = syochiikiStyleFunction()
   this.maxResolution = syochiikiMaxResolution
   this.declutter = true
-  this.overflow = true
 }
+// function Syochiiki2020(){
+//   this.name = 'syochiki2020'
+//   this.className = 'syochiki2020'
+//   this.source = new VectorTileSource({
+//     crossOrigin: 'Anonymous',
+//     format: new MVT(),
+//     maxZoom:13,
+//     url: "https://kenzkenz3.xsrv.jp/mvt/syochiiki/2020/{z}/{x}/{y}.mvt"
+//   });
+//   this.style = syochiikiStyleFunction()
+//   this.maxResolution = syochiikiMaxResolution
+//   this.declutter = true
+//   this.overflow = true
+// }
 export  const syochiiki2020MvtObj = {};
 for (let i of mapsStr) {
   syochiiki2020MvtObj[i] = new VectorTileLayer(new Syochiiki2020())
