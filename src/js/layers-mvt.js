@@ -26,7 +26,7 @@ import src from "@/assets/icon/blackpin.png";
 import WebGLTile from "ol/layer/WebGLTile"
 // import { PMTiles } from "pmtiles"
 import { useGeographic } from 'ol/proj';
-import {applyStyle} from 'ol-mapbox-style';
+// import {applyStyle} from 'ol-mapbox-style';
 // import { gsiOptVtLayer } from '@cieloazul310/ol-gsi-vt'
 
 const transformE = extent => {
@@ -326,7 +326,7 @@ function tokyoTochiriyoStyleFunction() {
         rgb = 'rgb(128,128,0,0.7)'
         break
       case '900': //森林
-        rgb = 'rgb(107,142,35,0.7)'
+        rgb = 'rgb(205,133,63,0.7)'
         break
       case '220': //その他
         rgb = 'rgb(106,90,205,0.7)'
