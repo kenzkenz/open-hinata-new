@@ -27,7 +27,7 @@ import WebGLTile from "ol/layer/WebGLTile"
 // import { PMTiles } from "pmtiles"
 import { useGeographic } from 'ol/proj';
 import {applyStyle} from 'ol-mapbox-style';
-import { gsiOptVtLayer } from '@cieloazul310/ol-gsi-vt'
+// import { gsiOptVtLayer } from '@cieloazul310/ol-gsi-vt'
 
 const transformE = extent => {
   function compareFunc(a, b) {
@@ -251,10 +251,10 @@ function tokyoTochiriyoStyleFunction() {
         }
         break
       case '131': //独立住宅
-        rgb = 'rgb(0,100,0,0.7)'
+        rgb = 'rgb(60,179,113,0.7)'
         break
       case '132': //集合住宅
-        rgb = 'rgb(0,128,0,0.7)'
+        rgb = 'rgb(0,100,0,0.7)'
         break
       case '141': //専用工場
         rgb = 'rgb(105,105,105,0.7)'
