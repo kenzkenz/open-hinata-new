@@ -106,15 +106,22 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
       const lat = lonLat[1]
       let edit = ''
       console.log(features0.length)
-      if (features0.length === 1) {
-        if (layers[i].get('name') === 'drawLayer') {
-          edit = '<span style="display: inline-block;width: 110px;text-align: right;">' +
-              '<button class="edit-button">編集する</button>' +
-              '</span>'
-        } else {
-          edit = ''
-        }
+
+
+      const result = layers.find((layer) => {
+        return layer.get('name') === 'drawLayer'
+      })
+
+      // if (features0.length === 1) {
+      //   if (layers[i].get('name') === 'drawLayer') {
+      if (result) {
+        edit = ' <span style="display: inline-block;text-align: right;">' +
+            '<button class="edit-button">編集</button>' +
+            '</span>'
+      } else {
+        edit = ''
       }
+      // }
 
       streetView = '<a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=' + lat + ',' + lon + '&hl=ja" target="_blank">StreetView</a>' +
           ' <a href="https://www.google.co.jp/maps?q=' + lat + ',' + lon + '&hl=ja" target="_blank">GoogleMap</a>' +
@@ -1124,7 +1131,9 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
             let cont2 = ''
             Object.keys(prop).forEach(function(key) {
               if (key !== 'geometry') {
-                if (key !== 'distance' && key !== 'name' && key !== 'description' && key !== 'src') {
+                if (key !== 'distance' && key !== 'name'
+                    && key !== 'description' && key !== 'src'
+                    && key !== 'center' && key !== 'radius') {
                   if (key.slice(0, 1) !== '_') {
                     cont2 += key + '=' + prop[key] + '<br>'
                   }
@@ -1136,7 +1145,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '<span id="drawLayer2-setumei">' + ru(prop.description) + '</span>' +
                 cont2 +
                 '<a style="display: ' + block + '" id="drawLayer2-href" href="' + prop.src + '" target="_blank" ><img id="drawLayer2-src" src="' + prop.src + '" style="object-fit: cover;width: 300px;"></a><br>' +
-                '</div>'
+                '</div><hr>'
             // if (!prop.name) cont += ''
             store.state.base.editFeature = features[0]
             console.log(features[0].getProperties())
