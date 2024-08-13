@@ -13,24 +13,6 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
   let features0 = features
   let layers0 = []
   let features00 = []
-
-  // if (features) {
-  //   let i = 0
-  //   for(let feature of features){
-  //     if (feature.getGeometry().getType() === 'Point') {
-  //       features0 = [features[i]]
-  //       layers = [layers[i]]
-  //       break
-  //     }
-  //     i ++
-  //   }
-  // }
-  // if (features) {
-  //   if (features[0].getGeometry().getType() === 'Point' || features[0].getGeometry().getType() === 'LineString' || features[0].getGeometry().getType() === 'MultiLineString') {
-  //     features0 = [features[0]]
-  //   }
-  // }
-
   if (features) {
     let extent
     for(let feature of features){
@@ -61,6 +43,17 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
       features0 = [features[0]]
     }
   }
+  let i
+  const drawLayer = layers.find((layer,index) => {
+    i = index
+    return layer.get('name') === 'drawLayer'
+  })
+
+  if (drawLayer) {
+    features0.push(features[i])
+    layers.push(drawLayer)
+  }
+
 
   if (!layers) {
     coordinate = evt.coordinate
@@ -81,7 +74,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
       // console.log(geometry.getFlatCoordinates())
       console.log(prop)
       let lonLat
-      if (geoType === 'Polygon' || geoType === 'MultiPolygon' || geoType === 'LineString' || geoType === 'MultiLineString') {
+      if (geoType === 'Polygon' || geoType === 'MultiPolygon' || geoType === 'LineString' || geoType === 'MultiLineString' || geoType === 'Circle') {
         coordinate = evt.coordinate
         lonLat = transform([coordinate[0],coordinate[1]], "EPSG:3857", "EPSG:4326")
       } else {
@@ -108,13 +101,11 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
       console.log(features0.length)
 
 
-      const result = layers.find((layer) => {
-        return layer.get('name') === 'drawLayer'
-      })
+
 
       // if (features0.length === 1) {
       //   if (layers[i].get('name') === 'drawLayer') {
-      if (result) {
+      if (drawLayer) {
         edit = ' <span style="display: inline-block;text-align: right;">' +
             '<button class="edit-button">編集</button>' +
             '</span>'
@@ -1120,44 +1111,45 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           break
         case 'drawLayer':
         case 'drawLayer2':
-          if (features0.length === 1) {
-            let block = 'block'
-            if (prop.src) {
-              block = 'block'
-            } else {
-              block = 'none'
-            }
-            console.log(prop.description)
-            let cont2 = ''
-            Object.keys(prop).forEach(function(key) {
-              if (key !== 'geometry') {
-                if (key !== 'distance' && key !== 'name'
-                    && key !== 'description' && key !== 'src'
-                    && key !== 'center' && key !== 'radius') {
-                  if (key.slice(0, 1) !== '_') {
-                    cont2 += key + '=' + prop[key] + '<br>'
+          if (cont.indexOf('draw-layer') === -1) {
+            if (features0.length >= 1) {
+              let block = 'block'
+              if (prop.src) {
+                block = 'block'
+              } else {
+                block = 'none'
+              }
+              console.log(prop.description)
+              let cont2 = ''
+              Object.keys(prop).forEach(function(key) {
+                if (key !== 'geometry') {
+                  if (key !== 'distance' && key !== 'name'
+                      && key !== 'description' && key !== 'src'
+                      && key !== 'center' && key !== 'radius') {
+                    if (key.slice(0, 1) !== '_') {
+                      cont2 += key + '=' + prop[key] + '<br>'
+                    }
                   }
                 }
+              })
+              cont += '<div class="draw-layer" style=width:300px;>' +
+                  '<h4 id="drawLayer2-name">' + ru(prop.name) + '</h4>' +
+                  '<span id="drawLayer2-setumei">' + ru(prop.description) + '</span>' +
+                  cont2 +
+                  '<a style="display: ' + block + '" id="drawLayer2-href" href="' + prop.src + '" target="_blank" ><img id="drawLayer2-src" src="' + prop.src + '" style="object-fit: cover;width: 300px;"></a><br>' +
+                  '</div><hr>'
+              // if (!prop.name) cont += ''
+              store.state.base.editFeature = features[0]
+              console.log(features[0].getProperties())
+              store.state.base.editFeatureName = features[0].getProperties().name
+              store.state.base.editFeatureSetumei = features[0].getProperties().description
+              store.state.base.editFeatureSrc = features[0].getProperties().src
+              if (document.querySelector('#dialog-edit0').style.display === 'block' ||
+                  document.querySelector('#dialog-measure').style.display === 'block') {
+                store.state.base.dialogs.dialogEdit.style.display = 'block'
               }
-            })
-            cont += '<div style=width:300px;>' +
-                '<h4 id="drawLayer2-name">' + ru(prop.name) + '</h4>' +
-                '<span id="drawLayer2-setumei">' + ru(prop.description) + '</span>' +
-                cont2 +
-                '<a style="display: ' + block + '" id="drawLayer2-href" href="' + prop.src + '" target="_blank" ><img id="drawLayer2-src" src="' + prop.src + '" style="object-fit: cover;width: 300px;"></a><br>' +
-                '</div><hr>'
-            // if (!prop.name) cont += ''
-            store.state.base.editFeature = features[0]
-            console.log(features[0].getProperties())
-            store.state.base.editFeatureName = features[0].getProperties().name
-            store.state.base.editFeatureSetumei = features[0].getProperties().description
-            store.state.base.editFeatureSrc = features[0].getProperties().src
-            if (document.querySelector('#dialog-edit0').style.display === 'block' ||
-                document.querySelector('#dialog-measure').style.display === 'block') {
-              store.state.base.dialogs.dialogEdit.style.display = 'block'
             }
           }
-
           break
         case 'mesh500':
         case 'mesh250':
