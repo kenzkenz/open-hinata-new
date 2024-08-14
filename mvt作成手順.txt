@@ -336,6 +336,33 @@ gdal_merge.py -o OUTPUT.tif -ot Float32 -co COMPRESS=LZW -co BIGTIFF=YES INPUT1.
 
 rio mbtiles shizuokacs.vrt outpuy.mbtiles --format PNG --zoom-levels 0..18 --tile-size 512 --resampling bilinear
 
+tippecanoe -z10 -f -o s31.pmtiles s3.geojson
+tippecanoe -Z11 -rg -pk -f -o s32.pmtiles s3.geojson
+tile-join -f -o s30.pmtiles s31.pmtiles s32.pmtiles
+
+tippecanoe -z10 -f -o t31.pmtiles t3.geojson
+tippecanoe -Z11 -rg -pk -f -o t32.pmtiles t3.geojson
+tile-join -f -o t30.pmtiles t31.pmtiles t32.pmtiles
+
+// ↓間引きすぎて使えない。
+tippecanoe --drop-densest-as-needed -f -o zenkoku2.pmtiles zenkoku.geojson
+
+tippecanoe -S10 -f -o zenkoku2.pmtiles zenkoku.geojson
+
+tippecanoe -z7 -f -o b31.pmtiles b3.geojson
+tippecanoe -Z8 -rg -pk -f -o b32.pmtiles b3.geojson
+tile-join -f -o b30.pmtiles b31.pmtiles b32.pmtiles
+
+tippecanoe -rg -pk -f -o b3.pmtiles b3.geojson
+
+tippecanoe -f -o y.pmtiles y.geojson
+
+tippecanoe -z10 -S5 -f -o y1.pmtiles y.geojson
+tippecanoe -Z11 -f -o y2.pmtiles y.geojson
+tile-join -f -o y0.pmtiles y1.pmtiles y2.pmtiles
+
+tippecanoe --coalesce-densest-as-needed -f -o y.pmtiles y.geojson
+
 
 $ cd tile
 $ gzip -d -v -r -S .pbf *

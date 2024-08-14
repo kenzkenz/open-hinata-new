@@ -43,16 +43,21 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
       features0 = [features[0]]
     }
   }
-  let i
-  const drawLayer = layers.find((layer,index) => {
-    i = index
-    return layer.get('name') === 'drawLayer'
-  })
 
-  if (drawLayer) {
-    features0.push(features[i])
-    layers.push(drawLayer)
+  let drawLayer
+  if (layers) {
+    let i
+    drawLayer = layers.find((layer,index) => {
+      i = index
+      return layer.get('name') === 'drawLayer'
+    })
+
+    if (drawLayer) {
+      features0.push(features[i])
+      layers.push(drawLayer)
+    }
   }
+
 
 
   if (!layers) {

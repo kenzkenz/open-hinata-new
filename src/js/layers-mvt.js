@@ -3784,11 +3784,29 @@ for (let i of mapsStr) {
   syougakkouku0Obj[i].values_['pointer'] = true
 }
 //R05小学校区------------------------------------------------------------------------------------------------
-const syougakkokuR05Source = new VectorTileSource({
-  format: new MVT(),
-  maxZoom:14,
-  url: "https://kenzkenz3.xsrv.jp/syogakko/gakku/r0503/{z}/{x}/{y}.mvt"
+// function Syochiiki2020(){
+//   this.name = 'syochiki2020'
+//   this.className = 'syochiki2020'
+//   this.source = new olpmtiles.PMTilesVectorSource({
+//     url:'https://kenzkenz3.xsrv.jp/pmtiles/syochiiki/zenkoku.pmtiles'
+//   })
+//   this.style = syochiikiStyleFunction()
+//   this.maxResolution = syochiikiMaxResolution
+//   this.declutter = true
+// }
+
+
+
+
+const syougakkokuR05Source = new olpmtiles.PMTilesVectorSource({
+  url:'https://kenzkenz3.xsrv.jp/pmtiles/syogakko/r05/s30.pmtiles'
 })
+
+// const syougakkokuR05Source = new VectorTileSource({
+//   format: new MVT(),
+//   maxZoom:14,
+//   url: "https://kenzkenz3.xsrv.jp/syogakko/gakku/r0503/{z}/{x}/{y}.mvt"
+// })
 syougakkokuR05Source.set('olcs_skip', false)
 syougakkokuR05Source.set('olcs_minimumLevel', 1)
 function SyougakkoukuR05(mapName){
@@ -3797,7 +3815,7 @@ function SyougakkoukuR05(mapName){
   this.source = syougakkokuR05Source
   this.style = syougakkoukuStyleFunction(3,mapName,'syogakkoR05');
   // this.maxResolution = 611.496226 //zoom8
-  this.maxResolution = 1222.99 //zoom7
+  // this.maxResolution = zoom7
   // this.declutter = true
   // this.overflow = true
 }
@@ -3829,7 +3847,7 @@ for (let i of mapsStr) {
   syougakkoukuR05Obj[i] = new LayerGroup({
     layers: [
       syougakkoukuR05MvtObj[i],
-      syougakkoukuR05RasterObj[i],
+      // syougakkoukuR05RasterObj[i],
     ]
   })
   syougakkoukuR05Obj[i].values_['pointer'] = true
@@ -3903,7 +3921,8 @@ function syougakkoukuStyleFunction(year,mapName,componentName) {
     let rgb
     let rgba = "rgba(255,255,255,0)"
     if (prop["id"]) {
-      const id = Math.round(Number(prop["id"].toString().slice(-3)))
+      // const id = Math.round(Number(prop["id"].toString().slice(-3)))
+      const id = prop["id"]
       rgb = d3.rgb(d3OridinalColor(id))
       rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
     }
@@ -3957,7 +3976,7 @@ function syougakkoukuStyleFunction(year,mapName,componentName) {
               color: rgba
             }),
             stroke: new Stroke({
-              color: "black",
+              color: 'black',
               width: 2
             }),
             zIndex: 0
@@ -3968,7 +3987,7 @@ function syougakkoukuStyleFunction(year,mapName,componentName) {
               color: rgba
             }),
             stroke: new Stroke({
-              color: "black",
+              color: zoom >= 11 ? 'black' : 'rgba(0,0,0,0)',
               width: 1
             }),
             zIndex: 0
@@ -4060,17 +4079,24 @@ for (let i of mapsStr) {
   tyuugakkouku0Obj[i].values_['pointer'] = true
 }
 //R05中学校区---------------------------------------------------------------------------------------
+
+
+
 function TyuugakkoukuMvt(mapName){
   this.name = 'tyuugakkouku'
   // this.className = 'tyuugakkoukuR05'
-  this.source = new VectorTileSource({
-    format: new MVT(),
-    maxZoom:14,
-    url: "https://kenzkenz3.xsrv.jp/tyugakko/gakku/r0503/{z}/{x}/{y}.mvt"
-  });
+  // this.source = new VectorTileSource({
+  //   format: new MVT(),
+  //   maxZoom:14,
+  //   url: "https://kenzkenz3.xsrv.jp/tyugakko/gakku/r0503/{z}/{x}/{y}.mvt"
+  // });
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/cyugakko/r05/t30.pmtiles'
+  })
+
   this.style = syougakkoukuStyleFunction(30,mapName,'tyugakkoR05');
   // this.maxResolution = 611.496226 //zoom8
-  this.maxResolution = 1222.99 //zoom7
+  // this.maxResolution = zoom7
 
   // this.declutter = true
   // this.overflow = true
@@ -4102,7 +4128,7 @@ for (let i of mapsStr) {
   tyugakkokuR05Obj[i] = new LayerGroup({
     layers: [
       tyugakkokuR05MvtObj[i],
-      tyugakkokuR05RasterObj[i],
+      // tyugakkokuR05RasterObj[i],
     ]
   })
   tyugakkokuR05Obj[i].values_['pointer'] = true
@@ -4692,14 +4718,18 @@ for (let i of mapsStr) {
 export const youtoR01Summ = "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-A29-v2_1.html' target='_blank'>国土数値情報　用途地域</a>";
 
 //R05用途地域------------------------------------------------------------------------------------------------
+let yotochiikiMaxResolution
+if (window.innerWidth > 1000) {
+  yotochiikiMaxResolution = zoom0
+} else {
+  yotochiikiMaxResolution = zoom10
+}
 function YoutoR05(){
   this.name = 'youtoR05'
-  this.source = new VectorTileSource({
-    format: new MVT(),
-    maxZoom:13,
-    url: 'https://kenzkenz3.xsrv.jp/mvt/yotochiiki/r05/{z}/{x}/{y}.mvt'
-  });
-  this.maxResolution = '152.874057' //zoom10
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url: 'https://kenzkenz3.xsrv.jp/pmtiles/yotochiiki/r05/y.pmtiles'
+  })
+  this.maxResolution = yotochiikiMaxResolution
   this.style = youtotiikiStyleFunction();
 }
 export  const youtoR05Obj = {};
@@ -4707,8 +4737,6 @@ for (let i of mapsStr) {
   youtoR05Obj[i] = new VectorTileLayer(new YoutoR05())
 }
 export const youtoR05Summ = "<a href='https://www.mlit.go.jp/toshi/tosiko/toshi_tosiko_tk_000087.html' target='_blank'>都市計画決定GISデータ</a>"
-
-
 
 //------------------------------------------------------
 function youtotiikiStyleFunction() {
@@ -7584,11 +7612,6 @@ function gunStyleFunction(mapName) {
         break
       case '県で色分け':
         id = prop.PREF
-        // if (result) {
-        //   id = result.id
-        // } else {
-        //   id = 0
-        // }
         break
       case '国で色分け':
         id = prop.KUNI
@@ -8811,16 +8834,18 @@ function yubinkuColorStyleFunction() {
 }
 // 幕末期近世村---------------------------------------------------------------
 let kinseiPolygonMaxResolution
+let kinseiUrl
 if (window.innerWidth > 1000) {
+  kinseiUrl = 'https://kenzkenz3.xsrv.jp/pmtiles/bakumatsu/b3.pmtiles'
   kinseiPolygonMaxResolution = zoom0
 } else {
-  kinseiPolygonMaxResolution = 360	 //zoom9
+  kinseiUrl = 'https://kenzkenz3.xsrv.jp/pmtiles/bakumatsu/output.pmtiles'
   kinseiPolygonMaxResolution = zoom0
 }
 function KinseiPolygon(mapName){
   this.name = 'kinseipolygon'
   this.source = new olpmtiles.PMTilesVectorSource({
-    url:'https://kenzkenz3.xsrv.jp/pmtiles/bakumatsu/output.pmtiles'
+    url: kinseiUrl
   })
   this.style = kinseiPolygonStyleFunction(mapName)
   this.maxResolution = kinseiPolygonMaxResolution
