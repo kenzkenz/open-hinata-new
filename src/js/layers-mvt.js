@@ -23,6 +23,14 @@ import * as Loadingstrategy from 'ol/loadingstrategy'
 import WebGLTile from "ol/layer/WebGLTile"
 // import { gsiOptVtLayer } from '@cieloazul310/ol-gsi-vt'
 // import { gsiOptVtStyle } from "@cieloazul310/ol-gsi-vt-style";
+const zoom0 = 156543.03
+const zoom7 = 1222.99
+const zoom8 = 611.496226
+const zoom9 = 305.748113
+const zoom10 = 152.874057
+const zoom11 = 76.437028
+const zoom12 = 38.218514
+const zoom13 = 	19.109257
 
 const transformE = extent => {
   function compareFunc(a, b) {
@@ -8804,10 +8812,10 @@ function yubinkuColorStyleFunction() {
 // 幕末期近世村---------------------------------------------------------------
 let kinseiPolygonMaxResolution
 if (window.innerWidth > 1000) {
-  kinseiPolygonMaxResolution = 156543.03	 //zoom1
+  kinseiPolygonMaxResolution = zoom0
 } else {
   kinseiPolygonMaxResolution = 360	 //zoom9
-  kinseiPolygonMaxResolution = 156543.03	 //zoom1
+  kinseiPolygonMaxResolution = zoom0
 }
 function KinseiPolygon(mapName){
   this.name = 'kinseipolygon'
