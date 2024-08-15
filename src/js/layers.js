@@ -13355,6 +13355,8 @@ export const Layers =
         { text: '地形分類（人工地形）', data: { id: "zinkoutikei", layer: LayersMvt.zinkoutikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm } },
         { text: '土地利用図（1982～1983年）', data: { id: "totiriyouzu", layer: totiriyouzuObj, opacity: 1, summary: totiriyouzuSumm } },
         { text: '数値地図25000（土地条件）', data: { id: "suuti25000", layer: suuti25000Obj, opacity: 1, summary: suuti25000Summ } },
+        { text: '最適化ベクトルタイル', data: { id: "saitekika", layer: LayersMvt.saitekikaObj, opacity: 1, summary: LayersMvt.saitekikaSumm} },
+
       ]},
     { text:'統計',
       children: [
@@ -14672,6 +14674,7 @@ export const Layers =
       ]},
     { text: 'その他',
       children: [
+
         { text: '登記所備付地図データ(宮崎市)', data: { id: "homusyomiyazakishi", layer: LayersMvt.homusyomiyazaki2024Obj, opacity: 1, summary: LayersMvt.homusyomiyazaki2024Summ } },
         { text: '2021土地利用細分メッシュ(100m)', data: { id: "tochiriyosaibun", layer: LayersMvt.mesh100mTochiriyoObj, opacity: 1, summary: LayersMvt.mesh1kmObjSumm } },
 

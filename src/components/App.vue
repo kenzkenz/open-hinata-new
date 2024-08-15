@@ -1687,13 +1687,15 @@
         background-color: #bed2ff;
     }
     #map01{
-        background-color: #bed2ff;
+        /*background-color: #bed2ff;*/
+        background-color: white;
         position: relative;
         z-index: 1;
         border: #fff 1px solid;
     }
     #map02{
-        background-color: #bed2ff;
+        /*background-color: #bed2ff;*/
+        background-color: white;
         position: absolute;
         border: #fff 1px solid;
     }
