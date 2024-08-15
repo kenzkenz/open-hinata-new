@@ -62,19 +62,6 @@ String.prototype.trunc =
 // const mapsStr = ['map01','map02','map03','map04'];
 const mapsStr = ['map01','map02']
 
-
-const layer99 = new VectorTileLayer({
-  source: new VectorTileSource({
-    url: "https://cyberjapandata.gsi.go.jp/xyz/optimal_bvmap-v1/{z}/{x}/{y}.pbf",
-    maxZoom: 16,
-    minZoom: 4,
-    format: new MVTFormat(),
-  }),
-  style: gsiOptVtStyle(),
-  declutter: true, // 任意
-})
-
-
 function saitekika(){
   this.source = new olpmtiles.PMTilesVectorSource({
     url:"https://cyberjapandata.gsi.go.jp/xyz/optimal_bvmap-v1/optimal_bvmap-v1.pmtiles",
