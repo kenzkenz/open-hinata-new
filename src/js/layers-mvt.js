@@ -22,7 +22,8 @@ import  * as Tilegrid from 'ol/tilegrid'
 import * as Loadingstrategy from 'ol/loadingstrategy'
 import WebGLTile from "ol/layer/WebGLTile"
 // import { gsiOptVtLayer } from '@cieloazul310/ol-gsi-vt'
-import { gsiOptVtStyle } from "@cieloazul310/ol-gsi-vt-style";
+import { gsiOptVtStyle } from "@cieloazul310/ol-gsi-vt-style"
+import { gsiVtStyle } from '@cieloazul310/ol-gsi-vt-style'
 const zoom0 = 156543.03
 const zoom7 = 1222.99
 const zoom8 = 611.496226
@@ -62,6 +63,30 @@ String.prototype.trunc =
 // const mapsStr = ['map01','map02','map03','map04'];
 const mapsStr = ['map01','map02']
 
+// 最適化ベクトルタイル-----------------------------------------------------------------------------
+
+const layer = new VectorLayer({
+  source: new VectorTileSource({
+    format: new MVTFormat(),
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/experimental_bvmap/{z}/{x}/{y}.pbf',
+  }),
+  style: gsiVtStyle(),
+});
+
+function saitekika0(){
+  this.source = new VectorTileSource({
+    format: new MVTFormat(),
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/experimental_bvmap/{z}/{x}/{y}.pbf',
+  })
+  this.style = gsiVtStyle()
+}
+export const saitekika0Summ = "<a href='https://cieloazul310.github.io/ol-gsi-vt/' target='_blank'>ol-gsi-vt</a>"
+export  const saitekika0Obj = {}
+for (let i of mapsStr) {
+  saitekika0Obj[i] = new VectorTileLayer(new saitekika0())
+}
+
+
 function saitekika(){
   this.source = new olpmtiles.PMTilesVectorSource({
     url:"https://cyberjapandata.gsi.go.jp/xyz/optimal_bvmap-v1/optimal_bvmap-v1.pmtiles",
@@ -75,7 +100,7 @@ export  const saitekikaObj = {}
 for (let i of mapsStr) {
   saitekikaObj[i] = new VectorTileLayer(new saitekika())
 }
-
+// --------------------------------------------------------------------------------
 
 // const fsource = new VectorSource({
 //   loader: async function () {

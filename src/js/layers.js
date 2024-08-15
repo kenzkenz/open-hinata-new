@@ -13356,6 +13356,8 @@ export const Layers =
         { text: '土地利用図（1982～1983年）', data: { id: "totiriyouzu", layer: totiriyouzuObj, opacity: 1, summary: totiriyouzuSumm } },
         { text: '数値地図25000（土地条件）', data: { id: "suuti25000", layer: suuti25000Obj, opacity: 1, summary: suuti25000Summ } },
         { text: '最適化ベクトルタイル', data: { id: "saitekika", layer: LayersMvt.saitekikaObj, opacity: 1, summary: LayersMvt.saitekikaSumm} },
+        { text: 'ベクトルタイル', data: { id: "saitekika0", layer: LayersMvt.saitekika0Obj, opacity: 1, summary: LayersMvt.saitekika0Summ} },
+
 
       ]},
     { text:'統計',
