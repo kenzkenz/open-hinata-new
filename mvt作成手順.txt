@@ -363,6 +363,8 @@ tile-join -f -o y0.pmtiles y1.pmtiles y2.pmtiles
 
 tippecanoe --coalesce-densest-as-needed -f -o y.pmtiles y.geojson
 
+tippecanoe -x path -x Shape_Area -x Shape_Le_1 -x Shape_Leng -x CODE2 -x CODE3 -x CODE4 -x CODE5 -x LU_3 -x LU_4 -x LU_5 -f -o t.pmtiles t.geojson
+
 test
 
 

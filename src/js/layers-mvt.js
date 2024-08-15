@@ -190,14 +190,15 @@ function kotujikoStyleFunction() {
 //東京都土地利用現況調査------------------------------------------------------------------------------------------------
 let tokyotochiroyoaxResolution
 if (window.innerWidth > 1000) {
-  tokyotochiroyoaxResolution = 156543.03	//zoom0
+  tokyotochiroyoaxResolution = zoom0
 } else {
   tokyotochiroyoaxResolution = 	2.388657	 //zoom16
+  // tokyotochiroyoaxResolution = zoom0
 }
 function TokyoTochiriyo(){
   this.name = 'tokyotochiriyo'
   this.source = new olpmtiles.PMTilesVectorSource({
-    url:'https://kenzkenz3.xsrv.jp/pmtiles/tokyotochiriyo/output.pmtiles'
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/tokyotochiriyo/t.pmtiles'
   })
   this.maxResolution = tokyotochiroyoaxResolution
   this.style = tokyoTochiriyoStyleFunction()
