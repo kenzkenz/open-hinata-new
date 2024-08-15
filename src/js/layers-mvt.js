@@ -8985,7 +8985,6 @@ function kinseiPolygonStyleFunction(mapName) {
         rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
         break
       case '石高で色分け2':
-        console.log(prop.石高計)
         rgb = d3.rgb(d3Color2(prop.石高計))
         rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
         break
