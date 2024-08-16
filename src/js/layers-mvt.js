@@ -5104,6 +5104,9 @@ export const kouziH30Summ = "<a href='' target='_blank'>国土数値情報　公
 function KouziR04(mapName){
   this.name = 'kouziR04'
   this.className = 'kouziR04'
+  // this.source = new olpmtiles.PMTilesVectorSource({
+  //   url: 'https://kenzkenz3.xsrv.jp/pmtiles/kouji/r04/k.pmtiles'
+  // })
   this.source = new VectorTileSource({
     format: new MVT(),
     maxZoom:15,
@@ -5111,7 +5114,7 @@ function KouziR04(mapName){
   });
   this.style = kouziStyleFunction(mapName,4)
   // this.maxResolution = 152.874058 //zoom10
-  // this.declutter = true
+  // this.declutter = 'separate'
   // this.overflow = true
   // this.renderMode = 'hybrid'
   // this.renderOrder = null

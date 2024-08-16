@@ -365,7 +365,8 @@ tippecanoe --coalesce-densest-as-needed -f -o y.pmtiles y.geojson
 
 tippecanoe -x path -x Shape_Area -x Shape_Le_1 -x Shape_Leng -x CODE2 -x CODE3 -x CODE4 -x CODE5 -x LU_3 -x LU_4 -x LU_5 -f -o t.pmtiles t.geojson
 
-test3
+tippecanoe -f -o k.pmtiles kouzi.geojson
+tippecanoe --cluster-distance=10 -f -o k2.pmtiles kouzi.geojson
 
 
 $ cd tile
