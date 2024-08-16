@@ -3169,8 +3169,6 @@ for (let i of mapsStr) {
     const id = mw5[j].id
     const url = 'https://mapwarper.h-gis.jp/maps/tile/' + id + '/{z}/{x}/{y}.png'
     const bbox = mw5[j].extent
-
-
     const layer = new TileLayer(new Mapwarper(url,bbox,611.496226))
     layerGroup.push(layer)
   }
