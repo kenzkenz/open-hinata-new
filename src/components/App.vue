@@ -2114,8 +2114,11 @@
       z-index: 2!important;
     }
     .gray-scale {
-      mix-blend-mode: multiply;
+      /*mix-blend-mode: multiply;*/
       filter: grayScale(1);
+    }
+    .dark-scale {
+      filter: grayscale(100%) brightness(0.7);
     }
     .ol-title .ol-closebox {
       font-size: x-large;

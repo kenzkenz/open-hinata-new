@@ -521,7 +521,7 @@ for (let i of mapsStr) {
   paleObj[i] = new TileLayer(new Pale())
 }
 export const paleSumm = '国土地理院作成のタイルです。<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">リンク</a>'
-// 淡色地図------------------------------------------------------------------------------------
+// モノクロ地図------------------------------------------------------------------------------------
 function Palegray () {
   this.preload = Infinity
   this.className = 'gray-scale'
@@ -531,11 +531,25 @@ function Palegray () {
     minZoom: 2,
     maxZoom: 18
   })
-  this.useInterimTilesOnError = false
 }
 const paleGrayObj = {}
 for (let i of mapsStr) {
   paleGrayObj[i] = new TileLayer(new Palegray())
+}
+// ダーク地図------------------------------------------------------------------------------------
+function Paledark () {
+  this.preload = Infinity
+  this.className = 'dark-scale'
+  this.source = new XYZ({
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
+    crossOrigin: 'anonymous',
+    minZoom: 2,
+    maxZoom: 18
+  })
+}
+const paleDarkObj = {}
+for (let i of mapsStr) {
+  paleDarkObj[i] = new TileLayer(new Paledark())
 }
 // 白地図--------------------------------------------------------------------------------------
 function Blank () {
@@ -13343,6 +13357,7 @@ export const Layers =
         { text: '標準地図', data: { id: 1, layer: stdObj, opacity: 1, summary: stdSumm } },
         { text: '淡色地図', data: { id: 2, layer: paleObj, opacity: 1, summary: paleSumm } },
         { text: 'モノクロ地図', data: { id: 'monochrome', layer: paleGrayObj, opacity: 1, summary: paleSumm } },
+        { text: 'ダーク地図', data: { id: 'paleDark', layer: paleDarkObj, opacity: 1, summary: paleSumm } },
         { text: '白地図', data: { id: 3, layer: blankObj, opacity: 1, summary: blankSumm } },
         { text: '色別標高図', data: { id: 4, layer: reliefObj, opacity: 1, summary: reliefSumm } },
         { text: '陰影起伏図', data: { id: 'inei', layer: ineiObj, opacity: 1, summary: stdSumm } },

@@ -5105,7 +5105,7 @@ function KouziR04(mapName){
   this.name = 'kouziR04'
   this.className = 'kouziR04'
   // this.source = new olpmtiles.PMTilesVectorSource({
-  //   url: 'https://kenzkenz3.xsrv.jp/pmtiles/kouji/r04/k.pmtiles'
+  //   url: 'https://kenzkenz3.xsrv.jp/pmtiles/kouji/r04/k2.pmtiles'
   // })
   this.source = new VectorTileSource({
     format: new MVT(),
