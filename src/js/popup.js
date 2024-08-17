@@ -740,8 +740,8 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           if (cont.indexOf('kumamotomai') === -1) {
             if(!prop["ITM01_NAME"]) {
               cont += '<div class="kumamotomai" style=width:300px;font-size:small;>' +
+                  '<h4>' + prop.m_cont2 + '</h4>' +
                   '遺跡番号=' + prop.m_cont1 + '<br>' +
-                  '遺跡名称=' + prop.m_cont2 + '<br>' +
                   '所在地=' + prop.m_cont3 + '<br>' +
                   '時代=' + prop.m_cont4 + '<br>' +
                   '種別=' + prop.m_cont5 + '<br>' +
@@ -751,8 +751,8 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                   '</div><hr>'
             } else {
               cont += '<div class="kumamotomai" style=width:300px;font-size:small;>' +
+                  '<h4>' + prop.ITM02_VAL + '</h4>' +
                   '遺跡番号=' + prop.ITM01_VAL + '<br>' +
-                  '遺跡名称=' + prop.ITM02_VAL + '<br>' +
                   '備考1=' + prop.ITM03_VAL + '<br>' +
                   '備考2=' + prop.ITM04_VAL + '<br>' +
                   '備考3=' + prop.ITM05_VAL + '<br>' +

@@ -161,7 +161,6 @@ for (let i of mapsStr) {
 function Kotujiko(){
   this.name = 'kotujiko'
   this.source = new olpmtiles.PMTilesVectorSource({
-    // url:"https://cyberjapandata.gsi.go.jp/xyz/optimal_bvmap-v1/optimal_bvmap-v1.pmtiles",
     url:'https://xs489works.xsrv.jp/pmtiles-data/traffic-accident/honhyo_2019-2023_convert.pmtiles'
   })
   this.style = kotujikoStyleFunction()
@@ -2741,12 +2740,16 @@ function saboStyleFunction() {
 
 
 // 大規模盛土造成地データ-----------------------------------------------------------------------
-const zoseiSource = new VectorTileSource({
-  crossOrigin: 'Anonymous',
-  format: new MVT(),
-  maxZoom:14,
-  url: "https://kenzkenz3.xsrv.jp/mvt/zosei/{z}/{x}/{y}.mvt"
-});
+
+const zoseiSource = new olpmtiles.PMTilesVectorSource({
+  url:'https://kenzkenz3.xsrv.jp/pmtiles/zosei/z.pmtiles'
+})
+// const zoseiSource = new VectorTileSource({
+//   crossOrigin: 'Anonymous',
+//   format: new MVT(),
+//   maxZoom:14,
+//   url: "https://kenzkenz3.xsrv.jp/mvt/zosei/{z}/{x}/{y}.mvt"
+// });
 zoseiSource.set('olcs_skip', false)
 zoseiSource.set('olcs_minimumLevel', 1)
 function zoseiMvt(){
@@ -2754,7 +2757,7 @@ function zoseiMvt(){
   // this.className = 'zoseiMvt'
   this.source = zoseiSource
   this.style = zoseiStyleFunction()
-  this.maxResolution = 152.874057 //zoom10
+  // this.maxResolution = zoom10
   // this.declutter = true
   // this.overflow = true
 }
@@ -2784,7 +2787,7 @@ export const zoseiObj = {};
 for (let i of mapsStr) {
   zoseiObj[i] = new LayerGroup({
     layers: [
-      zoseiRasterObj[i],
+      // zoseiRasterObj[i],
       zouseiMvtObj[i]
     ]
   })
@@ -8222,12 +8225,15 @@ function okayamamaiFunction() {
 function kumamotoMai() {
   this.name = "kumamotomai";
   this.style = kumamotomaiFunction('m_cont2');
-  this.source = new VectorTileSource({
-    format: new MVT(),
-    maxZoom: 17,
-    // url: "https://mtile.pref.miyazaki.lg.jp/tile/mvt/iseki/kumamotoken/{z}/{x}/{y}.mvt"
-    url: "https://kenzkenz.github.io/kumamotoiseki/{z}/{x}/{y}.mvt"
-  });
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/kumamotoiseki/k.pmtiles'
+  })
+  // this.source = new VectorTileSource({
+  //   format: new MVT(),
+  //   maxZoom: 17,
+  //   // url: "https://mtile.pref.miyazaki.lg.jp/tile/mvt/iseki/kumamotoken/{z}/{x}/{y}.mvt"
+  //   url: "https://kenzkenz.github.io/kumamotoiseki/{z}/{x}/{y}.mvt"
+  // });
 }
 export const kumamotomaiSumm = "<a href='https://www.pref.kumamoto.jp/soshiki/125/90282.html' target='_blank'>熊本県　遺跡地図</a>"
 export  const kumamotomaiObj = {};
@@ -8255,25 +8261,17 @@ function kumamotomaiFunction(text) {
       case "Point":
         const iconStyle = new Style({
           image: new Icon({
-            anchor: [0.5, 1],
-            src: require('@/assets/icon/whitepin.png'),
+            src: require('@/assets/icon/whitecircle.png'),
             color: 'orange',
-          }),
-          zIndex: 9
-        });
-        const iconStyleLerge = new Style({
-          image: new Icon({
-            anchor: [0.5, 1],
-            src: require('@/assets/icon/whitepinlarge.png'),
-            color: 'orange',
+            scale: 1.5
           }),
           zIndex: 9
         });
         const textStyle = new Style({
           text: new Text({
-            font: "10px sans-serif",
+            font: "14px sans-serif",
             text: prop[text],
-            offsetY: 10,
+            offsetY: 14,
             stroke: new Stroke({
               color: "white",
               width: 3
@@ -8281,8 +8279,7 @@ function kumamotomaiFunction(text) {
             zIndex: 9
           })
         })
-        if (zoom>=11 && zoom<=12) styles.push(iconStyle)
-        if (zoom>=13) styles.push(iconStyleLerge)
+        if (zoom>=13) styles.push(iconStyle)
         if (zoom>=13) styles.push(textStyle)
         break;
       case "Polygon":

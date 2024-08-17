@@ -368,6 +368,8 @@ tippecanoe -x path -x Shape_Area -x Shape_Le_1 -x Shape_Leng -x CODE2 -x CODE3 -
 tippecanoe -f -o k.pmtiles kouzi.geojson
 tippecanoe -rg -pk -y L01_024 -y L01_100 -f -o k2.pmtiles kouzi.geojson
 
+tippecanoe -f -o z.pmtiles z.geojson
+tippecanoe -f -o k.pmtiles k.geojson
 
 $ cd tile
 $ gzip -d -v -r -S .pbf *
