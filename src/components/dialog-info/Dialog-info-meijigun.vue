@@ -7,7 +7,7 @@
       <b-form-select v-model="s_selectColor" :options="options" @change="selectChange"></b-form-select>
     </div>
     <div style="margin-top: 5px;">国名、郡名で抽出</div>
-    <b-form-input type='text' v-model="s_gunmei" placeholder="国名、郡名"></b-form-input>
+    <b-form-input type='text' v-model="s_gunmei" placeholder="空白でor抽出"></b-form-input>
     <hr>
     <div>
       <span v-html="item.summary"></span>

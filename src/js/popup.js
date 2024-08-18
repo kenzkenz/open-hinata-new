@@ -808,7 +808,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           break
         case 'toyamamaibun':
           cont += '<div style=width:300px;font-size:small;>' +
-              '名称=' + prop.名称 + '<br>' +
+              '<H4>' + prop.名称 + '</H4>' +
               'かな=' + prop.かな + '<br>' +
               '市町村=' + prop.市町村 + '<br>' +
               '所在地=' + prop.所在地 + '<br>' +

@@ -474,6 +474,22 @@ for (let i of mapsStr) {
   osmObj[i] = new TileLayer(new Osm())
 }
 const osmSumm = 'OpenStreetMapは、道路地図などの地理情報データを誰でも利用できるよう、フリーの地理情報データを作成することを目的としたプロジェクトです。<a href=\'https://openstreetmap.jp\' target=\'_blank\'>OpenStreetMap</a>';
+// 人工改変地形（白黒）------------------------------------------------------------------------------------
+function JinkoShirokuro () {
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://maps.gsi.go.jp/xyz/landform2_mono/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    minZoom: 2,
+    maxZoom: 18
+  })
+}
+const jinkoShirokuroObj = {}
+for (let i of mapsStr) {
+  jinkoShirokuroObj[i] = new TileLayer(new JinkoShirokuro())
+}
+const jinkoShirokuroSumm = '<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">国土地理院</a><br>' +
+    '<a href="https://maps.gsi.go.jp/legend/landform2_mono_legend.pdf" target="_blank">凡例</a>'
 // 自然地形（白黒）------------------------------------------------------------------------------------
 function ShizenShirokuro () {
   this.preload = Infinity
@@ -488,8 +504,8 @@ const shizenShirokuroObj = {}
 for (let i of mapsStr) {
   shizenShirokuroObj[i] = new TileLayer(new ShizenShirokuro())
 }
-const shizenShirokuroSumm = '国土地理院作成のタイルです。<br><a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">リンク</a>'
-
+const shizenShirokuroSumm = '<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">国土地理院</a><br>' +
+                            '<a href="https://maps.gsi.go.jp/legend/landform1_mono_legend.pdf" target="_blank">凡例</a>'
 // 標準地図------------------------------------------------------------------------------------
 function Std () {
   this.preload = Infinity
@@ -521,6 +537,35 @@ for (let i of mapsStr) {
   paleObj[i] = new TileLayer(new Pale())
 }
 export const paleSumm = '国土地理院作成のタイルです。<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">リンク</a>'
+// ミエルネ地図------------------------------------------------------------------------------------
+function Mierune () {
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://tile.mierune.co.jp/mierune/{z}/{x}/{y}.png',
+    crossOrigin: 'anonymous',
+    minZoom: 2,
+    maxZoom: 18
+  })
+}
+const mieruneObj = {}
+for (let i of mapsStr) {
+  mieruneObj[i] = new TileLayer(new Mierune())
+}
+// ミエルネモノクロ地図------------------------------------------------------------------------------------
+function Mierunegray () {
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://tile.mierune.co.jp/mierune_mono/{z}/{x}/{y}.png',
+    crossOrigin: 'anonymous',
+    minZoom: 2,
+    maxZoom: 18
+  })
+}
+export const mieruneSumm = '<a href="https://gisaca.net/tilemap/#toc20" target="_blank">MIERUNE</a>'
+const mieruneGrayObj = {}
+for (let i of mapsStr) {
+  mieruneGrayObj[i] = new TileLayer(new Mierunegray())
+}
 // モノクロ地図------------------------------------------------------------------------------------
 function Palegray () {
   this.preload = Infinity
@@ -535,6 +580,36 @@ function Palegray () {
 const paleGrayObj = {}
 for (let i of mapsStr) {
   paleGrayObj[i] = new TileLayer(new Palegray())
+}
+// 反転地図------------------------------------------------------------------------------------
+function Palehanten () {
+  this.preload = Infinity
+  this.className = 'hanten-scale'
+  this.source = new XYZ({
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
+    crossOrigin: 'anonymous',
+    minZoom: 2,
+    maxZoom: 18
+  })
+}
+const paleHantenObj = {}
+for (let i of mapsStr) {
+  paleHantenObj[i] = new TileLayer(new Palehanten())
+}
+// セピア地図------------------------------------------------------------------------------------
+function Palesepia () {
+  this.preload = Infinity
+  this.className = 'sepia-scale'
+  this.source = new XYZ({
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
+    crossOrigin: 'anonymous',
+    minZoom: 2,
+    maxZoom: 18
+  })
+}
+const paleSepiaObj = {}
+for (let i of mapsStr) {
+  paleSepiaObj[i] = new TileLayer(new Palesepia())
 }
 // ダーク地図------------------------------------------------------------------------------------
 function Paledark () {
@@ -13328,6 +13403,7 @@ export const Layers =
         { text: '陸化したと思われる港', data: { id: 'notominato', layer: LayersMvt.notominatoObj, opacity: 1, summary: LayersMvt.notominatoSumm } },
         { text: '能登西部赤色立kochiOrthoObj体地図', data: { id: 'notoseibu', layer: notoSeibuObj, opacity: 1, summary: notoSeubuSumm } },
         { text: '液状化危険度分布図（石川県）', data: { id: 'ekizyouka17', layer: ekizyouka17Obj, opacity: 1, summary: ekizyoukaSumm } },
+        { text: '富山県埋蔵文化財', data: { id: "toyamamaibun", layer: LayersMvt.toyamamaibunObj, opacity: 1, summary: LayersMvt.toyamamaibunSumm } },
         { text: '17石川県農地', data: { id: 'hude17', layer: LayersMvt.hude17Obj, opacity: 1, summary: LayersMvt.hude17Summ } },
         { text: '戦前地形図5万分の１', data: { id: 'mw5', layer: mw5Obj, opacity: 1, summary: mw5Summ } },
         { text: '17石川県古地図(大正14年)', data: { id: 'kotizu17isikawa', layer: kotizu17isikawaObj, opacity: 1, summary: kotizu17isikawaSumm } },
@@ -13354,8 +13430,6 @@ export const Layers =
       children: [
         { text: '標準地図', data: { id: 1, layer: stdObj, opacity: 1, summary: stdSumm } },
         { text: '淡色地図', data: { id: 2, layer: paleObj, opacity: 1, summary: paleSumm } },
-        { text: 'モノクロ地図', data: { id: 'monochrome', layer: paleGrayObj, opacity: 1, summary: paleSumm } },
-        { text: 'ダーク地図', data: { id: 'paleDark', layer: paleDarkObj, opacity: 1, summary: paleSumm } },
         { text: '白地図', data: { id: 3, layer: blankObj, opacity: 1, summary: blankSumm } },
         { text: '色別標高図', data: { id: 4, layer: reliefObj, opacity: 1, summary: reliefSumm } },
         { text: '陰影起伏図', data: { id: 'inei', layer: ineiObj, opacity: 1, summary: stdSumm } },
@@ -13364,14 +13438,23 @@ export const Layers =
         { text: '治水地形分類図 更新版（2007年以降）', data: { id: 'tisui2007', layer: tisui2007Obj, opacity: 1, summary: tisui2007Summ } },
         { text: '地形分類（自然地形）', data: { id: 'sizen', layer: LayersMvt.sizentikei0Obj, opacity: 1, summary: LayersMvt.sizentikeiSumm} },
         { text: '自然地形（白黒）', data: { id: 'sizenshirokuro', layer: shizenShirokuroObj, opacity: 1, summary: shizenShirokuroSumm} },
+        { text: '人工改変地形（白黒）', data: { id: 'jinkoshirokuro', layer: jinkoShirokuroObj, opacity: 1, summary: jinkoShirokuroSumm} },
         // { text: '地形分類（自然地形『詳細版』）', data: { id: 'sizen', layer: LayersMvt.sizentikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm} },
         { text: '地形分類（人工地形）', data: { id: "zinkoutikei", layer: LayersMvt.zinkoutikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm } },
         { text: '土地利用図（1982～1983年）', data: { id: "totiriyouzu", layer: totiriyouzuObj, opacity: 1, summary: totiriyouzuSumm } },
         { text: '数値地図25000（土地条件）', data: { id: "suuti25000", layer: suuti25000Obj, opacity: 1, summary: suuti25000Summ } },
         { text: '最適化ベクトルタイル', data: { id: "saitekika", layer: LayersMvt.saitekikaObj, opacity: 1, summary: LayersMvt.saitekikaSumm} },
         { text: 'ベクトルタイル', data: { id: "saitekika0", layer: LayersMvt.saitekika0Obj, opacity: 1, summary: LayersMvt.saitekika0Summ} },
-
-
+      ]},
+    { text:'カラー地図',
+      children: [
+        { text: '白地図', data: { id: 3, layer: blankObj, opacity: 1, summary: blankSumm } },
+        { text: 'モノクロ地図', data: { id: 'monochrome', layer: paleGrayObj, opacity: 1, summary: paleSumm } },
+        { text: 'ダーク地図', data: { id: 'paleDark', layer: paleDarkObj, opacity: 1, summary: paleSumm } },
+        { text: 'セピア地図', data: { id: 'paleSepia', layer: paleSepiaObj, opacity: 1, summary: paleSumm } },
+        { text: '反転地図', data: { id: 'paleHanten', layer: paleHantenObj, opacity: 1, summary: paleSumm } },
+        { text: 'MIERUNE', data: { id: 'mierune', layer: mieruneObj, opacity: 1, summary: mieruneSumm } },
+        { text: 'MIERUNE mono', data: { id: 'mierunemono', layer: mieruneGrayObj, opacity: 1, summary: mieruneSumm } },
       ]},
     { text:'統計',
       children: [

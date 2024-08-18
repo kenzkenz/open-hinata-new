@@ -2120,8 +2120,14 @@
     .dark-scale {
       filter: grayscale(100%) brightness(0.7);
     }
+    .sepia-scale {
+      filter:sepia(60%);
+    }
     .pink-scale {
       filter:sepia(100%)hue-rotate(310deg);
+    }
+    .hanten-scale {
+      filter: brightness(1.1) invert(100%) hue-rotate(180deg) ;
     }
     .ol-title .ol-closebox {
       font-size: x-large;

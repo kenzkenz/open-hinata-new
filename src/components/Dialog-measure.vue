@@ -4,11 +4,12 @@
       計測もできます。
       <br>
       <b-button :pressed.sync="s_togglePoint0" class='olbtn' :size="btnSize">ポイント</b-button>
-      <b-button style="margin-left: 10px;" :pressed.sync="s_toggleLine" class='olbtn' :size="btnSize">ライン</b-button>
-      <b-button style="margin-left: 10px;" :pressed.sync="s_toggleMenseki" class='olbtn' :size="btnSize">ポリゴン</b-button>
-      <b-button style="margin-left: 10px;" :pressed.sync="s_toggleCircle" class='olbtn' :size="btnSize">サークル</b-button>
+      <b-button style="margin-left: 5px;" :pressed.sync="s_toggleLine" class='olbtn' :size="btnSize">ライン</b-button>
+      <b-button style="margin-left: 5px;" :pressed.sync="s_toggleMenseki" class='olbtn' :size="btnSize">ポリゴン</b-button>
+      <b-button style="margin-left: 5px;" :pressed.sync="s_toggleCircle" class='olbtn' :size="btnSize">円</b-button>
+<!--      <b-button style="margin-left: 5px;" :pressed.sync="s_toggleText" class='olbtn' :size="btnSize">文字</b-button>-->
 <!--      <b-button style="margin-left: 10px;" :pressed.sync="toggleDanmen" class='olbtn' :size="btnSize">{{ toggleDanmen ? '断面図' : '断面図' }}</b-button>-->
-
+      <br>
       <!--            <b-button style="margin-top: 10px;" class='olbtn' :size="btnSize" @click="drawStop">描画ストップ</b-button>-->
 <!--      <br>-->
       <b-button style="margin-top: 5px;" :pressed.sync="toggleIdou" class='olbtn' :size="btnSize">{{ toggleIdou ? '変形' : '変形' }}</b-button>
@@ -25,14 +26,10 @@
         <input type="range" min="0" max="1" step="0.01" class="range" v-model="s_drawOpacity" />
       </div>
 
-
       <hr>
       <b-button style="margin-top: 5px;" class='olbtn' :size="btnSize" @click="saveGeojson">geojson保存</b-button>
       <b-button style="margin-top: 5px;margin-left: 10px;" class='olbtn' :size="btnSize" @click="saveGpx">GPX保存</b-button>
       <b-button style="margin-top: 5px;margin-left: 10px;" class='olbtn' :size="btnSize" @click="saveKml">kml保存</b-button>
-
-
-
 
       <a id="download" download="draw.geojson"></a>
       <a id="download-gpx" download="draw.gpx"></a>
@@ -126,6 +123,14 @@ export default {
       },
       set(value) {
         this.$store.state.base.toggleCircle = value
+      }
+    },
+    s_toggleText: {
+      get() {
+        return this.$store.state.base.toggleText
+      },
+      set(value) {
+        this.$store.state.base.toggleText = value
       }
     },
   },
@@ -394,6 +399,34 @@ export default {
       return [this.s_togglePoint0]
     }, function () {
       if (this.s_togglePoint0) {
+        // this.$store.state.base.maps['map01'].removeLayer(MyMap.drawLayer)
+        // this.$store.state.base.maps['map01'].addLayer(MyMap.drawLayer)
+        console.log('on')
+        // alert()
+        this.s_toggleLine = false
+        this.s_toggleMenseki = false
+        this.s_toggleCircle = false
+        this.toggleDelete = false
+        this.toggleDanmen = false
+        this.toggleIdou = false
+        this.$store.state.base.maps['map01'].removeInteraction(MyMap.selectInteraction)
+        this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
+        this.$store.state.base.maps['map01'].removeInteraction(MyMap.polygonInteraction)
+        this.$store.state.base.maps['map01'].addInteraction(MyMap.pointInteraction)
+        // this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
+        // this.$store.state.base.maps['map02'].addInteraction(MyMap.modifyInteraction)
+        this.$store.state.base.drawType = 'point'
+
+      } else {
+        console.log('off')
+        // MyMap.drawLayer.getSource().clear()
+        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction)
+      }
+    })
+    this.$watch(function () {
+      return [this.s_toggleText]
+    }, function () {
+      if (this.s_toggleText) {
         // this.$store.state.base.maps['map01'].removeLayer(MyMap.drawLayer)
         // this.$store.state.base.maps['map01'].addLayer(MyMap.drawLayer)
         console.log('on')

@@ -6,8 +6,8 @@
       色分け選択
       <b-form-select v-model="s_selectColor" :options="options" @change="selectChange"></b-form-select>
     </div>
-    <div style="margin-top: 5px;">市町村名で抽出</div>
-    <b-form-input type='text' v-model="s_sichosonmei" placeholder="市町村名"></b-form-input>
+    <div style="margin-top: 5px;">市町村名、郡名、県名で抽出</div>
+    <b-form-input type='text' v-model="s_sichosonmei" placeholder="空白でor抽出"></b-form-input>
     <hr>
     <div>
       出典:<span v-html="item.summary"></span>

@@ -6580,10 +6580,22 @@ function cityStyleFunction(mapName,year) {
       })
     });
 
+    const props = prop.N03_001 + prop.N03_003 + prop.N03_004
+    let sonmeiAr = []
+    if (sonmei) {
+      sonmei = sonmei.replace(/　/gi,' ')
+      sonmeiAr = sonmei.split(' ')
+    }
+    const result = sonmeiAr.find((sonmei) => {
+      if (props) {
+        return props.indexOf(sonmei) !== -1
+      }
+    })
+
     if (year) {
       if (sonmei) {
         if (prop.N03_004) {
-          if (prop.N03_004.indexOf(sonmei) !== -1) {
+          if (result) {
             styles.push(polygonStyle);
             if(zoom>=9) {
               styles.push(textStyle);
@@ -7646,7 +7658,7 @@ function gunStyleFunction(mapName) {
     const prop = feature.getProperties();
     const styles = []
     const selectColor = store.state.info.meijigunSelectColor[mapName]
-    const gunmei = store.state.info.meijigunmei[mapName]
+    let gunmei = store.state.info.meijigunmei[mapName]
     // const rgb = d3.rgb(cityColor(prop[irowake]))
     // const result = store.state.base.prefId.find(el => el.pref === prop.PREF)
     let id
@@ -7706,8 +7718,20 @@ function gunStyleFunction(mapName) {
         exceedLength:true
       })
     });
+
+    const props = prop.KUNI + prop.GUN
+    let gunmeiAr = []
     if (gunmei) {
-      if ((prop.KUNI + prop.GUN).indexOf(gunmei) !== -1) {
+      gunmei = gunmei.replace(/　/gi,' ')
+      gunmeiAr = gunmei.split(' ')
+    }
+    const result = gunmeiAr.find((gunmei) => {
+      if (props) {
+        return props.indexOf(gunmei) !== -1
+      }
+    })
+    if (gunmei) {
+      if (result) {
         styles.push(polygonStyle)
         if(zoom>=9) {
           styles.push(textStyle)
@@ -8211,7 +8235,7 @@ function okayamamaiFunction() {
   return function (feature, resolution) {
     const style = new Style({
       fill: new Fill({
-        color: 'green'
+        color: 'rgb(0,128,0,0.7)'
       }),
       stroke: new Stroke({
         color: 'black',
@@ -8518,11 +8542,9 @@ for (let i of mapsStr) {
 function Toyamamaibun() {
   this.name = "toyamamaibun";
   this.style = okayamamaiFunction();
-  this.source = new VectorTileSource({
-    format: new MVT(),
-    maxZoom: 17,
-    url: "https://kenzkenz.github.io/toyama/{z}/{x}/{y}.mvt"
-  });
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/toyamaiseki/ti.pmtiles'
+  })
 }
 export const toyamamaibunSumm = "<a href='https://opendata.pref.toyama.jp/dataset/gis-maibun/resource/7031917f-42c7-41d9-9f78-41ef72a10adc' target='_blank'>富山県埋蔵文化財</a>"
 export  const toyamamaibunObj = {};
