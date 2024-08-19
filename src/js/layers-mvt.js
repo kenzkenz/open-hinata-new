@@ -6937,7 +6937,6 @@ function tokyoStyleFunction() {
     const prop = feature.getProperties()
     const styles = []
     let rgba = ''
-
     switch (prop.総合_ラ) {
       case 1:
         rgba = 'rgb(162,209,229,0.8)'
@@ -6963,7 +6962,7 @@ function tokyoStyleFunction() {
         color: "white",
         width: 0.5
       })
-    });
+    })
     const text = prop.町丁目名
     const textStyle = new Style({
       text: new Text({
@@ -6978,22 +6977,20 @@ function tokyoStyleFunction() {
         }),
         exceedLength:true
       })
-    });
-    styles.push(polygonStyle);
-    if(zoom>=13) {
-      styles.push(textStyle);
-    }
-    return styles;
+    })
+    styles.push(polygonStyle)
+    if(zoom>=13) styles.push(textStyle)
+    return styles
   }
 }
 //---------------------
 function tokyoStyleFunction2() {
   return function (feature, resolution) {
-    const d3Color = d3.interpolateLab("white","red");
-    const zoom = getZoom(resolution);
-    const prop = feature.getProperties();
-    const styles = [];
-    const rgb = d3.rgb(d3Color(prop.災害_係));
+    const d3Color = d3.interpolateLab("white","red")
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    const rgb = d3.rgb(d3Color(prop.災害_係))
     const polygonStyle = new Style({
       fill: new Fill({
         color: rgb
@@ -7002,7 +6999,7 @@ function tokyoStyleFunction2() {
         color: "white",
         width: 0.5
       })
-    });
+    })
     const text = prop.町丁目名
     const textStyle = new Style({
       text: new Text({
@@ -7017,12 +7014,10 @@ function tokyoStyleFunction2() {
         }),
         exceedLength:true
       })
-    });
-    styles.push(polygonStyle);
-    if(zoom>=13) {
-      styles.push(textStyle);
-    }
-    return styles;
+    })
+    styles.push(polygonStyle)
+    if(zoom>=13) styles.push(textStyle)
+    return styles
   }
 }
 
@@ -8241,6 +8236,19 @@ function okayamamaiFunction() {
     return style;
   }
 }
+// 富田林市埋蔵文化財----------------------------------------------------------
+function tondabayashiMai() {
+  this.name = "tandabayashimai";
+  this.style = kumamotomaiFunction('m_cont2');
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/tondabayashiiseki/t.pmtiles'
+  })
+}
+export const tondabayashimaiSumm = "<a href='https://www.city.tondabayashi.lg.jp/site/bunkazai/89886.html' target='_blank'>周知の埋蔵文化財包蔵地に関する公開データ（2023.4）</a>"
+export  const tondabayashimaiObj = {};
+for (let i of mapsStr) {
+  tondabayashimaiObj[i] = new VectorTileLayer(new tondabayashiMai())
+}
 // 熊本県埋蔵文化財----------------------------------------------------------
 function kumamotoMai() {
   this.name = "kumamotomai";
@@ -8248,12 +8256,6 @@ function kumamotoMai() {
   this.source = new olpmtiles.PMTilesVectorSource({
     url:'https://kenzkenz3.xsrv.jp/pmtiles/kumamotoiseki/k.pmtiles'
   })
-  // this.source = new VectorTileSource({
-  //   format: new MVT(),
-  //   maxZoom: 17,
-  //   // url: "https://mtile.pref.miyazaki.lg.jp/tile/mvt/iseki/kumamotoken/{z}/{x}/{y}.mvt"
-  //   url: "https://kenzkenz.github.io/kumamotoiseki/{z}/{x}/{y}.mvt"
-  // });
 }
 export const kumamotomaiSumm = "<a href='https://www.pref.kumamoto.jp/soshiki/125/90282.html' target='_blank'>熊本県　遺跡地図</a>"
 export  const kumamotomaiObj = {};

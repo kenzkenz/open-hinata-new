@@ -452,14 +452,15 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           if (cont.indexOf('tokyoZisin') === -1) {
             cont += '<div class= "tokyoZisin" style=width:300px>' +
                 '<h4>' + prop.区市町村名 + prop.町丁目名 + '</h4>' +
+                '<hr>' +
+                '<h5>総合危険度ランク＝' + prop.総合_ラ + '</h5>' +
+                '<p>総合危険度順位＝' + prop.総合_順 + '</p>' +
+                '<hr>' +
                 '<p>建物倒壊危険度ランク＝' + prop.建物_ラ + '</p>' +
                 '<p>建物倒壊危険度順位＝' + prop.建物_順 + '</p>' +
                 '<hr>' +
                 '<p>火災危険度ランク＝' + prop.火災_ラ + '</p>' +
                 '<p>火災危険度順位＝' + prop.火災_順 + '</p>' +
-                '<hr>' +
-                '<p>総合危険度ランク＝' + prop.総合_ラ + '</p>' +
-                '<p>総合危険度順位＝' + prop.総合_順 + '</p>' +
                 '<hr>' +
                 '<p>災害時活動困難係数＝' + prop.災害_係 + '</p>' +
                 '</div><hr>'
@@ -1886,12 +1887,22 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 shisetsu = '不整合'
                 break
             }
-            
-            
             cont += '<div class="tokyotochiriyo" style=width:200px;>' +
                 '<h4>' + shisetsu + '</h4>' +
                 '<p>' + prop.NAME1 + prop.NAME2 + '</p>' +
                 '<p>' + Math.floor(prop.AREA) + 'm2</p>' +
+                '</div><hr>'
+          }
+          break
+        case 'tandabayashimai':
+          if (cont.indexOf('tandabayashimai') === -1) {
+            cont += '<div class="tandabayashimai" style=width:300px;>' +
+                '<h4>' + prop.名称 + '</h4>' +
+                '<p>' + prop.ふりがな + '</p>' +
+                '<p>種別=' + prop.種別 + '</p>' +
+                '<p>時代=' + prop.時代 + '</p>' +
+                '<p>地目=' + prop.地目 + '</p>' +
+                '<p>立地=' + prop.立地 + '</p>' +
                 '</div><hr>'
           }
           break

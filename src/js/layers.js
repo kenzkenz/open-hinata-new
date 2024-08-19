@@ -13394,10 +13394,8 @@ export const Layers =
       children: [
         { text: '能登CS立体図（発災前:森林総合研究所）', data: { id: 'notocs', layer: notoCsObj, opacity: 1, summary: notoCsSumm } },
         { text: '能登CS立体図（発災後:林野庁）', data: { id: 'notocsrinya', layer: notocsrinyaObj, opacity: 1, summary: notocsrinyaSumm } },
-
         { text: '新潟県長岡CS立体図（発災後:林野庁）', data: { id: 'nagaokacsrinya', layer: nagaokaCsObj, opacity: 1, summary: nagaokaCsSumm } },
         { text: '新潟県長岡傾斜区分図（発災後:林野庁）', data: { id: 'nagaokakaieys', layer: nagaokaKeisyaObj, opacity: 1, summary: nagaokaKeisyaSumm } },
-
         { text: '能登傾斜区分図（発災後:林野庁）', data: { id: 'notokeisyarinya', layer: notokeisyarinyaObj, opacity: 1, summary: notokeisyarinyaSumm } },
         { text: '能登斜面崩壊', data: { id: 'notosyamenhokai', layer: LayersMvt.notosyamenhokaiObj, opacity: 1, summary: LayersMvt.notosyamenhokaiSumm } },
         { text: '陸化したと思われる港', data: { id: 'notominato', layer: LayersMvt.notominatoObj, opacity: 1, summary: LayersMvt.notominatoSumm } },
@@ -14743,6 +14741,7 @@ export const Layers =
         // { text: '全国縄文・弥生集落遺跡', data: { id: "yayoiiseki", layer: LayersMvt.yayoiisekiObj, opacity: 1, summary: LayersMvt.yayoiisekiSumm } },
         { text: '北海道埋蔵文化財包蔵地', data: { id: "hokkaidoumaibun", layer: LayersMvt.hokkaidoumaibunObj, opacity: 1, summary: LayersMvt.hokkaidoumaibunSumm } },
         { text: '東京都文化財', data: { id: "tokyobunkazai", layer: LayersMvt.tokyobunkazaiObj, opacity: 1, summary: LayersMvt.tokyobunkazaiSumm } },
+        { text: '富田林市埋蔵文化財（2023.4）', data: { id: "tondabayashimai", layer: LayersMvt.tondabayashimaiObj, opacity: 1, summary: LayersMvt.tondabayashimaiSumm } },
         { text: '富山県埋蔵文化財（2021.4.1）', data: { id: "toyamamaibun", layer: LayersMvt.toyamamaibunObj, opacity: 1, summary: LayersMvt.toyamamaibunSumm } },
         { text: '岡山県埋蔵文化財', data: { id: "okayamamai", layer: LayersMvt.okayamamaiiObj, opacity: 1, summary: LayersMvt.okayamamaiSumm } },
         { text: '熊本県遺跡', data: { id: "kumamotomai", layer: LayersMvt.kumamotomaiObj, opacity: 1, summary: LayersMvt.kumamotomaiSumm } },

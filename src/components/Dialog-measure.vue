@@ -229,16 +229,6 @@ export default {
     }
   },
   mounted () {
-    // const mapName = 'map01'
-    // const olPopup = document.querySelector('#' + mapName + ' .ol-popup')
-    // olPopup.addEventListener('click', (e) => {
-    //   if (e.target && e.target.classList.contains("edit-button")) {
-    //     alert()
-    //   }
-    // })
-
-
-
     this.$watch(function () {
       return [this.toggleIdou]
     }, function () {
