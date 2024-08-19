@@ -8236,6 +8236,19 @@ function okayamamaiFunction() {
     return style;
   }
 }
+// 山口県遺跡地図----------------------------------------------------------
+function Yamaguchiiseki() {
+  this.name = "default";
+  this.style = kumamotomaiFunction();
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/yamaguchiiseki/y.pmtiles'
+  })
+}
+export const yamaguchiisekiSumm = "<a href='https://yamaguchi-opendata.jp/ckan/sk/dataset/iseki-test/resource/412030be-5bb3-43b1-9787-728782b632be' target='_blank'>山口県遺跡地図（2024.1.12）</a>"
+export  const yamaguchiisekiObj = {};
+for (let i of mapsStr) {
+  yamaguchiisekiObj[i] = new VectorTileLayer(new Yamaguchiiseki())
+}
 // 富田林市埋蔵文化財----------------------------------------------------------
 function tondabayashiMai() {
   this.name = "tandabayashimai";

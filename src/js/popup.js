@@ -894,6 +894,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
               '</div><hr>'
 
           break
+        case 'default':
         case 'kotujiko':
         case 'dobokuisan':
         case 'draganddrop':
