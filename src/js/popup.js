@@ -449,15 +449,21 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
               "</div><hr>"
           break
         case 'tokyoZisin':
-          cont += '<div style=width:300px>地区名＝' + prop.区市町村名 + prop.町丁目名 +
-              '<br>建物倒壊危険度ランク＝' + prop.建物_ラ +
-              '<br>建物倒壊危険度順位＝' + prop.建物_順 +
-              '<br>火災危険度ランク＝' + prop.火災_ラ +
-              '<br>火災危険度順位＝' + prop.火災_順 +
-              '<br>総合危険度ランク＝' + prop.総合_ラ +
-              '<br>総合危険度順位＝' + prop.総合_順 +
-              '<br>災害時活動困難係数＝' + prop.災害_係 + '<br>' +
-              '</div><hr>'
+          if (cont.indexOf('tokyoZisin') === -1) {
+            cont += '<div class= "tokyoZisin" style=width:300px>' +
+                '<h4>' + prop.区市町村名 + prop.町丁目名 + '</h4>' +
+                '<p>建物倒壊危険度ランク＝' + prop.建物_ラ + '</p>' +
+                '<p>建物倒壊危険度順位＝' + prop.建物_順 + '</p>' +
+                '<hr>' +
+                '<p>火災危険度ランク＝' + prop.火災_ラ + '</p>' +
+                '<p>火災危険度順位＝' + prop.火災_順 + '</p>' +
+                '<hr>' +
+                '<p>総合危険度ランク＝' + prop.総合_ラ + '</p>' +
+                '<p>総合危険度順位＝' + prop.総合_順 + '</p>' +
+                '<hr>' +
+                '<p>災害時活動困難係数＝' + prop.災害_係 + '</p>' +
+                '</div><hr>'
+          }
           break
         case 'tokutei':
           cont += '<div style=width:120px>' + prop.A25_003 + prop.A25_006 + '</div>'
@@ -1149,10 +1155,11 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
               store.state.base.editFeatureName = features[0].getProperties().name
               store.state.base.editFeatureSetumei = features[0].getProperties().description
               store.state.base.editFeatureSrc = features[0].getProperties().src
-              if (document.querySelector('#dialog-edit0').style.display === 'block' ||
-                  document.querySelector('#dialog-measure').style.display === 'block') {
-                store.state.base.dialogs.dialogEdit.style.display = 'block'
-              }
+              // if (document.querySelector('#dialog-edit0').style.display === 'block' ||
+              //     document.querySelector('#dialog-measure').style.display === 'block') {
+              //   store.state.base.dialogs.dialogEdit.style.display = 'block'
+              // }
+
             }
           }
           break
@@ -1935,11 +1942,9 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           const elChyome = document.querySelector( '#' + mapName + ' .h4-100m,' +
                                                             '#' + mapName +  ' .h4-1k')
           elChyome.innerHTML = response.data.results.lv01Nm
-
           const elCity = document.querySelector('#' + mapName + " .p-100m," +
                                                          '#' + mapName + " .p-1k")
           elCity.innerHTML = splitMuni[1] + splitMuni[3]
-
           cont = ''
           flg = false
         })
@@ -1996,8 +2001,17 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
       document.head.appendChild(style2)
     }
     return cont
-    // document.querySelector('.center-target').style.zIndex = 0
   }
+  // エディットダイアログの表示位置用-------------------------------------------
+  if (!cont || cont === undefined) {
+    store.state.base.dialogs.dialogEdit.style.display = 'none'
+    return
+  }
+  const rect = document.querySelector('#map01-popup').getBoundingClientRect()
+  const left = rect.x + 'px'
+  const top = (rect.top + rect.height + 20) + 'px'
+  store.state.base.dialogs.dialogEdit.style.top = top
+  store.state.base.dialogs.dialogEdit.style.left = left
 }
 // ------------------------------------------------
 

@@ -6904,11 +6904,9 @@ function mitinoekiStyleFunction () {
 //東京地震------------------------------------------------------------------------------------------------
 function TokyoZisin(){
   this.name = 'tokyoZisin'
-  this.source = new VectorTileSource({
-    format: new MVT(),
-    maxZoom:13,
-    url: "https://kenzkenz.github.io/tokyo/{z}/{x}/{y}.mvt"
-  });
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/tokyojishin/t.pmtiles'
+  })
   this.style = tokyoStyleFunction();
 }
 export const tokyoZisinObj = {};
@@ -6921,11 +6919,9 @@ export const tokyoZisinSumm = "<a href='https://www.toshiseibi.metro.tokyo.lg.jp
 //東京地震2------------------------------------------------------------------------------------------------
 function TokyoZisin2(){
   this.name = 'tokyoZisin'
-  this.source = new VectorTileSource({
-    format: new MVT(),
-    maxZoom:13,
-    url: "https://kenzkenz.github.io/tokyo/{z}/{x}/{y}.mvt"
-  });
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/tokyojishin/t.pmtiles'
+  })
   this.style = tokyoStyleFunction2()
 }
 export const tokyoZisin2Obj = {}
@@ -6940,28 +6936,28 @@ function tokyoStyleFunction() {
     const zoom = getZoom(resolution)
     const prop = feature.getProperties()
     const styles = []
-    let rgb = ''
+    let rgba = ''
 
     switch (prop.総合_ラ) {
       case 1:
-        rgb = 'rgb(162,209,229)'
+        rgba = 'rgb(162,209,229,0.8)'
         break
       case 2:
-        rgb = 'rgb(125,170,118)'
+        rgba = 'rgb(125,170,118,0.8)'
         break
       case 3:
-        rgb = 'rgb(206,135,52)'
+        rgba = 'rgb(206,135,52,0.8)'
         break
       case 4:
-        rgb = 'rgb(213,64,43)'
+        rgba = 'rgb(213,64,43,0.8)'
         break
       case 5:
-        rgb = 'rgb(79,19,19)'
+        rgba = 'rgb(79,19,19,0.8)'
         break
     }
     const polygonStyle = new Style({
       fill: new Fill({
-        color: rgb
+        color: rgba
       }),
       stroke: new Stroke({
         color: "white",
@@ -8546,7 +8542,7 @@ function Toyamamaibun() {
     url:'https://kenzkenz3.xsrv.jp/pmtiles/toyamaiseki/ti.pmtiles'
   })
 }
-export const toyamamaibunSumm = "<a href='https://opendata.pref.toyama.jp/dataset/gis-maibun/resource/7031917f-42c7-41d9-9f78-41ef72a10adc' target='_blank'>富山県埋蔵文化財</a>"
+export const toyamamaibunSumm = "<a href='https://opendata.pref.toyama.jp/dataset/gis-maibun/resource/7031917f-42c7-41d9-9f78-41ef72a10adc' target='_blank'>富山県埋蔵文化財2021.4.1時点</a>"
 export  const toyamamaibunObj = {};
 for (let i of mapsStr) {
   toyamamaibunObj[i] = new VectorTileLayer(new Toyamamaibun())

@@ -91,10 +91,10 @@ export default {
         let color
         if (geoType === 'Point' || geoType === 'LineString') {
           color = this.$store.state.base.editFeature.values_._color
-          if (!color) color = 'rgba(0,0,0,1)'
+          if (!color) color = 'rgba(0,0,255,1)'
         } else if (geoType === 'Polygon' || geoType === 'Circle') {
           color = this.$store.state.base.editFeature.values_._fillColor
-          if (!color) color = 'rgba(0,0,0,0.5)'
+          if (!color) color = 'rgba(0,0,255,0.5)'
         }
         const rgba = d3.rgb(color)
         const colorP = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.opacity }

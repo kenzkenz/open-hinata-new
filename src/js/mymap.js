@@ -87,9 +87,6 @@ function drawLayerStylefunction (){
         const prop = feature.getProperties()
         const zoom = getZoom(resolution)
         const geoType = feature.getGeometry().getType()
-        // console.log(prop.distance)
-        // console.log(prop)
-        // console.log(geoType)
         let text
         let color
         let fillColor
@@ -97,15 +94,15 @@ function drawLayerStylefunction (){
             color = prop._color
         } else {
             if (geoType === 'Point') {
-                color = 'black'
+                color = 'rgba(0,0,255,1)'
             } else {
-                color = 'rgba(0,0,0,0.5)'
+                color = 'rgba(0,0,255,0.5)'
             }
         }
         if (prop._fillColor) {
             fillColor = prop._fillColor
         } else {
-            fillColor = 'rgba(0,0,0,0.5)'
+            fillColor = 'rgba(0,0,255,0.5)'
         }
         const styles = []
         const pointStyle = new Style({
@@ -157,9 +154,11 @@ function drawLayerStylefunction (){
             text: new Text({
                 font: "16px sans-serif",
                 text: text,
-                offsetY: 20,
+                textAlign: 'left',
+                offsetY: 0,
+                offsetX: 10,
                 fill:  new Fill({
-                    color:"black"
+                    color:"blue"
                 }),
                 stroke: new Stroke({
                     color: "white",
@@ -481,7 +480,7 @@ export function initMap (vm) {
             const feature = event.feature
             store.state.base.editFeature = feature
             store.state.base.togglePoint0 = false
-            store.state.base.dialogs.dialogEdit.style.display = 'block'
+            // store.state.base.dialogs.dialogEdit.style.display = 'block'
             overlay[i].setPosition(undefined)
             if (store.state.base.editFeatureColor['map01'].rgba) {
                 const c = store.state.base.editFeatureColor['map01'].rgba
@@ -495,7 +494,7 @@ export function initMap (vm) {
             store.state.base.editFeature = feature
             // map.removeInteraction(pointInteraction)
             store.state.base.toggleLine = false
-            store.state.base.dialogs.dialogEdit.style.display = 'block'
+            // store.state.base.dialogs.dialogEdit.style.display = 'block'
             overlay[i].setPosition(undefined)
             if (store.state.base.editFeatureColor['map01'].rgba) {
                 const c = store.state.base.editFeatureColor['map01'].rgba
@@ -508,7 +507,7 @@ export function initMap (vm) {
             const feature = event.feature
             store.state.base.editFeature = feature
             store.state.base.toggleMenseki = false
-            store.state.base.dialogs.dialogEdit.style.display = 'block'
+            // store.state.base.dialogs.dialogEdit.style.display = 'block'
             overlay[i].setPosition(undefined)
             console.log(store.state.base.editFeatureColor['map01'])
             if (store.state.base.editFeatureColor['map01'].rgba) {
@@ -522,7 +521,7 @@ export function initMap (vm) {
             const feature = event.feature
             store.state.base.editFeature = feature
             store.state.base.toggleCircle = false
-            store.state.base.dialogs.dialogEdit.style.display = 'block'
+            // store.state.base.dialogs.dialogEdit.style.display = 'block'
             overlay[i].setPosition(undefined)
             if (store.state.base.editFeatureColor['map01'].rgba) {
                 const c = store.state.base.editFeatureColor['map01'].rgba
@@ -535,16 +534,23 @@ export function initMap (vm) {
         const olPopup = document.querySelector('#map01' + ' .ol-popup')
         olPopup.addEventListener('click', (e) => {
             if (e.target && e.target.classList.contains("edit-button")) {
+
                 store.state.base.dialogs.dialogEdit.style.display = 'block'
+                const rect = document.querySelector('#map01-popup').getBoundingClientRect()
+                const left = rect.x + 'px'
+                const top = (rect.top + rect.height + 20) + 'px'
+                console.log(top,left)
+                store.state.base.dialogs.dialogEdit.style.top = top
+                store.state.base.dialogs.dialogEdit.style.left = left
 
                 const geoType = store.state.base.editFeature.getGeometry().getType()
                 let color
                 if (geoType === 'Point' || geoType === 'LineString') {
                     color = store.state.base.editFeature.values_._color
-                    if (!color) color = 'rgba(0,0,0,1)'
+                    if (!color) color = 'rgba(0,0,255,1)'
                 } else if (geoType === 'Polygon' || geoType === 'Circle') {
                     color = store.state.base.editFeature.values_._fillColor
-                    if (!color) color = 'rgba(0,0,0,0.5)'
+                    if (!color) color = 'rgba(0,0,255,0.5)'
                 }
                 const rgba = d3.rgb(color)
                 const colorP = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.opacity }

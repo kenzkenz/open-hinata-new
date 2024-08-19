@@ -371,6 +371,7 @@ tippecanoe -rg -pk -y L01_024 -y L01_100 -f -o k2.pmtiles kouzi.geojson
 tippecanoe -f -o z.pmtiles z.geojson
 tippecanoe -f -o k.pmtiles k.geojson
 tippecanoe -f -o ti.pmtiles ti.geojson
+tippecanoe -f -o t.pmtiles t.geojson
 
 
 $ cd tile
