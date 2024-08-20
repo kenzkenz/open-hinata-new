@@ -373,6 +373,7 @@ tippecanoe -f -o k.pmtiles k.geojson
 tippecanoe -f -o ti.pmtiles ti.geojson
 tippecanoe -f -o t.pmtiles t.geojson
 
+test
 
 $ cd tile
 $ gzip -d -v -r -S .pbf *
