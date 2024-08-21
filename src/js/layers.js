@@ -14739,6 +14739,7 @@ export const Layers =
         { text: '全国旧石器時代遺跡', data: { id: "kyuusekki", layer: LayersMvt.kyuusekki0Obj, opacity: 1, summary: LayersMvt.kyuusekkiSumm } },
         // { text: '全国旧石器時代遺跡(ヒートマップ)', data: { id: "kyuusekkihm", layer: LayersMvt.kyuusekkiHmObj, opacity: 1, summary: LayersMvt.kyuusekkiSumm } },
         // { text: '全国縄文・弥生集落遺跡', data: { id: "yayoiiseki", layer: LayersMvt.yayoiisekiObj, opacity: 1, summary: LayersMvt.yayoiisekiSumm } },
+        { text: '全国の文化財データ（S50）', data: { id: "zenkokubunkazai", layer: LayersMvt.zenkokubunkazaiObj, opacity: 1, summary: LayersMvt.zenkokubunkazaiSumm } },
         { text: '北海道埋蔵文化財包蔵地', data: { id: "hokkaidoumaibun", layer: LayersMvt.hokkaidoumaibunObj, opacity: 1, summary: LayersMvt.hokkaidoumaibunSumm } },
         { text: '東京都文化財', data: { id: "tokyobunkazai", layer: LayersMvt.tokyobunkazaiObj, opacity: 1, summary: LayersMvt.tokyobunkazaiSumm } },
         { text: '世田谷区埋蔵文化財（2019.3.1）', data: { id: "setagayamai", layer: LayersMvt.setagayamaiObj, opacity: 1, summary: LayersMvt.setagayamaiSumm } },
@@ -14748,6 +14749,8 @@ export const Layers =
         { text: 'いわて遺跡地図（R6.3.15）', data: { id: "iwateiseki", layer: LayersMvt.iwateisekiObj, opacity: 1, summary: LayersMvt.iwateisekiSumm } },
         { text: '富山県埋蔵文化財（2021.4.1）', data: { id: "toyamamaibun", layer: LayersMvt.toyamamaibunObj, opacity: 1, summary: LayersMvt.toyamamaibunSumm } },
         { text: '岡山県埋蔵文化財', data: { id: "okayamamai", layer: LayersMvt.okayamamaiiObj, opacity: 1, summary: LayersMvt.okayamamaiSumm } },
+        { text: '和歌山県埋蔵文化財', data: { id: "wakayamamai", layer: LayersMvt.wakayamamaiObj, opacity: 1, summary: LayersMvt.wakayamamaiSumm } },
+
         { text: '山口県遺跡地図（2024.1.12）', data: { id: "yamaguchiiseki", layer: LayersMvt.yamaguchiisekiObj, opacity: 1, summary: LayersMvt.yamaguchiisekiSumm } },
         { text: '熊本県遺跡', data: { id: "kumamotomai", layer: LayersMvt.kumamotomaiObj, opacity: 1, summary: LayersMvt.kumamotomaiSumm } },
         { text: '土木学会選奨土木遺産', data: { id: "dobokuisan", layer: LayersMvt.dobokuisanObj, opacity: 1, summary: LayersMvt.dobokuisanSumm } },

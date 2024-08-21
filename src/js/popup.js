@@ -1922,6 +1922,20 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div><hr>'
           }
           break
+        case 'zenkokubunkazai':
+          if (cont.indexOf('zenkokubunkazai') === -1) {
+            let bunkazai
+            if (prop.P01_002 === '1') {
+              bunkazai = '<h5>区分=史跡・名勝・天然記念物</h5>'
+            } else {
+              bunkazai = '<h4>区分=埋蔵文化財</h4>'
+            }
+            cont += '<div class="zenkokubunkazai" style=width:300px;>' +
+                '<h4>番号=' + prop.P01_001 + '</h4>' +
+                bunkazai +
+                '</div><hr>'
+          }
+          break
       }
     })
   }

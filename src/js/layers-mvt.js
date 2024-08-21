@@ -8236,6 +8236,66 @@ function okayamamaiFunction() {
     return style;
   }
 }
+// 全国の文化財データ----------------------------------------------------------
+function ZenkokuBunkazai() {
+  this.name = "zenkokubunkazai";
+  this.style = isekiPoint();
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/zenkokubunkazai/z.pmtiles'
+  })
+}
+export const zenkokubunkazaiSumm = "<a href='https://nlftp.mlit.go.jp/ksj/gmlold/datalist/gmlold_KsjTmplt-P01.html' target='_blank'>国土数値情報</a>"
+export  const zenkokubunkazaiObj = {};
+for (let i of mapsStr) {
+  zenkokubunkazaiObj[i] = new VectorTileLayer(new ZenkokuBunkazai())
+}
+function isekiPoint(text) {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    let font
+    if (zoom <= 14) {
+      font = "14px sans-serif"
+    } else {
+      font = "16px sans-serif"
+    }
+    const iconStyle = new Style({
+      image: new Icon({
+        src: require('@/assets/icon/whitecircle.png'),
+        scale: 1.5,
+        color: 'orange'
+      })
+    })
+    const textStyle = new Style({
+      text: new Text({
+        font: font,
+        text: prop.text,
+        offsetY: 20,
+        stroke: new Stroke({
+          color: "white",
+          width: 3
+        })
+      })
+    })
+    styles.push(iconStyle)
+    styles.push(textStyle)
+    return styles
+  }
+}
+// 和歌山県埋蔵文化財----------------------------------------------------------
+function WakayamaMai() {
+  this.name = "default";
+  this.style = kumamotomaiFunction();
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/wakayamakeniseki/w.pmtiles'
+  })
+}
+export const wakayamamaiSumm = "<a href='https://data.bodik.jp/dataset/300004_500100_chiiki_minyurin/resource/610b1d02-e8e2-4828-8cff-30ae38f085fa?inner_span=True' target='_blank'>和歌山県埋蔵文化財</a>"
+export  const wakayamamaiObj = {};
+for (let i of mapsStr) {
+  wakayamamaiObj[i] = new VectorTileLayer(new WakayamaMai())
+}
 // 世田谷区埋蔵文化財----------------------------------------------------------
 function SetagayaMai() {
   this.name = "setagayamai";
@@ -8244,7 +8304,7 @@ function SetagayaMai() {
     url:'https://kenzkenz3.xsrv.jp/pmtiles/setagayakuiseki/s.pmtiles'
   })
 }
-export const setagayamaiSumm = "<a href='' target='_blank'>世田谷区埋蔵文化財（2019.3.1）</a>"
+export const setagayamaiSumm = "<a href='https://data-setagaya.opendata.arcgis.com/datasets/8124e82e2a3e4b15a5e4e59f0536c67c/explore' target='_blank'>世田谷区埋蔵文化財（2019.3.1）</a>"
 export  const setagayamaiObj = {};
 for (let i of mapsStr) {
   setagayamaiObj[i] = new VectorTileLayer(new SetagayaMai())
