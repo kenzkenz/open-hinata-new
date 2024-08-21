@@ -202,7 +202,7 @@ function TokyoTochiriyo(){
   this.maxResolution = tokyotochiroyoaxResolution
   this.style = tokyoTochiriyoStyleFunction()
 }
-export const tokyoTochiriyoSumm = "<a href='https://github.com/shiwaku/npa-traffic-accident-data-2023-converter' target='_blank'>npa-traffic-accident-data-2023-converter</a>"
+export const tokyoTochiriyoSumm = "<a href='https://catalog.data.metro.tokyo.lg.jp/dataset/t000008d2000000019' target='_blank'>土地利用現況調査GISデータ</a>"
 export  const tokyoTochiriyoObj = {};
 for (let i of mapsStr) {
   tokyoTochiriyoObj[i] = new VectorTileLayer(new TokyoTochiriyo())
@@ -8235,6 +8235,19 @@ function okayamamaiFunction() {
     });
     return style;
   }
+}
+// 世田谷区埋蔵文化財----------------------------------------------------------
+function SetagayaMai() {
+  this.name = "setagayamai";
+  this.style = kumamotomaiFunction();
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/setagayakuiseki/s.pmtiles'
+  })
+}
+export const setagayamaiSumm = "<a href='' target='_blank'>世田谷区埋蔵文化財（2019.3.1）</a>"
+export  const setagayamaiObj = {};
+for (let i of mapsStr) {
+  setagayamaiObj[i] = new VectorTileLayer(new SetagayaMai())
 }
 // 宮城県遺跡地図----------------------------------------------------------
 function Miyagiiseki() {

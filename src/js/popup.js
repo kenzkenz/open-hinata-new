@@ -1907,6 +1907,21 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div><hr>'
           }
           break
+        case 'setagayamai':
+          if (cont.indexOf('setagayamai') === -1) {
+            cont += '<div class="setagayamai" style=width:300px;>' +
+                '<h4>' + prop.SAFIELD004 + '</h4>' +
+                '<p>遺跡番号' + prop.SAFIELD005 + '</p>' +
+                '<p>種類=' + prop.SAFIELD006 + '</p>' +
+                '<p>時代=' + prop.SAFIELD007 + '</p>' +
+                '<p>史跡番号=' + prop.SAFIELD008 + '</p>' +
+                '<p>区分=' + prop.SAFIELD009 + '</p>' +
+                '<p>史跡名=' + prop.SAFIELD010 + '</p>' +
+                '<p>登録年月日=' + prop.SAFIELD011 + '</p>' +
+                '<p>現状変更届=' + prop.SAFIELD012 + '</p>' +
+                '</div><hr>'
+          }
+          break
       }
     })
   }

@@ -14741,9 +14741,10 @@ export const Layers =
         // { text: '全国縄文・弥生集落遺跡', data: { id: "yayoiiseki", layer: LayersMvt.yayoiisekiObj, opacity: 1, summary: LayersMvt.yayoiisekiSumm } },
         { text: '北海道埋蔵文化財包蔵地', data: { id: "hokkaidoumaibun", layer: LayersMvt.hokkaidoumaibunObj, opacity: 1, summary: LayersMvt.hokkaidoumaibunSumm } },
         { text: '東京都文化財', data: { id: "tokyobunkazai", layer: LayersMvt.tokyobunkazaiObj, opacity: 1, summary: LayersMvt.tokyobunkazaiSumm } },
+        { text: '世田谷区埋蔵文化財（2019.3.1）', data: { id: "setagayamai", layer: LayersMvt.setagayamaiObj, opacity: 1, summary: LayersMvt.setagayamaiSumm } },
+
         { text: '富田林市埋蔵文化財（2023.4）', data: { id: "tondabayashimai", layer: LayersMvt.tondabayashimaiObj, opacity: 1, summary: LayersMvt.tondabayashimaiSumm } },
         { text: '宮城県遺跡地図（R6.7.19）', data: { id: "miygaguiseki", layer: LayersMvt.miyagiisekiObj, opacity: 1, summary: LayersMvt.miyagiisekiSumm } },
-
         { text: 'いわて遺跡地図（R6.3.15）', data: { id: "iwateiseki", layer: LayersMvt.iwateisekiObj, opacity: 1, summary: LayersMvt.iwateisekiSumm } },
         { text: '富山県埋蔵文化財（2021.4.1）', data: { id: "toyamamaibun", layer: LayersMvt.toyamamaibunObj, opacity: 1, summary: LayersMvt.toyamamaibunSumm } },
         { text: '岡山県埋蔵文化財', data: { id: "okayamamai", layer: LayersMvt.okayamamaiiObj, opacity: 1, summary: LayersMvt.okayamamaiSumm } },
