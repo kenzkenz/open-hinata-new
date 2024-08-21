@@ -8236,6 +8236,32 @@ function okayamamaiFunction() {
     return style;
   }
 }
+// 宮城県遺跡地図----------------------------------------------------------
+function Miyagiiseki() {
+  this.name = "default";
+  this.style = kumamotomaiFunction();
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/miyagiiseki/m.pmtiles'
+  })
+}
+export const miyagiisekiSumm = "<a href='https://www.pref.miyagi.jp/site/maizou/bunkazaimap.html' target='_blank'>宮城県遺跡地図</a>"
+export  const miyagiisekiObj = {};
+for (let i of mapsStr) {
+  miyagiisekiObj[i] = new VectorTileLayer(new Miyagiiseki())
+}
+// いわて遺跡地図----------------------------------------------------------
+function Iwateiseki() {
+  this.name = "default";
+  this.style = kumamotomaiFunction();
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/iwateiseki/i.pmtiles'
+  })
+}
+export const iwateisekiSumm = "<a href='https://www.pref.iwate.jp/kyouikubunka/bunka/bunkazai/1006815.html' target='_blank'>岩手県の埋蔵文化財</a>"
+export  const iwateisekiObj = {};
+for (let i of mapsStr) {
+  iwateisekiObj[i] = new VectorTileLayer(new Iwateiseki())
+}
 // 山口県遺跡地図----------------------------------------------------------
 function Yamaguchiiseki() {
   this.name = "default";

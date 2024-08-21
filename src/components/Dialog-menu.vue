@@ -25,7 +25,7 @@
               <b-button :pressed.sync="toggleCenter" class='olbtn' :size="btnSize">{{ toggleCenter ? '中心十字ON' : '中心十字OFF' }}</b-button>
             </div>
             <hr>
-            <input type='text' @change="onInput" v-model="address" placeholder="住所or座標で検索します。" style="width: 300px;">
+            <b-form-input type='text' @change="onInput" v-model="address" placeholder="住所or座標で検索します。"></b-form-input>
             <hr>
 <!--            <a id="toPng" href="#" download="image.png" @click='toPng'>PNGダウンロード</a><br>-->
 

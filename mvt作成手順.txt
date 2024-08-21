@@ -372,6 +372,8 @@ tippecanoe -f -o z.pmtiles z.geojson
 tippecanoe -f -o k.pmtiles k.geojson
 tippecanoe -f -o ti.pmtiles ti.geojson
 tippecanoe -f -o t.pmtiles t.geojson
+tippecanoe -f -o i.pmtiles i.geojson
+tippecanoe -pk -pf -M 100000 -f -o t3.pmtiles t.geojson
 
 test
 
