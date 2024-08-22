@@ -8283,6 +8283,19 @@ function isekiPoint(text) {
     return styles
   }
 }
+// 沖縄県遺跡----------------------------------------------------------
+function OkinawaIseki() {
+  this.name = "default";
+  this.style = kumamotomaiFunction();
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/okinawakeniseki/o.pmtiles'
+  })
+}
+export const okinawakenisekiSumm = "<a href='http://gis.pref.okinawa.jp/OpenData/' target='_blank'>沖縄県地図情報システム</a>"
+export  const okinawakenisekiObj = {};
+for (let i of mapsStr) {
+  okinawakenisekiObj[i] = new VectorTileLayer(new OkinawaIseki())
+}
 // 和歌山県埋蔵文化財----------------------------------------------------------
 function WakayamaMai() {
   this.name = "default";

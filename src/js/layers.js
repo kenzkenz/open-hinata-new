@@ -14750,9 +14750,10 @@ export const Layers =
         { text: '富山県埋蔵文化財（2021.4.1）', data: { id: "toyamamaibun", layer: LayersMvt.toyamamaibunObj, opacity: 1, summary: LayersMvt.toyamamaibunSumm } },
         { text: '岡山県埋蔵文化財', data: { id: "okayamamai", layer: LayersMvt.okayamamaiiObj, opacity: 1, summary: LayersMvt.okayamamaiSumm } },
         { text: '和歌山県埋蔵文化財', data: { id: "wakayamamai", layer: LayersMvt.wakayamamaiObj, opacity: 1, summary: LayersMvt.wakayamamaiSumm } },
-
         { text: '山口県遺跡地図（2024.1.12）', data: { id: "yamaguchiiseki", layer: LayersMvt.yamaguchiisekiObj, opacity: 1, summary: LayersMvt.yamaguchiisekiSumm } },
         { text: '熊本県遺跡', data: { id: "kumamotomai", layer: LayersMvt.kumamotomaiObj, opacity: 1, summary: LayersMvt.kumamotomaiSumm } },
+        { text: '沖縄県遺跡（2024.5.7）', data: { id: "okinawaiseki", layer: LayersMvt.okinawakenisekiObj, opacity: 1, summary: LayersMvt.okinawakenisekiSumm } },
+
         { text: '土木学会選奨土木遺産', data: { id: "dobokuisan", layer: LayersMvt.dobokuisanObj, opacity: 1, summary: LayersMvt.dobokuisanSumm } },
         { text: '延喜式神名帳式内社(神社)', data: { id: "jinjya", layer: LayersMvt.jinjyaObj, opacity: 1, summary: LayersMvt.jinjyaSumm } },
       ]},
