@@ -1,7 +1,7 @@
 選択可能なレイヤーを全て表示するツリーのvueファイル。
 <template>
   <div>
-    <input type="text" placeholder="地図を抽出します..." v-model="treeFilter" class="filter-field">
+    <b-form-input  type="text" placeholder="地図を抽出します..." v-model="treeFilter" class="filter-field"></b-form-input>
     <tree
         :filter="treeFilter"
         :data="treeData"
