@@ -449,7 +449,6 @@ export default {
       if (this.s_toggleLine) {
         console.log('on')
         this.s_togglePoint0 = false
-        this.s_toggleLine = false
         this.s_toggleFreeHand = false
         this.s_togglePoint = false
         this.s_toggleMenseki = false
@@ -481,7 +480,6 @@ export default {
         console.log('on')
         this.s_togglePoint0 = false
         this.s_toggleLine = false
-        this.s_toggleFreeHand = false
         this.s_togglePoint = false
         this.s_toggleMenseki = false
         this.s_toggleCircle = false
