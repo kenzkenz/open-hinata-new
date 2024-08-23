@@ -96,6 +96,7 @@ const moduleBase = {
     },
     ssdsStatName: '',
     drawVisible: true,
+    drawEndFlg: false,
     drawOpacity: 1,
     togglePoint: false,
     togglePoint0: false,

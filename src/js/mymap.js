@@ -542,6 +542,7 @@ export function initMap (vm) {
                 feature.setProperties({_color: rgba})
             }
             moveEnd()
+            store.state.base.drawEndFlg = true
         })
         lineInteraction.on('drawend', function (event) {
             const feature = event.feature
@@ -556,6 +557,7 @@ export function initMap (vm) {
                 feature.setProperties({_color: rgba})
             }
             moveEnd()
+            store.state.base.drawEndFlg = true
         })
         freeHandInteraction.on('drawend', function (event) {
             const feature = event.feature
@@ -570,6 +572,7 @@ export function initMap (vm) {
                 feature.setProperties({_color: rgba})
             }
             moveEnd()
+            store.state.base.drawEndFlg = true
         })
         polygonInteraction.on('drawend', function (event) {
             const feature = event.feature
@@ -584,6 +587,7 @@ export function initMap (vm) {
                 feature.setProperties({_fillColor: rgba})
             }
             moveEnd()
+            store.state.base.drawEndFlg = true
         })
         regularInteraction.on('drawend', function (event) {
             const feature = event.feature
@@ -598,6 +602,7 @@ export function initMap (vm) {
                 feature.setProperties({_fillColor: rgba})
             }
             moveEnd()
+            store.state.base.drawEndFlg = true
         })
         circleInteraction.on('drawend', function (event) {
             const feature = event.feature
@@ -611,6 +616,7 @@ export function initMap (vm) {
                 feature.setProperties({_fillColor: rgba})
             }
             moveEnd()
+            store.state.base.drawEndFlg = true
         })
         daenInteraction.on('drawend', function (event) {
             const feature = event.feature
@@ -625,6 +631,7 @@ export function initMap (vm) {
                 feature.setProperties({_fillColor: rgba})
             }
             moveEnd()
+            store.state.base.drawEndFlg = true
         })
         const olPopup = document.querySelector('#map01' + ' .ol-popup')
         olPopup.addEventListener('click', (e) => {
@@ -653,6 +660,7 @@ export function initMap (vm) {
 
                 // overlay[i].setPosition(undefined)
                 moveEnd()
+                store.state.base.drawEndFlg = true
             }
         })
 
