@@ -8283,6 +8283,19 @@ function isekiPoint(text) {
     return styles
   }
 }
+// 四日市市遺跡----------------------------------------------------------
+function YokkaichiIseki() {
+  this.name = "default";
+  this.style = kumamotomaiFunction();
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/yokkaichisiiseki/y.pmtiles'
+  })
+}
+export const yokkaichiisekiSumm = "<a href='https://data.bodik.jp/dataset/242021_00062' target='_blank'>四日市市　遺跡情報</a>"
+export  const yokkaichiisekiObj = {};
+for (let i of mapsStr) {
+  yokkaichiisekiObj[i] = new VectorTileLayer(new YokkaichiIseki())
+}
 // 沖縄県遺跡----------------------------------------------------------
 function OkinawaIseki() {
   this.name = "default";
