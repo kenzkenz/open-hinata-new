@@ -19,6 +19,8 @@ import axios from "axios"
 let maxZndex = 0
 let legoFilter = null;
 import Draw from 'ol/interaction/Draw'
+import ModifyFeature from "ol-ext/interaction/ModifyFeature";
+import DrawRegular from 'ol-ext/interaction/DrawRegular'
 import Transform from 'ol-ext/interaction/Transform'
 import DragAndDrop from 'ol/interaction/DragAndDrop.js'
 import PinchRotate from 'ol/interaction/PinchRotate'
@@ -36,7 +38,9 @@ import Icon from 'ol/style/Icon'
 import * as d3 from "d3"
 import PrintDialog from 'ol-ext/control/PrintDialog.js'
 import muni from './muni'
-import {popUpEkijoka17} from "./popup";
+import UndoRedo from 'ol-ext/interaction/UndoRedo'
+// import Observable from 'ol/Observable.js'
+import {unByKey} from 'ol/Observable'
 
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
@@ -70,6 +74,13 @@ function danmenStyleFunction() {
     }
 }
 const drawSource = new VectorSource({wrapX: false})
+var listenerKey = drawSource.on('change',function(e){
+    if (drawSource.getState() === 'ready') {
+        unByKey(listenerKey);
+        // Clear undo/redo on load
+        undoInteraction.clear();
+    }
+});
 export  const drawLayer = new VectorLayer({
     // zIndex: 999999,
     name: 'drawLayer',
@@ -186,7 +197,6 @@ function drawLayerStylefunction (){
 export const danmenInteraction = new Draw({
     source: drawSource,
     type: 'LineString',
-    // freehand:true
 })
 export const pointInteraction = new Draw({
     source: drawSource,
@@ -195,6 +205,12 @@ export const pointInteraction = new Draw({
 export const lineInteraction = new Draw({
     source: drawSource,
     type: 'LineString',
+    // freehand: true
+})
+export const freeHandInteraction = new Draw({
+    source: drawSource,
+    type: 'LineString',
+    freehand: true
 })
 export const polygonInteraction = new Draw({
     source: drawSource,
@@ -207,6 +223,7 @@ export const circleInteraction = new Draw({
 export const modifyInteraction = new Modify ({
     source: drawSource,
 })
+export const undoInteraction = new UndoRedo()
 export const snapnteraction = new Snap ({
     source: drawSource,
 })
@@ -370,28 +387,60 @@ lineInteraction.on('drawend', function (event) {
     measure (geoType,feature,coordAr)
     moveEnd()
 })
-
+freeHandInteraction.on('drawend', function (event) {
+    const feature = event.feature;
+    const coordAr = feature.getGeometry().getCoordinates()
+    const geoType = feature.getGeometry().getType()
+    measure (geoType,feature,coordAr)
+    moveEnd()
+})
 polygonInteraction.on('drawend', function (event) {
     const feature = event.feature;
     const coordAr = feature.getGeometry().getCoordinates()
     const geoType = feature.getGeometry().getType()
     measure (geoType,feature,coordAr)
-    console.log(feature.getGeometry())
 })
-
 circleInteraction.on('drawend', function (event) {
     const feature = event.feature;
     const coordAr = feature.getGeometry().getCoordinates()
     const geoType = feature.getGeometry().getType()
     measure (geoType,feature,coordAr)
 })
-
 export const transformInteraction = new Transform ({
-    enableRotatedTransform: false,
-    scale:false,
-    rotate:false,
-    keepRectangle: false,
-    stretch:false,
+    enableRotatedTransform: true,
+    scale:true,
+    rotate:true,
+    keepRectangle: true,
+    stretch:true,
+})
+transformInteraction.on('scaling', function (event) {
+    const feature = event.feature;
+    const coordAr = feature.getGeometry().getCoordinates()
+    const geoType = feature.getGeometry().getType()
+    measure (geoType,feature,coordAr)
+})
+export const regularInteraction = new DrawRegular ({
+    source: drawSource,
+    // condition: ol.events.condition.altKeyOnly,
+    sides: 4 ,
+    canRotate: true
+})
+regularInteraction.on('drawend', function (event) {
+    const feature = event.feature;
+    const coordAr = feature.getGeometry().getCoordinates()
+    const geoType = feature.getGeometry().getType()
+    measure (geoType,feature,coordAr)
+})
+export const daenInteraction = new DrawRegular ({
+    source: drawSource,
+    sides: 30 ,
+    canRotate: true
+})
+daenInteraction.on('drawend', function (event) {
+    const feature = event.feature;
+    const coordAr = feature.getGeometry().getCoordinates()
+    const geoType = feature.getGeometry().getType()
+    measure (geoType,feature,coordAr)
 })
 
 // ダイアログ
@@ -475,6 +524,11 @@ export function initMap (vm) {
         })[0];
         pinchRotateInteraction.setActive(false);
 
+
+
+        map.addInteraction(undoInteraction)
+
+
         // ------------------------
         pointInteraction.on('drawend', function (event) {
             const feature = event.feature
@@ -503,10 +557,38 @@ export function initMap (vm) {
             }
             moveEnd()
         })
+        freeHandInteraction.on('drawend', function (event) {
+            const feature = event.feature
+            store.state.base.editFeature = feature
+            // map.removeInteraction(pointInteraction)
+            store.state.base.toggleFreeHand = false
+            // store.state.base.dialogs.dialogEdit.style.display = 'block'
+            overlay[i].setPosition(undefined)
+            if (store.state.base.editFeatureColor['map01'].rgba) {
+                const c = store.state.base.editFeatureColor['map01'].rgba
+                const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
+                feature.setProperties({_color: rgba})
+            }
+            moveEnd()
+        })
         polygonInteraction.on('drawend', function (event) {
             const feature = event.feature
             store.state.base.editFeature = feature
             store.state.base.toggleMenseki = false
+            // store.state.base.dialogs.dialogEdit.style.display = 'block'
+            overlay[i].setPosition(undefined)
+            console.log(store.state.base.editFeatureColor['map01'])
+            if (store.state.base.editFeatureColor['map01'].rgba) {
+                const c = store.state.base.editFeatureColor['map01'].rgba
+                const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
+                feature.setProperties({_fillColor: rgba})
+            }
+            moveEnd()
+        })
+        regularInteraction.on('drawend', function (event) {
+            const feature = event.feature
+            store.state.base.editFeature = feature
+            store.state.base.toggleShikaku = false
             // store.state.base.dialogs.dialogEdit.style.display = 'block'
             overlay[i].setPosition(undefined)
             console.log(store.state.base.editFeatureColor['map01'])
@@ -530,7 +612,20 @@ export function initMap (vm) {
             }
             moveEnd()
         })
-
+        daenInteraction.on('drawend', function (event) {
+            const feature = event.feature
+            store.state.base.editFeature = feature
+            store.state.base.toggleDaen = false
+            // store.state.base.dialogs.dialogEdit.style.display = 'block'
+            overlay[i].setPosition(undefined)
+            console.log(store.state.base.editFeatureColor['map01'])
+            if (store.state.base.editFeatureColor['map01'].rgba) {
+                const c = store.state.base.editFeatureColor['map01'].rgba
+                const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
+                feature.setProperties({_fillColor: rgba})
+            }
+            moveEnd()
+        })
         const olPopup = document.querySelector('#map01' + ' .ol-popup')
         olPopup.addEventListener('click', (e) => {
             if (e.target && e.target.classList.contains("edit-button")) {

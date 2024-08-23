@@ -36,7 +36,7 @@ const moduleBase = {
 
       dialogDokuji:{style: {top: '56px', left: '10px', 'z-index': 1, height: 'auto', 'width': '320px', display: 'none'}},
       menuDialog: {style: {top: '56px', left: '10px', 'z-index': 1, height: 'auto', 'min-width': '150px', display: 'none'}},
-      measureDialog: {style: {top: '56px', right: '10px', 'z-index': 1, height: 'auto', 'width': '350px', display: 'none'}},
+      measureDialog: {style: {top: '56px', right: '10px', 'z-index': 1, height: 'auto', 'width': '378px', display: 'none'}},
       map01: {style: {top: '56px', left:'10px', 'z-index': 1, height: 'auto', 'min-width': '250px', display: 'none'}},
       map02: {style: {top: '56px', left:'10px', 'z-index': 1, height: 'auto', 'min-width': '250px', display: 'none'}},
       map03: {style: {top: '56px', left:'10px', 'z-index': 1, height: 'auto', 'min-width': '250px', display: 'none'}},
@@ -100,8 +100,11 @@ const moduleBase = {
     togglePoint: false,
     togglePoint0: false,
     toggleLine: false,
+    toggleFreeHand: false,
     toggleMenseki: false,
+    toggleShikaku: false,
     toggleCircle: false,
+    toggleDaen: false,
     toggleText: false,
     toggleModify: false,
     // hyokozuDiv: {

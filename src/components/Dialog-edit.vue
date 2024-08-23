@@ -17,7 +17,7 @@
         <input id="my_form_input" type="file" name="file_1" accept="image/*" @change="file_upload()">
       </form>
       <b-button class='olbtn' size="sm" @click="upLoad">画像</b-button>
-      <b-button style="margin-left: 10px" :pressed.sync="s_toggleModify" class='olbtn' size="sm">変形</b-button>
+      <b-button style="margin-left: 10px" :pressed.sync="s_toggleModify" class='olbtn' size="sm">変形&移動</b-button>
       <b-button id="color-btn" style="margin-left: 10px" class='olbtn' size="sm" @click="openDialog">色</b-button>
 <!--      <div style="position: relative;">-->
 <!--        <chrome-picker v-model="colors" style="position: absolute;top:10px;"/>-->
@@ -173,10 +173,12 @@ export default {
     }, function () {
       if (this.s_toggleModify) {
         this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
+        this.$store.state.base.maps['map01'].addInteraction(MyMap.transformInteraction)
         this.s_togglePoint = false
         MyMap.overlay['0'].setPosition(undefined)
       } else {
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
+        this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
       }
     })
   }

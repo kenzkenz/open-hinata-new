@@ -192,7 +192,7 @@ export function permalinkEventSet (response) {
         // console.log(decodeURIComponent(obj[key]))
 
         const geojson = JSON.parse(decodeURIComponent(obj[key]))
-        // console.log(geojson)
+        console.log(geojson)
         if (geojson.features[0]) {
           let newFeature
           geojson.features.forEach((feature) => {
@@ -207,6 +207,7 @@ export function permalinkEventSet (response) {
               newFeature.setProperties({distance: distance})
               // MyMap.drawLayer.getSource().addFeature(newFeature)
             } else if (feature.geometry.type === 'LineString') {
+              console.log(999999)
               const distance = feature.properties.distance
               let coordinates = []
               feature.geometry.coordinates.forEach((coord) => {
@@ -526,7 +527,7 @@ export function moveEnd () {
   });
   let geojsonT = JSON.stringify(JSON.parse(drawSourceGeojson),null,1);
 
-  // console.log(geojsonT)
+  console.log(geojsonT)
 
   // geojsonT = encodeURIComponent(geojsonT)
 
