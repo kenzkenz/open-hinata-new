@@ -6620,12 +6620,15 @@ function cityStyleFunction(mapName,year) {
 //農業集落境界------------------------------------------------------------------------------------------------
 function Kyoukai(){
   this.name = 'kyoukai'
-  this.source = new VectorTileSource({
-    format: new MVT(),
-    minZoom:1,
-    maxZoom:13,
-    url: "https://kenzkenz.github.io/kyoukai/{z}/{x}/{y}.mvt"
-  });
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/nogyosyuraku/n.pmtiles'
+  })
+  // this.source = new VectorTileSource({
+  //   format: new MVT(),
+  //   minZoom:1,
+  //   maxZoom:13,
+  //   url: "https://kenzkenz.github.io/kyoukai/{z}/{x}/{y}.mvt"
+  // });
   this.style = kyoukaiStyleFunction();
 }
 export const kyoukaiObj = {};
@@ -6641,13 +6644,14 @@ function kyoukaiStyleFunction() {
     const zoom = getZoom(resolution);
     const prop = feature.getProperties();
     const styles = [];
-    const rgb = kyoukaiColor(prop.CITY)
+    const rgb = d3.rgb(kyoukaiColor(prop.CITY))
+    const rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.8)"
     const polygonStyle = new Style({
       fill: new Fill({
-        color: rgb
+        color: rgba
       }),
       stroke: new Stroke({
-        color: "white",
+        color: zoom > 10 ? 'black' : 'rgba(0,0,0,0)',
         width: 1
       })
     });
@@ -6656,8 +6660,6 @@ function kyoukaiStyleFunction() {
       text: new Text({
         font: "14px sans-serif",
         text: text,
-        // placement:"point",
-        // offsetY:10,
         fill: new Fill({
           color: "black"
         }),
@@ -6665,7 +6667,6 @@ function kyoukaiStyleFunction() {
           color: "white",
           width: 3
         }),
-        exceedLength:true
       })
     });
     styles.push(polygonStyle);

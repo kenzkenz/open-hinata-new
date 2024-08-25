@@ -161,13 +161,33 @@ function drawLayerStylefunction (){
         } else {
             text = prop.distance
         }
+        let textAlign = ''
+        let offsetX = 0
+        let offsetY = 0
+        if (prop._align === 'top') {
+            textAlign = ''
+            offsetX = 0
+            offsetY = -20
+        } else if (prop._align === 'right') {
+            textAlign = 'right'
+            offsetX = -20
+            offsetY = 0
+        } else if (prop._align === 'bottom') {
+            textAlign = ''
+            offsetX = 0
+            offsetY = 20
+        } else {
+            textAlign = 'left'
+            offsetX = 20
+            offsetY = 0
+        }
         const textStyle = new Style({
             text: new Text({
                 font: "16px sans-serif",
                 text: text,
-                textAlign: 'left',
-                offsetY: 0,
-                offsetX: 10,
+                textAlign: textAlign,
+                offsetY: offsetY,
+                offsetX: offsetX,
                 fill:  new Fill({
                     color:"blue"
                 }),
@@ -640,7 +660,7 @@ export function initMap (vm) {
                 store.state.base.dialogs.dialogEdit.style.display = 'block'
                 const rect = document.querySelector('#map01-popup').getBoundingClientRect()
                 const left = rect.x + 'px'
-                const top = (rect.top + rect.height + 20) + 'px'
+                const top = (rect.top + rect.height + 50) + 'px'
                 console.log(top,left)
                 store.state.base.dialogs.dialogEdit.style.top = top
                 store.state.base.dialogs.dialogEdit.style.left = left

@@ -1,7 +1,14 @@
 <template>
   <v-dialog :dialog="s_dialogEdit" id="dialog-edit">
     <div :style="contentSize">
-      <input style="width: 300px;" type="text" @input="changeName" v-model="s_featureName" placeholder="名称を入力">
+      <input style="width: 250px;" type="text" @input="changeName" v-model="s_featureName" placeholder="名称を入力">
+      <b-button style="margin-left: 5px" class='olbtn' size="sm" @click="ichi0">位置</b-button>
+      <div v-if="ichi">
+        <b-button style="margin-left: 5px" class='olbtn' size="sm" @click="top">上</b-button>
+        <b-button style="margin-left: 5px" class='olbtn' size="sm" @click="left">右</b-button>
+        <b-button style="margin-left: 5px" class='olbtn' size="sm" @click="bottom">下</b-button>
+        <b-button style="margin-left: 5px" class='olbtn' size="sm" @click="right">左</b-button>
+      </div>
       <hr>
 <!--/*      <textarea style="width: 300px;" rows="4" cols="35" @input="changeName" v-model="s_featureSetumei" placeholder="説明を入力"></textarea>*/-->
 
@@ -38,6 +45,7 @@ export default {
   name: "dialog-edit",
   data () {
     return {
+      ichi:false,
       colors: '',
       togglePoint: false,
       contentSize: {'height': 'auto', 'margin': '10px', 'overflow': 'hidden', 'user-select': 'text'},
@@ -77,6 +85,25 @@ export default {
     },
   },
   methods: {
+    top () {
+      const feature = this.$store.state.base.editFeature
+      feature.setProperties({_align: 'top'})
+    },
+    right () {
+      const feature = this.$store.state.base.editFeature
+      feature.setProperties({_align: 'right'})
+    },
+    bottom () {
+      const feature = this.$store.state.base.editFeature
+      feature.setProperties({_align: 'bottom'})
+    },
+    left () {
+      const feature = this.$store.state.base.editFeature
+      feature.setProperties({_align: 'left'})
+    },
+    ichi0 () {
+      this.ichi = !this.ichi
+    },
     openDialog () {
       this.$store.state.base.editDiv = ''
       const dialog = this.s_dialogs['dialogColor']['map01']
