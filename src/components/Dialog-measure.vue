@@ -20,7 +20,8 @@
 
 <!--      <b-button style="margin-top: 5px;" :pressed.sync="toggleDelete" class='olbtn' :size="btnSize">{{ toggleDelete ? '削除' : '削除' }}</b-button>-->
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawReset">全て削除</b-button>
-<!--      <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawUndo">戻す</b-button>-->
+      <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawUndo">戻す</b-button>
+      <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawRedo">やり直す</b-button>
 
       <div class="range-div">
         <label class="eye-label">
@@ -167,6 +168,23 @@ export default {
     //   // MyMap.drawLayer.setOpacity(Number(this.s_drawOpacity))
     //   // permalink.moveEnd()
     // },
+    toggleReset () {
+      this.s_toggleCircle = false
+      this.s_togglePoint = false
+      this.s_togglePoint0 = false
+      this.s_toggleLine = false
+      this.s_toggleFreeHand = false
+      this.s_togglePoint = false
+      this.s_toggleMenseki = false
+      this.s_toggleDaen = false
+      this.s_toggleShikaku = false
+      this.toggleDelete = false
+      this.toggleDanmen = false
+      this.s_toggleIdo = false
+    },
+    drawRedo () {
+      MyMap.undoInteraction.redo()
+    },
     drawUndo () {
       MyMap.undoInteraction.undo()
     },

@@ -40,7 +40,7 @@ import PrintDialog from 'ol-ext/control/PrintDialog.js'
 import muni from './muni'
 import UndoRedo from 'ol-ext/interaction/UndoRedo'
 // import Observable from 'ol/Observable.js'
-import {unByKey} from 'ol/Observable'
+// import {unByKey} from 'ol/Observable'
 
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
@@ -74,13 +74,13 @@ function danmenStyleFunction() {
     }
 }
 const drawSource = new VectorSource({wrapX: false})
-var listenerKey = drawSource.on('change',function(e){
-    if (drawSource.getState() === 'ready') {
-        unByKey(listenerKey);
-        // Clear undo/redo on load
-        undoInteraction.clear();
-    }
-});
+// var listenerKey = drawSource.on('change',function(e){
+//     if (drawSource.getState() === 'ready') {
+//         unByKey(listenerKey);
+//         // Clear undo/redo on load
+//         undoInteraction.clear();
+//     }
+// });
 export  const drawLayer = new VectorLayer({
     // zIndex: 999999,
     name: 'drawLayer',
@@ -547,7 +547,8 @@ export function initMap (vm) {
 
 
         map.addInteraction(undoInteraction)
-
+        map.addInteraction(modifyInteraction)
+        map.addInteraction(transformInteraction)
 
         // ------------------------
         pointInteraction.on('drawend', function (event) {
@@ -1415,6 +1416,23 @@ export function initMap (vm) {
         if (i == 0) {
             document.addEventListener('keydown', removeLastPoint, false)
         }
+        if (i == 0) {
+            addEventListener('keydown', function (event) {
+                if ((event.key === 'z' && event.metaKey) && !event.shiftKey) {
+                    console.log(8888)
+                    lineInteraction.removeLastPoint()
+                    polygonInteraction.removeLastPoint()
+                    circleInteraction.removeLastPoint()
+                    undoInteraction.undo()
+                }
+            })
+            addEventListener('keydown', function (event) {
+                if (event.key === 'z' && event.metaKey && event.shiftKey) {
+                    console.log(777)
+                    undoInteraction.redo()
+                }
+            })
+        }
 
         // const selectInteraction = new Select({
         //     layers: [drawLayer]
@@ -1467,6 +1485,18 @@ export function initMap (vm) {
             store.commit('base/incrDialogMaxZindex')
             popupElm.style.cssText = cssText + 'z-index: ' + store.state.base.dialogMaxZindex + '!important;'
         }
+        // ダブルクリック---------------------------------------------------------------------------
+        map.on('dblclick', function (evt) {
+            const layerNames = map.forEachFeatureAtPixel(evt.pixel,
+                function (feature,layer) {
+                    return layer.get('name')
+                })
+            if (layerNames.indexOf('drawLayer') !== -1 ) {
+                map.addInteraction(modifyInteraction)
+                map.addInteraction(transformInteraction)
+                store.state.base.toggleIdo = true
+            }
+        })
         //----------------------------------------------------------------------------------------
         const getElevation = (event) =>{
             let z = Math.floor(map.getView().getZoom())
