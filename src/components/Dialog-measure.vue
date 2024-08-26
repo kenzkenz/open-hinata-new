@@ -15,7 +15,7 @@
       <br>
       <!--            <b-button style="margin-top: 10px;" class='olbtn' :size="btnSize" @click="drawStop">描画ストップ</b-button>-->
 <!--      <br>-->
-      <b-button style="margin-top: 5px;" :pressed.sync="toggleIdou" class='olbtn' :size="btnSize">{{ toggleIdou ? '変形&移動' : '変形&移動' }}</b-button>
+      <b-button style="margin-top: 5px;" :pressed.sync="s_toggleIdo" class='olbtn' :size="btnSize">{{ s_toggleIdo ? '変形&移動' : '変形&移動' }}</b-button>
 <!--      <br>-->
 
 <!--      <b-button style="margin-top: 5px;" :pressed.sync="toggleDelete" class='olbtn' :size="btnSize">{{ toggleDelete ? '削除' : '削除' }}</b-button>-->
@@ -69,7 +69,7 @@ export default {
       // toggleMenseki: false,
       // toggleCircle: false,
       toggleDelete: false,
-      toggleIdou: false,
+      // toggleIdou: false,
       selected: 20,
       options: [
         { value: '20', text: '20' },
@@ -162,6 +162,14 @@ export default {
         this.$store.state.base.toggleText = value
       }
     },
+    s_toggleIdo: {
+      get() {
+        return this.$store.state.base.toggleIdo
+      },
+      set(value) {
+        this.$store.state.base.toggleIdo = value
+      }
+    },
   },
   methods: {
     // opacityChange () {
@@ -241,7 +249,7 @@ export default {
       this.toggleCircle = false
       this.toggleDelete = false
       this.toggleDanmen = false
-      // this.toggleIdou = false
+      this.toggleIdo = false
       this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
       this.$store.state.base.maps['map01'].removeInteraction(MyMap.polygonInteraction)
       this.$store.state.base.maps['map01'].removeInteraction(MyMap.circleInteraction)
@@ -262,7 +270,7 @@ export default {
       this.s_toggleShikaku = false
       this.toggleDelete = false
       this.toggleDanmen = false
-      this.toggleIdou = false
+      this.s_toggleIdo = false
       MyMap.drawLayer.getSource().clear()
       // MyMap.drawLayer2.getSource().clear()
       moveEnd()
@@ -283,9 +291,9 @@ export default {
   },
   mounted () {
     this.$watch(function () {
-      return [this.toggleIdou]
+      return [this.s_toggleIdo]
     }, function () {
-      if (this.toggleIdou) {
+      if (this.s_toggleIdo) {
         console.log('on')
         this.s_togglePoint0 = false
         this.s_toggleLine = false
@@ -320,7 +328,7 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.toggleIdou = false
+        this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.selectInteraction)
         MyMap.selectInteraction.on('select', function (e) {
           const selectCollection = MyMap.selectInteraction.getFeatures();
@@ -345,7 +353,7 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.toggleIdou = false
+        this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.circleInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
@@ -370,7 +378,7 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.toggleIdou = false
+        this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.daenInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
@@ -394,7 +402,7 @@ export default {
         this.s_toggleDaen = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.toggleIdou = false
+        this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.polygonInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
@@ -421,7 +429,7 @@ export default {
         this.s_toggleDaen = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.toggleIdou = false
+        this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.regularInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
@@ -445,7 +453,7 @@ export default {
         this.s_toggleShikaku = false
         this.toggleCircle = false
         this.toggleDelete = false
-        this.toggleIdou = false
+        this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.selectInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction)
@@ -475,7 +483,7 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.toggleIdou = false
+        this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.lineInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
@@ -505,7 +513,7 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.toggleIdou = false
+        this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.freeHandInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
@@ -536,7 +544,7 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.toggleIdou = false
+        this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.pointInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
@@ -562,7 +570,7 @@ export default {
         this.s_toggleCircle = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.toggleIdou = false
+        this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.selectInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.polygonInteraction)

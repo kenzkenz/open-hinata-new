@@ -26,7 +26,7 @@
                            content="合成します。"
                            :target= '"checkbox2-div" + item.id'
                            triggers="hover"
-                           placement="left"
+                           placement="bottom"
                            boundary="viewport"
               />
 

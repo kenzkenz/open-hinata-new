@@ -378,6 +378,8 @@ tippecanoe -f -o t.pmtiles t.geojson
 tippecanoe -f -o s.pmtiles s.geojson
 tippecanoe -f -o z.pmtiles z.geojson
 tippecanoe -l n -f -o n.pmtiles nogyosyurakukyokai.geojson
+tippecanoe -l g -f -o g.pmtiles g.geojson
+
 
 test
 

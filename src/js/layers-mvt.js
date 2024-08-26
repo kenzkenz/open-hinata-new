@@ -7615,20 +7615,23 @@ function hinanzyoStyleFunction(color) {
 //郡------------------------------------------------------------------------------------------------
 function Gun(mapName){
   this.name = 'gun'
-  this.source = new VectorTileSource({
-    format: new MVT(),
-    maxZoom:13,
-    // maxZoom:14,
-    // url: "https://kenzkenz.github.io/gun2/{z}/{x}/{y}.mvt"
-    url: 'https://kenzkenz3.xsrv.jp/mvt/gun115/{z}/{x}/{y}.mvt'
-  });
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/gun/g.pmtiles'
+  })
+  // this.source = new VectorTileSource({
+  //   format: new MVT(),
+  //   maxZoom:13,
+  //   // maxZoom:14,
+  //   // url: "https://kenzkenz.github.io/gun2/{z}/{x}/{y}.mvt"
+  //   url: 'https://kenzkenz3.xsrv.jp/mvt/gun115/{z}/{x}/{y}.mvt'
+  // });
   this.style = gunStyleFunction(mapName);
 }
 export  const gunObj = {};
 for (let i of mapsStr) {
   gunObj[i] = new VectorTileLayer(new Gun(i))
 }
-export const gunSumm = "郡地図ver1.1.5で作成しました。<a href='https://booth.pm/ja/items/3053727' target='_blank'>郡地図研究会</a>";
+export const gunSumm = "郡地図ver1.1.7で作成しました。<a href='https://booth.pm/ja/items/3053727' target='_blank'>郡地図研究会</a>";
 //-----------------------------------------------------------------------
 // function Gunbakumatu(){
 //   this.name = 'gunbakumatu'
@@ -7672,7 +7675,7 @@ function gunStyleFunction(mapName) {
     let rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.8)"
     if (!id) rgba = "rgba(0,0,0,0)"
     let polygonStyle
-    if (zoom > 10) {
+    if (zoom > 7) {
       polygonStyle = new Style({
         fill: new Fill({
           color: rgba
@@ -7689,7 +7692,7 @@ function gunStyleFunction(mapName) {
           color: rgba
         }),
         stroke: new Stroke({
-          color: "black",
+          color: "rgba(0,0,0,0)",
           width: 1
         }),
         zIndex: 0
