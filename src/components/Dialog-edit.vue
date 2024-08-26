@@ -59,10 +59,10 @@ export default {
     s_dialogs () { return this.$store.state.base.dialogs},
     s_toggleModify: {
       get() {
-        return this.$store.state.base.toggleModify
+        return this.$store.state.base.toggleIdo
       },
       set(value) {
-        this.$store.state.base.toggleModify = value
+        this.$store.state.base.toggleIdo = value
       }
     },
     s_dialogEdit () {
@@ -194,7 +194,7 @@ export default {
   },
   mounted () {
     const dragHandle = document.querySelector('#dialog-edit .drag-handle');
-    dragHandle.innerHTML = '編集'
+    dragHandle.innerHTML = ''
     this.$watch(function () {
       return [this.s_toggleModify]
     }, function () {
@@ -202,10 +202,14 @@ export default {
         this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.transformInteraction)
         this.s_togglePoint = false
+        this.$store.state.base.toggleIdo = true
+        dragHandle.innerHTML = '<span style="color: red;">移動＆変形モード中</span>'
         MyMap.overlay['0'].setPosition(undefined)
       } else {
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
+        this.$store.state.base.toggleIdo = false
+        dragHandle.innerHTML = ''
       }
     })
   }

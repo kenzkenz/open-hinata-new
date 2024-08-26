@@ -290,6 +290,11 @@ export default {
     }
   },
   mounted () {
+
+    const dragHandle = document.querySelector('#dialog-measure .drag-handle');
+    dragHandle.innerHTML = ''
+
+
     this.$watch(function () {
       return [this.s_toggleIdo]
     }, function () {
@@ -307,11 +312,16 @@ export default {
         this.toggleDanmen = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.transformInteraction)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
-        // this.$store.state.base.maps['map02'].addInteraction(MyMap.modifyInteraction)
+
+        dragHandle.innerHTML = '<span style="color: red;">移動＆変形モード中</span>'
+
       } else {
         console.log('off')
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
+
+        dragHandle.innerHTML = ''
+
       }
     })
     this.$watch(function () {

@@ -244,6 +244,7 @@ export const modifyInteraction = new Modify ({
     source: drawSource,
 })
 export const undoInteraction = new UndoRedo()
+
 export const snapnteraction = new Snap ({
     source: drawSource,
 })
@@ -461,6 +462,14 @@ daenInteraction.on('drawend', function (event) {
     const coordAr = feature.getGeometry().getCoordinates()
     const geoType = feature.getGeometry().getType()
     measure (geoType,feature,coordAr)
+})
+undoInteraction.on('undo', function(e) {
+    const features = drawLayer.getSource().getFeatures()
+    features.forEach((feature) =>{
+        const coordAr = feature.getGeometry().getCoordinates()
+        const geoType = feature.getGeometry().getType()
+        measure (geoType,feature,coordAr)
+    })
 })
 
 // ダイアログ
