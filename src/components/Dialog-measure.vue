@@ -15,7 +15,7 @@
       <br>
       <!--            <b-button style="margin-top: 10px;" class='olbtn' :size="btnSize" @click="drawStop">描画ストップ</b-button>-->
 <!--      <br>-->
-      <b-button style="margin-top: 5px;" :pressed.sync="s_toggleIdo" class='olbtn' :size="btnSize">{{ s_toggleIdo ? '変形&移動' : '変形&移動' }}</b-button>
+      <b-button style="margin-top: 5px;color: red;" :pressed.sync="s_toggleIdo" class='olbtn' :size="btnSize">変形&移動</b-button>
 <!--      <br>-->
 
 <!--      <b-button style="margin-top: 5px;" :pressed.sync="toggleDelete" class='olbtn' :size="btnSize">{{ toggleDelete ? '削除' : '削除' }}</b-button>-->
@@ -313,7 +313,7 @@ export default {
         this.$store.state.base.maps['map01'].addInteraction(MyMap.transformInteraction)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
 
-        dragHandle.innerHTML = '<span style="color: red;">移動＆変形モード中</span>'
+        dragHandle.innerHTML = '<span style="color: red;">移動＆変形モード中<span style="font-size: smaller;margin-left: 30px;">もう一度クリックで解除</span></span>'
 
       } else {
         console.log('off')
