@@ -310,6 +310,7 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
+
         this.$store.state.base.maps['map01'].addInteraction(MyMap.transformInteraction)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
 
@@ -414,10 +415,9 @@ export default {
         this.toggleDanmen = false
         this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.polygonInteraction)
+        this.$store.state.base.maps['map01'].addInteraction(MyMap.snapnteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
-        // this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
-        // this.$store.state.base.maps['map02'].addInteraction(MyMap.modifyInteraction)
         this.$store.state.base.drawType = 'menseki'
 
       } else {
@@ -558,36 +558,6 @@ export default {
         this.$store.state.base.maps['map01'].addInteraction(MyMap.pointInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
-        this.$store.state.base.drawType = 'point'
-
-      } else {
-        console.log('off')
-        // MyMap.drawLayer.getSource().clear()
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction)
-      }
-    })
-    this.$watch(function () {
-      return [this.s_toggleText]
-    }, function () {
-      if (this.s_toggleText) {
-        // this.$store.state.base.maps['map01'].removeLayer(MyMap.drawLayer)
-        // this.$store.state.base.maps['map01'].addLayer(MyMap.drawLayer)
-        console.log('on')
-        // alert()
-        this.s_toggleLine = false
-        this.s_toggleMenseki = false
-        this.s_toggleShikaku = false
-        this.s_toggleCircle = false
-        this.toggleDelete = false
-        this.toggleDanmen = false
-        this.s_toggleIdo = false
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.selectInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.polygonInteraction)
-        this.$store.state.base.maps['map01'].addInteraction(MyMap.pointInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
-
         this.$store.state.base.drawType = 'point'
 
       } else {

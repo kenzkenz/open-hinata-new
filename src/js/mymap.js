@@ -559,6 +559,7 @@ export function initMap (vm) {
         map.addInteraction(modifyInteraction)
         map.addInteraction(transformInteraction)
 
+
         // ------------------------
         pointInteraction.on('drawend', function (event) {
             const feature = event.feature
@@ -1486,7 +1487,22 @@ export function initMap (vm) {
         //     }
         // })
 
+
+
+        map.on('singleclick', function (evt) {
+            const layerNames = map.forEachFeatureAtPixel(evt.pixel,
+                function (feature,layer) {
+                    return layer.get('name')
+                })
+            if (layerNames.indexOf('drawLayer') !== -1 ) {
+                // store.state.base.toggleIdo = true
+                store.commit('base/incrDialogMaxZindex')
+                store.state.base.dialogs.measureDialog.style["z-index"] = this.s_dialogMaxZindex
+                store.state.base.dialogs.measureDialog.style.display = 'block'
+            }
+        })
         // シングルクリック終わり---------------------------------------------------------------------
+        // ------------------------------------------------
 
         const popupElm =document.querySelector('#' + maps[i].mapName + ' .ol-overlaycontainer-stopevent')
         const cssText = popupElm.style.cssText
@@ -1494,18 +1510,7 @@ export function initMap (vm) {
             store.commit('base/incrDialogMaxZindex')
             popupElm.style.cssText = cssText + 'z-index: ' + store.state.base.dialogMaxZindex + '!important;'
         }
-        // ダブルクリック---------------------------------------------------------------------------
-        map.on('dblclick', function (evt) {
-            const layerNames = map.forEachFeatureAtPixel(evt.pixel,
-                function (feature,layer) {
-                    return layer.get('name')
-                })
-            if (layerNames.indexOf('drawLayer') !== -1 ) {
-                map.addInteraction(modifyInteraction)
-                map.addInteraction(transformInteraction)
-                store.state.base.toggleIdo = true
-            }
-        })
+
         //----------------------------------------------------------------------------------------
         const getElevation = (event) =>{
             let z = Math.floor(map.getView().getZoom())
