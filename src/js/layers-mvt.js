@@ -145,8 +145,50 @@ for (let i of mapsStr) {
     sourceg
   })
 }
-// 交通事故-------------------------------------
 
+// 空港等の周辺空域---------------------------------------------------
+function Kuiki(){
+  this.name = 'kuiki'
+  this.source = new VectorTileSource({
+    format: new GeoJSON({defaultProjection:'EPSG:4326'}),
+    tileGrid: new createXYZ({
+      minZoom:8,
+      maxZoom:8
+    }),
+    url:"https://maps.gsi.go.jp/xyz/kokuarea/{z}/{x}/{y}.geojson"
+  })
+  this.style = kuikiFunction()
+  this.pointer = true
+}
+export const kuikiSumm = "<a href='' target='_blank'></a>"
+
+export  const kuiki0Obj = {};
+for (let i of mapsStr) {
+  kuiki0Obj[i] = new VectorTileLayer(new Kuiki())
+}
+function kuikiFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    const rgb = d3.rgb(prop._fillColor)
+    const rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + prop._fillOpacity +  ")"
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: rgba
+      }),
+      stroke: new Stroke({
+        color: "black",
+        width: 1
+      }),
+    })
+    styles.push(polygonStyle)
+    return styles
+  }
+}
+
+
+// 交通事故-------------------------------------
 const rasterLayer = new WebGLTile({
   source: new olpmtiles.PMTilesRasterSource({
     url:"https://r2-public.protomaps.com/protomaps-sample-datasets/terrarium_z9.pmtiles",

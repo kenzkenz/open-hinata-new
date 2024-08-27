@@ -1932,6 +1932,13 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div><hr>'
           }
           break
+        case 'kuiki':
+          // if (cont.indexOf('kuiki') === -1) {
+            cont += '<div class="kuiki" style=width:300px;>' +
+                '<h5>' + prop.name + '</h5>' +
+                '</div><hr>'
+          // }
+          break
       }
     })
   }
