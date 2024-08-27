@@ -101,6 +101,7 @@ function drawLayerStylefunction (){
         let text
         let color
         let fillColor
+
         if (prop._color) {
             color = prop._color
         } else {
@@ -110,10 +111,20 @@ function drawLayerStylefunction (){
                 color = 'rgba(0,0,255,0.5)'
             }
         }
+        if (feature === store.state.base.editFeature) {
+            if (geoType === 'Point') {
+                color = 'orange'
+            } else {
+                color = 'orange'
+            }
+        }
         if (prop._fillColor) {
             fillColor = prop._fillColor
         } else {
             fillColor = 'rgba(0,0,255,0.5)'
+        }
+        if (feature === store.state.base.editFeature) {
+            fillColor = 'rgba(255,165,0,0.5)'
         }
         const styles = []
         const pointStyle = new Style({
@@ -121,20 +132,7 @@ function drawLayerStylefunction (){
                 src: require('@/assets/icon/whitecircle.png'),
                 color: color,
                 scale: 1.5
-            }),
-            stroke: new Stroke({
-                color: "white",
-                width: 1
-            }),
-            // text: new Text({
-            //     font: "20px sans-serif",
-            //     text: prop.N05_011,
-            //     offsetY: 16,
-            //     stroke: new Stroke({
-            //         color: "white",
-            //         width: 3
-            //     })
-            // })
+            })
         })
         const polygonStyle = new Style({
             fill: new Fill({
@@ -513,6 +511,7 @@ export function initMap (vm) {
             },
         })
         closer.onclick = () => {
+            console.log(i)
             overlay[i].setPosition(undefined);
             closer.blur();
             document.querySelector('.center-target').style.zIndex = 1
@@ -1443,6 +1442,21 @@ export function initMap (vm) {
                 }
             })
         }
+        if (i == 0) {
+            addEventListener('keydown', function (event) {
+                console.log(event.key)
+                if (event.key === 'Backspace' || event.key === 'Delete') {
+                    if (store.state.base.toggleIdo) {
+                        store.state.base.toggleIdo = false
+                        drawLayer.getSource().removeFeature(store.state.base.editFeature)
+                        store.state.base.toggleIdo = true
+                    } else {
+                        drawLayer.getSource().removeFeature(store.state.base.editFeature)
+                    }
+                    overlay[i].setPosition(undefined)
+                }
+            })
+        }
 
         // const selectInteraction = new Select({
         //     layers: [drawLayer]
@@ -1450,55 +1464,32 @@ export function initMap (vm) {
         // map.addInteraction(selectInteraction)
 
 
-        map.on('click', function (evt) {
-            // const pixel = map.getPixelFromCoordinate(evt.coordinate);
-            // const features = [];
-            // const layers = [];
-            // map.forEachFeatureAtPixel(pixel,function(feature,layer){
-            //     features.push(feature);
-            //     layers.push(layer);
-            // })
-            // console.log(features[1].getProperties())
-            // console.log(layers)
-            // layers[1].getSource().removeFeature(features[1])
-        })
-
-        // 普通のフィーチャー用------------------------------------------------------------
-
-        // map.on('singleclick', function (evt) {
-        //     // moveEnd()
-        //     // dialogMap.show({ content: 'Hello World!', title: 'Hello'})
-        //     document.querySelector('.center-target').style.zIndex = 1
-        //     // console.log(JSON.stringify(transform(evt.coordinate, "EPSG:3857", "EPSG:4326")));
-        //     overlay[i].setPosition(undefined)
-        //     const pixel = (evt.map).getPixelFromCoordinate(evt.coordinate);
-        //     const features = [];
-        //     const layers = [];
-        //     evt.map.forEachFeatureAtPixel(pixel,function(feature,layer){
-        //         features.push(feature);
-        //         layers.push(layer);
-        //     })
-        //     console.log(layers,features)
-        //     if(features.length){
-        //         if(layers[0]) {
-        //             PopUp.popUp(evt.map,layers,features,overlay[i],evt,content)
-        //             return
-        //         }
-        //     }
-        // })
-
-
+        // ------------------------------------------------------------
 
         map.on('singleclick', function (evt) {
+            const features = map.forEachFeatureAtPixel(evt.pixel,
+                function (feature) {
+                    return feature
+                })
             const layerNames = map.forEachFeatureAtPixel(evt.pixel,
                 function (feature,layer) {
                     return layer.get('name')
                 })
-            if (layerNames.indexOf('drawLayer') !== -1 ) {
-                // store.state.base.toggleIdo = true
-                store.commit('base/incrDialogMaxZindex')
-                store.state.base.dialogs.measureDialog.style["z-index"] = this.s_dialogMaxZindex
-                store.state.base.dialogs.measureDialog.style.display = 'block'
+            if (layerNames) {
+                if (layerNames.indexOf('drawLayer') !== -1 ) {
+                    // store.state.base.toggleIdo = true
+                    store.commit('base/incrDialogMaxZindex')
+                    store.state.base.dialogs.measureDialog.style["z-index"] = this.s_dialogMaxZindex
+                    store.state.base.dialogs.measureDialog.style.display = 'block'
+                    store.state.base.editFeature = features
+                    drawLayer.getSource().changed()
+                } else {
+                    store.state.base.editFeature = ''
+                    drawLayer.getSource().changed()
+                }
+            } else {
+                store.state.base.editFeature = ''
+                drawLayer.getSource().changed()
             }
         })
         // シングルクリック終わり---------------------------------------------------------------------

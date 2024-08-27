@@ -143,7 +143,6 @@ export default {
       const result = window.confirm('削除しますか。');
       if( !result ) return
       MyMap.drawLayer.getSource().removeFeature(this.$store.state.base.editFeature)
-      MyMap.drawLayer2.getSource().removeFeature(this.$store.state.base.editFeature)
       store.state.base.dialogs.dialogEdit.style.display = 'none'
       MyMap.overlay['0'].setPosition(undefined)
     },
