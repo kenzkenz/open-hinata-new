@@ -1485,7 +1485,7 @@ export function initMap (vm) {
         // ------------------------------------------------------------
 
         map.on('singleclick', function (evt) {
-            const features = map.forEachFeatureAtPixel(evt.pixel,
+            const feature = map.forEachFeatureAtPixel(evt.pixel,
                 function (feature) {
                     return feature
                 })
@@ -1499,11 +1499,11 @@ export function initMap (vm) {
                     store.commit('base/incrDialogMaxZindex')
                     store.state.base.dialogs.measureDialog.style["z-index"] = this.s_dialogMaxZindex
                     store.state.base.dialogs.measureDialog.style.display = 'block'
-                    store.state.base.editFeature = features
+                    store.state.base.editFeature = feature
                     drawLayer.getSource().changed()
                 } else if (layerNames.indexOf('syochiki2020') !== -1) {
-                    console.log(features.getProperties().KEY_CODE)
-                    store.state.base.clickedFeature = features.getProperties().KEY_CODE
+                    console.log(feature.getProperties().KEY_CODE)
+                    store.state.base.clickedFeature = feature.getProperties().KEY_CODE
                     syochiiki2020MvtObj['map01'].getSource().changed()
                     syochiiki2020MvtObj['map02'].getSource().changed()
                 } else {
