@@ -25,7 +25,6 @@ import Transform from 'ol-ext/interaction/Transform'
 import DragAndDrop from 'ol/interaction/DragAndDrop.js'
 import PinchRotate from 'ol/interaction/PinchRotate'
 import {GPX, GeoJSON, IGC, KML, TopoJSON} from 'ol/format.js'
-// import {standardFunction} from "@/js/layers-mvt";
 import {Fill, Stroke, Style, Text, Circle as Circle0 } from "ol/style"
 import * as turf from '@turf/turf';
 import Select from 'ol/interaction/Select.js'
@@ -39,7 +38,8 @@ import * as d3 from "d3"
 import PrintDialog from 'ol-ext/control/PrintDialog.js'
 import muni from './muni'
 import UndoRedo from 'ol-ext/interaction/UndoRedo'
-import {syochiiki2020MvtObj} from "@/js/layers-mvt";
+import {syochiiki2020MvtObj} from "@/js/layers-mvt"
+import CopyPaste from 'ol-ext/interaction/CopyPaste'
 // import Observable from 'ol/Observable.js'
 // import {unByKey} from 'ol/Observable'
 
@@ -487,6 +487,23 @@ undoInteraction.on('undo', function(e) {
         measure (geoType,feature,coordAr)
     })
 })
+export const copyInteraction = new CopyPaste({
+    destination: drawLayer.getSource(),
+    features: transformInteraction.getFeatures()
+});
+
+// Remove selection if cut
+copyInteraction.on('cut', function(e) {
+    // transform.select();
+});
+copyInteraction.on('paste', function (e) {
+    // alert(1)
+    // transformInteraction.select()
+    // e.features.forEach (function(f) {
+    //     transform.select(f, true);
+    // });
+});
+
 
 // ダイアログ
 export const dialog = new Dialog({ fullscreen: true, zoom: true, closeBox: true });
@@ -576,6 +593,7 @@ export function initMap (vm) {
         map.addInteraction(modifyInteraction)
         map.addInteraction(transformInteraction)
 
+        map.addInteraction(copyInteraction)
 
         // ------------------------
         pointInteraction.on('drawend', function (event) {

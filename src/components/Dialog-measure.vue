@@ -19,8 +19,10 @@
 
 <!--      <b-button style="margin-top: 5px;" :pressed.sync="toggleDelete" class='olbtn' :size="btnSize">{{ toggleDelete ? '削除' : '削除' }}</b-button>-->
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawReset">全て削除</b-button>
+      <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawCopy">コピー</b-button>
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawUndo">戻す</b-button>
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawRedo">やり直す</b-button>
+
 
       <div class="range-div">
         <label class="eye-label">
@@ -55,6 +57,7 @@ import KML from 'ol/format/KML'
 import {moveEnd} from "@/js/permalink"
 import * as permalink from "@/js/permalink";
 import store from "@/js/store";
+import {transform} from "ol/proj";
 
 export default {
   name: "dialog-measure",
@@ -199,6 +202,16 @@ export default {
       this.toggleDelete = false
       this.toggleDanmen = false
       this.s_toggleIdo = false
+    },
+    drawCopy () {
+      if (!this.s_toggleIdo) {
+        alert('「変形＆移動」モードにして線、ポリゴン等を選択後にコピーしてください。')
+        return
+      }
+      MyMap.copyInteraction.copy({ silent: false })
+      this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
+      this.$store.state.base.maps['map01'].addInteraction(MyMap.transformInteraction)
+      MyMap.copyInteraction.paste({ silent: false })
     },
     drawRedo () {
       MyMap.undoInteraction.redo()
