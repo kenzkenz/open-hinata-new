@@ -537,6 +537,22 @@ for (let i of mapsStr) {
   paleObj[i] = new TileLayer(new Pale())
 }
 export const paleSumm = '国土地理院作成のタイルです。<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">リンク</a>'
+// アナグリフ------------------------------------------------------------------------------------
+function Anaglyph () {
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://cyberjapandata.gsi.go.jp/xyz/anaglyphmap_color/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    minZoom: 2,
+    maxZoom: 16
+  })
+}
+const anaglyphObj = {}
+for (let i of mapsStr) {
+  anaglyphObj[i] = new TileLayer(new Anaglyph())
+}
+const anaglyphSumm = '国土地理院作成のタイルです。<br><a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">リンク</a>'
+
 // ミエルネ地図------------------------------------------------------------------------------------
 function Mierune () {
   this.preload = Infinity
@@ -13442,6 +13458,7 @@ export const Layers =
         { text: '土地利用図（1982～1983年）', data: { id: "totiriyouzu", layer: totiriyouzuObj, opacity: 1, summary: totiriyouzuSumm } },
         { text: '数値地図25000（土地条件）', data: { id: "suuti25000", layer: suuti25000Obj, opacity: 1, summary: suuti25000Summ } },
         { text: '空港等の周辺空域', data: { id: "kuiki", layer: LayersMvt.kuiki0Obj, opacity: 1, summary: LayersMvt.kuikiSumm} },
+        { text: 'アナグリフ', data: { id: "anaglyph", layer: anaglyphObj, opacity: 1, summary: anaglyphSumm} },
 
         { text: '最適化ベクトルタイル', data: { id: "saitekika", layer: LayersMvt.saitekikaObj, opacity: 1, summary: LayersMvt.saitekikaSumm} },
         { text: 'ベクトルタイル', data: { id: "saitekika0", layer: LayersMvt.saitekika0Obj, opacity: 1, summary: LayersMvt.saitekika0Summ} },

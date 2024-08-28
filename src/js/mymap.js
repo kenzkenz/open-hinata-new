@@ -26,7 +26,7 @@ import DragAndDrop from 'ol/interaction/DragAndDrop.js'
 import PinchRotate from 'ol/interaction/PinchRotate'
 import {GPX, GeoJSON, IGC, KML, TopoJSON} from 'ol/format.js'
 // import {standardFunction} from "@/js/layers-mvt";
-import {Fill, Stroke, Style, Text} from "ol/style"
+import {Fill, Stroke, Style, Text, Circle as Circle0 } from "ol/style"
 import * as turf from '@turf/turf';
 import Select from 'ol/interaction/Select.js'
 // import {click, pointerMove, altKeyOnly} from 'ol/events/condition.js';
@@ -39,6 +39,7 @@ import * as d3 from "d3"
 import PrintDialog from 'ol-ext/control/PrintDialog.js'
 import muni from './muni'
 import UndoRedo from 'ol-ext/interaction/UndoRedo'
+import {syochiiki2020MvtObj} from "@/js/layers-mvt";
 // import Observable from 'ol/Observable.js'
 // import {unByKey} from 'ol/Observable'
 
@@ -101,6 +102,8 @@ function drawLayerStylefunction (){
         let text
         let color
         let fillColor
+        let polygonStrokeWidth = 1
+        let pointStrokeWidth = 1
 
         if (prop._color) {
             color = prop._color
@@ -113,7 +116,7 @@ function drawLayerStylefunction (){
         }
         if (feature === store.state.base.editFeature) {
             if (geoType === 'Point') {
-                color = 'orange'
+                pointStrokeWidth = 4
             } else {
                 color = 'orange'
             }
@@ -124,15 +127,26 @@ function drawLayerStylefunction (){
             fillColor = 'rgba(0,0,255,0.5)'
         }
         if (feature === store.state.base.editFeature) {
-            fillColor = 'rgba(255,165,0,0.5)'
+            // fillColor = 'rgba(255,165,0,0.5)'
+            polygonStrokeWidth = 4
         }
         const styles = []
         const pointStyle = new Style({
-            image: new Icon({
-                src: require('@/assets/icon/whitecircle.png'),
-                color: color,
-                scale: 1.5
-            })
+            // image: new Icon({
+            //     src: require('@/assets/icon/whitecircle.png'),
+            //     color: color,
+            //     scale: 1.5
+            // })
+            image: new Circle0({
+              radius: 8,
+              fill: new Fill({
+                color: color
+              }),
+              stroke: new Stroke({
+                color: "black",
+                width: pointStrokeWidth
+              })
+            }),
         })
         const polygonStyle = new Style({
             fill: new Fill({
@@ -140,7 +154,7 @@ function drawLayerStylefunction (){
             }),
             stroke: new Stroke({
                 color: "black",
-                width: 1
+                width: polygonStrokeWidth
             }),
             // zIndex: 0
         })
@@ -1483,13 +1497,23 @@ export function initMap (vm) {
                     store.state.base.dialogs.measureDialog.style.display = 'block'
                     store.state.base.editFeature = features
                     drawLayer.getSource().changed()
+                // } else if (layerNames.indexOf('syochiki2020') !== -1) {
+                //     store.state.base.clickedFeature = features
+                //     syochiiki2020MvtObj['map01'].getSource().changed()
+                //     syochiiki2020MvtObj['map02'].getSource().changed()
                 } else {
                     store.state.base.editFeature = ''
                     drawLayer.getSource().changed()
+                    // store.state.base.clickedFeature = ''
+                    // syochiiki2020MvtObj['map01'].getSource().changed()
+                    // syochiiki2020MvtObj['map02'].getSource().changed()
                 }
             } else {
                 store.state.base.editFeature = ''
                 drawLayer.getSource().changed()
+                // store.state.base.clickedFeature = ''
+                // syochiiki2020MvtObj['map01'].getSource().changed()
+                // syochiiki2020MvtObj['map02'].getSource().changed()
             }
         })
         // シングルクリック終わり---------------------------------------------------------------------

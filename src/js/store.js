@@ -120,6 +120,7 @@ const moduleBase = {
     editDiv: '',
     editMap: '',
     editFeature:'',
+    clickedFeature: '',
     editFeatureName:'',
     editFeatureSetumei:'',
     editFeatureSrc:'',

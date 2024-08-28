@@ -3708,10 +3708,14 @@ function syochiikiStyleFunction() {
     //       jinkoMax])
     //     .range(["white", "red","#880000",'maroon','black']);
     // console.log(prop.JINKO/prop.AREA)
+    let fillColor = 'rgba(0,0,0,0)'
+    if (feature === store.state.base.clickedFeature) {
+      fillColor = 'rgba(255,255,0,0.5)'
+    }
     const styles = [];
     const polygonStyle = new Style({
       fill: new Fill({
-        color: 'rgba(0,0,0,0)'
+        color: fillColor
         // color: syochiikiColor(prop.JINKO/prop.AREA)
       }),
       stroke: new Stroke({
