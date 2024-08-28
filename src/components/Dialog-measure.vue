@@ -15,12 +15,11 @@
       <!--            <b-button style="margin-top: 10px;" class='olbtn' :size="btnSize" @click="drawStop">描画ストップ</b-button>-->
 <!--      <br>-->
       <b-button style="margin-top: 5px;color: red;" :pressed.sync="s_toggleIdo" class='olbtn' :size="btnSize">変形&移動</b-button>
-<!--      <br>-->
-
-<!--      <b-button style="margin-top: 5px;" :pressed.sync="toggleDelete" class='olbtn' :size="btnSize">{{ toggleDelete ? '削除' : '削除' }}</b-button>-->
-      <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawReset">全て削除</b-button>
+      <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawReset">削除</b-button>
+      <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawAllReset">全て削除</b-button>
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawCopy">コピー</b-button>
-      <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawUndo">戻す</b-button>
+      <br>
+      <b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawUndo">戻す</b-button>
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawRedo">やり直す</b-button>
 
 
@@ -58,6 +57,7 @@ import {moveEnd} from "@/js/permalink"
 import * as permalink from "@/js/permalink";
 import store from "@/js/store";
 import {transform} from "ol/proj";
+import {overlay, transformInteraction} from "../js/mymap";
 
 export default {
   name: "dialog-measure",
@@ -208,10 +208,12 @@ export default {
         alert('「変形＆移動」モードにして線、ポリゴン等を選択後にコピーしてください。')
         return
       }
+      // transformInteraction.select(this.$store.state.base.editFeature, true)
       MyMap.copyInteraction.copy({ silent: false })
       this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
       this.$store.state.base.maps['map01'].addInteraction(MyMap.transformInteraction)
       MyMap.copyInteraction.paste({ silent: false })
+
     },
     drawRedo () {
       MyMap.undoInteraction.redo()
@@ -281,6 +283,32 @@ export default {
       // this.$store.state.base.maps['map02'].addInteraction(MyMap.modifyInteraction)
     },
     drawReset () {
+
+      this.s_togglePoint0 = false
+      this.s_toggleLine = false
+      this.s_toggleFreeHand = false
+      this.s_togglePoint = false
+      this.s_toggleMenseki = false
+      this.s_toggleCircle = false
+      this.s_toggleDaen = false
+      this.s_toggleShikaku = false
+      this.toggleDelete = false
+      this.toggleDanmen = false
+      this.s_toggleIdo = false
+
+      if (store.state.base.toggleIdo) {
+        store.state.base.toggleIdo = false
+        drawLayer.getSource().removeFeature(store.state.base.editFeature)
+        store.state.base.toggleIdo = true
+      } else {
+        drawLayer.getSource().removeFeature(store.state.base.editFeature)
+      }
+      MyMap.overlay['0'].setPosition(undefined)
+
+
+      moveEnd()
+    },
+    drawAllReset () {
       const result = window.confirm('全て削除しますか。');
       if( !result ) return
       this.s_togglePoint0 = false

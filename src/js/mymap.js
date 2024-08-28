@@ -490,6 +490,7 @@ undoInteraction.on('undo', function(e) {
 export const copyInteraction = new CopyPaste({
     destination: drawLayer.getSource(),
     features: transformInteraction.getFeatures()
+    // features: {array_:[store.state.base.editFeature]}
 });
 
 // Remove selection if cut
@@ -497,10 +498,12 @@ copyInteraction.on('cut', function(e) {
     // transform.select();
 });
 copyInteraction.on('paste', function (e) {
-    // alert(1)
+    // console.log(transformInteraction.getFeatures())
+    // // alert(1)
     // transformInteraction.select()
     // e.features.forEach (function(f) {
-    //     transform.select(f, true);
+    //     console.log(f)
+    //     transformInteraction.select(f, true);
     // });
 });
 
@@ -1489,6 +1492,7 @@ export function initMap (vm) {
                     } else {
                         drawLayer.getSource().removeFeature(store.state.base.editFeature)
                     }
+                    console.log(i)
                     overlay[i].setPosition(undefined)
                 }
             })
@@ -1518,6 +1522,8 @@ export function initMap (vm) {
                     store.state.base.dialogs.measureDialog.style["z-index"] = this.s_dialogMaxZindex
                     store.state.base.dialogs.measureDialog.style.display = 'block'
                     store.state.base.editFeature = feature
+                    console.log(store.state.base.editFeature)
+
                     drawLayer.getSource().changed()
                 } else if (layerNames.indexOf('syochiki2020') !== -1) {
                     console.log(feature.getProperties().KEY_CODE)
