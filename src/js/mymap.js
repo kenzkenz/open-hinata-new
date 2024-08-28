@@ -75,15 +75,9 @@ function danmenStyleFunction() {
     }
 }
 const drawSource = new VectorSource({wrapX: false})
-// var listenerKey = drawSource.on('change',function(e){
-//     if (drawSource.getState() === 'ready') {
-//         unByKey(listenerKey);
-//         // Clear undo/redo on load
-//         undoInteraction.clear();
-//     }
-// });
+// drawSource.set('olcs_skip', false)
+// drawSource.set('olcs_minimumLevel', 1)
 export  const drawLayer = new VectorLayer({
-    // zIndex: 999999,
     name: 'drawLayer',
     // pointer: true,
     source: drawSource,
@@ -492,9 +486,8 @@ export const copyInteraction = new CopyPaste({
     features: transformInteraction.getFeatures()
 });
 
-// Remove selection if cut
 copyInteraction.on('cut', function(e) {
-    // transform.select();
+    // transformInteraction.select();
 });
 copyInteraction.on('paste', function (e) {
     // console.log(transformInteraction.getFeatures())

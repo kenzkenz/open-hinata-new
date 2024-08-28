@@ -1,7 +1,9 @@
 <template>
   <v-dialog :dialog="S_measureDialog" id="dialog-measure">
     <div :style="menuContentSize">
-      <br>
+      <b-form-checkbox style="margin-bottom: 10px;" v-model="s_toggleIdo" name="check-button" switch>
+        変形＆移動モード
+      </b-form-checkbox>
       <b-button :pressed.sync="s_togglePoint0" class='olbtn' :size="btnSize">点</b-button>
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleLine" class='olbtn' :size="btnSize">線</b-button>
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleFreeHand" class='olbtn' :size="btnSize">フリー</b-button>
@@ -14,12 +16,11 @@
       <br>
       <!--            <b-button style="margin-top: 10px;" class='olbtn' :size="btnSize" @click="drawStop">描画ストップ</b-button>-->
 <!--      <br>-->
-      <b-button style="margin-top: 5px;color: red;" :pressed.sync="s_toggleIdo" class='olbtn' :size="btnSize">変形&移動</b-button>
-      <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawReset">削除</b-button>
+<!--      <b-button style="margin-top: 5px;color: red;" :pressed.sync="s_toggleIdo" class='olbtn' :size="btnSize">変形&移動</b-button>-->
+      <b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawReset">削除</b-button>
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawAllReset">全て削除</b-button>
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawCopy">コピー</b-button>
-      <br>
-      <b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawUndo">戻す</b-button>
+      <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawUndo">戻す</b-button>
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawRedo">やり直す</b-button>
 
 
@@ -363,7 +364,7 @@ export default {
         this.$store.state.base.maps['map01'].addInteraction(MyMap.transformInteraction)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
 
-        dragHandle.innerHTML = '<span style="color: red;">移動＆変形モード中<span style="font-size: smaller;margin-left: 30px;">もう一度クリックで解除</span></span>'
+        dragHandle.innerHTML = '<span style="color: red;">変形&移動モード中</span>'
         MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
 
 
