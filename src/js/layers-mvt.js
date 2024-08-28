@@ -3709,7 +3709,8 @@ function syochiikiStyleFunction() {
     //     .range(["white", "red","#880000",'maroon','black']);
     // console.log(prop.JINKO/prop.AREA)
     let fillColor = 'rgba(0,0,0,0)'
-    if (feature === store.state.base.clickedFeature) {
+    console.log(feature.getId())
+    if (prop.KEY_CODE === store.state.base.clickedFeature) {
       fillColor = 'rgba(255,255,0,0.5)'
     }
     const styles = [];

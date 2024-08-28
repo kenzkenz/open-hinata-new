@@ -1501,23 +1501,24 @@ export function initMap (vm) {
                     store.state.base.dialogs.measureDialog.style.display = 'block'
                     store.state.base.editFeature = features
                     drawLayer.getSource().changed()
-                // } else if (layerNames.indexOf('syochiki2020') !== -1) {
-                //     store.state.base.clickedFeature = features
-                //     syochiiki2020MvtObj['map01'].getSource().changed()
-                //     syochiiki2020MvtObj['map02'].getSource().changed()
+                } else if (layerNames.indexOf('syochiki2020') !== -1) {
+                    console.log(features.getProperties().KEY_CODE)
+                    store.state.base.clickedFeature = features.getProperties().KEY_CODE
+                    syochiiki2020MvtObj['map01'].getSource().changed()
+                    syochiiki2020MvtObj['map02'].getSource().changed()
                 } else {
                     store.state.base.editFeature = ''
                     drawLayer.getSource().changed()
-                    // store.state.base.clickedFeature = ''
-                    // syochiiki2020MvtObj['map01'].getSource().changed()
-                    // syochiiki2020MvtObj['map02'].getSource().changed()
+                    store.state.base.clickedFeature = ''
+                    syochiiki2020MvtObj['map01'].getSource().changed()
+                    syochiiki2020MvtObj['map02'].getSource().changed()
                 }
             } else {
                 store.state.base.editFeature = ''
                 drawLayer.getSource().changed()
-                // store.state.base.clickedFeature = ''
-                // syochiiki2020MvtObj['map01'].getSource().changed()
-                // syochiiki2020MvtObj['map02'].getSource().changed()
+                store.state.base.clickedFeature = ''
+                syochiiki2020MvtObj['map01'].getSource().changed()
+                syochiiki2020MvtObj['map02'].getSource().changed()
             }
         })
         // シングルクリック終わり---------------------------------------------------------------------
