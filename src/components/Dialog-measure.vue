@@ -1,7 +1,6 @@
 <template>
   <v-dialog :dialog="S_measureDialog" id="dialog-measure">
     <div :style="menuContentSize">
-      計測もできます。
       <br>
       <b-button :pressed.sync="s_togglePoint0" class='olbtn' :size="btnSize">点</b-button>
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleLine" class='olbtn' :size="btnSize">線</b-button>
@@ -29,6 +28,9 @@
           <span class="checkbox-eye"></span>
         </label>
         <input type="range" min="0" max="1" step="0.01" class="range" v-model="s_drawOpacity" />
+        <b-form-checkbox class="check-measure" v-model="s_drawMeasure" name="check-button" switch>
+          計測
+        </b-form-checkbox>
       </div>
 
       <hr>
@@ -79,6 +81,14 @@ export default {
     }
   },
   computed: {
+    s_drawMeasure: {
+      get() {
+        return this.$store.state.base.drawMeasure
+      },
+      set(value) {
+        this.$store.state.base.drawMeasure = value
+      }
+    },
     S_measureDialog () {
       return this.$store.state.base.dialogs.measureDialog
     },
@@ -559,12 +569,17 @@ export default {
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
         this.$store.state.base.drawType = 'point'
-
       } else {
         console.log('off')
         // MyMap.drawLayer.getSource().clear()
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction)
       }
+    })
+    this.$watch(function () {
+      return [this.s_drawMeasure]
+    }, function () {
+      MyMap.drawLayer.getSource().changed()
+      permalink.moveEnd()
     })
   }
 }
@@ -626,5 +641,10 @@ export default {
 }
 .checkbox:checked + .checkbox-eye:hover:before {
   color: blue;
+}
+.check-measure {
+  position: absolute;
+  left:250px;
+  top:0;
 }
 </style>

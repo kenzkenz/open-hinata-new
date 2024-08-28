@@ -294,6 +294,16 @@ export function permalinkEventSet (response) {
         }
         store.state.base.drawVisible = bool
       }
+      if (key === 'GJM'){
+        console.log(obj[key])
+        let bool
+        if (obj[key] === 'true') {
+          bool = true
+        } else {
+          bool = false
+        }
+        store.state.base.drawMeasure = bool
+      }
       if (key ==='S') {
         store.commit('base/updateSplitFlg',obj[key])
       }
@@ -557,8 +567,10 @@ export function moveEnd () {
   parameter += '&GJ=' + geojsonT
   parameter += '&GJO=' + store.state.base.drawOpacity
   parameter += '&GJV=' + store.state.base.drawVisible
+  parameter += '&GJM=' + store.state.base.drawMeasure
   parameter += '&H=' + JSON.stringify(store.state.info.divs)
   parameter += '&HG=' + JSON.stringify(store.state.info.gradationCheck)
+
 
 
   // const maps = ['map01','map02','map03','map04']

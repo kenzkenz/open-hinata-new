@@ -165,13 +165,17 @@ function drawLayerStylefunction (){
             })
         })
         if (prop.name) {
-            if (prop.distance) {
-                text = prop.name + '\n' + prop.distance
-            } else {
+            if (!prop.distance || !store.state.base.drawMeasure) {
                 text = prop.name
+            } else {
+                text = prop.name + '\n' + prop.distance
             }
         } else {
-            text = prop.distance
+            if (!prop.distance || !store.state.base.drawMeasure) {
+                text = prop.name
+            } else {
+                text = prop.distance
+            }
         }
         let textAlign = ''
         let offsetX = 0

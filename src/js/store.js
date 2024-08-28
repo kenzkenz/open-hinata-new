@@ -96,6 +96,7 @@ const moduleBase = {
     },
     ssdsStatName: '',
     drawVisible: true,
+    drawMeasure: false,
     drawEndFlg: false,
     drawOpacity: 1,
     togglePoint: false,
@@ -106,7 +107,7 @@ const moduleBase = {
     toggleShikaku: false,
     toggleCircle: false,
     toggleDaen: false,
-    toggleText: false,
+    toggle: false,
     toggleIdo: false,
     toggleModify: false,
     // hyokozuDiv: {
