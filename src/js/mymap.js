@@ -490,7 +490,6 @@ undoInteraction.on('undo', function(e) {
 export const copyInteraction = new CopyPaste({
     destination: drawLayer.getSource(),
     features: transformInteraction.getFeatures()
-    // features: {array_:[store.state.base.editFeature]}
 });
 
 // Remove selection if cut

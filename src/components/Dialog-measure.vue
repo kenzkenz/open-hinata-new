@@ -304,8 +304,6 @@ export default {
         drawLayer.getSource().removeFeature(store.state.base.editFeature)
       }
       MyMap.overlay['0'].setPosition(undefined)
-
-
       moveEnd()
     },
     drawAllReset () {
@@ -366,6 +364,9 @@ export default {
         this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
 
         dragHandle.innerHTML = '<span style="color: red;">移動＆変形モード中<span style="font-size: smaller;margin-left: 30px;">もう一度クリックで解除</span></span>'
+        MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
+
+
 
       } else {
         console.log('off')
