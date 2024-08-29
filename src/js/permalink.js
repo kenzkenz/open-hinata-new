@@ -55,7 +55,8 @@ export function permalinkEventSet (response) {
     },
     mapName: 'map04'
   });
-  if (window.location.hash !== '') {
+
+  if (window.location.hash !== '' || localStorage.getItem('startLayerIds')) {
     // const hash = decodeURIComponent(window.location.hash.replace('#', ''));
     // console.log(response.data)
     let hash
@@ -65,29 +66,25 @@ export function permalinkEventSet (response) {
     } else {
       hash = decodeURIComponent(window.location.hash.replace('#', ''));
     }
-
-  // if (response !== '') {
-  //   console.log(response)
-  //   const hash = decodeURIComponent(response.replace('#', ''));
     // 場所、ズームを復帰
-    const parts = hash.split('/');
     const map = store.state.base.maps.map01;
-
-    // let startPositionCoord = localStorage.getItem('startPositionCoord')
-    // startPositionCoord = [Number(startPositionCoord.split(',')[0]),Number(startPositionCoord.split(',')[1])]
-    // const startPositionZoom = localStorage.getItem('startPositionZoom')
-    // console.log(startPositionCoord)
-
-    // if (startPositionCoord) {
-    //   map.getView().setCenter(startPositionCoord)
-    //   map.getView().setZoom(startPositionZoom)
-    // } else {
-      const center = [ parseFloat(parts[1]), parseFloat(parts[2]) ]
-      const center3857 = transform(center,'EPSG:4326','EPSG:3857')
-      // console.log(center3857)
+    if (hash) {
+      const parts = hash.split('/');
+      const center = [parseFloat(parts[1]), parseFloat(parts[2])]
+      const center3857 = transform(center, 'EPSG:4326', 'EPSG:3857')
       map.getView().setCenter(center3857)
       map.getView().setZoom(parts[0])
-    // }
+    } else if (localStorage.getItem('startPositionCoord'))  {
+      console.log(localStorage.getItem('startPositionCoord'))
+      const coordSplit = localStorage.getItem('startPositionCoord').split(',')
+
+      const center = [parseFloat(coordSplit[0]), parseFloat(coordSplit[1])]
+      const zoom = localStorage.getItem('startPositionZoom')
+      console.log(zoom)
+      map.getView().setCenter(center)
+      map.getView().setZoom(zoom)
+
+    }
     // パラメータで復帰
     // まずパラメータをオブジェクトにする
     const obj = {};
@@ -98,7 +95,18 @@ export function permalinkEventSet (response) {
         obj[i.split('=')[0]] = i.split('=')[1];
       }
     }
-    // console.log(obj)
+    //①-------------------------------------------------------------------------
+    //obj.Lをローカルストレージから作る。
+    const startLayerIds = JSON.parse(localStorage.getItem('startLayerIds'))
+    let ids = []
+    if (startLayerIds && !window.location.hash) {
+      ids = startLayerIds.map((id) => {
+        return {id: id, ck: true, o: 1, bk: false}
+      })
+      obj.L = "[]" //ダミーを送る。
+    }
+    //---------------------------------------------------------------------------
+
     for (let key in obj) {
       // const maps = ['map01','map02','map03','map04']
       const maps = ['map01']
@@ -325,7 +333,12 @@ export function permalinkEventSet (response) {
         // store.state.base.maps.map03.removeLayer(store.state.base.maps.map03.getLayers().getArray()[0]);
         // store.state.base.maps.map04.removeLayer(store.state.base.maps.map04.getLayers().getArray()[0]);
         const urlLayerListArr = JSON.parse(obj[key]);
-        // console.log(urlLayerListArr)
+        // ②----------------------------
+        if (ids.length > 0) {
+          urlLayerListArr[0] = ids
+        }
+        // ----------------------------
+
         let count = 0
         for (let i = 0; i < urlLayerListArr.length; i++) {
           // 逆ループ
@@ -588,7 +601,7 @@ export function moveEnd () {
       parameter += '&3d' + map + '=' + jsonT
     }
   })
-    // console.log(hash)
+  // console.log(hash)
   // console.log(parameter.replace(/,/g,encodeURIComponent(",")))
   // parameter = parameter.replace(/,/g,encodeURIComponent(","))
   // parameterだけエンコードする。起動時にwindow.location.hashでハッシュ値を取得するため
@@ -608,7 +621,7 @@ export function moveEnd () {
     let params = new URLSearchParams();
     params.append('parameters', parameters);
     axios.post('https://kenzkenz.xsrv.jp/open-hinata/php/insert2.php', params)
-    // axios.post('/php/insert2.php', params)
+        // axios.post('/php/insert2.php', params)
         .then(response => {
           window.history.pushState(state, 'map', "#s" + response.data.urlid);
           console.log('保存しました。')
