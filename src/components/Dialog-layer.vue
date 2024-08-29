@@ -45,9 +45,23 @@
     },
     methods: {
       splitMap () {
-        const contentHeight = (window.innerHeight - 190) + 'px';
+        let contentHeight0
+        let firstContentHeight
+        let secondContentHeight0
+        if (window.innerHeight > 1000) {
+          contentHeight0 = 190
+          firstContentHeight = '200px'
+          secondContentHeight0 = 410
+        } else {
+          contentHeight0 = 10
+          firstContentHeight = '100px'
+          secondContentHeight0 = 220
+        }
+
+
+        const contentHeight = (window.innerHeight - contentHeight0) + 'px';
         const contentHeight2 = ((window.innerHeight / 2) - 0) + 'px';
-        let secondContentHeight = (window.innerHeight - 410)
+        let secondContentHeight = (window.innerHeight - secondContentHeight0)
         if (secondContentHeight > 500) secondContentHeight = 500
         secondContentHeight = secondContentHeight + 'px';
         const secondContentHeight2 = ((window.innerHeight / 2) - 220) + 'px';
@@ -56,7 +70,7 @@
           // 1画面
           case 1:
             this.contentSize['map01'] = {'max-height': contentHeight};
-            this.firstContentHeight['map01'].height = '200px'
+            this.firstContentHeight['map01'].height = firstContentHeight
             this.secondContentHeight['map01'].height = secondContentHeight
             break;
           // 2画面（縦２画面）
@@ -64,8 +78,8 @@
             if (window.innerWidth > 800) {
               this.contentSize['map01'] = {'max-height': contentHeight};
               this.contentSize['map02'] = {'max-height': contentHeight};
-              this.firstContentHeight['map01'].height = '200px'
-              this.firstContentHeight['map02'].height = '200px'
+              this.firstContentHeight['map01'].height = firstContentHeight
+              this.firstContentHeight['map02'].height = firstContentHeight
               this.secondContentHeight['map01'].height = secondContentHeight
               this.secondContentHeight['map02'].height = secondContentHeight
             } else {
@@ -77,34 +91,6 @@
               this.secondContentHeight['map02'].height = secondContentHeight2
             }
             break;
-
-
-          // 2画面（横２画面）
-          // case 3:
-          //   alert(3)
-          //   this.contentSize['map01'] = {'max-height': contentHeight2};
-          //   this.contentSize['map02'] = {'max-height': contentHeight2};
-          //   this.contentSize2['map01'].height = secondContentHeight2
-          //   this.contentSize2['map02'].height = secondContentHeight2
-          //   break;
-          // // 3画面１（左が縦全、右が縦半）
-          // case 4:
-          //   this.contentSize['map01'] = {'max-height': contentHeight};
-          //   this.contentSize['map02'] = {'max-height': contentHeight2};
-          //   this.contentSize['map03'] = {'max-height': contentHeight2};
-          //   break;
-          // // 3画面2（全て縦半）
-          // case 5:
-          //   this.contentSize['map01'] = {'max-height': contentHeight2};
-          //   this.contentSize['map02'] = {'max-height': contentHeight2};
-          //   this.contentSize['map03'] = {'max-height': contentHeight2};
-          //   break;
-          // // 4画面（全て縦半）
-          // case 6:
-          //   this.contentSize['map01'] = {'max-height': contentHeight2};
-          //   this.contentSize['map02'] = {'max-height': contentHeight2};
-          //   this.contentSize['map03'] = {'max-height': contentHeight2};
-          //   this.contentSize['map04'] = {'max-height': contentHeight2}
         }
       }
     },
