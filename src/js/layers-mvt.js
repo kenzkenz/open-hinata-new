@@ -6050,7 +6050,27 @@ for (let i of mapsStr) {
   hude47Obj[i] = new VectorTileLayer(new Hude47())
 }
 export const hude47Summ = "<a href='https://download.fude.maff.go.jp/' target='_blank'>筆ポリゴンダウンロードページ</a>";
-
+//--------------------------------------------------------
+let hudeMaxResolution
+if (window.innerWidth > 1000) {
+  hudeMaxResolution = zoom0
+} else {
+  hudeMaxResolution = zoom12
+}
+function HudeAll(){
+  this.multiply = true
+  this.name = 'hude'
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/fude/f.pmtiles'
+  })
+  this.style = hudeStyleFunction()
+  this.maxResolution = hudeMaxResolution
+}
+export  const hudeAllObj = {};
+for (let i of mapsStr) {
+  hudeAllObj[i] = new VectorTileLayer(new HudeAll())
+}
+export const hudeAllSumm = "<a href='https://download.fude.maff.go.jp/' target='_blank'>筆ポリゴンダウンロードページ</a>";
 //--------------------------------------
 function hudeStyleFunction() {
   return function (feature, resolution) {
@@ -6078,6 +6098,9 @@ function hudeStyleFunction() {
     return style;
   }
 }
+
+
+
 export const hude00Obj = {}
 for (let i of mapsStr) {
   hude00Obj[i] = new LayerGroup({
