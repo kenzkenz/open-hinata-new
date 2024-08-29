@@ -97,12 +97,20 @@ export function permalinkEventSet (response) {
     }
     //①-------------------------------------------------------------------------
     //obj.Lをローカルストレージから作る。
-    const startLayerIds = JSON.parse(localStorage.getItem('startLayerIds'))
-    let ids = []
-    if (startLayerIds && !window.location.hash) {
-      ids = startLayerIds.map((id) => {
-        return {id: id, ck: true, o: 1, bk: false}
+    console.log(obj.L)
+    const startLayerList = JSON.parse(localStorage.getItem('startLayerList'))
+    const startLayerList2 = JSON.parse(localStorage.getItem('startLayerList2'))
+    let layerList = []
+    let layerList2 = []
+    if (startLayerList && !window.location.hash) {
+      alert()
+      layerList = startLayerList.map((layer) => {
+        return layer
       })
+      layerList2 = startLayerList2.map((layer) => {
+        return layer
+      })
+      console.log(layerList)
       obj.L = "[]" //ダミーを送る。
     }
     //---------------------------------------------------------------------------
@@ -334,8 +342,9 @@ export function permalinkEventSet (response) {
         // store.state.base.maps.map04.removeLayer(store.state.base.maps.map04.getLayers().getArray()[0]);
         const urlLayerListArr = JSON.parse(obj[key]);
         // ②----------------------------
-        if (ids.length > 0) {
-          urlLayerListArr[0] = ids
+        if (layerList.length > 0) {
+          urlLayerListArr[0] = layerList
+          urlLayerListArr[1] = layerList2
         }
         // ----------------------------
 
