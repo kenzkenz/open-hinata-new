@@ -4,6 +4,10 @@
             <div>
 <!--                <br>-->
                 <b-button class='olbtn' :size="btnSize" @click="reset01">リセット</b-button>
+
+
+
+
 <!--                <b-button class='olbtn' :size="btnSize" @click="reset02" style="margin-left:5px;">座標を残してリセット</b-button>-->
             </div>
             <hr>
@@ -22,7 +26,10 @@
 <!--                <b-form-select v-model="selected" :options="options" style="width: 60px;margin-left: 10px;"/>-->
 <!--            </div>-->
             <div>
-              <b-button :pressed.sync="toggleCenter" class='olbtn' :size="btnSize">{{ toggleCenter ? '中心十字ON' : '中心十字OFF' }}</b-button>
+<!--              <b-button :pressed.sync="toggleCenter" class='olbtn' :size="btnSize">{{ toggleCenter ? '中心十字ON' : '中心十字OFF' }}</b-button>-->
+              <b-form-checkbox style="margin-bottom: 10px;" v-model="toggleCenter" switch>
+                中心十字
+              </b-form-checkbox>
             </div>
             <hr>
             <b-form-input type='text' @change="onInput" v-model="address" placeholder="住所or座標で検索します。"></b-form-input>
@@ -36,8 +43,14 @@
             <hr>
             <b-button class='olbtn' :size="btnSize" @click="startPosition">スタート時、リセット時の地点を記録</b-button>
             <hr>
-            <label for='jump-check'>背景選択時に設定地にジャンプする</label><input id='jump-check' type="checkbox" v-model="s_jumpFlg">
-
+            <b-button class='olbtn' :size="btnSize" @click="startLayers">スタート時、リセット時の背景を記録</b-button>
+            <hr>
+<!--            <label for='jump-check'>背景選択時に設定地にジャンプする</label><input id='jump-check' type="checkbox" v-model="s_jumpFlg">-->
+            <b-form-checkbox style="margin-bottom: 10px;" v-model="s_jumpFlg" switch>
+              背景選択時に設定地にジャンプする
+            </b-form-checkbox>
+            <hr>
+            <b-button class='olbtn' :size="btnSize" @click="setReset">設定を初期値に戻す</b-button>
         </div>
     </v-dialog>
 </template>
@@ -86,6 +99,20 @@
       }
     },
     methods: {
+      setReset () {
+        localStorage.clear()
+        this.toggleCenter = true
+        this.s_jumpFlg = true
+      },
+      startLayers () {
+        const ids = this.$store.getters['base/layerList']('map01').map((value) => {
+          return value.id
+        })
+        localStorage.setItem('startLayerIds',JSON.stringify(ids))
+        alert('記憶しました。次回のスタート時、リセット時からこれらの背景を表示します。')
+        // localStorage.clear()
+        // console.log(JSON.parse(localStorage.getItem('startLayerIds')))
+      },
       startPosition () {
         const map = this.$store.state.base.maps['map01']
         localStorage.setItem('startPositionCoord',map.getView().getCenter())
@@ -127,11 +154,6 @@
         console.log(url)
         history.pushState(null, null,url)
         window.location.reload(true)
-      },
-      reset02() {
-        const url = decodeURIComponent(window.location.href).split("?")[0];
-        history.pushState(null, null,url);
-        window.location.reload(true);
       },
       // 短縮URL作成----------------------------------------------------------------------------
       shortUrl () {
