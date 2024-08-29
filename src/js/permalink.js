@@ -56,7 +56,7 @@ export function permalinkEventSet (response) {
     mapName: 'map04'
   });
 
-  if (window.location.hash !== '' || localStorage.getItem('startLayerIds')) {
+  if (window.location.hash !== '' || localStorage.getItem('startLayerList')) {
     // const hash = decodeURIComponent(window.location.hash.replace('#', ''));
     // console.log(response.data)
     let hash
@@ -97,13 +97,13 @@ export function permalinkEventSet (response) {
     }
     //①-------------------------------------------------------------------------
     //obj.Lをローカルストレージから作る。
+    // alert()
     console.log(obj.L)
     const startLayerList = JSON.parse(localStorage.getItem('startLayerList'))
     const startLayerList2 = JSON.parse(localStorage.getItem('startLayerList2'))
     let layerList = []
     let layerList2 = []
     if (startLayerList && !window.location.hash) {
-      alert()
       layerList = startLayerList.map((layer) => {
         return layer
       })
