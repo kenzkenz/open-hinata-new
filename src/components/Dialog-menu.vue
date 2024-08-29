@@ -105,17 +105,12 @@
         this.s_jumpFlg = true
       },
       startLayers () {
-        // console.log(this.$store.getters['base/layerList']('map01'))
-        // const ids = this.$store.getters['base/layerList']('map01').map((value) => {
-        //   return value.id
-        // })
-        // localStorage.setItem('startLayerIds',JSON.stringify(ids))
-        const layerList = this.$store.getters['base/layerList']('map01').map((value) => {
-          return {id:value.id,ck:value.check,m:value.multipli,o:value.opacity,c:value.component,bk:value.bookmark}
+        const ids = this.$store.getters['base/layerList']('map01').map((value) => {
+          return value.id
         })
-        console.log(layerList)
-        localStorage.setItem('startLayerList',JSON.stringify(layerList))
+        localStorage.setItem('startLayerIds',JSON.stringify(ids))
         alert('記憶しました。次回のスタート時、リセット時からこれらの背景を表示します。')
+        // localStorage.clear()
         // console.log(JSON.parse(localStorage.getItem('startLayerIds')))
       },
       startPosition () {

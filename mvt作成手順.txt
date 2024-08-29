@@ -379,9 +379,8 @@ tippecanoe -f -o s.pmtiles s.geojson
 tippecanoe -f -o z.pmtiles z.geojson
 tippecanoe -l n -f -o n.pmtiles nogyosyurakukyokai.geojson
 tippecanoe -l g -f -o g.pmtiles g.geojson
-tippecanoe --drop-fraction-as-needed -l f -f -o f.pmtiles hude201.geojson hude202.geojson hude203.geojson hude204.geojson hude205.geojson hude206.geojson hude207.geojson hude208.geojson hude209.geojson hude210.geojson
+tippecanoe -l f -f -o f.pmtiles hude201.geojson hude202.geojson hude203.geojson hude204.geojson hude205.geojson hude206.geojson hude207.geojson hude208.geojson hude209.geojson hude210.geojson
 
-tippecanoe --drop-fraction-as-needed -l f -f -o f.pmtiles f.geojson
 
 test
 
