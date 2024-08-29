@@ -659,8 +659,9 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           const str = prop.description;
           const pattern = new RegExp( '(?<= href=).*?(?=target)' );
           console.log(str.match(pattern)[0])
-          cont += '<div style=width:200px>' + prop.name + '<br>' +
-              '<a href=' + str.match(pattern)[0] + ' target="_blank">箇所表</a>' +
+          cont += '<div style=width:300px>' +
+              '<h4>' + prop.name + '</h4>' +
+              '<h4><a href=' + str.match(pattern)[0] + ' target="_blank">箇所表</a></h4>' +
               '</div><hr>'
           break
         case 'kiseikukan':
