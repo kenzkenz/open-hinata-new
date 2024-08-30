@@ -1,10 +1,11 @@
 <template>
     <v-dialog :dialog="s_dialogs[mapName]" :reset="1" :mapName="mapName">
-        <div class="content-div" :style="contentSize[mapName]">
-            <div class="first-content-div" :style="firstContentHeight[mapName]">
+        <div class="content-div" :style="{height: divHeight0 + 'px'}">
+            <div class="first-content-div" :style="{height: divHeight1 + 'px'}">
                 <v-layer :mapName="mapName"/>
             </div>
-            <div class="second-content-div" :style="secondContentHeight[mapName]">
+            <div class="drag" @mousedown="dragStart($event);aaa(mapName)" @mousemove="dragging($event)" style=""></div>
+            <div class="second-content-div" :style="{height: divHeight2 + 'px'}">
                 <v-layerList :mapName="mapName" />
             </div>
         </div>
@@ -23,21 +24,12 @@
     props: ['mapName'],
     data() {
       return {
+        divHeight0:0,
+        divHeight1:0,
+        divHeight2:0,
+        clientHeight: 0,
         isDragging: false,
-        contentSize: {
-          map01: {'max-height': '300px', 'overflow': 'auto'},
-          map02: {'max-height': '300px', 'overflow': 'auto'},
-          // map03: {'max-height': '300px', 'overflow': 'auto'},
-          // map04: {'max-height': '300px', 'overflow': 'auto'}
-        },
-        firstContentHeight: {
-          map01: {'height': '200px'},
-          map02: {'height': '200px'},
-        },
-        secondContentHeight: {
-          map01: {'height': '200px'},
-          map02: {'height': '200px'},
-        }
+        draggingMapName: '',
       }
     },
     computed: {
@@ -45,54 +37,60 @@
       s_splitFlg() { return this.$store.state.base.splitFlg }
     },
     methods: {
+      aaa (mapName) {
+        this.draggingMapName = mapName
+      },
+      dragStart(e) {
+        this.isDragging = true
+      },
+      dragEnd() {
+        this.isDragging = false
+      },
+      dragging(e) {
+        if (this.isDragging) {
+          let rect
+          if (this.draggingMapName === 'map01') {
+            rect = document.querySelectorAll('.first-content-div')[0].getBoundingClientRect()
+          } else {
+            rect = document.querySelectorAll('.first-content-div')[1].getBoundingClientRect()
+          }
+          this.divHeight1 = e.pageY - rect.top -5
+          this.divHeight2 = this.divHeight0 - this.divHeight1 - 20
+        }
+      },
       splitMap () {
-        let contentHeight0
-        let firstContentHeight
-        let secondContentHeight0
+        const map01Height = document.querySelectorAll('#map01')[0].getBoundingClientRect().height
         if (window.innerHeight > 1000) {
-          contentHeight0 = 190
-          firstContentHeight = '200px'
-          secondContentHeight0 = 410
-        } else {
-          contentHeight0 = 10
-          firstContentHeight = '100px'
-          secondContentHeight0 = 220
-        }
-
-
-        const contentHeight = (window.innerHeight - contentHeight0) + 'px';
-        const contentHeight2 = ((window.innerHeight / 2) - 0) + 'px';
-        let secondContentHeight = (window.innerHeight - secondContentHeight0)
-        if (secondContentHeight > 500) secondContentHeight = 500
-        secondContentHeight = secondContentHeight + 'px';
-        const secondContentHeight2 = ((window.innerHeight / 2) - 220) + 'px';
-        console.log(this.s_splitFlg)
-        switch (this.s_splitFlg) {
-          // 1画面
-          case 1:
-            this.contentSize['map01'] = {'max-height': contentHeight};
-            this.firstContentHeight['map01'].height = firstContentHeight
-            this.secondContentHeight['map01'].height = secondContentHeight
-            break;
-          // 2画面（縦２画面）
-          case 2:
-            if (window.innerWidth > 800) {
-              this.contentSize['map01'] = {'max-height': contentHeight};
-              this.contentSize['map02'] = {'max-height': contentHeight};
-              this.firstContentHeight['map01'].height = firstContentHeight
-              this.firstContentHeight['map02'].height = firstContentHeight
-              this.secondContentHeight['map01'].height = secondContentHeight
-              this.secondContentHeight['map02'].height = secondContentHeight
+          if (this.s_splitFlg === 1) {
+            this.divHeight0 = 700
+            this.divHeight1 = 200
+          } else {
+            if (window.innerWidth > 850) {
+              this.divHeight0 = 700
+              this.divHeight1 = 200
             } else {
-              this.contentSize['map01'] = {'max-height': contentHeight2};
-              this.contentSize['map02'] = {'max-height': contentHeight2};
-              this.firstContentHeight['map01'].height = '100px'
-              this.firstContentHeight['map02'].height = '100px'
-              this.secondContentHeight['map01'].height = secondContentHeight2
-              this.secondContentHeight['map02'].height = secondContentHeight2
+              this.divHeight0 = map01Height - 150
+              this.divHeight1 = 100
             }
-            break;
+          }
+        } else {
+          if (window.innerWidth > 850) {
+            this.divHeight0 = map01Height - 135
+            this.divHeight1 = 150
+          } else {
+            if (this.s_splitFlg === 1) {
+              this.divHeight0 = map01Height - 135
+              this.divHeight1 = 150
+            } else {
+              this.divHeight0 = map01Height - 135
+              this.divHeight1 = 100
+            }
+          }
         }
+
+        if (this.divHeight0 > 700) this.divHeight0 = 700
+        this.divHeight2 = this.divHeight0 - this.divHeight1 - 20
+
       }
     },
     watch: {
@@ -101,6 +99,9 @@
       }
     },
     mounted () {
+      window.addEventListener('mouseup', this.dragEnd, false)
+      window.addEventListener('mousemove', this.dragging, false)
+      window.addEventListener('resize', this.resize, false)
       this.splitMap ()
     }
   }
@@ -115,7 +116,6 @@
     .first-content-div{
       border: 1px solid grey;
       margin: 5px;
-      height: 200px;
       overflow-y: auto;
       background-color: gray;
     }
@@ -123,10 +123,15 @@
       border: 1px solid grey;
       margin: 5px;
       background: rgba(255,255,255,0.5);
-      height: 410px;
-      /*height: calc(100% - 300px);*/
-      /*height: 100px;*/
       overflow-y: auto;
       overflow-x: hidden;
+    }
+    .drag {
+      height: 5px;
+      background: gray;
+      cursor: row-resize;
+    }
+    .drag:hover{
+      background-color: rgba(0,60,136,0.7);
     }
 </style>
