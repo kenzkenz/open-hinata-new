@@ -27,7 +27,7 @@
 <!--            </div>-->
             <div>
 <!--              <b-button :pressed.sync="toggleCenter" class='olbtn' :size="btnSize">{{ toggleCenter ? '中心十字ON' : '中心十字OFF' }}</b-button>-->
-              <b-form-checkbox style="margin-bottom: 10px;" v-model="toggleCenter" switch>
+              <b-form-checkbox style="margin-bottom: 10px;" v-model="s_centerFlg" switch>
                 中心十字
               </b-form-checkbox>
               <b-form-checkbox style="margin-bottom: 10px;" v-model="s_scaleFlg" switch>
@@ -61,8 +61,6 @@
 <script>
   import axios from 'axios'
   import * as MyMap from '../js/mymap'
-  import { ScaleLine } from 'ol/control';
-
 
   export default {
     name: "Menu",
@@ -87,16 +85,41 @@
         return this.$store.state.base.dialogs.dialogDokuji
       },
       s_dialogMaxZindex () { return this.$store.state.base.dialogMaxZindex},
+      s_centerFlg: {
+        get() {
+          return this.$store.state.base.centerFlg
+        },
+        set(value) {
+          this.$store.state.base.centerFlg = value
+          const target = document.querySelectorAll(".center-target")[0]
+          const target2 = document.querySelectorAll(".center-target")[1]
+          if (value) {
+            target.style.display = 'block'
+            target2.style.display = 'block'
+          } else {
+            target.style.display = 'none'
+            target2.style.display = 'none'
+          }
+          localStorage.setItem('centerTarget',this.s_centerFlg)
+        }
+      },
       s_scaleFlg: {
         get() {
           return this.$store.state.base.scaleFlg
         },
         set(value) {
+          const map = this.$store.state.base.maps['map01']
+          const map2 = this.$store.state.base.maps['map02']
           this.$store.state.base.scaleFlg = value
           if (value) {
-            document.querySelector('.ol-scale-line').style.display = 'block'
+            map.addControl(MyMap.scaleLine)
+            map2.addControl(MyMap.scaleLine2)
           } else {
-            document.querySelector('.ol-scale-line').style.display = 'none'
+            try {
+              map.removeControl(MyMap.scaleLine)
+              map2.removeControl(MyMap.scaleLine2)
+            } catch (e) {
+            }
           }
           localStorage.setItem('scaleFlg',this.s_scaleFlg)
         }
@@ -120,15 +143,11 @@
     methods: {
       setReset () {
         localStorage.clear()
-        this.toggleCenter = true
+        this.s_centerFlg = true
         this.s_jumpFlg = true
+        this.s_scaleFlg = false
       },
       startLayers () {
-        // console.log(this.$store.getters['base/layerList']('map01'))
-        // const ids = this.$store.getters['base/layerList']('map01').map((value) => {
-        //   return value.id
-        // })
-        // localStorage.setItem('startLayerIds',JSON.stringify(ids))
         const layerList = this.$store.getters['base/layerList']('map01').map((value) => {
           return {id:value.id,ck:value.check,m:value.multipli,o:value.opacity,c:value.component,bk:value.bookmark}
         })
@@ -138,15 +157,12 @@
         localStorage.setItem('startLayerList',JSON.stringify(layerList))
         localStorage.setItem('startLayerList2',JSON.stringify(layerList2))
         alert('記憶しました。次回のスタート時、リセット時からこれらの背景を表示します。')
-        // localStorage.clear()
-        // console.log(JSON.parse(localStorage.getItem('startLayerIds')))
       },
       startPosition () {
         const map = this.$store.state.base.maps['map01']
         localStorage.setItem('startPositionCoord',map.getView().getCenter())
         localStorage.setItem('startPositionZoom',map.getView().getZoom())
         alert('記憶しました。次回のスタート時、リセット時からこの座標を表示します。')
-        // localStorage.clear()
       },
       openDialog () {
         const dialog = this.s_dialogDokuji
@@ -277,38 +293,11 @@
       }
     },
     mounted () {
-      this.$nextTick(function () {
-        if (localStorage.getItem('scaleFlg') === 'false') {
-          // alert('menu')
-          const map = this.$store.state.base.maps['map01']
-          map.removeControl(ScaleLine)
-          // document.querySelector('.ol-scale-line').style.display = 'none'
-        } else {
-          // document.querySelector('.ol-scale-line').style.display = 'block'
-        }
-      })
-      // console.log(this.$store.state.base.splitFlg)
-      //------------------------------------------------------------
-      this.$watch(function () {
-        return [this.toggleCenter]
-      }, function () {
-        MyMap.history ('中心十字onoff')
-        const target = document.querySelector(".center-target");
-        if (this.toggleCenter) {
-          console.log('on')
-          target.style.display = 'block';
-        } else {
-          console.log('off')
-          target.style.display = 'none';
-        }
-        localStorage.setItem('centerTarget',this.toggleCenter)
-        console.log(localStorage.getItem('centerTarget'))
-      })
       //------------------------------------------------------------
       if (localStorage.getItem('centerTarget') === 'false') {
-        this.toggleCenter = false
+        this.s_centerFlg = false
       } else {
-        this.toggleCenter = true
+        this.s_centerFlg = true
       }
       // ----------------------------------------------------------
       if (localStorage.getItem('jump') === 'false') {
@@ -317,13 +306,11 @@
         this.s_jumpFlg = true
       }
       //------------------------------------------------------------
-      // if (localStorage.getItem('scaleFlg') === 'false') {
-      //   this.s_scaleFlg = false
-      //   document.querySelector('.ol-scale-line').style.display = 'none'
-      // } else {
-      //   this.s_scaleFlg = true
-      //   document.querySelector('.ol-scale-line').style.display = 'block'
-      // }
+      if (localStorage.getItem('scaleFlg') === 'false') {
+        this.s_scaleFlg = false
+      } else {
+        this.s_scaleFlg = true
+      }
     }
   }
 </script>

@@ -63,6 +63,7 @@ const moduleBase = {
     firstFlg: true,
     increment: 0,
     popUpCont: '',
+    centerFlg :true,
     jumpFlg: true,
     scaleFlg: false,
     hight: {

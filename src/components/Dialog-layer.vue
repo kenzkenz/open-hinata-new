@@ -23,6 +23,7 @@
     props: ['mapName'],
     data() {
       return {
+        isDragging: false,
         contentSize: {
           map01: {'max-height': '300px', 'overflow': 'auto'},
           map02: {'max-height': '300px', 'overflow': 'auto'},

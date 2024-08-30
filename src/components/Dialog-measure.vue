@@ -295,15 +295,12 @@ export default {
       this.s_toggleShikaku = false
       this.toggleDelete = false
       this.toggleDanmen = false
-      this.s_toggleIdo = false
 
-      if (store.state.base.toggleIdo) {
-        store.state.base.toggleIdo = false
-        drawLayer.getSource().removeFeature(store.state.base.editFeature)
-        store.state.base.toggleIdo = true
-      } else {
-        drawLayer.getSource().removeFeature(store.state.base.editFeature)
-      }
+      drawLayer.getSource().removeFeature(store.state.base.editFeature)
+      const tFeatures = MyMap.transformInteraction.getFeatures().array_
+      tFeatures.forEach((feature) => {
+        drawLayer.getSource().removeFeature(feature)
+      })
       MyMap.overlay['0'].setPosition(undefined)
       moveEnd()
     },
@@ -324,9 +321,6 @@ export default {
       MyMap.drawLayer.getSource().clear()
       // MyMap.drawLayer2.getSource().clear()
       moveEnd()
-    },
-    distance (){
-      MyMap.addDrawInteraction(this.$store.state.base.maps['map01'])
     },
   },
   watch: {

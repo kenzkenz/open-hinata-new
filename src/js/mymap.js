@@ -40,6 +40,10 @@ import muni from './muni'
 import UndoRedo from 'ol-ext/interaction/UndoRedo'
 import {syochiiki2020MvtObj} from "@/js/layers-mvt"
 import CopyPaste from 'ol-ext/interaction/CopyPaste'
+import Toggle from 'ol-ext/control/Toggle'
+import Bar from 'ol-ext/control/Bar'
+import TextButton from 'ol-ext/control/TextButton'
+import ModifyTouch from 'ol-ext/interaction/ModifyTouch'
 // import Observable from 'ol/Observable.js'
 // import {unByKey} from 'ol/Observable'
 
@@ -108,11 +112,12 @@ function drawLayerStylefunction (){
                 color = 'rgba(0,0,255,0.5)'
             }
         }
+        console.log(color)
         if (feature === store.state.base.editFeature) {
             if (geoType === 'Point') {
                 pointStrokeWidth = 4
-            } else {
-                color = 'orange'
+            // } else {
+            //     color = 'orange'
             }
         }
         if (prop._fillColor) {
@@ -155,7 +160,7 @@ function drawLayerStylefunction (){
         const lineStyle = new Style({
             stroke: new Stroke({
                 color: color,
-                width:3
+                width:4
             })
         })
         if (prop.name) {
@@ -498,8 +503,8 @@ copyInteraction.on('paste', function (e) {
     //     transformInteraction.select(f, true);
     // });
 });
-
-
+export const scaleLine = new ScaleLine()
+export const scaleLine2 = new ScaleLine()
 // ダイアログ
 export const dialog = new Dialog({ fullscreen: true, zoom: true, closeBox: true });
 
@@ -587,8 +592,8 @@ export function initMap (vm) {
         map.addInteraction(undoInteraction)
         map.addInteraction(modifyInteraction)
         map.addInteraction(transformInteraction)
-
         map.addInteraction(copyInteraction)
+
 
         // ------------------------
         pointInteraction.on('drawend', function (event) {
@@ -768,11 +773,12 @@ export function initMap (vm) {
                 console.warn('No canvas to export');
             }
         });
-        map.addControl(new ScaleLine())
 
-        if (localStorage.getItem('scaleFlg') === 'false') {
-            // alert('mymap')
-            document.querySelector('.ol-scale-line').style.display = 'none'
+        // const scaleLine = new ScaleLine()
+        console.log(localStorage.getItem('scaleFlg'))
+        if (localStorage.getItem('scaleFlg') === 'true') {
+            if (i==='0') map.addControl(scaleLine)
+            if (i==='1') map.addControl(scaleLine2)
         }
 
             const notification = new Notification();
@@ -1448,22 +1454,18 @@ export function initMap (vm) {
 
         const removeLastPoint = function(evt){
             // console.log(evt.keyCode)
-            if(evt.keyCode == 27){
-                console.log('ESCキー')
-                // const selectCollection = selectInteraction.getFeatures();
-                // drawLayer.getSource().removeFeature(selectCollection.item(0))
+            if(evt.key === 'Escape' || evt.key === 'Backspace' || evt.key === 'Delete'){
                 lineInteraction.removeLastPoint()
                 polygonInteraction.removeLastPoint()
                 circleInteraction.removeLastPoint()
             }
         }
-        if (i == 0) {
+        if (i === '0') {
             document.addEventListener('keydown', removeLastPoint, false)
         }
-        if (i == 0) {
+        if (i === '0') {
             addEventListener('keydown', function (event) {
                 if ((event.key === 'z' && event.metaKey) && !event.shiftKey) {
-                    console.log(8888)
                     lineInteraction.removeLastPoint()
                     polygonInteraction.removeLastPoint()
                     circleInteraction.removeLastPoint()
@@ -1477,18 +1479,16 @@ export function initMap (vm) {
                 }
             })
         }
-        if (i == 0) {
+        if (i === '0') {
             addEventListener('keydown', function (event) {
                 console.log(event.key)
-                if (event.key === 'Backspace' || event.key === 'Delete') {
-                    if (store.state.base.toggleIdo) {
-                        store.state.base.toggleIdo = false
-                        drawLayer.getSource().removeFeature(store.state.base.editFeature)
-                        store.state.base.toggleIdo = true
-                    } else {
-                        drawLayer.getSource().removeFeature(store.state.base.editFeature)
-                    }
-                    console.log(i)
+                if (event.key === 'Escape' || event.key === 'Backspace' || event.key === 'Delete') {
+                    drawLayer.getSource().removeFeature(store.state.base.editFeature)
+                    const tFeatures = transformInteraction.getFeatures().array_
+                    tFeatures.forEach((feature) => {
+                        drawLayer.getSource().removeFeature(feature)
+                    })
+                    modifyInteraction.removePoint()
                     overlay[i].setPosition(undefined)
                 }
             })
