@@ -94,15 +94,9 @@
         set(value) {
           this.$store.state.base.scaleFlg = value
           if (value) {
-            const map = this.$store.state.base.maps['map01']
-
-
-            alert()
-
-            map.addControl(ScaleLine)
+            document.querySelector('.ol-scale-line').style.display = 'block'
           } else {
-            const map = this.$store.state.base.maps['map01']
-            map.removeControl(ScaleLine)
+            document.querySelector('.ol-scale-line').style.display = 'none'
           }
           localStorage.setItem('scaleFlg',this.s_scaleFlg)
         }
@@ -283,16 +277,16 @@
       }
     },
     mounted () {
-      // this.$nextTick(function () {
-      //   if (localStorage.getItem('scaleFlg') === 'false') {
-      //     alert()
-      //     const map = this.$store.state.base.maps['map01']
-      //     map.removeControl(ScaleLine)
-      //     document.querySelector('.ol-scale-line').style.display = 'none'
-      //   } else {
-      //     document.querySelector('.ol-scale-line').style.display = 'block'
-      //   }
-      // })
+      this.$nextTick(function () {
+        if (localStorage.getItem('scaleFlg') === 'false') {
+          // alert('menu')
+          const map = this.$store.state.base.maps['map01']
+          map.removeControl(ScaleLine)
+          // document.querySelector('.ol-scale-line').style.display = 'none'
+        } else {
+          // document.querySelector('.ol-scale-line').style.display = 'block'
+        }
+      })
       // console.log(this.$store.state.base.splitFlg)
       //------------------------------------------------------------
       this.$watch(function () {
@@ -323,13 +317,13 @@
         this.s_jumpFlg = true
       }
       //------------------------------------------------------------
-      if (localStorage.getItem('scaleFlg') === 'false') {
-        this.s_scaleFlg = false
-        document.querySelector('.ol-scale-line').style.display = 'none'
-      } else {
-        this.s_scaleFlg = true
-        document.querySelector('.ol-scale-line').style.display = 'true'
-      }
+      // if (localStorage.getItem('scaleFlg') === 'false') {
+      //   this.s_scaleFlg = false
+      //   document.querySelector('.ol-scale-line').style.display = 'none'
+      // } else {
+      //   this.s_scaleFlg = true
+      //   document.querySelector('.ol-scale-line').style.display = 'block'
+      // }
     }
   }
 </script>
