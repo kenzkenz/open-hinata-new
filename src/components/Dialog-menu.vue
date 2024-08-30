@@ -30,6 +30,9 @@
               <b-form-checkbox style="margin-bottom: 10px;" v-model="toggleCenter" switch>
                 中心十字
               </b-form-checkbox>
+              <b-form-checkbox style="margin-bottom: 10px;" v-model="s_scaleFlg" switch>
+                スケール
+              </b-form-checkbox>
             </div>
             <hr>
             <b-form-input type='text' @change="onInput" v-model="address" placeholder="住所or座標で検索します。"></b-form-input>
@@ -58,6 +61,8 @@
 <script>
   import axios from 'axios'
   import * as MyMap from '../js/mymap'
+  import { ScaleLine } from 'ol/control';
+
 
   export default {
     name: "Menu",
@@ -82,6 +87,26 @@
         return this.$store.state.base.dialogs.dialogDokuji
       },
       s_dialogMaxZindex () { return this.$store.state.base.dialogMaxZindex},
+      s_scaleFlg: {
+        get() {
+          return this.$store.state.base.scaleFlg
+        },
+        set(value) {
+          this.$store.state.base.scaleFlg = value
+          if (value) {
+            const map = this.$store.state.base.maps['map01']
+
+
+            alert()
+
+            map.addControl(ScaleLine)
+          } else {
+            const map = this.$store.state.base.maps['map01']
+            map.removeControl(ScaleLine)
+          }
+          localStorage.setItem('scaleFlg',this.s_scaleFlg)
+        }
+      },
       s_jumpFlg: {
         get() {
           return this.$store.state.base.jumpFlg
@@ -258,6 +283,16 @@
       }
     },
     mounted () {
+      // this.$nextTick(function () {
+      //   if (localStorage.getItem('scaleFlg') === 'false') {
+      //     alert()
+      //     const map = this.$store.state.base.maps['map01']
+      //     map.removeControl(ScaleLine)
+      //     document.querySelector('.ol-scale-line').style.display = 'none'
+      //   } else {
+      //     document.querySelector('.ol-scale-line').style.display = 'block'
+      //   }
+      // })
       // console.log(this.$store.state.base.splitFlg)
       //------------------------------------------------------------
       this.$watch(function () {
@@ -281,10 +316,19 @@
       } else {
         this.toggleCenter = true
       }
+      // ----------------------------------------------------------
       if (localStorage.getItem('jump') === 'false') {
         this.s_jumpFlg = false
       } else {
         this.s_jumpFlg = true
+      }
+      //------------------------------------------------------------
+      if (localStorage.getItem('scaleFlg') === 'false') {
+        this.s_scaleFlg = false
+        document.querySelector('.ol-scale-line').style.display = 'none'
+      } else {
+        this.s_scaleFlg = true
+        document.querySelector('.ol-scale-line').style.display = 'true'
       }
     }
   }

@@ -768,9 +768,8 @@ export function initMap (vm) {
                 console.warn('No canvas to export');
             }
         });
+        if (localStorage.getItem('scaleFlg') === 'true') map.addControl(new ScaleLine())
 
-
-        // map.addControl(new ScaleLine());
         const notification = new Notification();
         map.addControl(notification);
         store.commit('base/setNotifications',{mapName:mapName, control: notification});

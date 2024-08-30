@@ -64,6 +64,7 @@ const moduleBase = {
     increment: 0,
     popUpCont: '',
     jumpFlg: true,
+    scaleFlg: false,
     hight: {
       map01: 1,
       map02: 1,
