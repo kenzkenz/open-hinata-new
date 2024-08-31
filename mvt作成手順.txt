@@ -382,6 +382,8 @@ tippecanoe -l g -f -o g.pmtiles g.geojson
 tippecanoe -l f -f -o f.pmtiles hude201.geojson hude202.geojson hude203.geojson hude204.geojson hude205.geojson hude206.geojson hude207.geojson hude208.geojson hude209.geojson hude210.geojson
 
 tippecanoe -x land_type -x layer --drop-fraction-as-needed -l f -f -o f2.pmtiles f.geojson
+tippecanoe -l k -f -o k.pmtiles k.geojson
+
 
 test
 

@@ -28,6 +28,8 @@
       <div class="kodo" v-if="kodo">
         <input type='number' value="0.001" step="0.0005" v-model="tolerance" style="width: 100px;margin-top: 0px;">
         <b-button style="margin-top: 0px; margin-left: 2px;" class='olbtn' :size="btnSize" @click="drawSinple">線、ポリゴンをシンプル化</b-button>
+        <b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawBezier">ベジェ曲線</b-button>
+
       </div>
 
       <div class="range-div">
@@ -208,6 +210,46 @@ export default {
     },
     drawKodo () {
       this.kodo = !this.kodo
+    },
+    drawBezier () {
+      const targetFeature = this.$store.state.base.editFeature
+      if (!targetFeature) {
+        alert('選択されていません。')
+        return
+      }
+      if (targetFeature.getGeometry().getType() !== 'LineString') {
+        alert('線ではありません。')
+        return
+      }
+      const fiatureGeojson = new GeoJSON().writeFeatures([targetFeature], {
+        featureProjection: "EPSG:3857"
+      })
+      const features = JSON.parse(fiatureGeojson).features
+      const bezierSpline = turf.bezierSpline(features[0])
+
+      let coordinates = []
+      let newFeature
+
+      bezierSpline.geometry.coordinates.forEach((coord) => {
+        coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
+      })
+      const lineString = new LineString(coordinates)
+      newFeature = new Feature(lineString)
+
+      if (targetFeature.values_) {
+        Object.keys(targetFeature.values_).forEach(function (key) {
+          if (key !== 'geometry') newFeature.setProperties({[key]: targetFeature.values_[key]})
+        })
+      }
+
+      MyMap.drawLayer.getSource().removeFeature(targetFeature)
+      MyMap.drawLayer.getSource().addFeature(newFeature)
+
+      const coordAr = newFeature.getGeometry().getCoordinates()
+      const geoType = newFeature.getGeometry().getType()
+      measure (geoType,newFeature,coordAr)
+
+      this.$store.state.base.editFeature = null
     },
     drawSinple () {
       const targetFeature = this.$store.state.base.editFeature
