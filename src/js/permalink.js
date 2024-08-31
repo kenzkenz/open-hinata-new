@@ -97,7 +97,6 @@ export function permalinkEventSet (response) {
     }
     //①-------------------------------------------------------------------------
     //obj.Lをローカルストレージから作る。
-    // alert()
     console.log(obj.L)
     const startLayerList = JSON.parse(localStorage.getItem('startLayerList'))
     const startLayerList2 = JSON.parse(localStorage.getItem('startLayerList2'))

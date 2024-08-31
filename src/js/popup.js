@@ -7,6 +7,9 @@ import * as d3 from "d3"
 import ColorClassifier from "color-classifier"
 let cont = ''
 export function popUp(map,layers,features,overlay,evt,content,content2) {
+
+  console.log(layers)
+
   let coordinate
   let streetView
   let flg = false
@@ -44,6 +47,8 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
     }
   }
 
+
+
   let drawLayer
   if (layers) {
     let i
@@ -60,6 +65,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
 
 
   if (!layers) {
+    // alert()
     coordinate = evt.coordinate
     const lonLat = transform([coordinate[0],coordinate[1]], "EPSG:3857", "EPSG:4326")
     const lon = lonLat[0]
@@ -69,6 +75,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
         '</div>'
 
   } else {
+    console.log(features0)
     features0.forEach((feature,i) =>{
       const geoType = feature.getGeometry().getType()
       const geometry = feature.getGeometry()

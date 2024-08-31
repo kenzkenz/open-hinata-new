@@ -1036,23 +1036,30 @@ export function initMap (vm) {
         // 洪水,津波,継続,普通のフィーチャー用-----------------------------------------------------------------
 
         map.on('singleclick', function (evt) {
+
             console.log(JSON.stringify(transform(evt.coordinate, "EPSG:3857", "EPSG:4326")))
+
+            //-----------------------------------------------------
+            // 後ろの方で利用している。
+            const pixel = (evt.map).getPixelFromCoordinate(evt.coordinate);
+            const features9 = [];
+            const layers9 = [];
+            evt.map.forEachFeatureAtPixel(pixel,function(feature,layer){
+                features9.push(feature);
+                layers9.push(layer);
+            })
+            //-----------------------------------------------------
+
             rgbaArr = []
             funcArr = []
             overlay[i].setPosition(undefined)
             d3.select('#' + mapName + ' .loadingImg').style("display","block")
             document.querySelector('#' + mapName + ' .ol-viewport').style.cursor = "wait"
-            // document.querySelector('.center-target').style.zIndex = 1
-            // store.commit('base/popUpContReset')
-            // //処理を早くするため抜ける。---------------------------------------------------
-            // const layers0 = map.getLayers().getArray();
-            // const hazardLayers = layers0.filter(el => el.get('pointer'));
-            // if (hazardLayers.length===0) return
-            //-------------------------------------------------------------------------
-            // d3.select('.loadingImg').style("display","block")
+
             const layers = map.getLayers().getArray().filter((layer) => {
                 return layer.getVisible()
             })
+            console.log(layers)
             const layerNames = layers.map((layer) => {
                 const zoom = map.getView().getZoom()
                 if (layer.get('zoom')) {
@@ -1226,30 +1233,26 @@ export function initMap (vm) {
                     ...fetchData
                 ])
                     .then((response) => {
-                        // console.log(response)
-                        // console.log(rgbaArr,funcArr)
                         let html = ''
                         const aaa = rgbaArr.map((rgba,i) =>{
                             return {'layerName':layerNames[i] ,'rgba':rgba,'func':funcArr[i]}
                         })
-                        // console.log(html)
                         aaa.forEach((value) =>{
                             if (value.func(value.rgba)) html += value.func(value.rgba)
                         })
                         if (seamlessLayer) html += response[response.length-1]
                         if (html) html += '<hr>'
                         // console.log(html)
-                        const pixel = (evt.map).getPixelFromCoordinate(evt.coordinate);
-                        const features = [];
-                        const layers = [];
-                        evt.map.forEachFeatureAtPixel(pixel,function(feature,layer){
-                            features.push(feature);
-                            layers.push(layer);
-                        })
-                        if(features.length) {
-                            console.log(layers)
-                            if (layers[0]) {
-                                PopUp.popUp(evt.map, layers, features, overlay[i], evt, content, html)
+                        // const pixel = (evt.map).getPixelFromCoordinate(evt.coordinate);
+                        // const features = [];
+                        // const layers = [];
+                        // evt.map.forEachFeatureAtPixel(pixel,function(feature,layer){
+                        //     features.push(feature);
+                        //     layers.push(layer);
+                        // })
+                        if(features9.length>0) {
+                            if (layers9[0]) {
+                                PopUp.popUp(evt.map, layers9, features9, overlay[i], evt, content, html)
                                 rgbaArr = []
                                 funcArr = []
                             }
