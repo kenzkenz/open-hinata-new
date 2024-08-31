@@ -146,6 +146,39 @@ for (let i of mapsStr) {
   })
 }
 
+
+// 熊本森林計画図----------------------------------------------------
+function KumamotoShinrin(){
+  this.name = 'default'
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/kumamotoshinrin/k.pmtiles'
+  })
+  this.style = kumamotoShinrinStyleFunction()
+}
+export const kumamotoShinrinSumm = "<a href='https://data.bodik.jp/dataset/430005_00339' target='_blank'>森林計画図</a>"
+export  const kumamotoShinrinObj = {}
+for (let i of mapsStr) {
+  kumamotoShinrinObj[i] = new VectorTileLayer(new KumamotoShinrin())
+}
+function kumamotoShinrinStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: 'rgba(0,128,0,0.7)'
+      }),
+      stroke: new Stroke({
+        color: "black",
+        width: 1
+      }),
+    })
+    styles.push(polygonStyle)
+    return styles
+  }
+}
+
 // 空港等の周辺空域---------------------------------------------------
 function Kuiki(){
   this.name = 'kuiki'

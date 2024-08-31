@@ -13602,6 +13602,7 @@ export const Layers =
     { text: '立体図、地質図等',
       children: [
         { text: '自分で作る色別標高図', data: { id: "myhokozu", layer: hyokozuObj, opacity: 1, summary: '', component: {name: 'hyokozu', values:[]} } },
+        { text: '熊本県森林計画図', data: { id: "kumamotoshinrin", layer: LayersMvt.kumamotoShinrinObj, opacity: 1, summary: LayersMvt.kumamotoShinrinSumm } },
 
         // { text: 'シームレス地質図', data: { id: 'seamless', layer: seamlessObj, opacity: 1, summary: seamlessSumm,component: {name: 'seamless', values:[]} } },
         { text: 'シームレス地質図', data: { id: 'seamless', layer: seamelesChisituObj, opacity: 1, summary: seamlessSumm } },

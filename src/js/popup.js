@@ -909,7 +909,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
             cont += '<div class="default-popup" style=width:300px;font-size:small;>'
             Object.keys(prop).forEach(function(key) {
               console.log(key)
-              if (key !== 'geometry') {
+              if (key !== 'geometry' && key !== 'path') {
                 cont += key + '=' + prop[key] + '<br>'
               }
             })
