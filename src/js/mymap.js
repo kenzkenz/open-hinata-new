@@ -1507,9 +1507,6 @@ export function initMap (vm) {
 
         map.on('singleclick', function (evt) {
 
-
-
-
             const feature = map.forEachFeatureAtPixel(evt.pixel,
                 function (feature) {
                     return feature

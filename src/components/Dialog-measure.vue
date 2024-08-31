@@ -22,7 +22,13 @@
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawCopy">コピー</b-button>
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawUndo">戻す</b-button>
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawRedo">やり直す</b-button>
+      <br>
+      <b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawKodo">高度編集</b-button>
 
+      <div class="kodo" v-if="kodo">
+        <input type='number' value="0.001" step="0.0005" v-model="tolerance" style="width: 100px;margin-top: 0px;">
+        <b-button style="margin-top: 0px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawSinple">線をシンプル化</b-button>
+      </div>
 
       <div class="range-div">
         <label class="eye-label">
@@ -57,8 +63,11 @@ import KML from 'ol/format/KML'
 import {moveEnd} from "@/js/permalink"
 import * as permalink from "@/js/permalink";
 import store from "@/js/store";
+import * as turf from '@turf/turf';
 import {transform} from "ol/proj";
-import {overlay, transformInteraction} from "../js/mymap";
+import {LineString,Polygon} from "ol/geom";
+import Feature from "ol/Feature";
+import {measure} from "../js/mymap";
 
 export default {
   name: "dialog-measure",
@@ -81,7 +90,9 @@ export default {
         { value: '20', text: '20' },
         { value: '30', text: '30' },
         { value: '50', text: '50' }
-      ]
+      ],
+      kodo: false,
+      tolerance: 0.001
     }
   },
   computed: {
@@ -203,6 +214,55 @@ export default {
       this.toggleDelete = false
       this.toggleDanmen = false
       this.s_toggleIdo = false
+    },
+    drawKodo () {
+      this.kodo = !this.kodo
+    },
+    drawSinple () {
+      const targetFeature = this.$store.state.base.editFeature
+      if (!targetFeature) {
+        alert('選択されていません。')
+        return
+      }
+      if (targetFeature.getGeometry().getType() !== 'LineString') {
+        alert('線ではありません。')
+        return
+      }
+      const fiatureGeojson = new GeoJSON().writeFeatures([targetFeature], {
+        featureProjection: "EPSG:3857"
+      })
+      const features = JSON.parse(fiatureGeojson).features
+      console.log(features)
+      //0.001
+      const sinpleFeature = turf.simplify(features[0], { tolerance: this.tolerance, highQuality: false })
+      console.log(sinpleFeature)
+      let coordinates = []
+      let polygonCoordinates = []
+      sinpleFeature.geometry.coordinates.forEach((coord) => {
+        coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
+      })
+      // sinpleFeature.geometry.coordinates[0].forEach((coord) => {
+      //   polygonCoordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
+      // })
+      const lineString = new LineString(coordinates)
+      // const polygon = new Polygon(polygonCoordinates)
+      const newFeature = new Feature(lineString)
+
+      if (targetFeature.values_) {
+        Object.keys(targetFeature.values_).forEach(function (key) {
+          if (key !== 'geometry') newFeature.setProperties({[key]: targetFeature.values_[key]})
+        })
+      }
+
+      MyMap.drawLayer.getSource().removeFeature(targetFeature)
+      MyMap.drawLayer.getSource().addFeature(newFeature)
+
+      const coordAr = newFeature.getGeometry().getCoordinates()
+      const geoType = newFeature.getGeometry().getType()
+      measure (geoType,newFeature,coordAr)
+
+      this.$store.state.base.editFeature = null
+
     },
     drawCopy () {
       if (!this.s_toggleIdo) {
@@ -360,8 +420,6 @@ export default {
 
         dragHandle.innerHTML = '<span style="color: red;">変形&移動モード中</span>'
         MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
-
-
 
       } else {
         console.log('off')
@@ -683,5 +741,10 @@ export default {
   position: absolute;
   left:250px;
   top:0;
+}
+.kodo {
+  margin-top: 5px;
+  padding: 10px;
+  border: 1px solid darkgray;
 }
 </style>

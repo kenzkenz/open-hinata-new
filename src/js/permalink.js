@@ -546,32 +546,32 @@ export function moveEnd () {
   features.forEach(function(feature){
     if (feature.getGeometry()) {
       if (feature.getGeometry().getType() === 'Circle') {
-        const radius = feature.getGeometry().getRadius();
-        const center = feature.getGeometry().getCenter();
-        feature.set('radius', radius);
-        feature.set('center', center);
+        const radius = feature.getGeometry().getRadius()
+        const center = feature.getGeometry().getCenter()
+        feature.set('radius', radius)
+        feature.set('center', center)
       }
     }
   })
   const drawSourceGeojson = new GeoJSON().writeFeatures(features, {
     featureProjection: "EPSG:3857"
-  });
+  })
   let geojsonT = JSON.stringify(JSON.parse(drawSourceGeojson),null,1);
 
-  // console.log(geojsonT)
+  console.log(geojsonT)
 
   // geojsonT = encodeURIComponent(geojsonT)
 
   // ----------------------------------------------------------------------------------
-  const map = store.state.base.maps.map01;
-  const zoom = map.getView().getZoom();
-  const center = map.getView().getCenter();
-  const center4326 = transform(center,'EPSG:3857','EPSG:4326');
+  const map = store.state.base.maps.map01
+  const zoom = map.getView().getZoom()
+  const center = map.getView().getCenter()
+  const center4326 = transform(center,'EPSG:3857','EPSG:4326')
   const hash = '#' +
       zoom + '/' +
       Math.round(center4326[0] * 100000) / 100000 + '/' +
-      Math.round(center4326[1] * 100000) / 100000;
-  let parameter = '?S=' + store.state.base.splitFlg;
+      Math.round(center4326[1] * 100000) / 100000
+  let parameter = '?S=' + store.state.base.splitFlg
 
   parameter += '&DL=' + JSON.stringify(store.state.info.dokujiLayers)
 
