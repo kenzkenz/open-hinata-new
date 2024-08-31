@@ -110,21 +110,23 @@ export default {
           // this.$store.state.base.editFeatureColor = rgba
           const feature = this.$store.state.base.editFeature
           const geoType = feature.getGeometry().getType()
-          if (geoType === 'Point' || geoType === 'LineString') feature.setProperties({_color: rgba})
-          if (geoType === 'Polygon' || geoType === 'Circle') feature.setProperties({_fillColor: rgba})
+          if (!feature.getProperties()._fillColor) {
+            feature.setProperties({_fillColor: 'rgba(0,0,255,0.5)'})
+          }
+          const before = {
+            prop: feature.getProperties(),
+            feature: feature
+          }
+
+          if (geoType === 'Point' || geoType === 'LineString') {
+            feature.setProperties({_color: rgba})
+          }
+          if (geoType === 'Polygon' || geoType === 'Circle') {
+            feature.setProperties({_fillColor: rgba})
+          }
+          const after = {prop:feature.getProperties(),feature:feature}
+          MyMap.undoInteraction.push('drawProp', { before: before, after: after });
         }
-        // this.$store.state.base.editDiv = ''
-
-        // ----------------------------------------------
-
-
-
-        // this.$store.state.info.divs
-
-
-
-
-
 
         moveEnd()
       }

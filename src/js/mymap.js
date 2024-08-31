@@ -486,6 +486,31 @@ undoInteraction.on('undo', function(e) {
         measure (geoType,feature,coordAr)
     })
 })
+export let drawProp
+undoInteraction.define(
+    'drawProp',
+    function (s) {
+        drawProp = s.before
+        console.log(s.before)
+        Object.keys(s.before.prop).forEach(function(key) {
+            if (key !== 'geometry') {
+                s.before.feature.values_[key] = s.before.prop[key]
+            }
+        })
+        drawLayer.getSource().changed()
+    },
+    function(s) {
+        drawProp = s.after
+        Object.keys(s.after.prop).forEach(function(key) {
+            if (key !== 'geometry') {
+                s.after.feature.values_[key] = s.after.prop[key]
+            }
+        })
+        drawLayer.getSource().changed()
+    }
+)
+
+
 export const copyInteraction = new CopyPaste({
     destination: drawLayer.getSource(),
     features: transformInteraction.getFeatures()
@@ -654,6 +679,7 @@ export function initMap (vm) {
             }
             moveEnd()
             store.state.base.drawEndFlg = true
+            console.log(store.state.base.editFeature)
         })
         regularInteraction.on('drawend', function (event) {
             const feature = event.feature
