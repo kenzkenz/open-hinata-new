@@ -27,7 +27,7 @@
 
       <div class="kodo" v-if="kodo">
         <input type='number' value="0.001" step="0.0005" v-model="tolerance" style="width: 100px;margin-top: 0px;">
-        <b-button style="margin-top: 0px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawSinple">線をシンプル化</b-button>
+        <b-button style="margin-top: 0px; margin-left: 2px;" class='olbtn' :size="btnSize" @click="drawSinple">線、ポリゴンをシンプル化</b-button>
       </div>
 
       <div class="range-div">
@@ -78,13 +78,8 @@ export default {
       btnSize: 'sm',
       toggle: false,
       toggleCenter: true,
-      // togglePoint: false,
-      // toggleLine: false,
       toggleDanmen: false,
-      // toggleMenseki: false,
-      // toggleCircle: false,
       toggleDelete: false,
-      // toggleIdou: false,
       selected: 20,
       options: [
         { value: '20', text: '20' },
@@ -197,10 +192,6 @@ export default {
     },
   },
   methods: {
-    // opacityChange () {
-    //   // MyMap.drawLayer.setOpacity(Number(this.s_drawOpacity))
-    //   // permalink.moveEnd()
-    // },
     toggleReset () {
       this.s_toggleCircle = false
       this.s_togglePoint = false
@@ -224,8 +215,8 @@ export default {
         alert('選択されていません。')
         return
       }
-      if (targetFeature.getGeometry().getType() !== 'LineString') {
-        alert('線ではありません。')
+      if (targetFeature.getGeometry().getType() !== 'LineString' && targetFeature.getGeometry().getType() !== 'Polygon') {
+        alert('線又はポリゴンではありません。')
         return
       }
       const fiatureGeojson = new GeoJSON().writeFeatures([targetFeature], {
@@ -238,16 +229,20 @@ export default {
       console.log(sinpleFeature)
       let coordinates = []
       let polygonCoordinates = []
-      sinpleFeature.geometry.coordinates.forEach((coord) => {
-        coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
-      })
-      // sinpleFeature.geometry.coordinates[0].forEach((coord) => {
-      //   polygonCoordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
-      // })
-      const lineString = new LineString(coordinates)
-      // const polygon = new Polygon(polygonCoordinates)
-      const newFeature = new Feature(lineString)
-
+      let newFeature
+      if (targetFeature.getGeometry().getType() === 'LineString') {
+        sinpleFeature.geometry.coordinates.forEach((coord) => {
+          coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
+        })
+        const lineString = new LineString(coordinates)
+        newFeature = new Feature(lineString)
+      } else {
+        sinpleFeature.geometry.coordinates[0].forEach((coord) => {
+          polygonCoordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
+        })
+        const polygon = new Polygon([polygonCoordinates])
+        newFeature = new Feature(polygon)
+      }
       if (targetFeature.values_) {
         Object.keys(targetFeature.values_).forEach(function (key) {
           if (key !== 'geometry') newFeature.setProperties({[key]: targetFeature.values_[key]})
