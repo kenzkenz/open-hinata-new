@@ -1524,7 +1524,6 @@ export function initMap (vm) {
                     store.state.base.dialogs.measureDialog.style.display = 'block'
                     store.state.base.editFeature = feature
                     console.log(store.state.base.editFeature)
-
                     drawLayer.getSource().changed()
                 } else if (layerNames.indexOf('syochiki2020') !== -1) {
                     console.log(feature.getProperties().KEY_CODE)

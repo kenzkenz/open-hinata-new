@@ -210,10 +210,15 @@ export default {
       this.s_toggleIdo = false
     },
     drawKodo () {
+      this.s_toggleIdo = false
       this.kodo = !this.kodo
     },
     drawPolygonSmooth () {
+      this.s_toggleIdo = false
       const targetFeature = this.$store.state.base.editFeature
+      // if (!targetFeature) {
+      //   targetFeature = MyMap.transformInteraction.getFeatures()[1]
+      // }
       if (!targetFeature) {
         alert('選択されていません。')
         return
@@ -241,8 +246,10 @@ export default {
         })
       }
 
+      MyMap.undoInteraction.blockStart()
       MyMap.drawLayer.getSource().removeFeature(targetFeature)
       MyMap.drawLayer.getSource().addFeature(newFeature)
+      MyMap.undoInteraction.blockEnd()
 
       const coordAr = newFeature.getGeometry().getCoordinates()
       const geoType = newFeature.getGeometry().getType()
@@ -251,6 +258,7 @@ export default {
       this.$store.state.base.editFeature = null
     },
     drawBezier () {
+      this.s_toggleIdo = false
       const targetFeature = this.$store.state.base.editFeature
       if (!targetFeature) {
         alert('選択されていません。')
@@ -281,8 +289,10 @@ export default {
         })
       }
 
+      MyMap.undoInteraction.blockStart()
       MyMap.drawLayer.getSource().removeFeature(targetFeature)
       MyMap.drawLayer.getSource().addFeature(newFeature)
+      MyMap.undoInteraction.blockEnd()
 
       const coordAr = newFeature.getGeometry().getCoordinates()
       const geoType = newFeature.getGeometry().getType()
@@ -291,6 +301,7 @@ export default {
       this.$store.state.base.editFeature = null
     },
     drawSinple () {
+      this.s_toggleIdo = false
       const targetFeature = this.$store.state.base.editFeature
       if (!targetFeature) {
         alert('選択されていません。')
@@ -330,8 +341,10 @@ export default {
         })
       }
 
+      MyMap.undoInteraction.blockStart()
       MyMap.drawLayer.getSource().removeFeature(targetFeature)
       MyMap.drawLayer.getSource().addFeature(newFeature)
+      MyMap.undoInteraction.blockEnd()
 
       const coordAr = newFeature.getGeometry().getCoordinates()
       const geoType = newFeature.getGeometry().getType()
