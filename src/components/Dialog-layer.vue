@@ -54,8 +54,10 @@
           } else {
             rect = document.querySelectorAll('.first-content-div')[1].getBoundingClientRect()
           }
-          this.divHeight1 = e.pageY - rect.top -5
-          this.divHeight2 = this.divHeight0 - this.divHeight1 - 20
+          if (e.pageY - rect.top - 5 >= 0 && this.divHeight0 >= (e.pageY - rect.top + 20)) {
+            this.divHeight1 = e.pageY - rect.top -5
+            this.divHeight2 = this.divHeight0 - this.divHeight1 - 20
+          }
         }
       },
       splitMap () {
