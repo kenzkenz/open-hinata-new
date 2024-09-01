@@ -29,8 +29,9 @@
         <input type='number' value="0.001" step="0.0005" v-model="tolerance" style="width: 100px;margin-top: 0px;">
         <b-button style="margin-top: 0px; margin-left: 2px;" class='olbtn' :size="btnSize" @click="drawSinple">線、ポリゴンをシンプル化</b-button>
         <b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawBezier">線を滑らかにする（ベジェ曲線）</b-button>
-        <b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawPolygonSmooth">ポリゴンをスムーズにする</b-button>
-
+        <b-button style="margin-top: 5px; margin-left: 0px;margin-bottom: 5px;" class='olbtn' :size="btnSize" @click="drawPolygonSmooth">ポリゴンをスムーズにする</b-button>
+        <br><input type='number' value="0" step="0.1" v-model="radius" style="width: 100px;margin-top: 0px;">
+        <b-button style="margin-top: 0px; margin-left: 2px;" class='olbtn' :size="btnSize" @click="drawBuffer">バッファー</b-button>
       </div>
 
       <div class="range-div">
@@ -90,7 +91,8 @@ export default {
         { value: '50', text: '50' }
       ],
       kodo: false,
-      tolerance: 0.001
+      tolerance: 0.001,
+      radius: 0
     }
   },
   computed: {
@@ -213,18 +215,87 @@ export default {
       this.s_toggleIdo = false
       this.kodo = !this.kodo
     },
+    drawBuffer () {
+      this.s_toggleIdo = false
+      const targetFeature = this.$store.state.base.editFeature
+      if (!targetFeature) {
+        alert('選択されていません。')
+        return
+      }
+      if (targetFeature.getGeometry().getType() !== 'Point') {
+        alert('点ではありません。')
+        return
+      }
+
+      // ------------------------------------------------------
+      const tGeojson = new GeoJSON().writeFeatures([targetFeature], {
+        featureProjection: "EPSG:3857"
+      })
+      const tFeature = JSON.parse(tGeojson).features[0]
+      let count = 0
+      let countArr = []
+      MyMap.drawLayer.getSource().getFeatures().forEach((feature) => {
+        const featureGeojson = new GeoJSON().writeFeatures([feature], {
+          featureProjection: "EPSG:3857"
+        })
+        const features = JSON.parse(featureGeojson).features
+        if (features[0].geometry.type === 'Polygon') {
+          const pointOnPolygon = turf.pointOnFeature(features[0])
+          console.log(turf.truncate(turf.point(pointOnPolygon.geometry.coordinates)).geometry.coordinates)
+          console.log(turf.truncate(turf.point(tFeature.geometry.coordinates)).geometry.coordinates)
+          if (JSON.stringify(turf.truncate(turf.point(pointOnPolygon.geometry.coordinates)).geometry.coordinates) === JSON.stringify(turf.truncate(turf.point(tFeature.geometry.coordinates)).geometry.coordinates)){
+            // alert()
+            countArr.push(count)
+            // MyMap.drawLayer.getSource().removeFeature(feature)
+          }
+        }
+        count++
+      })
+      countArr.forEach((count) => {
+        MyMap.drawLayer.getSource().removeFeature(MyMap.drawLayer.getSource().getFeatures()[count])
+      })
+      // ------------------------------------------------------
+
+      const featureGeojson = new GeoJSON().writeFeatures([targetFeature], {
+        featureProjection: "EPSG:3857"
+      })
+      const features = JSON.parse(featureGeojson).features
+      const point = turf.point(features[0].geometry.coordinates);
+      const bufferFeature = turf.buffer(point, Number(this.radius));
+      let polygonCoordinates = []
+      let newFeature
+      bufferFeature.geometry.coordinates[0].forEach((coord) => {
+        polygonCoordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
+      })
+      const polygon = new Polygon([polygonCoordinates])
+      newFeature = new Feature(polygon)
+
+      if (targetFeature.values_) {
+        Object.keys(targetFeature.values_).forEach(function (key) {
+          if (key !== 'geometry') newFeature.setProperties({[key]: targetFeature.values_[key]})
+        })
+      }
+
+      MyMap.undoInteraction.blockStart()
+      // MyMap.drawLayer.getSource().removeFeature(targetFeature)
+      MyMap.drawLayer.getSource().addFeature(newFeature)
+      MyMap.undoInteraction.blockEnd()
+
+      const coordAr = newFeature.getGeometry().getCoordinates()
+      const geoType = newFeature.getGeometry().getType()
+      measure (geoType,newFeature,coordAr)
+
+      // this.$store.state.base.editFeature = null
+    },
     drawPolygonSmooth () {
       this.s_toggleIdo = false
       const targetFeature = this.$store.state.base.editFeature
-      // if (!targetFeature) {
-      //   targetFeature = MyMap.transformInteraction.getFeatures()[1]
-      // }
       if (!targetFeature) {
         alert('選択されていません。')
         return
       }
       if (targetFeature.getGeometry().getType() !== 'Polygon') {
-        alert('線ではありません。')
+        alert('ポリゴンではありません。')
         return
       }
       const fiatureGeojson = new GeoJSON().writeFeatures([targetFeature], {
