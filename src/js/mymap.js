@@ -40,12 +40,7 @@ import muni from './muni'
 import UndoRedo from 'ol-ext/interaction/UndoRedo'
 import {syochiiki2020MvtObj} from "@/js/layers-mvt"
 import CopyPaste from 'ol-ext/interaction/CopyPaste'
-import Toggle from 'ol-ext/control/Toggle'
-import Bar from 'ol-ext/control/Bar'
-import TextButton from 'ol-ext/control/TextButton'
-import ModifyTouch from 'ol-ext/interaction/ModifyTouch'
-// import Observable from 'ol/Observable.js'
-// import {unByKey} from 'ol/Observable'
+import Swipe from 'ol-ext/control/Swipe'
 
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
@@ -530,6 +525,8 @@ copyInteraction.on('paste', function (e) {
 });
 export const scaleLine = new ScaleLine()
 export const scaleLine2 = new ScaleLine()
+export const swipeControl = new Swipe()
+export const swipeControl2 = new Swipe()
 // ダイアログ
 export const dialog = new Dialog({ fullscreen: true, zoom: true, closeBox: true });
 
@@ -619,6 +616,9 @@ export function initMap (vm) {
         map.addInteraction(transformInteraction)
         map.addInteraction(copyInteraction)
 
+
+        // if (i==='0') map.addControl(swipeControl)
+        // if (i==='1') map.addControl(swipeControl2)
 
         // ------------------------
         pointInteraction.on('drawend', function (event) {
@@ -1734,7 +1734,6 @@ async function getRgb0(event,server,zoom,func) {
         funcArr.push(func)
         return result
     }
-
 }
 
 //現在地取得
@@ -1970,11 +1969,84 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
         }
     }
     store.commit('base/updateFirstFlg',false)
-    // drawLayer.set("altitudeMode","clampToGround")
     map.removeLayer(drawLayer)
     map.addLayer(drawLayer)
     map.removeLayer(danmenLayer)
     map.addLayer(danmenLayer)
+    // スワイプ設定-------
+    try {
+        if (map.values_.target === 'map01') {
+            if (newLayerList[0][0].layer.values_.layers) {
+                newLayerList[0][0].layer.values_.layers.getArray().forEach((layer) => {
+                    swipeControl.removeLayer(layer)
+                })
+            } else {
+                swipeControl.removeLayer(newLayerList[0][0].layer)
+            }
+            if (newLayerList[0][1].layer.values_.layers) {
+                newLayerList[0][1].layer.values_.layers.getArray().forEach((layer) => {
+                    swipeControl.removeLayer(layer)
+                })
+            } else {
+                swipeControl.removeLayer(newLayerList[0][1].layer)
+            }
+            //---------------------------------------------------
+            if (newLayerList[0][0].layer.values_.layers) {
+                newLayerList[0][0].layer.values_.layers.getArray().forEach((layer) => {
+                    swipeControl.addLayer(layer)
+                })
+            } else {
+                swipeControl.addLayer(newLayerList[0][0].layer)
+            }
+            if (newLayerList[0][1].layer.values_.layers) {
+                newLayerList[0][1].layer.values_.layers.getArray().forEach((layer) => {
+                    swipeControl.addLayer(layer,true)
+                })
+            } else {
+                swipeControl.addLayer(newLayerList[0][1].layer,true)
+            }
+            // swipeControl.removeLayer(newLayerList[0][0].layer)
+            // swipeControl.removeLayer(newLayerList[0][1].layer)
+            // swipeControl.addLayer(newLayerList[0][0].layer)
+            // swipeControl.addLayer(newLayerList[0][1].layer,true)
+        } else {
+            if (newLayerList[0][0].layer.values_.layers) {
+                newLayerList[0][0].layer.values_.layers.getArray().forEach((layer) => {
+                    swipeControl2.removeLayer(layer)
+                })
+            } else {
+                swipeControl2.removeLayer(newLayerList[0][0].layer)
+            }
+            if (newLayerList[0][1].layer.values_.layers) {
+                newLayerList[0][1].layer.values_.layers.getArray().forEach((layer) => {
+                    swipeControl2.removeLayer(layer)
+                })
+            } else {
+                swipeControl2.removeLayer(newLayerList[0][1].layer)
+            }
+            //---------------------------------------------------
+            if (newLayerList[0][0].layer.values_.layers) {
+                newLayerList[0][0].layer.values_.layers.getArray().forEach((layer) => {
+                    swipeControl2.addLayer(layer)
+                })
+            } else {
+                swipeControl2.addLayer(newLayerList[0][0].layer)
+            }
+            if (newLayerList[0][1].layer.values_.layers) {
+                newLayerList[0][1].layer.values_.layers.getArray().forEach((layer) => {
+                    swipeControl2.addLayer(layer,true)
+                })
+            } else {
+                swipeControl2.addLayer(newLayerList[0][1].layer,true)
+            }
+            // swipeControl2.removeLayer(newLayerList[0][0].layer)
+            // swipeControl2.removeLayer(newLayerList[0][1].layer)
+            // swipeControl2.addLayer(newLayerList[0][0].layer)
+            // swipeControl2.addLayer(newLayerList[0][1].layer,true)
+        }
+    } catch (e){
+    }
+    // スワイプ設定ここまで-------
 }
 
 export function opacityChange (item) {

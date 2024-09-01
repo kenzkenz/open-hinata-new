@@ -57,6 +57,7 @@
                     <b-button v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="home" style="margin-right:5px;"><i class="fa-solid fa-house"></i></b-button>
                     <b-button style="margin-right:5px;" :pressed.sync="s_toggle3d[mapName]" class='olbtn' :size="btnSize" @click="click3d(mapName)">{{ s_toggle3d[mapName] ? '2D' : '3D' }}</b-button>
                     <b-button id='split-map-btn' v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="splitMap" style="margin-right:5px;">分割</b-button>
+                    <b-button id='split-map-btn' v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="swipeMap" style="margin-right:5px;">swipe</b-button>
                     <b-button class='olbtn-red' :size="btnSize" @click="openDialog(s_dialogs[mapName])">背景</b-button>
                 </div>
                 <div class="top-right-div">
@@ -165,7 +166,8 @@
           { value: '20', text: '20' },
           { value: '30', text: '30' },
           { value: '50', text: '50' }
-        ]
+        ],
+        swipe: false
       }
     },
     computed: {
@@ -249,6 +251,17 @@
           // this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction2)
         }
       },
+      swipeMap () {
+        if (!this.swipe) {
+          store.state.base.maps['map01'].addControl(MyMap.swipeControl)
+          store.state.base.maps['map02'].addControl(MyMap.swipeControl2)
+          this.swipe = !this.swipe
+        } else {
+          store.state.base.maps['map01'].removeControl(MyMap.swipeControl)
+          store.state.base.maps['map02'].removeControl(MyMap.swipeControl2)
+          this.swipe = !this.swipe
+        }
+      },
       // 分割-------------------------------------------------------------------------------------
       splitMap () {
         MyMap.history ('分割')
@@ -300,42 +313,6 @@
               }
             }
             break;
-          // 2画面（縦２画面）
-          // case 3:
-          //   vm.synchDivFlg = true;
-          //   vm.mapFlg['map02'] = true; vm.mapFlg['map03'] = false; vm.mapFlg['map04'] = false;
-          //   vm.mapSize['map01'] = {top: 0, left: 0, width: '100%', height: height2};
-          //   vm.mapSize['map02'] = {top: '50%', left: 0, width: '100%', height: height2};
-          //   vm.mapSize['map03'] = {top: 0, left: 0, width: 0, height: 0};
-          //   vm.mapSize['map04'] = {top: 0, left: 0, width: 0, height: 0};
-          //   break;
-          // 3画面１（左が縦全、右が縦半）
-          // case 4:
-          //   vm.synchDivFlg = true;
-          //   vm.mapFlg['map02'] = true; vm.mapFlg['map03'] = true; vm.mapFlg['map04'] = false;
-          //   vm.mapSize['map01'] = {top: 0, left: 0, width: '50%', height: height};
-          //   vm.mapSize['map02'] = {top: 0, left: '50%', width: '50%', height: height2};
-          //   vm.mapSize['map03'] = {top: '50%', left: '50%', width: '50%', height: height2};
-          //   vm.mapSize['map04'] = {top: 0, left: 0, width: 0, height: 0};
-          //   break;
-          // // 3画面2（全て縦半）
-          // case 5:
-          //   vm.synchDivFlg = true;
-          //   vm.mapFlg['map02'] = true; vm.mapFlg['map03'] = true; vm.mapFlg['map04'] = false;
-          //   vm.mapSize['map01'] = {top: 0, left: 0, width: '100%', height: height2};
-          //   vm.mapSize['map02'] = {top: '50%', left: 0, width: '50%', height: height2};
-          //   vm.mapSize['map03'] = {top: '50%', left: '50%', width: '50%', height: height2};
-          //   vm.mapSize['map04'] = {top: 0, left: 0, width: 0, height: 0};
-          //   break;
-
-          // 4画面（全て縦半）
-          // case 3:
-          //   vm.synchDivFlg = true;
-          //   vm.mapFlg['map02'] = true; vm.mapFlg['map03'] = true; vm.mapFlg['map04'] = true;
-          //   vm.mapSize['map01'] = {top: 0, left: 0, width: '50%', height: height2};
-          //   vm.mapSize['map02'] = {top: 0, right: 0, width: '50%', height: height2};
-          //   vm.mapSize['map03'] = {top: '50%', left: 0, width: '50%', height: height2};
-          //   vm.mapSize['map04'] = {top: '50%', left: '50%', width: '50%', height: height2}
         }
         this.$nextTick(function () {
           MyMap.resize ()

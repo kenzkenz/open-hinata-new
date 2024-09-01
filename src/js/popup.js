@@ -1378,7 +1378,6 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
               cont += '<div class="hokkaidotsunamimvt" style=width:300px;>' +
                   '<h5 style="color: red">北海道 津波浸水深 = ' + maxShinsui + 'm</h5>' +
                   '</div><hr>'
-
             }
           }
           break
