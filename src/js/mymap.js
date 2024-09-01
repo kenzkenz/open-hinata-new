@@ -263,8 +263,6 @@ export function measure (geoType,feature,coordAr) {
     if (geoType === 'LineString') {
         let tDistance = 0
         for (var i = 0; i < coordAr.length - 1; i++) {
-            // const fromCoord = turf.point(transform(coordAr[i], "EPSG:3857", "EPSG:4326"))
-            // const toCoord = turf.point(transform(coordAr[i + 1], "EPSG:3857", "EPSG:4326"))
             const fromCoord = turf.point(turf.toWgs84(coordAr[i]))
             const toCoord = turf.point(turf.toWgs84(coordAr[i + 1]))
             tDistance = tDistance + turf.distance(fromCoord, toCoord, {units: 'kilometers'})
@@ -1358,13 +1356,11 @@ export function initMap (vm) {
         // 米軍地形図用
         map.on('singleclick', function (evt) {
 
-
             const feature = map.forEachFeatureAtPixel(evt.pixel,
                 function(feature) {
                     return feature;
                 });
             if (feature) return;
-
 
             const layers = map.getLayers().getArray();
             //  洪水浸水想定と重ねるときは動作させない
@@ -1395,7 +1391,6 @@ export function initMap (vm) {
                     }
                 }
 
-                // drawLayer2.setZIndex(maxZndex)
                 drawLayer.setZIndex(maxZndex)
 
             }
@@ -1484,9 +1479,11 @@ export function initMap (vm) {
         const removeLastPoint = function(evt){
             // console.log(evt.keyCode)
             if(evt.key === 'Escape' || evt.key === 'Backspace' || evt.key === 'Delete'){
+                transformInteraction.select()
                 lineInteraction.removeLastPoint()
                 polygonInteraction.removeLastPoint()
                 circleInteraction.removeLastPoint()
+                modifyInteraction.removePoint()
             }
         }
         if (i === '0') {
@@ -1503,7 +1500,6 @@ export function initMap (vm) {
             })
             addEventListener('keydown', function (event) {
                 if (event.key === 'z' && event.metaKey && event.shiftKey) {
-                    console.log(777)
                     undoInteraction.redo()
                 }
             })
@@ -1511,23 +1507,17 @@ export function initMap (vm) {
         if (i === '0') {
             addEventListener('keydown', function (event) {
                 console.log(event.key)
-                if (event.key === 'Escape' || event.key === 'Backspace' || event.key === 'Delete') {
+                if (event.key === 'Backspace' || event.key === 'Delete') {
                     drawLayer.getSource().removeFeature(store.state.base.editFeature)
                     const tFeatures = transformInteraction.getFeatures().array_
                     tFeatures.forEach((feature) => {
                         drawLayer.getSource().removeFeature(feature)
                     })
-                    modifyInteraction.removePoint()
+                    // modifyInteraction.removePoint()
                     overlay[i].setPosition(undefined)
                 }
             })
         }
-
-        // const selectInteraction = new Select({
-        //     layers: [drawLayer]
-        // })
-        // map.addInteraction(selectInteraction)
-
 
         // ------------------------------------------------------------
 

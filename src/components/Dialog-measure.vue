@@ -579,7 +579,10 @@ export default {
         this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
 
         dragHandle.innerHTML = '<span style="color: red;">変形&移動モード中</span>'
-        MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
+        // MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
+        this.$store.state.base.editFeature = null
+        MyMap.drawLayer.getSource().changed()
+
 
       } else {
         console.log('off')
