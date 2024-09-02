@@ -97,7 +97,7 @@ export function permalinkEventSet (response) {
     }
     //①-------------------------------------------------------------------------
     //obj.Lをローカルストレージから作る。
-    console.log(obj.L)
+    // console.log(obj.L)
     const startLayerList = JSON.parse(localStorage.getItem('startLayerList'))
     const startLayerList2 = JSON.parse(localStorage.getItem('startLayerList2'))
     let layerList = []
@@ -207,7 +207,7 @@ export function permalinkEventSet (response) {
         // console.log(decodeURIComponent(obj[key]))
 
         const geojson = JSON.parse(decodeURIComponent(obj[key]))
-        console.log(geojson)
+        // console.log(geojson)
         if (geojson.features[0]) {
           let newFeature
           geojson.features.forEach((feature) => {
@@ -222,7 +222,6 @@ export function permalinkEventSet (response) {
               newFeature.setProperties({distance: distance})
               // MyMap.drawLayer.getSource().addFeature(newFeature)
             } else if (feature.geometry.type === 'LineString') {
-              console.log(999999)
               const distance = feature.properties.distance
               let coordinates = []
               feature.geometry.coordinates.forEach((coord) => {
@@ -310,7 +309,7 @@ export function permalinkEventSet (response) {
         store.state.base.drawVisible = bool
       }
       if (key === 'GJM'){
-        console.log(obj[key])
+        // console.log(obj[key])
         let bool
         if (obj[key] === 'true') {
           bool = true
@@ -490,7 +489,7 @@ export function permalinkEventSet (response) {
               }
             };
 
-            console.log(store.state.info.dokujiLayers)
+            // console.log(store.state.info.dokujiLayers)
 
             store.state.info.dokujiLayers.forEach((value,i) =>{
               // store.state.info.dokujiUrl['map01'] = value.url

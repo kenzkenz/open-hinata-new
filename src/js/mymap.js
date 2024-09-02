@@ -41,6 +41,7 @@ import UndoRedo from 'ol-ext/interaction/UndoRedo'
 import {syochiiki2020MvtObj} from "@/js/layers-mvt"
 import CopyPaste from 'ol-ext/interaction/CopyPaste'
 import Swipe from 'ol-ext/control/Swipe'
+import RegularShape from 'ol/style/RegularShape'
 
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
@@ -107,7 +108,7 @@ function drawLayerStylefunction (){
                 color = 'rgba(0,0,255,0.5)'
             }
         }
-        console.log(color)
+        // console.log(color)
         if (feature === store.state.base.editFeature) {
             if (geoType === 'Point') {
                 pointStrokeWidth = 4
@@ -219,7 +220,7 @@ function drawLayerStylefunction (){
         if (geoType === 'Point') styles.push(pointStyle)
         if (geoType === 'LineString') styles.push(lineStyle)
         if (zoom >= 12) styles.push(textStyle)
-        if (geoType === 'Circle') styles.push(textStyle2)
+        // if (geoType === 'Circle') styles.push(textStyle2)
         return styles
     }
 }
@@ -275,7 +276,7 @@ export function measure (geoType,feature,coordAr) {
             // tDistance2 = tDistance * 1000
             tDistance = (tDistance * 1000).toFixed(2) + 'm'
         }
-        console.log(tDistance2)
+        // console.log(tDistance2)
         feature.setProperties({distance: tDistance})
         return {'tDistance':tDistance,'tDistance2':tDistance2}
     } else if (geoType === 'Polygon') {
@@ -480,6 +481,7 @@ undoInteraction.on('undo', function(e) {
         const geoType = feature.getGeometry().getType()
         measure (geoType,feature,coordAr)
     })
+    store.state.base.editFeature = null
 })
 export let drawProp
 undoInteraction.define(
@@ -608,16 +610,51 @@ export function initMap (vm) {
         })[0];
         pinchRotateInteraction.setActive(false);
 
-        if (i==='0') map.addInteraction(undoInteraction)
-        if (i==='0') map.addInteraction(modifyInteraction)
-        if (i==='0') map.addInteraction(transformInteraction)
-        if (i==='0') map.addInteraction(copyInteraction)
+        if (i==='0')  {
+            map.addInteraction(undoInteraction)
+            map.addInteraction(modifyInteraction)
+            map.addInteraction(transformInteraction)
+            map.addInteraction(copyInteraction)
 
-        if (i==='0') modifyInteraction.setActive(false)
-        if (i==='0') transformInteraction.setActive(false)
+            // const circle = new RegularShape({
+            //     fill: new Fill({color:[255,255,255,0.01]}),
+            //     stroke: new Stroke({width:1, color:[0,0,0,0.01]}),
+            //     radius: 8,
+            //     points: 10
+            // });
+            // transformInteraction.setStyle ('rotate',
+            //     new Style({
+            //         text: new Text ({
+            //             text:'\uf0e2',
+            //             font:"16px Fontawesome",
+            //             textAlign: "left",
+            //             fill:new Fill({color:'red'})
+            //         }),
+            //         image: circle
+            //     }));
+            // Center of rotation
+            transformInteraction.setStyle ('rotate0',
+                new Style({
+                    text: new Text ({
+                        text:'\uf0e2',
+                        font:"20px Fontawesome",
+                        fill: new Fill({ color:[255,255,255,0.8] }),
+                        stroke: new Stroke({ width:2, color:'red' })
+                    }),
+                }));
+            transformInteraction.setStyle('translate',
+                new Style({
+                    text: new Text ({
+                        text:'\uf047',
+                        font:"20px Fontawesome",
+                        fill: new Fill({ color:[255,255,255,0.8] }),
+                        stroke: new Stroke({ width:2, color:'red' })
+                    })
+                }));
 
-        // if (i==='0') map.addControl(swipeControl)
-        // if (i==='1') map.addControl(swipeControl2)
+            modifyInteraction.setActive(false)
+            transformInteraction.setActive(false)
+        }
 
         // ------------------------
         const drawEndFunction =  function (feature) {
@@ -750,7 +787,7 @@ export function initMap (vm) {
         });
 
         // const scaleLine = new ScaleLine()
-        console.log(localStorage.getItem('scaleFlg'))
+        // console.log(localStorage.getItem('scaleFlg'))
         if (localStorage.getItem('scaleFlg') === 'true') {
             if (i==='0') map.addControl(scaleLine)
             if (i==='1') map.addControl(scaleLine2)

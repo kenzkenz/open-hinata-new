@@ -13,14 +13,9 @@
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleDaen" class='olbtn' :size="btnSize">楕円</b-button>
       <br>
       <b-button id="color-btn0" style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="openDialog">色</b-button>
-
-
       <!--      <b-button style="margin-left: 5px;" :pressed.sync="s_toggleText" class='olbtn' :size="btnSize">文字</b-button>-->
 <!--      <b-button style="margin-left: 10px;" :pressed.sync="toggleDanmen" class='olbtn' :size="btnSize">{{ toggleDanmen ? '断面図' : '断面図' }}</b-button>-->
       <br>
-      <!--            <b-button style="margin-top: 10px;" class='olbtn' :size="btnSize" @click="drawStop">描画ストップ</b-button>-->
-<!--      <br>-->
-<!--      <b-button style="margin-top: 5px;color: red;" :pressed.sync="s_toggleIdo" class='olbtn' :size="btnSize">変形&移動</b-button>-->
       <b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawReset">削除</b-button>
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawAllReset">全て削除</b-button>
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawCopy">コピー</b-button>
@@ -75,8 +70,10 @@ import * as turf from '@turf/turf';
 import {transform} from "ol/proj";
 import {LineString,Polygon} from "ol/geom";
 import Feature from "ol/Feature";
-import {measure, modifyInteraction} from "../js/mymap";
+import {measure} from "../js/mymap";
 import * as d3 from "d3";
+import {Fill, Stroke, Style, Text, Circle as Circle0 } from "ol/style"
+
 
 export default {
   name: "dialog-measure",
@@ -258,7 +255,7 @@ export default {
       this.kodo = !this.kodo
     },
     drawBuffer () {
-      this.s_toggleIdo = false
+      // this.s_toggleIdo = false
       const targetFeature = this.$store.state.base.editFeature
       if (!targetFeature) {
         alert('選択されていません。')
@@ -319,18 +316,15 @@ export default {
       }
 
       MyMap.undoInteraction.blockStart()
-      // MyMap.drawLayer.getSource().removeFeature(targetFeature)
       MyMap.drawLayer.getSource().addFeature(newFeature)
       MyMap.undoInteraction.blockEnd()
 
       const coordAr = newFeature.getGeometry().getCoordinates()
       const geoType = newFeature.getGeometry().getType()
       measure (geoType,newFeature,coordAr)
-
-      // this.$store.state.base.editFeature = null
     },
     drawPolygonSmooth () {
-      this.s_toggleIdo = false
+      // this.s_toggleIdo = false
       const targetFeature = this.$store.state.base.editFeature
       if (!targetFeature) {
         alert('選択されていません。')
@@ -368,10 +362,11 @@ export default {
       const geoType = newFeature.getGeometry().getType()
       measure (geoType,newFeature,coordAr)
 
-      this.$store.state.base.editFeature = null
+      this.$store.state.base.editFeature = newFeature
+
     },
     drawBezier () {
-      this.s_toggleIdo = false
+      // this.s_toggleIdo = false
       const targetFeature = this.$store.state.base.editFeature
       if (!targetFeature) {
         alert('選択されていません。')
@@ -411,7 +406,7 @@ export default {
       const geoType = newFeature.getGeometry().getType()
       measure (geoType,newFeature,coordAr)
 
-      this.$store.state.base.editFeature = null
+      this.$store.state.base.editFeature = newFeature
     },
     drawSinple () {
       this.s_toggleIdo = false
@@ -463,7 +458,7 @@ export default {
       const geoType = newFeature.getGeometry().getType()
       measure (geoType,newFeature,coordAr)
 
-      this.$store.state.base.editFeature = null
+      this.$store.state.base.editFeature = newFeature
 
     },
     drawCopy () {
