@@ -255,7 +255,6 @@ export default {
       this.kodo = !this.kodo
     },
     drawBuffer () {
-      // this.s_toggleIdo = false
       const targetFeature = this.$store.state.base.editFeature
       if (!targetFeature) {
         alert('選択されていません。')
