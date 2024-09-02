@@ -437,6 +437,7 @@ circleInteraction.on('drawend', function (event) {
     measure (geoType,feature,coordAr)
 })
 export const transformInteraction = new Transform ({
+    translateFeature: false,
     enableRotatedTransform: true,
     scale:true,
     rotate:true,
@@ -611,6 +612,9 @@ export function initMap (vm) {
         if (i==='0') map.addInteraction(modifyInteraction)
         if (i==='0') map.addInteraction(transformInteraction)
         if (i==='0') map.addInteraction(copyInteraction)
+
+        if (i==='0') modifyInteraction.setActive(false)
+        if (i==='0') transformInteraction.setActive(false)
 
         // if (i==='0') map.addControl(swipeControl)
         // if (i==='1') map.addControl(swipeControl2)

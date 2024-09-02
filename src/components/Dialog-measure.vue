@@ -75,7 +75,7 @@ import * as turf from '@turf/turf';
 import {transform} from "ol/proj";
 import {LineString,Polygon} from "ol/geom";
 import Feature from "ol/Feature";
-import {measure} from "../js/mymap";
+import {measure, modifyInteraction} from "../js/mymap";
 import * as d3 from "d3";
 
 export default {
@@ -579,7 +579,6 @@ export default {
       this.s_toggleShikaku = false
       this.toggleDelete = false
       this.toggleDanmen = false
-      this.s_toggleIdo = false
       MyMap.drawLayer.getSource().clear()
       // MyMap.drawLayer2.getSource().clear()
       moveEnd()
@@ -616,8 +615,8 @@ export default {
         this.toggleDelete = false
         this.toggleDanmen = false
 
-        this.$store.state.base.maps['map01'].addInteraction(MyMap.transformInteraction)
-        this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
+        MyMap.modifyInteraction.setActive(true)
+        MyMap.transformInteraction.setActive(true)
 
         dragHandle.innerHTML = '<span style="color: red;">変形&移動モード中</span>'
         MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
@@ -626,8 +625,8 @@ export default {
 
       } else {
         console.log('off')
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
+        MyMap.modifyInteraction.setActive(false)
+        MyMap.transformInteraction.setActive(false)
 
         dragHandle.innerHTML = ''
 
@@ -647,7 +646,6 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.selectInteraction)
         MyMap.selectInteraction.on('select', function (e) {
           const selectCollection = MyMap.selectInteraction.getFeatures();
@@ -672,10 +670,9 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.s_toggleIdo = false
+
         this.$store.state.base.maps['map01'].addInteraction(MyMap.circleInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
+
 
         this.$store.state.base.drawType = 'circle'
       } else {
@@ -697,10 +694,8 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.s_toggleIdo = false
+
         this.$store.state.base.maps['map01'].addInteraction(MyMap.daenInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
 
         this.$store.state.base.drawType = 'circle'
       } else {
@@ -721,11 +716,9 @@ export default {
         this.s_toggleDaen = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        // this.s_toggleIdo = false
+
         this.$store.state.base.maps['map01'].addInteraction(MyMap.polygonInteraction)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.snapnteraction)
-        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
-        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
         this.$store.state.base.drawType = 'menseki'
 
       } else {
