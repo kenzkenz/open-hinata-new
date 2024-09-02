@@ -263,7 +263,9 @@ export const snapnteraction = new Snap ({
 })
 
 export function measure (geoType,feature,coordAr) {
-    if (geoType === 'LineString') {
+        if (geoType === 'Point') {
+            feature.setProperties({distance: ''})
+        } else if (geoType === 'LineString') {
         let tDistance = 0
         for (var i = 0; i < coordAr.length - 1; i++) {
             const fromCoord = turf.point(turf.toWgs84(coordAr[i]))
@@ -411,7 +413,13 @@ drawLayer.getSource().on("change", function(e) {
     // moveEnd()
     history ('ドロー')
 })
-
+pointInteraction.on('drawend', function (event) {
+    const feature = event.feature;
+    const coordAr = feature.getGeometry().getCoordinates()
+    const geoType = feature.getGeometry().getType()
+    measure (geoType,feature,coordAr)
+    moveEnd()
+})
 lineInteraction.on('drawend', function (event) {
     const feature = event.feature;
     const coordAr = feature.getGeometry().getCoordinates()
