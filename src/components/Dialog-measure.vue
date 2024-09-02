@@ -11,7 +11,11 @@
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleShikaku" class='olbtn' :size="btnSize">四角</b-button>
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleCircle" class='olbtn' :size="btnSize">円</b-button>
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleDaen" class='olbtn' :size="btnSize">楕円</b-button>
-<!--      <b-button style="margin-left: 5px;" :pressed.sync="s_toggleText" class='olbtn' :size="btnSize">文字</b-button>-->
+      <br>
+      <b-button id="color-btn0" style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="openDialog">色</b-button>
+
+
+      <!--      <b-button style="margin-left: 5px;" :pressed.sync="s_toggleText" class='olbtn' :size="btnSize">文字</b-button>-->
 <!--      <b-button style="margin-left: 10px;" :pressed.sync="toggleDanmen" class='olbtn' :size="btnSize">{{ toggleDanmen ? '断面図' : '断面図' }}</b-button>-->
       <br>
       <!--            <b-button style="margin-top: 10px;" class='olbtn' :size="btnSize" @click="drawStop">描画ストップ</b-button>-->
@@ -72,6 +76,7 @@ import {transform} from "ol/proj";
 import {LineString,Polygon} from "ol/geom";
 import Feature from "ol/Feature";
 import {measure} from "../js/mymap";
+import * as d3 from "d3";
 
 export default {
   name: "dialog-measure",
@@ -96,6 +101,8 @@ export default {
     }
   },
   computed: {
+    s_dialogMaxZindex () { return this.$store.state.base.dialogMaxZindex},
+    s_dialogs () { return this.$store.state.base.dialogs},
     s_drawMeasure: {
       get() {
         return this.$store.state.base.drawMeasure
@@ -211,8 +218,43 @@ export default {
       this.toggleDanmen = false
       this.s_toggleIdo = false
     },
+    openDialog () {
+
+      if (!this.$store.state.base.editFeature) {
+        alert('選択してください。')
+        return
+      }
+
+      this.$store.state.base.editDiv = ''
+      const dialog = this.s_dialogs['dialogColor']['map01']
+      if (dialog.style.display === 'block') {
+        dialog.style.display = 'none'
+      } else {
+        this.$store.commit('base/incrDialogMaxZindex');
+        dialog.style["z-index"] = this.s_dialogMaxZindex;
+        dialog.style.display = 'block'
+        const rect = document.querySelector('#color-btn0').getBoundingClientRect()
+        const left = (rect.x + 50 ) + 'px'
+        const top = (rect.top - 0) + 'px'
+        dialog.style.left = left
+        dialog.style.top = top
+        // MyMap.overlay['0'].setPosition(undefined)
+        const geoType = this.$store.state.base.editFeature.getGeometry().getType()
+        let color
+        if (geoType === 'Point' || geoType === 'LineString') {
+          color = this.$store.state.base.editFeature.values_._color
+          if (!color) color = 'rgba(0,0,255,1)'
+        } else if (geoType === 'Polygon' || geoType === 'Circle') {
+          color = this.$store.state.base.editFeature.values_._fillColor
+          if (!color) color = 'rgba(0,0,255,0.5)'
+        }
+        const rgba = d3.rgb(color)
+        const colorP = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.opacity }
+        this.$store.state.base.editFeatureColor['map01'] = colorP
+      }
+    },
     drawKodo () {
-      this.s_toggleIdo = false
+      // this.s_toggleIdo = false
       this.kodo = !this.kodo
     },
     drawBuffer () {
@@ -558,7 +600,6 @@ export default {
     const dragHandle = document.querySelector('#dialog-measure .drag-handle');
     dragHandle.innerHTML = ''
 
-
     this.$watch(function () {
       return [this.s_toggleIdo]
     }, function () {
@@ -579,10 +620,9 @@ export default {
         this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
 
         dragHandle.innerHTML = '<span style="color: red;">変形&移動モード中</span>'
-        // MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
-        this.$store.state.base.editFeature = null
+        MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
+        // this.$store.state.base.editFeature = null
         MyMap.drawLayer.getSource().changed()
-
 
       } else {
         console.log('off')
@@ -681,11 +721,11 @@ export default {
         this.s_toggleDaen = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.s_toggleIdo = false
+        // this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.polygonInteraction)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.snapnteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
+        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
+        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
         this.$store.state.base.drawType = 'menseki'
 
       } else {
@@ -707,10 +747,10 @@ export default {
         this.s_toggleDaen = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.s_toggleIdo = false
+        // this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.regularInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
+        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
+        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
         this.$store.state.base.drawType = 'menseki'
 
       } else {
@@ -731,7 +771,7 @@ export default {
         this.s_toggleShikaku = false
         this.toggleCircle = false
         this.toggleDelete = false
-        this.s_toggleIdo = false
+        // this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.selectInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction)
@@ -761,10 +801,10 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.s_toggleIdo = false
+        // this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.lineInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
+        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
+        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
         // this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
         // this.$store.state.base.maps['map02'].addInteraction(MyMap.modifyInteraction)
         this.$store.state.base.drawType = 'line'
@@ -791,10 +831,10 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.s_toggleIdo = false
+        // this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.freeHandInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
+        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
+        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
 
         this.$store.state.base.drawType = 'line'
 
@@ -822,10 +862,10 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        this.s_toggleIdo = false
+        // this.s_toggleIdo = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.pointInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
+        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
+        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
         this.$store.state.base.drawType = 'point'
       } else {
         console.log('off')

@@ -428,6 +428,7 @@ polygonInteraction.on('drawend', function (event) {
     const coordAr = feature.getGeometry().getCoordinates()
     const geoType = feature.getGeometry().getType()
     measure (geoType,feature,coordAr)
+
 })
 circleInteraction.on('drawend', function (event) {
     const feature = event.feature;
@@ -607,67 +608,17 @@ export function initMap (vm) {
         })[0];
         pinchRotateInteraction.setActive(false);
 
-
-
         map.addInteraction(undoInteraction)
         map.addInteraction(modifyInteraction)
         map.addInteraction(transformInteraction)
         map.addInteraction(copyInteraction)
 
-
         // if (i==='0') map.addControl(swipeControl)
         // if (i==='1') map.addControl(swipeControl2)
 
         // ------------------------
-        pointInteraction.on('drawend', function (event) {
-            const feature = event.feature
-            store.state.base.editFeature = feature
-            store.state.base.togglePoint0 = false
-            // store.state.base.dialogs.dialogEdit.style.display = 'block'
-            overlay[i].setPosition(undefined)
-            if (store.state.base.editFeatureColor['map01'].rgba) {
-                const c = store.state.base.editFeatureColor['map01'].rgba
-                const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
-                feature.setProperties({_color: rgba})
-            }
-            moveEnd()
-            store.state.base.drawEndFlg = true
-        })
-        lineInteraction.on('drawend', function (event) {
-            const feature = event.feature
-            store.state.base.editFeature = feature
-            // map.removeInteraction(pointInteraction)
-            store.state.base.toggleLine = false
-            // store.state.base.dialogs.dialogEdit.style.display = 'block'
-            overlay[i].setPosition(undefined)
-            if (store.state.base.editFeatureColor['map01'].rgba) {
-                const c = store.state.base.editFeatureColor['map01'].rgba
-                const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
-                feature.setProperties({_color: rgba})
-            }
-            moveEnd()
-            store.state.base.drawEndFlg = true
-        })
-        freeHandInteraction.on('drawend', function (event) {
-            const feature = event.feature
-            store.state.base.editFeature = feature
-            // map.removeInteraction(pointInteraction)
-            store.state.base.toggleFreeHand = false
-            // store.state.base.dialogs.dialogEdit.style.display = 'block'
-            overlay[i].setPosition(undefined)
-            if (store.state.base.editFeatureColor['map01'].rgba) {
-                const c = store.state.base.editFeatureColor['map01'].rgba
-                const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
-                feature.setProperties({_color: rgba})
-            }
-            moveEnd()
-            store.state.base.drawEndFlg = true
-        })
-        polygonInteraction.on('drawend', function (event) {
-            const feature = event.feature
-            store.state.base.editFeature = feature
-            store.state.base.toggleMenseki = false
-            // store.state.base.dialogs.dialogEdit.style.display = 'block'
+        const drawEndFunction =  function (feature) {
+            store.state.base.toggleIdo = true
             overlay[i].setPosition(undefined)
             console.log(store.state.base.editFeatureColor['map01'])
             if (store.state.base.editFeatureColor['map01'].rgba) {
@@ -678,50 +629,50 @@ export function initMap (vm) {
             moveEnd()
             store.state.base.drawEndFlg = true
             console.log(store.state.base.editFeature)
+        }
+
+        pointInteraction.on('drawend', function (event) {
+            const feature = event.feature
+            store.state.base.editFeature = feature
+            store.state.base.togglePoint0 = false
+            drawEndFunction(feature)
+            store.state.base.toggleIdo = false
+        })
+        lineInteraction.on('drawend', function (event) {
+            const feature = event.feature
+            store.state.base.editFeature = feature
+            store.state.base.toggleLine = false
+            drawEndFunction(feature)
+        })
+        freeHandInteraction.on('drawend', function (event) {
+            const feature = event.feature
+            store.state.base.editFeature = feature
+            store.state.base.toggleFreeHand = false
+            drawEndFunction(feature)
+        })
+        polygonInteraction.on('drawend', function (event) {
+            const feature = event.feature
+            store.state.base.editFeature = feature
+            store.state.base.toggleMenseki = false
+            drawEndFunction(feature)
         })
         regularInteraction.on('drawend', function (event) {
             const feature = event.feature
             store.state.base.editFeature = feature
             store.state.base.toggleShikaku = false
-            // store.state.base.dialogs.dialogEdit.style.display = 'block'
-            overlay[i].setPosition(undefined)
-            console.log(store.state.base.editFeatureColor['map01'])
-            if (store.state.base.editFeatureColor['map01'].rgba) {
-                const c = store.state.base.editFeatureColor['map01'].rgba
-                const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
-                feature.setProperties({_fillColor: rgba})
-            }
-            moveEnd()
-            store.state.base.drawEndFlg = true
+            drawEndFunction(feature)
         })
         circleInteraction.on('drawend', function (event) {
             const feature = event.feature
             store.state.base.editFeature = feature
             store.state.base.toggleCircle = false
-            // store.state.base.dialogs.dialogEdit.style.display = 'block'
-            overlay[i].setPosition(undefined)
-            if (store.state.base.editFeatureColor['map01'].rgba) {
-                const c = store.state.base.editFeatureColor['map01'].rgba
-                const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
-                feature.setProperties({_fillColor: rgba})
-            }
-            moveEnd()
-            store.state.base.drawEndFlg = true
+            drawEndFunction(feature)
         })
         daenInteraction.on('drawend', function (event) {
             const feature = event.feature
             store.state.base.editFeature = feature
             store.state.base.toggleDaen = false
-            // store.state.base.dialogs.dialogEdit.style.display = 'block'
-            overlay[i].setPosition(undefined)
-            console.log(store.state.base.editFeatureColor['map01'])
-            if (store.state.base.editFeatureColor['map01'].rgba) {
-                const c = store.state.base.editFeatureColor['map01'].rgba
-                const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
-                feature.setProperties({_fillColor: rgba})
-            }
-            moveEnd()
-            store.state.base.drawEndFlg = true
+            drawEndFunction(feature)
         })
         const olPopup = document.querySelector('#map01' + ' .ol-popup')
         olPopup.addEventListener('click', (e) => {
@@ -1527,6 +1478,7 @@ export function initMap (vm) {
                 function (feature) {
                     return feature
                 })
+            console.log(feature)
             const layerNames = map.forEachFeatureAtPixel(evt.pixel,
                 function (feature,layer) {
                     console.log(layer)
@@ -1538,7 +1490,11 @@ export function initMap (vm) {
                     store.commit('base/incrDialogMaxZindex')
                     store.state.base.dialogs.measureDialog.style["z-index"] = this.s_dialogMaxZindex
                     store.state.base.dialogs.measureDialog.style.display = 'block'
-                    store.state.base.editFeature = feature
+                    if (!store.state.base.toggleIdo) {
+                        store.state.base.editFeature = feature
+                    } else {
+                        store.state.base.editFeature = transformInteraction.getFeatures().array_[0]
+                    }
                     console.log(store.state.base.editFeature)
                     drawLayer.getSource().changed()
                 } else if (layerNames.indexOf('syochiki2020') !== -1) {
