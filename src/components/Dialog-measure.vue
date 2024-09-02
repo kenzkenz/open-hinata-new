@@ -46,12 +46,14 @@
 
       <hr>
       <b-button style="margin-top: 5px;" class='olbtn' :size="btnSize" @click="saveGeojson">geojson保存</b-button>
-      <b-button style="margin-top: 5px;margin-left: 10px;" class='olbtn' :size="btnSize" @click="saveGpx">GPX保存</b-button>
-      <b-button style="margin-top: 5px;margin-left: 10px;" class='olbtn' :size="btnSize" @click="saveKml">kml保存</b-button>
+      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveGpx">GPX保存</b-button>
+      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveKml">kml保存</b-button>
+      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveCsv">csv保存test中</b-button>
 
       <a id="download" download="draw.geojson"></a>
       <a id="download-gpx" download="draw.gpx"></a>
       <a id="download-kml" download="draw.kml"></a>
+      <a id="download-csv" download="draw.csv"></a>
 
     </div>
   </v-dialog>
@@ -494,14 +496,54 @@ export default {
           feature.set('center', center);
         }
       })
-      const drawSourceGeojson = new GeoJSON().writeFeatures(features, {
+      const tGeojson = new GeoJSON().writeFeatures(features, {
         featureProjection: "EPSG:3857"
-      });
-      const geojsonT = JSON.stringify(JSON.parse(drawSourceGeojson),null,1);
-      console.log(geojsonT)
+      })
+      console.log(tGeojson)
       const type = "text/plain";
-      const blob = new Blob([geojsonT], {type: type});
+      const blob = new Blob([tGeojson], {type: type});
       const a = document.getElementById('download');
+      a.href = window.URL.createObjectURL(blob);
+      a.click()
+    },
+    saveCsv () {
+      const features = drawLayer.getSource().getFeatures()
+      features.forEach(function(feature){
+        if (feature.getGeometry().getType() === 'Circle') {
+          const radius = feature.getGeometry().getRadius();
+          const center = feature.getGeometry().getCenter();
+          feature.set('radius', radius);
+          feature.set('center', center);
+        }
+      })
+      const tGeojson = new GeoJSON().writeFeatures(features, {
+        featureProjection: "EPSG:3857"
+      })
+      console.log(tGeojson)
+      const pGeojson = JSON.parse(tGeojson)
+      console.log(pGeojson.features)
+      let data = ''
+      pGeojson.features.forEach((feature) => {
+        console.log(feature)
+        console.log(feature.geometry.coordinates[0])
+        data += feature.geometry.coordinates[0] + ","
+        data += feature.geometry.coordinates[1] + ","
+        const prop = feature.properties
+        Object.keys(prop).forEach(function(key) {
+          console.log(key)
+          console.log(prop[key])
+          data += prop[key] + ","
+        })
+        data = data.slice(0, -1)
+        console.log(data)
+        // データ末尾に改行コードを追記
+        data += "\r\n";
+      })
+
+
+      const type = "text/plain";
+      const blob = new Blob([data], {type: type});
+      const a = document.getElementById('download-csv');
       a.href = window.URL.createObjectURL(blob);
       a.click()
     },

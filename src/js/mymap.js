@@ -1508,6 +1508,9 @@ export function initMap (vm) {
             addEventListener('keydown', function (event) {
                 console.log(event.key)
                 if (event.key === 'Backspace' || event.key === 'Delete') {
+                    if (document.querySelector('#dialog-edit').style.display === 'block') {
+                        return
+                    }
                     drawLayer.getSource().removeFeature(store.state.base.editFeature)
                     const tFeatures = transformInteraction.getFeatures().array_
                     tFeatures.forEach((feature) => {
