@@ -324,7 +324,6 @@ export default {
       measure (geoType,newFeature,coordAr)
     },
     drawPolygonSmooth () {
-      // this.s_toggleIdo = false
       const targetFeature = this.$store.state.base.editFeature
       if (!targetFeature) {
         alert('選択されていません。')
@@ -335,17 +334,13 @@ export default {
         return
       }
       const fiatureGeojson = new GeoJSON().writeFeatures([targetFeature], {
-        featureProjection: "EPSG:3857"
+        featureProjection: "EPSG:4326"
       })
       const features = JSON.parse(fiatureGeojson).features
       const smoothFeature = turf.polygonSmooth(features[0], { iterations: 3 })
-      let polygonCoordinates = []
-      let newFeature
-      smoothFeature.features[0].geometry.coordinates[0].forEach((coord) => {
-        polygonCoordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
-      })
+      const polygonCoordinates = smoothFeature.features[0].geometry.coordinates[0]
       const polygon = new Polygon([polygonCoordinates])
-      newFeature = new Feature(polygon)
+      const newFeature = new Feature(polygon)
 
       if (targetFeature.values_) {
         Object.keys(targetFeature.values_).forEach(function (key) {
@@ -366,7 +361,6 @@ export default {
 
     },
     drawBezier () {
-      // this.s_toggleIdo = false
       const targetFeature = this.$store.state.base.editFeature
       if (!targetFeature) {
         alert('選択されていません。')
@@ -377,19 +371,13 @@ export default {
         return
       }
       const fiatureGeojson = new GeoJSON().writeFeatures([targetFeature], {
-        featureProjection: "EPSG:3857"
+        featureProjection: "EPSG:4326"
       })
       const features = JSON.parse(fiatureGeojson).features
       const bezierSpline = turf.bezierSpline(features[0])
-
-      let coordinates = []
-      let newFeature
-
-      bezierSpline.geometry.coordinates.forEach((coord) => {
-        coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
-      })
+      const coordinates = bezierSpline.geometry.coordinates
       const lineString = new LineString(coordinates)
-      newFeature = new Feature(lineString)
+      const newFeature = new Feature(lineString)
 
       if (targetFeature.values_) {
         Object.keys(targetFeature.values_).forEach(function (key) {
@@ -409,7 +397,7 @@ export default {
       this.$store.state.base.editFeature = newFeature
     },
     drawSinple () {
-      this.s_toggleIdo = false
+      // this.s_toggleIdo = false
       const targetFeature = this.$store.state.base.editFeature
       if (!targetFeature) {
         alert('選択されていません。')
