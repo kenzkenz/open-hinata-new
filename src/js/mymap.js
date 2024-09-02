@@ -43,6 +43,7 @@ import CopyPaste from 'ol-ext/interaction/CopyPaste'
 import Swipe from 'ol-ext/control/Swipe'
 import RegularShape from 'ol/style/RegularShape'
 import Collection from 'ol/Collection'
+import Tooltip from 'ol-ext/overlay/Tooltip'
 
 
 // ドロー関係-------------------------------------------------------------------------------
@@ -238,7 +239,6 @@ export const pointInteraction = new Draw({
 export const lineInteraction = new Draw({
     source: drawSource,
     type: 'LineString',
-    // freehand: true
 })
 export const freeHandInteraction = new Draw({
     source: drawSource,
@@ -666,6 +666,27 @@ export function initMap (vm) {
 
             modifyInteraction.setActive(false)
             transformInteraction.setActive(false)
+
+
+            // Add a tooltip
+            var tooltip = new Tooltip();
+            map.addOverlay(tooltip);
+
+            // Set feature on drawstart
+            lineInteraction.on('drawstart', tooltip.setFeature.bind(tooltip));
+
+
+
+
+            // Remove feature on finish
+            // lineInteraction.on(['change:active','drawend'], tooltip.removeFeature.bind(tooltip));
+
+            // Set feature on drawstart
+            // drawPoly.on('drawstart', tooltip.setFeature.bind(tooltip));
+            // // Remove feature on finish
+            // drawPoly.on(['change:active','drawend'], tooltip.removeFeature.bind(tooltip));
+
+
         }
 
         // ------------------------

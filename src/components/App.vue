@@ -2121,6 +2121,9 @@
       user-select: text!important;
 
     }
+    .tooltips {
+      position: relative;
+    }
     #map01-popup-content, #map02-popup-content {
       max-height: 600px;
       overflow: auto;
