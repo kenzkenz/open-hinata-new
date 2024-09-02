@@ -567,7 +567,6 @@ export function initMap (vm) {
             },
         })
         closer.onclick = () => {
-            console.log(i)
             overlay[i].setPosition(undefined);
             closer.blur();
             document.querySelector('.center-target').style.zIndex = 1
@@ -608,10 +607,10 @@ export function initMap (vm) {
         })[0];
         pinchRotateInteraction.setActive(false);
 
-        map.addInteraction(undoInteraction)
-        map.addInteraction(modifyInteraction)
-        map.addInteraction(transformInteraction)
-        map.addInteraction(copyInteraction)
+        if (i==='0') map.addInteraction(undoInteraction)
+        if (i==='0') map.addInteraction(modifyInteraction)
+        if (i==='0') map.addInteraction(transformInteraction)
+        if (i==='0') map.addInteraction(copyInteraction)
 
         // if (i==='0') map.addControl(swipeControl)
         // if (i==='1') map.addControl(swipeControl2)
@@ -620,7 +619,6 @@ export function initMap (vm) {
         const drawEndFunction =  function (feature) {
             store.state.base.toggleIdo = true
             overlay[i].setPosition(undefined)
-            console.log(store.state.base.editFeatureColor['map01'])
             if (store.state.base.editFeatureColor['map01'].rgba) {
                 const c = store.state.base.editFeatureColor['map01'].rgba
                 const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
@@ -628,7 +626,6 @@ export function initMap (vm) {
             }
             moveEnd()
             store.state.base.drawEndFlg = true
-            console.log(store.state.base.editFeature)
         }
 
         pointInteraction.on('drawend', function (event) {
@@ -682,7 +679,6 @@ export function initMap (vm) {
                 const rect = document.querySelector('#map01-popup').getBoundingClientRect()
                 const left = rect.x + 'px'
                 const top = (rect.top + rect.height + 50) + 'px'
-                console.log(top,left)
                 store.state.base.dialogs.dialogEdit.style.top = top
                 store.state.base.dialogs.dialogEdit.style.left = left
 
