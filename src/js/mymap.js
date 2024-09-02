@@ -42,6 +42,8 @@ import {syochiiki2020MvtObj} from "@/js/layers-mvt"
 import CopyPaste from 'ol-ext/interaction/CopyPaste'
 import Swipe from 'ol-ext/control/Swipe'
 import RegularShape from 'ol/style/RegularShape'
+import Collection from 'ol/Collection'
+
 
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
@@ -506,11 +508,13 @@ undoInteraction.define(
         drawLayer.getSource().changed()
     }
 )
-
+export const myCollection = new Collection()
 
 export const copyInteraction = new CopyPaste({
     destination: drawLayer.getSource(),
-    features: transformInteraction.getFeatures()
+    // features: transformInteraction.getFeatures()
+    features: myCollection
+
 });
 
 copyInteraction.on('cut', function(e) {

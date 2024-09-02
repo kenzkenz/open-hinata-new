@@ -70,10 +70,10 @@ import * as turf from '@turf/turf';
 import {transform} from "ol/proj";
 import {LineString,Polygon} from "ol/geom";
 import Feature from "ol/Feature";
-import {measure} from "../js/mymap";
+import {measure, transformInteraction} from "../js/mymap";
 import * as d3 from "d3";
 import {Fill, Stroke, Style, Text, Circle as Circle0 } from "ol/style"
-
+import Collection from 'ol/Collection'
 
 export default {
   name: "dialog-measure",
@@ -282,9 +282,7 @@ export default {
           console.log(turf.truncate(turf.point(pointOnPolygon.geometry.coordinates)).geometry.coordinates)
           console.log(turf.truncate(turf.point(tFeature.geometry.coordinates)).geometry.coordinates)
           if (JSON.stringify(turf.truncate(turf.point(pointOnPolygon.geometry.coordinates)).geometry.coordinates) === JSON.stringify(turf.truncate(turf.point(tFeature.geometry.coordinates)).geometry.coordinates)){
-            // alert()
             countArr.push(count)
-            // MyMap.drawLayer.getSource().removeFeature(feature)
           }
         }
         count++
@@ -449,16 +447,11 @@ export default {
 
     },
     drawCopy () {
-      if (!this.s_toggleIdo) {
-        alert('「変形＆移動」モードにして線、ポリゴン等を選択後にコピーしてください。')
-        return
-      }
-      // transformInteraction.select(this.$store.state.base.editFeature, true)
-      MyMap.copyInteraction.copy({ silent: false })
-      this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
-      this.$store.state.base.maps['map01'].addInteraction(MyMap.transformInteraction)
-      MyMap.copyInteraction.paste({ silent: false })
+      MyMap.myCollection.array_ = []
+      MyMap.myCollection.array_.push(this.$store.state.base.editFeature)
 
+      MyMap.copyInteraction.copy({ silent: false })
+      MyMap.copyInteraction.paste({ silent: false })
     },
     drawRedo () {
       MyMap.undoInteraction.redo()
