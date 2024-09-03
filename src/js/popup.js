@@ -111,9 +111,6 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
       let edit = ''
       console.log(features0.length)
 
-
-
-
       // if (features0.length === 1) {
       //   if (layers[i].get('name') === 'drawLayer') {
       if (drawLayer) {

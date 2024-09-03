@@ -48,7 +48,7 @@
       <b-button style="margin-top: 5px;" class='olbtn' :size="btnSize" @click="saveGeojson">geojson保存</b-button>
       <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveGpx">GPX保存</b-button>
       <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveKml">kml保存</b-button>
-      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveCsv">csv保存test中</b-button>
+      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveCsv">csv保存</b-button>
 
       <a id="download" download="draw.geojson"></a>
       <a id="download-gpx" download="draw.gpx"></a>
@@ -685,6 +685,8 @@ export default {
         MyMap.transformInteraction.setActive(false)
 
         dragHandle.innerHTML = ''
+
+        this.$store.state.base.drawEndFlg = false
 
       }
     })

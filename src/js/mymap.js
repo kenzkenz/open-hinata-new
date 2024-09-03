@@ -46,7 +46,6 @@ import Collection from 'ol/Collection'
 import Tooltip from 'ol-ext/overlay/Tooltip'
 import {parse} from 'csv-parse/lib/sync'
 
-
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
     let zoom = 0;
@@ -668,14 +667,15 @@ export function initMap (vm) {
             modifyInteraction.setActive(false)
             transformInteraction.setActive(false)
 
-            const tooltipOverlay = new Tooltip();
-            map.addOverlay(tooltipOverlay);
+            const tooltipOverlay = new Tooltip()
+            map.addOverlay(tooltipOverlay)
             // Set feature on drawstart
-            lineInteraction.on('drawstart', tooltipOverlay.setFeature.bind(tooltipOverlay));
-            lineInteraction.on(['change:active','drawend'], tooltipOverlay.removeFeature.bind(tooltipOverlay));
-            polygonInteraction.on('drawstart', tooltipOverlay.setFeature.bind(tooltipOverlay));
-            polygonInteraction.on(['change:active','drawend'], tooltipOverlay.removeFeature.bind(tooltipOverlay));
-
+            lineInteraction.on('drawstart', tooltipOverlay.setFeature.bind(tooltipOverlay))
+            lineInteraction.on(['change:active','drawend'], tooltipOverlay.removeFeature.bind(tooltipOverlay))
+            polygonInteraction.on('drawstart', tooltipOverlay.setFeature.bind(tooltipOverlay))
+            polygonInteraction.on(['change:active','drawend'], tooltipOverlay.removeFeature.bind(tooltipOverlay))
+            freeHandInteraction.on('drawstart', tooltipOverlay.setFeature.bind(tooltipOverlay))
+            freeHandInteraction.on(['change:active','drawend'], tooltipOverlay.removeFeature.bind(tooltipOverlay))
         }
 
         // ------------------------
