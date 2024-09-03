@@ -29,7 +29,7 @@ import {Fill, Stroke, Style, Text, Circle as Circle0 } from "ol/style"
 import * as turf from '@turf/turf';
 import Select from 'ol/interaction/Select.js'
 // import {click, pointerMove, altKeyOnly} from 'ol/events/condition.js';
-import {Circle, LineString, Point} from "ol/geom"
+import {Circle, LineString, Point, Polygon} from "ol/geom"
 import Feature from 'ol/Feature'
 import {moveEnd} from "./permalink"
 import Dialog from 'ol-ext/control/Dialog'
@@ -841,20 +841,34 @@ export function initMap (vm) {
                 let newFeature
                 records.forEach((row) => {
                     console.log(row)
-                    if (row.geoType === 'Point'){
-                        const coordinates = transform([row.経度,row.緯度], "EPSG:4326", "EPSG:3857")
+                    if (row.geoType === 'Point') {
+                        const coordinates = transform([row.経度, row.緯度], "EPSG:4326", "EPSG:3857")
                         const point = new Point(coordinates)
                         newFeature = new Feature(point)
-                        newFeature.setProperties({
-                                'name':row.名称,
-                                'description':row.説明,
-                                '_color':row.色,
-                                '_fillColor':row.塗りつぶし色,
-                                '_distance':row.距離,
-                        }
-                        )
-                        drawLayer.getSource().addFeature(newFeature)
+                    } else if (row.geoType === 'LineString') {
+                        let coordinates = []
+                        JSON.parse(row.coords).forEach((coord) => {
+                            coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
+                        })
+                        const lineString = new LineString(coordinates)
+                        newFeature = new Feature(lineString)
+                    } else if (row.geoType === 'Polygon') {
+                        let coordinates = []
+                        JSON.parse(row.coords).forEach((coord) => {
+                            coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
+                        })
+                        const polygon = new Polygon([coordinates])
+                        newFeature = new Feature(polygon)
                     }
+                    newFeature.setProperties({
+                            'name': row.名称,
+                            'description': row.説明,
+                            '_color': row.色,
+                            '_fillColor': row.塗りつぶし色,
+                            'distance': row.距離,
+                        }
+                    )
+                    drawLayer.getSource().addFeature(newFeature)
                 })
 
             };

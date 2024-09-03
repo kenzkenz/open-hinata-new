@@ -533,20 +533,36 @@ export default {
       const pGeojson = JSON.parse(tGeojson)
       console.log(pGeojson.features)
       const bom = new Uint8Array([0xef, 0xbb, 0xbf]);
-      const header = "geoType,経度,緯度,名称,説明,色,塗りつぶし色,距離\r\n";
+      const header = "geoType,経度,緯度,coords,名称,説明,色,塗りつぶし色,距離\r\n";
       let data = header
       pGeojson.features.forEach((feature) => {
         console.log(feature)
         console.log(feature.geometry.coordinates[0])
         data += feature.geometry.type + ","
-        data += feature.geometry.coordinates[0] + ","
-        data += feature.geometry.coordinates[1] + ","
+        if (feature.geometry.type === 'Point') {
+          data += feature.geometry.coordinates[0] + ","
+          data += feature.geometry.coordinates[1] + ","
+          data += ','
+        } else if (feature.geometry.type === 'LineString') {
+          data += ','
+          data += ','
+          data += ud(JSON.stringify(feature.geometry.coordinates)) + ','
+        } else if (feature.geometry.type === 'Polygon') {
+          data += ','
+          data += ','
+          data += ud(JSON.stringify(feature.geometry.coordinates[0])) + ','
+        }
         const prop = feature.properties
         data += ud(prop.name) + ","
         data += ud(prop.description) + ","
-        data += ud(prop._color) + ","
-        data += ud(prop._fillColor) + ","
-        data += ud(prop._distance) + ","
+        if (feature.geometry.type === 'Point' || feature.geometry.type === 'LineString') {
+          data += ud(prop._color) + ","
+          data += ","
+        } else {
+          data += ","
+          data += ud(prop._fillColor) + ","
+        }
+        data += ud(prop.distance) + ","
         // Object.keys(prop).forEach(function(key) {
         //   console.log(key)
         //   console.log(prop[key])
