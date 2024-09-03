@@ -733,7 +733,7 @@ export function initMap (vm) {
             store.state.base.toggleDaen = false
             drawEndFunction(feature)
         })
-        const olPopup = document.querySelector('#map01' + ' .ol-popup')
+        const olPopup = document.querySelector('#map01' + ' .ol-popup0')
         olPopup.addEventListener('click', (e) => {
             if (e.target && e.target.classList.contains("edit-button")) {
 

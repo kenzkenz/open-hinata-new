@@ -522,6 +522,7 @@ export default {
       console.log(tGeojson)
       const pGeojson = JSON.parse(tGeojson)
       console.log(pGeojson.features)
+      const bom = new Uint8Array([0xef, 0xbb, 0xbf]);
       let data = ''
       pGeojson.features.forEach((feature) => {
         console.log(feature)
@@ -532,7 +533,12 @@ export default {
         Object.keys(prop).forEach(function(key) {
           console.log(key)
           console.log(prop[key])
-          data += prop[key] + ","
+          if (prop[key].indexOf(',') === -1) {
+            data += prop[key] + ","
+          } else {
+            console.log(9999999999999,'"' + prop[key] + '"')
+            data += '"' + prop[key] + '"' + ','
+          }
         })
         data = data.slice(0, -1)
         console.log(data)
@@ -542,7 +548,7 @@ export default {
 
 
       const type = "text/plain";
-      const blob = new Blob([data], {type: type});
+      const blob = new Blob([bom,data], {type: type});
       const a = document.getElementById('download-csv');
       a.href = window.URL.createObjectURL(blob);
       a.click()
