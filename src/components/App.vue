@@ -44,7 +44,7 @@
                   </div>
                 </modal>
               </div>
-              <div :id="popup[mapName]" class="ol-popup">
+              <div :id="popup[mapName]" class="ol-popup0">
                 <a href="#" :id="popupCloser[mapName]" class="ol-popup-closer"></a>
                 <div :id="popupContent[mapName]"></div>
               </div>
@@ -424,7 +424,7 @@
       // const maps = ['map01','map02','map03','map04']
       const maps = ['map01','map02']
       maps.forEach((mapName) => {
-        const olPopup = document.querySelector('#' + mapName + ' .ol-popup')
+        const olPopup = document.querySelector('#' + mapName + ' .ol-popup0')
         olPopup.addEventListener('click', (e) => {
           if (e.target && e.target.classList.contains("pyramid") ) {
             //----------------------------------------------------------------
@@ -504,7 +504,7 @@
       // 都道府県人口ピラミッド----------------------------------------------------------------
       // const maps = ['map01','map02','map03','map04']
       maps.forEach((mapName) => {
-        const olPopup = document.querySelector('#' + mapName + ' .ol-popup')
+        const olPopup = document.querySelector('#' + mapName + ' .ol-popup0')
         olPopup.addEventListener('click', (e) => {
           if (e.target && e.target.classList.contains("pyramid-kencho") ) {
 
@@ -584,7 +584,7 @@
       // R02小地域人口ピラミッド----------------------------------------------------------------
       // const maps = ['map01','map02','map03','map04']
       maps.forEach((mapName) => {
-        const olPopup = document.querySelector('#' + mapName + ' .ol-popup')
+        const olPopup = document.querySelector('#' + mapName + ' .ol-popup0')
         olPopup.addEventListener('click', (e) => {
           if (e.target && e.target.classList.contains("pyramid-syochiiki-r02") ) {
             d3.select('#' + mapName + ' .loadingImg').style("display","block")
@@ -1020,7 +1020,7 @@
       }
       // H27小地域人口ピラミッド----------------------------------------------------------------
       maps.forEach((mapName) => {
-        const olPopup = document.querySelector('#' + mapName + ' .ol-popup')
+        const olPopup = document.querySelector('#' + mapName + ' .ol-popup0')
         olPopup.addEventListener('click', (e) => {
           if (e.target && e.target.classList.contains("pyramid-syochiiki-h27") ) {
             h27syoshiiki(e,mapName,2015)
@@ -1029,7 +1029,7 @@
       })
       // H22小地域人口ピラミッド----------------------------------------------------------------
       maps.forEach((mapName) => {
-        const olPopup = document.querySelector('#' + mapName + ' .ol-popup')
+        const olPopup = document.querySelector('#' + mapName + ' .ol-popup0')
         olPopup.addEventListener('click', (e) => {
           if (e.target && e.target.classList.contains("pyramid-syochiiki-h22") ) {
             h27syoshiiki(e,mapName,2010)
@@ -1038,7 +1038,7 @@
       })
       // H17小地域人口ピラミッド----------------------------------------------------------------
       maps.forEach((mapName) => {
-        const olPopup = document.querySelector('#' + mapName + ' .ol-popup')
+        const olPopup = document.querySelector('#' + mapName + ' .ol-popup0')
         olPopup.addEventListener('click', (e) => {
           if (e.target && e.target.classList.contains("pyramid-syochiiki-h17") ) {
             h27syoshiiki(e,mapName,2005)
@@ -1206,7 +1206,7 @@
       }
       // 小地域人口推移------------------------------------------------------
       maps.forEach((mapName) => {
-        const olPopup = document.querySelector('#' + mapName + ' .ol-popup')
+        const olPopup = document.querySelector('#' + mapName + ' .ol-popup0')
         olPopup.addEventListener('click', (e) => {
           if (e.target && e.target.classList.contains("jinkosuii3") ) {
             async function sample() {
@@ -1269,7 +1269,7 @@
       })
       // resae人口推移----------------------------------------------------------------
       maps.forEach((mapName) => {
-        const olPopup = document.querySelector('#' + mapName + ' .ol-popup')
+        const olPopup = document.querySelector('#' + mapName + ' .ol-popup0')
         olPopup.addEventListener('click', (e) => {
           if ((e.target && e.target.classList.contains("jinkosuii1")) ||
               (e.target && e.target.classList.contains("jinkosuii2"))) {
@@ -1352,7 +1352,7 @@
       })
       // 1kmメッシュ円グラフ------------------------------------------------------
       maps.forEach((mapName) => {
-        const olPopup = document.querySelector('#' + mapName + ' .ol-popup')
+        const olPopup = document.querySelector('#' + mapName + ' .ol-popup0')
         olPopup.addEventListener('click', (e) => {
           if (e.target && e.target.classList.contains("jinkopie1km") ) {
             vm.$store.commit('base/incrDialog2Id');
@@ -1392,7 +1392,7 @@
       })
       // 100mメッシュ円グラフ------------------------------------------------------
       maps.forEach((mapName) => {
-        const olPopup = document.querySelector('#' + mapName + ' .ol-popup')
+        const olPopup = document.querySelector('#' + mapName + ' .ol-popup0')
         olPopup.addEventListener('click', (e) => {
           if (e.target && e.target.classList.contains("jinkopie100m") ) {
             vm.$store.commit('base/incrDialog2Id');
@@ -1432,7 +1432,7 @@
       })
       // ssds棒グラフ------------------------------------------------------
       maps.forEach((mapName) => {
-        const olPopup = document.querySelector('#' + mapName + ' .ol-popup')
+        const olPopup = document.querySelector('#' + mapName + ' .ol-popup0')
         olPopup.addEventListener('click', (e) => {
           if (e.target && e.target.classList.contains("ssdspref") ) {
             const data00 = vm.$store.state.info.ssdsData00[mapName]
@@ -2109,7 +2109,7 @@
     .ol-title .ol-closebox {
       font-size: x-large;
     }
-    .ol-popup {
+    .ol-popup0 {
       position: absolute;
       background-color: white;
       box-shadow: 0 1px 4px rgba(0,0,0,0.2);
@@ -2129,7 +2129,7 @@
       overflow: auto;
       -webkit-overflow-scrolling: touch;
     }
-    .ol-popup:after, .ol-popup:before {
+    .ol-popup0:after, .ol-popup0:before {
       top: 100%;
       border: solid transparent;
       content: " ";
@@ -2138,18 +2138,21 @@
       position: absolute;
       pointer-events: none;
     }
-    .ol-popup:after {
+    .ol-popup0:after {
       border-top-color: white;
       border-width: 10px;
       left: 48px;
       margin-left: -10px;
     }
-    .ol-popup:before {
+    .ol-popup0:before {
       border-top-color: #cccccc;
       border-width: 11px;
       left: 48px;
       margin-left: -11px;
     }
+
+
+
     .ol-popup-closer {
       text-decoration: none;
       position: absolute;

@@ -667,25 +667,13 @@ export function initMap (vm) {
             modifyInteraction.setActive(false)
             transformInteraction.setActive(false)
 
-
-            // Add a tooltip
-            var tooltip = new Tooltip();
-            map.addOverlay(tooltip);
-
+            const tooltipOverlay = new Tooltip();
+            map.addOverlay(tooltipOverlay);
             // Set feature on drawstart
-            lineInteraction.on('drawstart', tooltip.setFeature.bind(tooltip));
-
-
-
-
-            // Remove feature on finish
-            // lineInteraction.on(['change:active','drawend'], tooltip.removeFeature.bind(tooltip));
-
-            // Set feature on drawstart
-            // drawPoly.on('drawstart', tooltip.setFeature.bind(tooltip));
-            // // Remove feature on finish
-            // drawPoly.on(['change:active','drawend'], tooltip.removeFeature.bind(tooltip));
-
+            lineInteraction.on('drawstart', tooltipOverlay.setFeature.bind(tooltipOverlay));
+            lineInteraction.on(['change:active','drawend'], tooltipOverlay.removeFeature.bind(tooltipOverlay));
+            polygonInteraction.on('drawstart', tooltipOverlay.setFeature.bind(tooltipOverlay));
+            polygonInteraction.on(['change:active','drawend'], tooltipOverlay.removeFeature.bind(tooltipOverlay));
 
         }
 

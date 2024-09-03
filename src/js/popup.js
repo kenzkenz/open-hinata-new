@@ -1114,7 +1114,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           break
         case 'syochiki2020':
           if (cont.indexOf('pyramid-syochiiki-r02') === -1) {
-            cont += '<div style=width:220px;>' +
+            cont += '<div style=width:250px;>' +
                 '<div style="text-align: center;">' +
                 '<h4>' + prop.S_NAME + '</h4>' +
                 '<h5>人口=' + ru2(prop.JINKO) + '人</h5>' +
@@ -2035,19 +2035,19 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
     cont = cont.replace(/width:(.*?)px/gi,'width:' + maxWidth + 'px')
     // console.log(cont)
     if (maxWidth) {
-      document.querySelector('#' + map.values_.target + ' .ol-popup').style.left = -(maxWidth / 2) - 16 + 'px'
+      document.querySelector('#' + map.values_.target + ' .ol-popup0').style.left = -(maxWidth / 2) - 16 + 'px'
       const style1 = document.createElement('style')
       const style2 = document.createElement('style')
-      style1.textContent = ".ol-popup:after{ left:" + ((maxWidth / 2) + 15) + "px;}"
-      style2.textContent = ".ol-popup:before{ left:" + ((maxWidth / 2) + 15) + "px;}"
+      style1.textContent = ".ol-popup0:after{ left:" + ((maxWidth / 2) + 15) + "px;}"
+      style2.textContent = ".ol-popup0:before{ left:" + ((maxWidth / 2) + 15) + "px;}"
       document.head.appendChild(style1)
       document.head.appendChild(style2)
     } else {
-      document.querySelector('.ol-popup').style.left = '-50px'
+      document.querySelector('.ol-popup0').style.left = '-50px'
       const style1 = document.createElement('style')
       const style2 = document.createElement('style')
-      style1.textContent = ".ol-popup:after{ left:" + 48 + "px;}"
-      style2.textContent = ".ol-popup:before{ left:" + 48 + "px;}"
+      style1.textContent = ".ol-popup0:after{ left:" + 48 + "px;}"
+      style2.textContent = ".ol-popup0:before{ left:" + 48 + "px;}"
       document.head.appendChild(style1)
       document.head.appendChild(style2)
     }
