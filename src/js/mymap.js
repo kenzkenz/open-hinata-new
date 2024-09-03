@@ -817,6 +817,34 @@ export function initMap (vm) {
             const notification = new Notification();
         map.addControl(notification);
         store.commit('base/setNotifications',{mapName:mapName, control: notification});
+
+
+
+        map.getViewport().addEventListener('drop', function(event) {
+            console.log(event.dataTransfer.files)
+
+            //既定の動作を行わない。
+            event.preventDefault();
+            //ドロップされたファイル
+            const [file] = event.dataTransfer.files
+            //FileReaderでテキスト読み込み。
+            const reader = new FileReader();
+            reader.onload = () => {
+                //読み込み完了でファイル名と中身を表示。
+                if (file.name.slice(-3) !== 'csv') return
+
+                console.log( reader.result.split('\r\n'))
+
+                // console.log(file.name + "\n" + reader.result)
+                // console.log(file.name.slice(-3))
+
+            };
+            reader.readAsText(file);
+
+
+        })
+
+
         if (i==1) {
             store.state.base.maps.map01.addInteraction(new Synchronize({ maps: [store.state.base.maps.map02]}));
             store.state.base.maps.map02.addInteraction(new Synchronize({ maps: [store.state.base.maps.map01]}));
@@ -842,7 +870,6 @@ export function initMap (vm) {
                 ],
             })
             dragAndDropInteraction.on('addfeatures', function (event) {
-                // map.addInteraction(modifyInteraction)
                 event.features.forEach((feature) => {
                     drawLayer.getSource().addFeature(feature)
                 })
@@ -866,6 +893,7 @@ export function initMap (vm) {
             map.addInteraction(dragAndDropInteraction)
         }
         setInteraction()
+
         //現在地取得
         // const success = (pos) =>{
         //     const lon = pos.coords.longitude;

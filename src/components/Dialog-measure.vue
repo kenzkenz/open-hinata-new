@@ -509,7 +509,11 @@ export default {
         if (text === undefined) {
           return ''
         } else {
-          return text
+          if (text.indexOf(',') === -1) {
+            return text
+          } else {
+            return "'" + text + "'"
+          }
         }
       }
       const features = drawLayer.getSource().getFeatures()
@@ -528,7 +532,7 @@ export default {
       const pGeojson = JSON.parse(tGeojson)
       console.log(pGeojson.features)
       const bom = new Uint8Array([0xef, 0xbb, 0xbf]);
-      const header = "geoType,軽度,緯度,名称,説明,色,塗りつぶし色,距離\r\n";
+      const header = "geoType,経度,緯度,名称,説明,色,塗りつぶし色,距離\r\n";
       let data = header
       pGeojson.features.forEach((feature) => {
         console.log(feature)
