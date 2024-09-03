@@ -60,8 +60,14 @@ String.prototype.trunc =
     function (n) {
       return this.length > n ? this.substr(0, n - 1) + '...' : this.substr(0);
     }
+String.prototype.ud =
+    String.prototype.ud ||
+    function (n) {
+      return this === undefined ? '' : this
+    }
 // const mapsStr = ['map01','map02','map03','map04'];
 const mapsStr = ['map01','map02']
+
 
 // 最適化ベクトルタイル-----------------------------------------------------------------------------
 

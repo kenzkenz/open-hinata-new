@@ -72,10 +72,8 @@ import * as turf from '@turf/turf';
 import {transform} from "ol/proj";
 import {LineString,Polygon} from "ol/geom";
 import Feature from "ol/Feature";
-import {measure, transformInteraction} from "../js/mymap";
+import {measure} from "../js/mymap";
 import * as d3 from "d3";
-import {Fill, Stroke, Style, Text, Circle as Circle0 } from "ol/style"
-import Collection from 'ol/Collection'
 
 export default {
   name: "dialog-measure",
@@ -507,6 +505,13 @@ export default {
       a.click()
     },
     saveCsv () {
+      function ud(text) {
+        if (text === undefined) {
+          return ''
+        } else {
+          return text
+        }
+      }
       const features = drawLayer.getSource().getFeatures()
       features.forEach(function(feature){
         if (feature.getGeometry().getType() === 'Circle') {
@@ -523,23 +528,30 @@ export default {
       const pGeojson = JSON.parse(tGeojson)
       console.log(pGeojson.features)
       const bom = new Uint8Array([0xef, 0xbb, 0xbf]);
-      let data = ''
+      const header = "geoType,軽度,緯度,名称,説明,色,塗りつぶし色,距離\r\n";
+      let data = header
       pGeojson.features.forEach((feature) => {
         console.log(feature)
         console.log(feature.geometry.coordinates[0])
+        data += feature.geometry.type + ","
         data += feature.geometry.coordinates[0] + ","
         data += feature.geometry.coordinates[1] + ","
         const prop = feature.properties
-        Object.keys(prop).forEach(function(key) {
-          console.log(key)
-          console.log(prop[key])
-          if (prop[key].indexOf(',') === -1) {
-            data += prop[key] + ","
-          } else {
-            console.log(9999999999999,'"' + prop[key] + '"')
-            data += '"' + prop[key] + '"' + ','
-          }
-        })
+        data += ud(prop.name) + ","
+        data += ud(prop.description) + ","
+        data += ud(prop._color) + ","
+        data += ud(prop._fillColor) + ","
+        data += ud(prop._distance) + ","
+        // Object.keys(prop).forEach(function(key) {
+        //   console.log(key)
+        //   console.log(prop[key])
+        //   if (prop[key].indexOf(',') === -1) {
+        //     data += prop[key] + ","
+        //   } else {
+        //     console.log(9999999999999,'"' + prop[key] + '"')
+        //     data += '"' + prop[key] + '"' + ','
+        //   }
+        // })
         data = data.slice(0, -1)
         console.log(data)
         // データ末尾に改行コードを追記
