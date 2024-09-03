@@ -29,7 +29,7 @@ import {Fill, Stroke, Style, Text, Circle as Circle0 } from "ol/style"
 import * as turf from '@turf/turf';
 import Select from 'ol/interaction/Select.js'
 // import {click, pointerMove, altKeyOnly} from 'ol/events/condition.js';
-import {Circle, LineString} from "ol/geom"
+import {Circle, LineString, Point} from "ol/geom"
 import Feature from 'ol/Feature'
 import {moveEnd} from "./permalink"
 import Dialog from 'ol-ext/control/Dialog'
@@ -44,6 +44,7 @@ import Swipe from 'ol-ext/control/Swipe'
 import RegularShape from 'ol/style/RegularShape'
 import Collection from 'ol/Collection'
 import Tooltip from 'ol-ext/overlay/Tooltip'
+import {parse} from 'csv-parse/lib/sync'
 
 
 // ドロー関係-------------------------------------------------------------------------------
@@ -833,10 +834,28 @@ export function initMap (vm) {
                 //読み込み完了でファイル名と中身を表示。
                 if (file.name.slice(-3) !== 'csv') return
 
-                console.log( reader.result.split('\r\n'))
+                console.log( reader.result)
 
-                // console.log(file.name + "\n" + reader.result)
-                // console.log(file.name.slice(-3))
+                const records = parse(reader.result, { columns: true})
+                console.log(records)
+                let newFeature
+                records.forEach((row) => {
+                    console.log(row)
+                    if (row.geoType === 'Point'){
+                        const coordinates = transform([row.経度,row.緯度], "EPSG:4326", "EPSG:3857")
+                        const point = new Point(coordinates)
+                        newFeature = new Feature(point)
+                        newFeature.setProperties({
+                                'name':row.名称,
+                                'description':row.説明,
+                                '_color':row.色,
+                                '_fillColor':row.塗りつぶし色,
+                                '_distance':row.距離,
+                        }
+                        )
+                        drawLayer.getSource().addFeature(newFeature)
+                    }
+                })
 
             };
             reader.readAsText(file);

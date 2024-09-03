@@ -17,6 +17,7 @@
     "bootstrap-vue": "^2.0.0-rc.11",
     "color-classifier": "^0.0.1",
     "core-js": "^3.8.3",
+    "csv-parse": "^5.5.6",
     "d3": "^7.6.1",
     "liquor-tree": "^0.2.47",
     "ol": "^10.1.0",

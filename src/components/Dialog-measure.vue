@@ -512,7 +512,8 @@ export default {
           if (text.indexOf(',') === -1) {
             return text
           } else {
-            return "'" + text + "'"
+            return '"' + text + '"'
+            // return ''
           }
         }
       }
