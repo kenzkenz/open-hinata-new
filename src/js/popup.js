@@ -1127,6 +1127,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           }
           break
         case 'drawLayer':
+          console.log(store.state.base.drawEndFlg)
           if (store.state.base.drawEndFlg === true) {
             store.state.base.drawEndFlg = false
           } else {

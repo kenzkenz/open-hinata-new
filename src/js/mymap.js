@@ -690,8 +690,8 @@ export function initMap (vm) {
         }
 
         // ------------------------
-        const drawEndFunction =  function (feature) {
-            store.state.base.toggleIdo = true
+        const drawEndFunction =  function (feature,interaction) {
+            if (interaction !== 'point') store.state.base.toggleIdo = true
             overlay[i].setPosition(undefined)
             if (store.state.base.editFeatureColor['map01'].rgba) {
                 const c = store.state.base.editFeatureColor['map01'].rgba
@@ -708,10 +708,11 @@ export function initMap (vm) {
 
         pointInteraction.on('drawend', function (event) {
             const feature = event.feature
+            drawEndFunction(feature,'point')
+            // store.state.base.toggleIdo = false
+            store.state.base.drawEndFlg = true
             store.state.base.editFeature = feature
             store.state.base.togglePoint0 = false
-            drawEndFunction(feature)
-            store.state.base.toggleIdo = false
         })
         lineInteraction.on('drawend', function (event) {
             const feature = event.feature

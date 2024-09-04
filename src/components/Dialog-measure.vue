@@ -733,6 +733,7 @@ export default {
 
       } else {
         console.log('off')
+        console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
         MyMap.modifyInteraction.setActive(false)
         MyMap.transformInteraction.setActive(false)
 
@@ -740,6 +741,7 @@ export default {
 
         this.$store.state.base.drawEndFlg = false
 
+        console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
       }
     })
     this.$watch(function () {
