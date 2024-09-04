@@ -31,6 +31,7 @@
         <b-button style="margin-top: 5px; margin-left: 0px;margin-bottom: 5px;" class='olbtn' :size="btnSize" @click="drawPolygonSmooth">ポリゴンをスムーズにする</b-button>
         <br><input type='number' value="0" step="0.1" v-model="radius" style="width: 100px;margin-top: 0px;">
         <b-button style="margin-top: 0px; margin-left: 2px;" class='olbtn' :size="btnSize" @click="drawBuffer">バッファー</b-button>
+        <br><b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawVoronoi">ボロノイ図</b-button>
       </div>
 
       <div class="range-div">
@@ -253,6 +254,26 @@ export default {
     drawKodo () {
       // this.s_toggleIdo = false
       this.kodo = !this.kodo
+    },
+    drawVoronoi () {
+
+      this.store.state.base.maps['map01'].getExtent()
+
+
+      const tGeojson = new GeoJSON().writeFeatures(MyMap.drawLayer.getSource().getFeatures(), {
+        featureProjection: "EPSG:3857"
+      })
+      const tFeatures = JSON.parse(tGeojson).features
+      var collection = turf.featureCollection(tFeatures)
+      console.log(collection)
+
+
+
+      var options = {
+        bbox: [-70, 40, -60, 60],
+      };
+      var points = turf.randomPoint(100, options);
+      console.log(points)
     },
     drawBuffer () {
       const targetFeature = this.$store.state.base.editFeature
