@@ -689,7 +689,11 @@ export function initMap (vm) {
             if (store.state.base.editFeatureColor['map01'].rgba) {
                 const c = store.state.base.editFeatureColor['map01'].rgba
                 const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
-                feature.setProperties({_fillColor: rgba})
+                // console.log(feature.getGeometry().getType())
+                const geoType = feature.getGeometry().getType()
+                if (geoType !== 'Point' && geoType !== 'LineString') {
+                    feature.setProperties({_fillColor: rgba})
+                }
             }
             moveEnd()
             store.state.base.drawEndFlg = true
