@@ -676,6 +676,10 @@ export function initMap (vm) {
             polygonInteraction.on(['change:active','drawend'], tooltipOverlay.removeFeature.bind(tooltipOverlay))
             freeHandInteraction.on('drawstart', tooltipOverlay.setFeature.bind(tooltipOverlay))
             freeHandInteraction.on(['change:active','drawend'], tooltipOverlay.removeFeature.bind(tooltipOverlay))
+            regularInteraction.on('drawstart', tooltipOverlay.setFeature.bind(tooltipOverlay))
+            regularInteraction.on(['change:active','drawend'], tooltipOverlay.removeFeature.bind(tooltipOverlay))
+            daenInteraction.on('drawstart', tooltipOverlay.setFeature.bind(tooltipOverlay))
+            daenInteraction.on(['change:active','drawend'], tooltipOverlay.removeFeature.bind(tooltipOverlay))
         }
 
         // ------------------------
