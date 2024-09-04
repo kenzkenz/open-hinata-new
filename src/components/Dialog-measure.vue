@@ -32,6 +32,7 @@
         <br><input type='number' value="0" step="0.1" v-model="radius" style="width: 100px;margin-top: 0px;">
         <b-button style="margin-top: 0px; margin-left: 2px;" class='olbtn' :size="btnSize" @click="drawBuffer">バッファー</b-button>
         <br><b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawVoronoi">ボロノイ図</b-button>
+        <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawHeatMap">ヒートマップ</b-button>
       </div>
 
       <div class="range-div">
@@ -71,9 +72,10 @@ import * as permalink from "@/js/permalink";
 import store from "@/js/store";
 import * as turf from '@turf/turf';
 import {transform} from "ol/proj";
-import {LineString,Polygon} from "ol/geom";
+import {LineString, Point, Polygon} from "ol/geom";
 import Feature from "ol/Feature";
 import {measure} from "../js/mymap";
+import {transformExtent} from "ol/proj"
 import * as d3 from "d3";
 
 export default {
@@ -255,25 +257,52 @@ export default {
       // this.s_toggleIdo = false
       this.kodo = !this.kodo
     },
-    drawVoronoi () {
-
-      this.store.state.base.maps['map01'].getExtent()
-
-
-      const tGeojson = new GeoJSON().writeFeatures(MyMap.drawLayer.getSource().getFeatures(), {
-        featureProjection: "EPSG:3857"
+    drawHeatMap () {
+      const map01 = this.$store.state.base.maps['map01']
+      const map02 = this.$store.state.base.maps['map02']
+      const result = map01.getLayers().array_.find(layer => {
+        return layer.get('name') === 'heatmap'
       })
-      const tFeatures = JSON.parse(tGeojson).features
-      var collection = turf.featureCollection(tFeatures)
-      console.log(collection)
-
-
-
-      var options = {
-        bbox: [-70, 40, -60, 60],
-      };
-      var points = turf.randomPoint(100, options);
-      console.log(points)
+      if (!result) {
+        map01.removeLayer(MyMap.drawLayer)
+        map02.removeLayer(MyMap.drawLayer)
+        map01.addLayer(MyMap.haatMapDrawLayer)
+        map02.addLayer(MyMap.haatMapDrawLayer2)
+      } else {
+        map01.addLayer(MyMap.drawLayer)
+        map02.addLayer(MyMap.drawLayer)
+        map01.removeLayer(MyMap.haatMapDrawLayer)
+        map02.removeLayer(MyMap.haatMapDrawLayer2)
+      }
+    },
+    drawVoronoi () {
+      const tGeojson = new GeoJSON().writeFeatures(MyMap.drawLayer.getSource().getFeatures(), {
+        featureProjection: "EPSG:4326"
+      })
+      const features = JSON.parse(tGeojson).features
+      let aaa = []
+      features.forEach((f) => {
+        if (f.geometry.type === 'Point') {
+          aaa.push(turf.point(f.geometry.coordinates))
+        }
+      })
+      const collection = turf.featureCollection(aaa);
+      let extent = this.$store.state.base.maps['map01'].getView().calculateExtent(this.$store.state.base.maps['map01'].getSize())
+      const options = {
+        bbox: extent,
+      }
+      const voronoiPolygons = turf.voronoi(collection, options);
+      MyMap.undoInteraction.blockStart()
+      const d3Cate10 = d3.scaleOrdinal(d3.schemeCategory10)
+      voronoiPolygons.features.forEach((f,i) => {
+        const rgb = d3.rgb(d3Cate10(i))
+        const rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
+        const polygon = new Polygon(f.geometry.coordinates)
+        const newFeature = new Feature(polygon)
+        newFeature.setProperties({'_fillColor':rgba})
+        MyMap.drawLayer.getSource().addFeature(newFeature)
+      })
+      MyMap.undoInteraction.blockEnd()
     },
     drawBuffer () {
       const targetFeature = this.$store.state.base.editFeature
@@ -355,8 +384,10 @@ export default {
         featureProjection: "EPSG:4326"
       })
       const features = JSON.parse(fiatureGeojson).features
+      console.log(features[0])
       const smoothFeature = turf.polygonSmooth(features[0], { iterations: 3 })
       const polygonCoordinates = smoothFeature.features[0].geometry.coordinates[0]
+      console.log(polygonCoordinates)
       const polygon = new Polygon([polygonCoordinates])
       const newFeature = new Feature(polygon)
 
@@ -595,7 +626,7 @@ export default {
         //   }
         // })
         data = data.slice(0, -1)
-        console.log(data)
+        // console.log(data)
         // データ末尾に改行コードを追記
         data += "\r\n";
       })

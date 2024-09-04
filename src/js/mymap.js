@@ -45,6 +45,7 @@ import RegularShape from 'ol/style/RegularShape'
 import Collection from 'ol/Collection'
 import Tooltip from 'ol-ext/overlay/Tooltip'
 import {parse} from 'csv-parse/lib/sync'
+import {Heatmap} from 'ol/layer'
 
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
@@ -78,13 +79,19 @@ function danmenStyleFunction() {
     }
 }
 const drawSource = new VectorSource({wrapX: false})
-// drawSource.set('olcs_skip', false)
-// drawSource.set('olcs_minimumLevel', 1)
-export  const drawLayer = new VectorLayer({
+export const drawLayer = new VectorLayer({
     name: 'drawLayer',
-    // pointer: true,
     source: drawSource,
-    // altitudeMode: 'clampToGround',
+    style: drawLayerStylefunction()
+})
+export const haatMapDrawLayer = new Heatmap({
+    name: 'heatmap',
+    source: drawSource,
+    style: drawLayerStylefunction()
+})
+export const haatMapDrawLayer2 = new Heatmap({
+    name: 'heatmap',
+    source: drawSource,
     style: drawLayerStylefunction()
 })
 export const selectInteraction = new Select({
@@ -841,14 +848,9 @@ export function initMap (vm) {
             reader.onload = () => {
                 //読み込み完了でファイル名と中身を表示。
                 if (file.name.slice(-3) !== 'csv') return
-
-                console.log( reader.result)
-
                 const records = parse(reader.result, { columns: true})
-                console.log(records)
                 let newFeature
                 records.forEach((row) => {
-                    console.log(row)
                     if (row.geoType === 'Point') {
                         const coordinates = transform([row.経度, row.緯度], "EPSG:4326", "EPSG:3857")
                         const point = new Point(coordinates)
@@ -878,13 +880,9 @@ export function initMap (vm) {
                     )
                     drawLayer.getSource().addFeature(newFeature)
                 })
-
             };
             reader.readAsText(file);
-
-
         })
-
 
         if (i==1) {
             store.state.base.maps.map01.addInteraction(new Synchronize({ maps: [store.state.base.maps.map02]}));

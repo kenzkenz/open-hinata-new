@@ -238,6 +238,7 @@ export function permalinkEventSet (response) {
             } else if (feature.geometry.type === 'Point') {
               // alert()
               const coordinates = transform(feature.geometry.coordinates, "EPSG:4326", "EPSG:3857")
+              //295097250.67020875, 3801416.360944879]
               const point = new Point(coordinates)
               newFeature = new Feature(point)
               // if (feature.properties.description) newFeature.setProperties({description: feature.properties.description})
