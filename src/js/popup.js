@@ -114,9 +114,9 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
       // if (features0.length === 1) {
       //   if (layers[i].get('name') === 'drawLayer') {
       if (drawLayer) {
-        edit = ' <span style="display: inline-block;text-align: right;">' +
-            '<button class="edit-button">編集</button>' +
-            '</span>'
+        edit = ' <div style="text-align: center;">' +
+            '<button class="edit-button">テキスト編集、画像アップロード</button>' +
+            '</div>'
       } else {
         edit = ''
       }

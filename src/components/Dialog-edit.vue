@@ -23,7 +23,7 @@
       <form id="my_form" style="display: none">
         <input id="my_form_input" type="file" name="file_1" accept="image/*" @change="file_upload()">
       </form>
-      <b-button class='olbtn' size="sm" @click="upLoad">画像</b-button>
+      <b-button class='olbtn' size="sm" @click="upLoad">画像アップロード</b-button>
 <!--      <b-button style="margin-left: 10px" :pressed.sync="s_toggleModify" class='olbtn' size="sm">変形&移動</b-button>-->
 <!--      <b-button id="color-btn" style="margin-left: 10px" class='olbtn' size="sm" @click="openDialog">色</b-button>-->
 <!--      <div style="position: relative;">-->
