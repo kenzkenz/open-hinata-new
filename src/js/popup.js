@@ -70,7 +70,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
     const lonLat = transform([coordinate[0],coordinate[1]], "EPSG:3857", "EPSG:4326")
     const lon = lonLat[0]
     const lat = lonLat[1]
-    streetView = '<a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=' + lat + ',' + lon + '&hl=ja" target="_blank">Street View</a> ' +
+    streetView = '<div style="text-align: center;"><a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=' + lat + ',' + lon + '&hl=ja" target="_blank">Street View</a> ' +
         ' <a href="https://www.google.co.jp/maps?q=' + lat + ',' + lon + '&hl=ja" target="_blank">GoogleMap</a>' +
         '</div>'
 
@@ -122,7 +122,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
       }
       // }
 
-      streetView = '<a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=' + lat + ',' + lon + '&hl=ja" target="_blank">StreetView</a>' +
+      streetView = '<div style="text-align: center;"><a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=' + lat + ',' + lon + '&hl=ja" target="_blank">StreetView</a>' +
           ' <a href="https://www.google.co.jp/maps?q=' + lat + ',' + lon + '&hl=ja" target="_blank">GoogleMap</a>' +
           edit +
           '</div>'

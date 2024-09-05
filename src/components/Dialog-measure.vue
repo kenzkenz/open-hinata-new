@@ -31,8 +31,15 @@
         <b-button style="margin-top: 5px; margin-left: 0px;margin-bottom: 5px;" class='olbtn' :size="btnSize" @click="drawPolygonSmooth">ポリゴンをスムーズにする</b-button>
         <br><input type='number' value="0" step="0.1" v-model="radius" style="width: 100px;margin-top: 0px;">
         <b-button style="margin-top: 0px; margin-left: 2px;" class='olbtn' :size="btnSize" @click="drawBuffer">バッファー</b-button>
-        <br><b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawVoronoi">ボロノイ図</b-button>
-        <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawHeatMap">ヒートマップ</b-button>
+        <br>
+        <div style="position: relative;">
+          <b-form-checkbox style="margin-bottom: 10px;position: absolute;top:10px;left: 0;" v-model="voronoiColor" name="check-button" switch>
+            色
+          </b-form-checkbox>
+          <b-button style="margin-top: 5px; margin-left: 60px;" class='olbtn' :size="btnSize" @click="drawVoronoi">ボロノイ図</b-button>
+          <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawHeatMap">ヒートマップ</b-button>
+        </div>
+
       </div>
 
       <div class="range-div">
@@ -97,7 +104,8 @@ export default {
       ],
       kodo: false,
       tolerance: 0.001,
-      radius: 0
+      radius: 0,
+      voronoiColor: true,
     }
   },
   computed: {
@@ -276,6 +284,14 @@ export default {
       }
     },
     drawVoronoi () {
+      MyMap.undoInteraction.blockStart()
+      MyMap.drawLayer.getSource().getFeatures().forEach((feature) =>{
+        if (feature.getProperties()._voronoi) {
+          MyMap.drawLayer.getSource().removeFeature(feature)
+        }
+      })
+      MyMap.undoInteraction.blockEnd()
+
       const tGeojson = new GeoJSON().writeFeatures(MyMap.drawLayer.getSource().getFeatures(), {
         featureProjection: "EPSG:4326"
       })
@@ -296,10 +312,14 @@ export default {
       const d3Cate10 = d3.scaleOrdinal(d3.schemeCategory10)
       voronoiPolygons.features.forEach((f,i) => {
         const rgb = d3.rgb(d3Cate10(i))
-        const rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
+        let rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
+        if (!this.voronoiColor) rgba = 'rgba(0,0,0,0)'
         const polygon = new Polygon(f.geometry.coordinates)
         const newFeature = new Feature(polygon)
-        newFeature.setProperties({'_fillColor':rgba})
+        newFeature.setProperties({
+          '_fillColor':rgba,
+          '_voronoi':true
+        })
         MyMap.drawLayer.getSource().addFeature(newFeature)
       })
       MyMap.undoInteraction.blockEnd()
