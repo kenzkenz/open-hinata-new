@@ -292,17 +292,11 @@ export default {
       })
       MyMap.undoInteraction.blockEnd()
 
-      const tGeojson = new GeoJSON().writeFeatures(MyMap.drawLayer.getSource().getFeatures(), {
-        featureProjection: "EPSG:4326"
+      let turfPoints = []
+      MyMap.drawLayer.getSource().getFeatures().forEach((feature) => {
+        if (feature.getGeometry().getType() === 'Point') turfPoints.push(turf.point(feature.getGeometry().getCoordinates()))
       })
-      const features = JSON.parse(tGeojson).features
-      let aaa = []
-      features.forEach((f) => {
-        if (f.geometry.type === 'Point') {
-          aaa.push(turf.point(f.geometry.coordinates))
-        }
-      })
-      const collection = turf.featureCollection(aaa);
+      const collection = turf.featureCollection(turfPoints);
       let extent = this.$store.state.base.maps['map01'].getView().calculateExtent(this.$store.state.base.maps['map01'].getSize())
       const options = {
         bbox: extent,

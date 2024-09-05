@@ -85,7 +85,7 @@ export const drawLayer = new VectorLayer({
     style: drawLayerStylefunction()
 })
 export const haatMapDrawLayer = new Heatmap({
-    name: 'heatmap',
+    name: 'drawLayer',
     source: drawSource,
     style: drawLayerStylefunction()
 })
