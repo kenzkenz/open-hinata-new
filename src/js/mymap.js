@@ -85,7 +85,7 @@ export const drawLayer = new VectorLayer({
     style: drawLayerStylefunction()
 })
 export const haatMapDrawLayer = new Heatmap({
-    name: 'drawLayer',
+    name: 'heatmap',
     source: drawSource,
     style: drawLayerStylefunction()
 })
@@ -418,6 +418,10 @@ modifyInteraction.on('modifyend', function (event) {
 
 drawLayer.getSource().on("change", function(e) {
     // moveEnd()
+    const tGeojson = new GeoJSON().writeFeatures(drawLayer.getSource().getFeatures(), {
+        featureProjection: "EPSG:3857"
+    })
+    store.state.base.tGeojson = JSON.stringify(JSON.parse(tGeojson),null,2)
     history ('ドロー')
 })
 pointInteraction.on('drawend', function (event) {
@@ -702,8 +706,13 @@ export function initMap (vm) {
                     feature.setProperties({_fillColor: rgba})
                 }
             }
+            // const tGeojson = new GeoJSON().writeFeatures(drawLayer.getSource().getFeatures(), {
+            //     featureProjection: "EPSG:3857"
+            // })
+            // // console.log(JSON.stringify(JSON.parse(tGeojson),null,2))
+            // store.state.base.tGeojson = JSON.stringify(JSON.parse(tGeojson),null,2)
+            // store.state.base.drawEndFlg = true
             moveEnd()
-            store.state.base.drawEndFlg = true
         }
 
         pointInteraction.on('drawend', function (event) {
@@ -1556,11 +1565,17 @@ export function initMap (vm) {
         const removeLastPoint = function(evt){
             // console.log(evt.keyCode)
             if(evt.key === 'Escape' || evt.key === 'Backspace' || evt.key === 'Delete'){
-                transformInteraction.select()
-                lineInteraction.removeLastPoint()
-                polygonInteraction.removeLastPoint()
-                circleInteraction.removeLastPoint()
-                modifyInteraction.removePoint()
+                if (document.querySelector('#dialog-edit').style.display === 'block' ||
+                    document.querySelector('#dialog-geojson').style.display === 'block' ) {
+                    return
+                } else {
+                    transformInteraction.select()
+                    lineInteraction.removeLastPoint()
+                    polygonInteraction.removeLastPoint()
+                    circleInteraction.removeLastPoint()
+                    modifyInteraction.removePoint()
+                    alert(0)
+                }
             }
         }
         if (i === '0') {
@@ -1585,7 +1600,8 @@ export function initMap (vm) {
             addEventListener('keydown', function (event) {
                 console.log(event.key)
                 if (event.key === 'Backspace' || event.key === 'Delete') {
-                    if (document.querySelector('#dialog-edit').style.display === 'block') {
+                    if (document.querySelector('#dialog-edit').style.display === 'block' ||
+                        document.querySelector('#dialog-geojson').style.display === 'block' ) {
                         return
                     }
                     drawLayer.getSource().removeFeature(store.state.base.editFeature)

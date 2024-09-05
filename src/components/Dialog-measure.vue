@@ -23,6 +23,7 @@
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawRedo">やり直す</b-button>
       <br>
       <b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawKodo">高度編集</b-button>
+      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="openDialog2">geojson参照</b-button>
 
       <div class="kodo" v-if="kodo">
         <input type='number' value="0.001" step="0.0005" v-model="tolerance" style="width: 100px;margin-top: 0px;">
@@ -82,11 +83,12 @@ import {transform} from "ol/proj";
 import {LineString, Point, Polygon} from "ol/geom";
 import Feature from "ol/Feature";
 import {measure} from "../js/mymap";
-import {transformExtent} from "ol/proj"
 import * as d3 from "d3";
 
 export default {
   name: "dialog-measure",
+  components: {
+  },
   data () {
     return {
       address: '',
@@ -212,6 +214,9 @@ export default {
     },
   },
   methods: {
+    highlighter: function(code) {
+      return Prism.highlight(code, Prism.languages.js, "js");
+    },
     toggleReset () {
       this.s_toggleCircle = false
       this.s_togglePoint = false
@@ -225,6 +230,21 @@ export default {
       this.toggleDelete = false
       this.toggleDanmen = false
       this.s_toggleIdo = false
+    },
+    openDialog2 () {
+
+      const tGeojson = new GeoJSON().writeFeatures(MyMap.drawLayer.getSource().getFeatures(), {
+        featureProjection: "EPSG:3857"
+      })
+      this.$store.state.base.tGeojson = JSON.stringify(JSON.parse(tGeojson),null,2)
+      const dialog = this.s_dialogs.dialogGeojson
+      if (dialog.style.display === 'block') {
+        dialog.style.display = 'none'
+      } else{
+        this.$store.commit('base/incrDialogMaxZindex')
+        dialog.style["z-index"] = this.s_dialogMaxZindex
+        dialog.style.display = 'block'
+      }
     },
     openDialog () {
 
@@ -1069,4 +1089,6 @@ export default {
   padding: 10px;
   border: 1px solid darkgray;
 }
+
 </style>
+

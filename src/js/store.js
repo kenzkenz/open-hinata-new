@@ -33,6 +33,7 @@ const moduleBase = {
         map01: {style: {top: '320px', right: '10px', 'z-index': 1, height: 'auto', 'width': '250px', display: 'none'}},
         map02: {style: {top: '320px', right: '10px', 'z-index': 1, height: 'auto', 'width': '250px', display: 'none'}}
       },
+      dialogGeojson:{style: {top: '56px', left: '10px', 'z-index': 1, 'max-height': 'auto', 'width': 'auto', display: 'none'}},
 
       dialogDokuji:{style: {top: '56px', left: '10px', 'z-index': 1, height: 'auto', 'width': '320px', display: 'none'}},
       menuDialog: {style: {top: '56px', left: '10px', 'z-index': 1, height: 'auto', 'min-width': '150px', display: 'none'}},
@@ -134,6 +135,7 @@ const moduleBase = {
     // editFeatureColor: null,
     hyokou: 0,
     resasOrEstat:'',
+    tGeojson:'',
     prefId:[{pref:'北海道', id:1}, {pref:'青森県', id:2}, {pref:'岩手県', id:3}, {pref:'宮城県', id:4},
           {pref:'秋田県', id:5}, {pref:'山形県', id:6}, {pref:'福島県', id:7}, {pref:'茨城県', id:8},
           {pref:'栃木県', id:9}, {pref:'群馬県', id:10}, {pref:'埼玉県', id:11}, {pref:'千葉県', id:12},

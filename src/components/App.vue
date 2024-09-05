@@ -75,10 +75,10 @@
                 <v-dialog-measure v-if="mapName === 'map01'"/>
                 <v-dialog-main-info v-if="mapName === 'map01'"/>
                 <v-dialog-edit v-if="mapName === 'map01'"/>
-<!--                <v-dialog-color v-if="mapName === 'map01'"/>-->
                 <v-dialog-color :mapName=mapName />
-
                 <v-dialog-dokuji v-if="mapName === 'map01'"/>
+                <v-dialog-geojson v-if="mapName === 'map01'"/>
+
 
 <!--                <div class="zoom-div">{{ zoom[mapName] }}</div>-->
                 <div class="zoom-div">
@@ -118,7 +118,8 @@
   import axios from "axios";
   import store from "@/js/store";
   import OLCesium from 'ol-cesium'
-  import * as d3 from "d3";
+  import * as d3 from "d3"
+  import DialogGeojson from './Daialog-gepjson'
 
   let heading
   let tilt
@@ -134,6 +135,7 @@
       'v-dialog-edit': DialogEdit,
       'v-dialog-color': DialogColor,
       'v-dialog-dokuji': DialogDokuji,
+      'v-dialog-geojson': DialogGeojson,
     },
     data () {
       return {

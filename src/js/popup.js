@@ -54,7 +54,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
     let i
     drawLayer = layers.find((layer,index) => {
       i = index
-      return layer.get('name') === 'drawLayer'
+      return layer.get('name') === 'drawLayer' || layer.get('name') === 'heatmap'
     })
     // if (drawLayer) {
     //   features0.push(features[i])
@@ -1127,6 +1127,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
           }
           break
         case 'drawLayer':
+        case 'heatmap':
           console.log(store.state.base.drawEndFlg)
           if (store.state.base.drawEndFlg === true) {
             store.state.base.drawEndFlg = false
