@@ -12,7 +12,8 @@
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleCircle" class='olbtn' :size="btnSize">円</b-button>
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleDaen" class='olbtn' :size="btnSize">楕円</b-button>
       <br>
-      <b-button id="color-btn0" style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="openDialog">色</b-button>
+      <b-button id="color-btn0" style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="openDialog">穴あけ</b-button>
+      <b-button id="color-btn0" style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="openDialog">色</b-button>
       <!--      <b-button style="margin-left: 5px;" :pressed.sync="s_toggleText" class='olbtn' :size="btnSize">文字</b-button>-->
 <!--      <b-button style="margin-left: 10px;" :pressed.sync="toggleDanmen" class='olbtn' :size="btnSize">{{ toggleDanmen ? '断面図' : '断面図' }}</b-button>-->
       <br>
@@ -23,7 +24,7 @@
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawRedo">やり直す</b-button>
       <br>
       <b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawKodo">高度編集</b-button>
-      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="openDialog2">geojson参照</b-button>
+      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="openDialog2">geojson編集</b-button>
 
       <div class="kodo" v-if="kodo">
         <input type='number' value="0.001" step="0.0005" v-model="tolerance" style="width: 100px;margin-top: 0px;">

@@ -919,6 +919,7 @@ export function initMap (vm) {
                 ],
             })
             dragAndDropInteraction.on('addfeatures', function (event) {
+                undoInteraction.blockStart()
                 event.features.forEach((feature) => {
                     drawLayer.getSource().addFeature(feature)
                 })
@@ -926,18 +927,20 @@ export function initMap (vm) {
                     if (feature.getGeometry().getType() === 'GeometryCollection') {
                         drawLayer.getSource().removeFeature(feature)
                         const distance = feature.getProperties().distance
-                        console.log(feature.getProperties().distance)
                         const circle = new Circle(feature.get('center'), feature.get('radius'));
                         const newFeature = new Feature(circle);
-                        newFeature.setProperties({distance: distance})
-                        newFeature.setProperties({name: feature.getProperties().name})
-                        newFeature.setProperties({setumei: feature.getProperties().setumei})
+                        newFeature.setProperties({
+                            distance: distance,
+                            name: feature.getProperties().name,
+                            setumei: feature.getProperties().setumei,
+                            _fillColor: feature.getProperties()._fillColor
+                        })
                         drawLayer.getSource().addFeature(newFeature)
                         moveEnd()
                     }
                 })
-                // map.addLayer(drawLayer)
                 // map.getView().fit(drawLayer.getSource().getExtent())
+                undoInteraction.blockEnd()
             })
             map.addInteraction(dragAndDropInteraction)
         }
