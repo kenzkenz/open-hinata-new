@@ -110,6 +110,7 @@ const moduleBase = {
     toggleShikaku: false,
     toggleCircle: false,
     toggleDaen: false,
+    toggleHole: false,
     toggle: false,
     toggleIdo: false,
     toggleModify: false,

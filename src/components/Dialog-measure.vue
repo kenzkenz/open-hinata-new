@@ -12,7 +12,8 @@
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleCircle" class='olbtn' :size="btnSize">円</b-button>
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleDaen" class='olbtn' :size="btnSize">楕円</b-button>
       <br>
-      <b-button id="color-btn0" style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="openDialog">穴あけ</b-button>
+      <b-button style="margin-top: 5px; margin-left: 0px;" :pressed.sync="s_toggleHole" class='olbtn' :size="btnSize">穴をあける</b-button>
+
       <b-button id="color-btn0" style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="openDialog">色</b-button>
       <!--      <b-button style="margin-left: 5px;" :pressed.sync="s_toggleText" class='olbtn' :size="btnSize">文字</b-button>-->
 <!--      <b-button style="margin-left: 10px;" :pressed.sync="toggleDanmen" class='olbtn' :size="btnSize">{{ toggleDanmen ? '断面図' : '断面図' }}</b-button>-->
@@ -195,6 +196,14 @@ export default {
       },
       set(value) {
         this.$store.state.base.toggleDaen = value
+      }
+    },
+    s_toggleHole: {
+      get() {
+        return this.$store.state.base.toggleHole
+      },
+      set(value) {
+        this.$store.state.base.toggleHole = value
       }
     },
     s_toggleText: {
@@ -584,7 +593,7 @@ export default {
       const tGeojson = new GeoJSON().writeFeatures(features, {
         featureProjection: "EPSG:3857"
       })
-      console.log(tGeojson)
+      // console.log(tGeojson)
       const type = "text/plain";
       const blob = new Blob([tGeojson], {type: type});
       const a = document.getElementById('download');
@@ -600,7 +609,6 @@ export default {
             return text
           } else {
             return '"' + text + '"'
-            // return ''
           }
         }
       }
@@ -634,12 +642,17 @@ export default {
           data += ','
           data += ','
           data += ud(JSON.stringify(feature.geometry.coordinates)) + ','
-        } else if (feature.geometry.type === 'Polygon') {
+        } else if (feature.geometry.type.indexOf('Polygon') !== -1) {
           data += ','
           data += ','
-          data += ud(JSON.stringify(feature.geometry.coordinates[0])) + ','
+          data += ud(JSON.stringify(feature.geometry.coordinates)) + ','
+          console.log(ud(JSON.stringify(feature.geometry.coordinates)))
+        }
+        if (!feature.properties) {
+          feature.properties = {}
         }
         const prop = feature.properties
+        console.log(feature.properties)
         data += ud(prop.name) + ","
         data += ud(prop.description) + ","
         if (feature.geometry.type === 'Point' || feature.geometry.type === 'LineString') {
@@ -661,8 +674,6 @@ export default {
         //   }
         // })
         data = data.slice(0, -1)
-        // console.log(data)
-        // データ末尾に改行コードを追記
         data += "\r\n";
       })
 
@@ -757,6 +768,7 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
+        this.s_toggleHole = false
 
         MyMap.modifyInteraction.setActive(true)
         MyMap.transformInteraction.setActive(true)
@@ -793,6 +805,8 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
+        this.s_toggleHole = false
+
         this.$store.state.base.maps['map01'].addInteraction(MyMap.selectInteraction)
         MyMap.selectInteraction.on('select', function (e) {
           const selectCollection = MyMap.selectInteraction.getFeatures();
@@ -817,6 +831,8 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
+        this.s_toggleHole = false
+
 
         this.$store.state.base.maps['map01'].addInteraction(MyMap.circleInteraction)
 
@@ -841,6 +857,8 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
+        this.s_toggleHole = false
+
 
         this.$store.state.base.maps['map01'].addInteraction(MyMap.daenInteraction)
 
@@ -863,6 +881,8 @@ export default {
         this.s_toggleDaen = false
         this.toggleDelete = false
         this.toggleDanmen = false
+        this.s_toggleHole = false
+
 
         this.$store.state.base.maps['map01'].addInteraction(MyMap.polygonInteraction)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.snapnteraction)
@@ -887,7 +907,7 @@ export default {
         this.s_toggleDaen = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        // this.s_toggleIdo = false
+        this.s_toggleHole = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.regularInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
@@ -911,7 +931,7 @@ export default {
         this.s_toggleShikaku = false
         this.toggleCircle = false
         this.toggleDelete = false
-        // this.s_toggleIdo = false
+        this.s_toggleHole = false
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.selectInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction)
@@ -941,7 +961,7 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        // this.s_toggleIdo = false
+        this.s_toggleHole = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.lineInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
@@ -971,7 +991,7 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        // this.s_toggleIdo = false
+        this.s_toggleHole = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.freeHandInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
@@ -1002,7 +1022,7 @@ export default {
         this.s_toggleShikaku = false
         this.toggleDelete = false
         this.toggleDanmen = false
-        // this.s_toggleIdo = false
+        this.s_toggleHole = false
         this.$store.state.base.maps['map01'].addInteraction(MyMap.pointInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
@@ -1013,6 +1033,29 @@ export default {
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction)
       }
     })
+    this.$watch(function () {
+      return [this.s_toggleHole]
+    }, function () {
+      if (this.s_toggleHole) {
+        this.s_togglePoint0 = false
+        this.s_toggleLine = false
+        this.s_toggleFreeHand = false
+        this.s_togglePoint = false
+        this.s_toggleMenseki = false
+        this.s_toggleCircle = false
+        this.s_toggleShikaku = false
+        this.toggleDelete = false
+        this.toggleDanmen = false
+        this.toggleDaen = false
+
+        this.$store.state.base.maps['map01'].addInteraction(MyMap.drawHoleInteraction)
+
+      } else {
+        console.log('off')
+        this.$store.state.base.maps['map01'].removeInteraction(MyMap.drawHoleInteraction)
+      }
+    })
+
     this.$watch(function () {
       return [this.s_drawMeasure]
     }, function () {

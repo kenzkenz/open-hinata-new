@@ -29,7 +29,7 @@ import {Fill, Stroke, Style, Text, Circle as Circle0 } from "ol/style"
 import * as turf from '@turf/turf';
 import Select from 'ol/interaction/Select.js'
 // import {click, pointerMove, altKeyOnly} from 'ol/events/condition.js';
-import {Circle, LineString, Point, Polygon} from "ol/geom"
+import {Circle, LineString, Point, Polygon, MultiPolygon} from "ol/geom"
 import Feature from 'ol/Feature'
 import {moveEnd} from "./permalink"
 import Dialog from 'ol-ext/control/Dialog'
@@ -46,7 +46,7 @@ import Collection from 'ol/Collection'
 import Tooltip from 'ol-ext/overlay/Tooltip'
 import {parse} from 'csv-parse/lib/sync'
 import {Heatmap} from 'ol/layer'
-
+import DrawHole from 'ol-ext/interaction/DrawHole'
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
     let zoom = 0;
@@ -267,6 +267,9 @@ export const undoInteraction = new UndoRedo()
 
 export const snapnteraction = new Snap ({
     source: drawSource,
+})
+export const drawHoleInteraction = new DrawHole ({
+    layers:  drawSource
 })
 
 export function measure (geoType,feature,coordAr) {
@@ -494,6 +497,14 @@ daenInteraction.on('drawend', function (event) {
     const coordAr = feature.getGeometry().getCoordinates()
     const geoType = feature.getGeometry().getType()
     measure (geoType,feature,coordAr)
+})
+drawHoleInteraction.on('drawend', function (event) {
+    drawLayer.getSource().getFeatures().forEach((feature) => {
+        const coordAr = feature.getGeometry().getCoordinates()
+        const geoType = feature.getGeometry().getType()
+        measure (geoType,feature,coordAr)
+    })
+    moveEnd()
 })
 undoInteraction.on('undo', function(e) {
     const features = drawLayer.getSource().getFeatures()
@@ -759,6 +770,12 @@ export function initMap (vm) {
             store.state.base.toggleDaen = false
             drawEndFunction(feature)
         })
+        drawHoleInteraction.on('drawend', function (event) {
+            const feature = event.feature
+            store.state.base.editFeature = feature
+            store.state.base.toggleHole = false
+            drawEndFunction(feature)
+        })
         const olPopup = document.querySelector('#map01' + ' .ol-popup0')
         olPopup.addEventListener('click', (e) => {
             if (e.target && e.target.classList.contains("edit-button")) {
@@ -874,11 +891,28 @@ export function initMap (vm) {
                         newFeature = new Feature(lineString)
                     } else if (row.geoType === 'Polygon') {
                         let coordinates = []
-                        JSON.parse(row.coords).forEach((coord) => {
-                            coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
+                        JSON.parse(row.coords).forEach((coords,i) => {
+                            coordinates.push([])
+                            coords.forEach((coord) => {
+                                coordinates[i].push(transform(coord, "EPSG:4326", "EPSG:3857"))
+                            })
                         })
-                        const polygon = new Polygon([coordinates])
+                        const polygon = new Polygon(coordinates)
                         newFeature = new Feature(polygon)
+                    } else if (row.geoType === 'MultiPolygon') {
+                        let coordinates = []
+                        JSON.parse(row.coords).forEach((coords,i) => {
+                            coordinates.push([])
+                            coords.forEach((coord,ii) => {
+                                coordinates[i].push([])
+                                coord.forEach((c) => {
+                                    coordinates[i][ii].push(transform(c, "EPSG:4326", "EPSG:3857"))
+                                })
+
+                            })
+                        })
+                        const multiPolygon = new MultiPolygon(coordinates)
+                        newFeature = new Feature(multiPolygon)
                     }
                     newFeature.setProperties({
                             'name': row.名称,
