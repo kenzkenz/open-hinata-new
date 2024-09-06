@@ -243,6 +243,13 @@ export default {
     },
     openDialog2 () {
 
+      // console.log(this.$store.state.base.maps['map01'].getView())
+      // console.log(MyMap.drawLayer.getSource().getExtent())
+      // let ex = [14624845, 3749453, 14624846, 3749454]
+      // // this.$store.state.base.maps['map01'].setView()
+      // ex = MyMap.drawLayer.getSource().getExtent()
+      // this.$store.state.base.maps['map01'].getView().fit(ex)
+
       const tGeojson = new GeoJSON().writeFeatures(MyMap.drawLayer.getSource().getFeatures(), {
         featureProjection: "EPSG:3857"
       })
@@ -328,6 +335,7 @@ export default {
       })
       const collection = turf.featureCollection(turfPoints);
       let extent = this.$store.state.base.maps['map01'].getView().calculateExtent(this.$store.state.base.maps['map01'].getSize())
+      // console.log(extent)
       const options = {
         bbox: extent,
       }
@@ -346,6 +354,7 @@ export default {
         })
         MyMap.drawLayer.getSource().addFeature(newFeature)
       })
+      // this.$store.state.base.maps['map01'].getView().fit(extent)
       MyMap.undoInteraction.blockEnd()
     },
     drawBuffer () {

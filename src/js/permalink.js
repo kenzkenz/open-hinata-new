@@ -9,6 +9,7 @@ import Feature from "ol/Feature";
 import OLCesium from "ol-cesium";
 import * as layers from "@/js/layers";
 import {drawLayer} from "../js/mymap";
+import {fromLonLat} from "ol/proj";
 export function permalinkEventSet (response) {
   // 起動時の処理------------------------------------------------------------------------------
   // value.layerはオブジェクトになっており、map01から04が入っている。
@@ -84,7 +85,6 @@ export function permalinkEventSet (response) {
       console.log(zoom)
       map.getView().setCenter(center)
       map.getView().setZoom(zoom)
-
     }
     // パラメータで復帰
     // まずパラメータをオブジェクトにする
@@ -558,15 +558,16 @@ export function permalinkEventSet (response) {
       }
     }
   } else {
-    let startPositionCoord = localStorage.getItem('startPositionCoord')
-    startPositionCoord = [Number(startPositionCoord.split(',')[0]),Number(startPositionCoord.split(',')[1])]
-    const startPositionZoom = localStorage.getItem('startPositionZoom')
-    // console.log(startPositionCoord)
+    // alert()
+    // let startPositionCoord = localStorage.getItem('startPositionCoord')
+    // startPositionCoord = [Number(startPositionCoord.split(',')[0]),Number(startPositionCoord.split(',')[1])]
+    // const startPositionZoom = localStorage.getItem('startPositionZoom')
+    // // console.log(startPositionCoord)
     const map = store.state.base.maps.map01
-    if (startPositionCoord) {
-      map.getView().setCenter(startPositionCoord)
-      map.getView().setZoom(startPositionZoom)
-    }
+    const center = fromLonLat([140.097, 37.856])
+    const zoom = 6
+    map.getView().setCenter(center)
+    map.getView().setZoom(zoom)
   }
   // マップ移動時イベント------------------------------------------------------------------------
   // store.state.base.maps.map01.on('moveend', moveEnd)

@@ -48,6 +48,7 @@ import {parse} from 'csv-parse/lib/sync'
 import {Heatmap} from 'ol/layer'
 import DrawHole from 'ol-ext/interaction/DrawHole'
 import ModifyTouch from 'ol-ext/interaction/ModifyTouch'
+import {ZoomToExtent, defaults as defaultControls} from 'ol/control.js';
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
     let zoom = 0;
@@ -591,7 +592,7 @@ export function initMap (vm) {
     ];
     const view01 = new View({
         center: fromLonLat([140.097, 37.856]),
-        zoom: 6
+        zoom: 6,
     });
     for (let i in maps) {
         //ポップアップを作る。
@@ -637,7 +638,7 @@ export function initMap (vm) {
             layers: [drawLayer],
             overlays: [overlay[i],marker[i],currentPosition[i]],
             target: mapName,
-            view: view01
+            // view: view01,
         });
         // マップをストアに登録
         store.commit('base/setMap', {mapName: maps[i].mapName, map});
@@ -936,6 +937,7 @@ export function initMap (vm) {
                     )
                     drawLayer.getSource().addFeature(newFeature)
                 })
+                map.getView().fit(drawLayer.getSource().getExtent(),{padding: [100, 100, 100, 100]})
             };
             reader.readAsText(file);
         })
@@ -985,7 +987,7 @@ export function initMap (vm) {
                         moveEnd()
                     }
                 })
-                // map.getView().fit(drawLayer.getSource().getExtent())
+                map.getView().fit(drawLayer.getSource().getExtent(),{padding: [100, 100, 100, 100]})
                 undoInteraction.blockEnd()
             })
             map.addInteraction(dragAndDropInteraction)
@@ -1712,7 +1714,6 @@ export function initMap (vm) {
             }
         })
         // シングルクリック終わり---------------------------------------------------------------------
-        // ------------------------------------------------
 
         const popupElm =document.querySelector('#' + maps[i].mapName + ' .ol-overlaycontainer-stopevent')
         const cssText = popupElm.style.cssText
@@ -1923,6 +1924,7 @@ export function currentPosition () {
 export function synch (vm) {
     vm.synchFlg = !vm.synchFlg;
     let map01View = store.state.base.maps.map01.getView();
+    console.log(map01View)
     if (!vm.synchFlg) {
         const viewArr = [];
         for (let i = 0; i < 3; i++) {
@@ -1931,6 +1933,7 @@ export function synch (vm) {
                 zoom: map01View.getZoom()
             })
         }
+        console.log(viewArr[0])
         store.state.base.maps.map02.setView(viewArr[0]);
         // store.state.base.maps.map03.setView(viewArr[1]);
         // store.state.base.maps.map04.setView(viewArr[2]);
@@ -1946,12 +1949,12 @@ export function synch (vm) {
         // store.state.base.maps.map04.removeInteraction(store.state.base.maps.map04.getInteractions().array_[10])
     } else {
         store.state.base.maps.map02.setView(map01View);
-        // store.state.base.maps.map03.setView(map01View);
-        // store.state.base.maps.map04.setView(map01View)
-        store.state.base.maps.map01.addInteraction(new Synchronize({ maps: [store.state.base.maps.map02,store.state.base.maps.map03,store.state.base.maps.map04]}));
-        store.state.base.maps.map02.addInteraction(new Synchronize({ maps: [store.state.base.maps.map01,store.state.base.maps.map03,store.state.base.maps.map04]}));
-    //     store.state.base.maps.map03.addInteraction(new Synchronize({ maps: [store.state.base.maps.map01,store.state.base.maps.map02,store.state.base.maps.map04]}));
-    //     store.state.base.maps.map04.addInteraction(new Synchronize({ maps: [store.state.base.maps.map01,store.state.base.maps.map02,store.state.base.maps.map03]}));
+    //     // store.state.base.maps.map03.setView(map01View);
+    //     // store.state.base.maps.map04.setView(map01View)
+    //     store.state.base.maps.map01.addInteraction(new Synchronize({ maps: [store.state.base.maps.map02,store.state.base.maps.map03,store.state.base.maps.map04]}));
+    //     store.state.base.maps.map02.addInteraction(new Synchronize({ maps: [store.state.base.maps.map01,store.state.base.maps.map03,store.state.base.maps.map04]}));
+    // //     store.state.base.maps.map03.addInteraction(new Synchronize({ maps: [store.state.base.maps.map01,store.state.base.maps.map02,store.state.base.maps.map04]}));
+    // //     store.state.base.maps.map04.addInteraction(new Synchronize({ maps: [store.state.base.maps.map01,store.state.base.maps.map02,store.state.base.maps.map03]}));
     }
 }
 
