@@ -84,7 +84,7 @@ import * as turf from '@turf/turf';
 import {transform} from "ol/proj";
 import {LineString, Point, Polygon} from "ol/geom";
 import Feature from "ol/Feature";
-import {measure} from "../js/mymap";
+import {measure, modifyTouchInteraction} from "../js/mymap";
 import * as d3 from "d3";
 
 export default {
@@ -771,6 +771,7 @@ export default {
         this.s_toggleHole = false
 
         MyMap.modifyInteraction.setActive(true)
+        MyMap.modifyTouchInteraction.setActive(true)
         MyMap.transformInteraction.setActive(true)
 
         dragHandle.innerHTML = '<span style="color: red;">変形&移動モード中</span>'
@@ -778,10 +779,12 @@ export default {
         // this.$store.state.base.editFeature = null
         MyMap.drawLayer.getSource().changed()
 
+        MyMap.overlay['0'].setPosition(undefined)
       } else {
         console.log('off')
         console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
         MyMap.modifyInteraction.setActive(false)
+        MyMap.modifyTouchInteraction.setActive(false)
         MyMap.transformInteraction.setActive(false)
 
         dragHandle.innerHTML = ''
@@ -1133,6 +1136,10 @@ export default {
   padding: 10px;
   border: 1px solid darkgray;
 }
-
+</style>
+<style>
+.modifytouch {
+  font-size: large!important;
+}
 </style>
 

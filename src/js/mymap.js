@@ -47,6 +47,7 @@ import Tooltip from 'ol-ext/overlay/Tooltip'
 import {parse} from 'csv-parse/lib/sync'
 import {Heatmap} from 'ol/layer'
 import DrawHole from 'ol-ext/interaction/DrawHole'
+import ModifyTouch from 'ol-ext/interaction/ModifyTouch'
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
     let zoom = 0;
@@ -238,6 +239,9 @@ function drawLayerStylefunction (){
 export const danmenInteraction = new Draw({
     source: drawSource,
     type: 'LineString',
+})
+export const modifyTouchInteraction = new ModifyTouch({
+    source: drawLayer.getSource()
 })
 export const pointInteraction = new Draw({
     source: drawSource,
@@ -647,6 +651,7 @@ export function initMap (vm) {
         if (i==='0')  {
             map.addInteraction(undoInteraction)
             map.addInteraction(modifyInteraction)
+            map.addInteraction(modifyTouchInteraction)
             map.addInteraction(transformInteraction)
             map.addInteraction(copyInteraction)
 
@@ -687,6 +692,7 @@ export function initMap (vm) {
                 }));
 
             modifyInteraction.setActive(false)
+            modifyTouchInteraction.setActive(false)
             transformInteraction.setActive(false)
 
             const tooltipOverlay = new Tooltip()
@@ -702,6 +708,12 @@ export function initMap (vm) {
             regularInteraction.on(['change:active','drawend'], tooltipOverlay.removeFeature.bind(tooltipOverlay))
             daenInteraction.on('drawstart', tooltipOverlay.setFeature.bind(tooltipOverlay))
             daenInteraction.on(['change:active','drawend'], tooltipOverlay.removeFeature.bind(tooltipOverlay))
+
+            // const modifyTouchInteraction = new ModifyTouch({
+            //     source: drawLayer.getSource()
+            // })
+            // map.addInteraction(modifyTouchInteraction)
+            // console.log(document.querySelector('.modifytouch'))
         }
 
         // ------------------------
@@ -1611,7 +1623,7 @@ export function initMap (vm) {
                     polygonInteraction.removeLastPoint()
                     circleInteraction.removeLastPoint()
                     modifyInteraction.removePoint()
-                    alert(0)
+                    modifyTouchInteraction.removePoint()
                 }
             }
         }
