@@ -1147,8 +1147,9 @@ export default {
 }
 </style>
 <style>
-.modifytouch {
+.modifytouch .ol-popup-content{
   font-size: large!important;
+  cursor: pointer!important;
 }
 </style>
 

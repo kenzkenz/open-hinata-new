@@ -558,16 +558,19 @@ export function permalinkEventSet (response) {
       }
     }
   } else {
-    // alert()
-    // let startPositionCoord = localStorage.getItem('startPositionCoord')
-    // startPositionCoord = [Number(startPositionCoord.split(',')[0]),Number(startPositionCoord.split(',')[1])]
-    // const startPositionZoom = localStorage.getItem('startPositionZoom')
-    // // console.log(startPositionCoord)
+    let startPositionCoord = localStorage.getItem('startPositionCoord')
     const map = store.state.base.maps.map01
-    const center = fromLonLat([140.097, 37.856])
-    const zoom = 6
-    map.getView().setCenter(center)
-    map.getView().setZoom(zoom)
+    if (startPositionCoord) {
+    startPositionCoord = [Number(startPositionCoord.split(',')[0]),Number(startPositionCoord.split(',')[1])]
+    const startPositionZoom = localStorage.getItem('startPositionZoom')
+      map.getView().setCenter(startPositionCoord)
+      map.getView().setZoom(startPositionZoom)
+    } else {
+      const center = fromLonLat([140.097, 37.856])
+      const zoom = 6
+      map.getView().setCenter(center)
+      map.getView().setZoom(zoom)
+    }
   }
   // マップ移動時イベント------------------------------------------------------------------------
   // store.state.base.maps.map01.on('moveend', moveEnd)
