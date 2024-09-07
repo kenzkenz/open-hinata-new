@@ -717,6 +717,30 @@ export function initMap (vm) {
             // console.log(document.querySelector('.modifytouch'))
         }
 
+        const contextmenu = new ContextMenu({
+            width: 170,
+            defaultItems: false, // defaultItems are (for now) Zoom In/Zoom Out
+            items: [
+                {
+                    text: '準備中',
+                    classname: 'some-style-class', // add some CSS rules
+                    // callback: center, // `center` is your callback function
+                },
+                {
+                    text: '準備中',
+                    classname: 'some-style-class', // you can add this icon with a CSS class
+                    // instead of `icon` property (see next line)
+                    // icon: 'img/marker.png', // this can be relative or absolute
+                    // callback: marker,
+                },
+                // '-', // this is a separator
+            ],
+        });
+        map.addControl(contextmenu)
+
+
+
+
         // ------------------------
         const drawEndFunction =  function (feature,interaction) {
             if (interaction !== 'point') store.state.base.toggleIdo = true
