@@ -1,8 +1,14 @@
 <template>
   <v-dialog :dialog="S_measureDialog" id="dialog-measure">
     <div :style="menuContentSize">
-      <b-form-checkbox style="margin-bottom: 10px;" v-model="s_toggleIdo" name="check-button" switch>
-        変形＆移動モード
+      <b-form-checkbox style="margin-bottom: 10px;" v-model="s_toggleText" name="check-button" switch>
+        テキスト
+      </b-form-checkbox>
+      <b-form-checkbox style="margin-bottom: 10px;position: absolute;top:0;margin-left:105px" v-model="s_toggleIdo" name="check-button" switch>
+        変形
+      </b-form-checkbox>
+      <b-form-checkbox style="margin-bottom: 10px;position: absolute;top:0;margin-left: 180px" v-model="s_toggleIdo2" name="check-button" switch>
+        移動,拡大
       </b-form-checkbox>
       <b-button :pressed.sync="s_togglePoint0" class='olbtn' :size="btnSize">点</b-button>
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleLine" class='olbtn' :size="btnSize">線</b-button>
@@ -94,7 +100,7 @@ export default {
   data () {
     return {
       address: '',
-      menuContentSize: {'height': 'auto','margin': '10px', 'overflow': 'auto', 'user-select': 'text'},
+      menuContentSize: {'height': 'auto','margin': '10px', 'overflow': 'auto', 'user-select': 'text', 'position': 'relative'},
       btnSize: 'sm',
       toggle: false,
       toggleCenter: true,
@@ -220,6 +226,14 @@ export default {
       },
       set(value) {
         this.$store.state.base.toggleIdo = value
+      }
+    },
+    s_toggleIdo2: {
+      get() {
+        return this.$store.state.base.toggleIdo2
+      },
+      set(value) {
+        this.$store.state.base.toggleIdo2 = value
       }
     },
   },
@@ -760,7 +774,7 @@ export default {
   mounted () {
 
     const dragHandle = document.querySelector('#dialog-measure .drag-handle');
-    dragHandle.innerHTML = ''
+    dragHandle.innerHTML = '<span style="color: blue;">テキストモード中</span>'
 
     this.$watch(function () {
       return [this.s_toggleIdo]
@@ -778,15 +792,17 @@ export default {
         this.toggleDelete = false
         this.toggleDanmen = false
         this.s_toggleHole = false
+        this.s_toggleIdo2 = false
+        this.s_toggleText = false
 
         MyMap.modifyInteraction.setActive(true)
         MyMap.modifyTouchInteraction.setActive(true)
-        MyMap.transformInteraction.setActive(true)
+        MyMap.transformInteraction.setActive(false)
 
-        dragHandle.innerHTML = '<span style="color: red;">変形&移動モード中</span>'
-        MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
+        dragHandle.innerHTML = '<span style="color: yellow;">変形モード中</span>'
+        // MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
         // this.$store.state.base.editFeature = null
-        MyMap.drawLayer.getSource().changed()
+        // MyMap.drawLayer.getSource().changed()
 
         MyMap.overlay['0'].setPosition(undefined)
       } else {
@@ -794,9 +810,9 @@ export default {
         console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
         MyMap.modifyInteraction.setActive(false)
         MyMap.modifyTouchInteraction.setActive(false)
-        MyMap.transformInteraction.setActive(false)
+        // MyMap.transformInteraction.setActive(false)
 
-        dragHandle.innerHTML = ''
+        // dragHandle.innerHTML = ''
 
         this.$store.state.base.drawEndFlg = false
 
@@ -804,9 +820,10 @@ export default {
       }
     })
     this.$watch(function () {
-      return [this.toggleDelete]
+      return [this.s_toggleIdo2]
     }, function () {
-      if (this.toggleDelete) {
+      if (this.s_toggleIdo2) {
+        console.log('on')
         this.s_togglePoint0 = false
         this.s_toggleLine = false
         this.s_toggleFreeHand = false
@@ -818,16 +835,74 @@ export default {
         this.toggleDelete = false
         this.toggleDanmen = false
         this.s_toggleHole = false
+        this.s_toggleIdo = false
+        this.s_toggleText = false
 
-        this.$store.state.base.maps['map01'].addInteraction(MyMap.selectInteraction)
-        MyMap.selectInteraction.on('select', function (e) {
-          const selectCollection = MyMap.selectInteraction.getFeatures();
-          MyMap.drawLayer.getSource().removeFeature(selectCollection.item(0))
-          //     e.target.getFeatures().getLength() +
-        });
+        MyMap.modifyInteraction.setActive(false)
+        MyMap.modifyTouchInteraction.setActive(false)
+        MyMap.transformInteraction.setActive(true)
+
+        dragHandle.innerHTML = '<span style="color: red;">移動,拡大モード中</span>'
+        MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
+        // this.$store.state.base.editFeature = null
+        MyMap.drawLayer.getSource().changed()
+
+        MyMap.overlay['0'].setPosition(undefined)
       } else {
         console.log('off')
-        this.$store.state.base.maps['map01'].removeInteraction(MyMap.selectInteraction)
+        console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
+        // MyMap.modifyInteraction.setActive(false)
+        // MyMap.modifyTouchInteraction.setActive(false)
+        // MyMap.transformInteraction.setActive(false)
+
+        // dragHandle.innerHTML = ''
+
+        this.$store.state.base.drawEndFlg = false
+
+        console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
+      }
+    })
+    this.$watch(function () {
+      return [this.s_toggleText]
+    }, function () {
+      if (this.s_toggleText) {
+        console.log('on')
+        // this.s_togglePoint0 = false
+        // this.s_toggleLine = false
+        // this.s_toggleFreeHand = false
+        // this.s_togglePoint = false
+        // this.s_toggleMenseki = false
+        // this.s_toggleCircle = false
+        // this.s_toggleDaen = false
+        // this.s_toggleShikaku = false
+        // this.toggleDelete = false
+        // this.toggleDanmen = false
+        // this.s_toggleHole = false
+        this.s_toggleIdo = false
+        this.s_toggleIdo2 = false
+
+        MyMap.modifyInteraction.setActive(false)
+        MyMap.modifyTouchInteraction.setActive(false)
+        MyMap.transformInteraction.setActive(false)
+
+        dragHandle.innerHTML = '<span style="color: blue;">テキストモード中</span>'
+        MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
+        // this.$store.state.base.editFeature = null
+        MyMap.drawLayer.getSource().changed()
+
+        MyMap.overlay['0'].setPosition(undefined)
+      } else {
+        console.log('off')
+        console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
+        // MyMap.modifyInteraction.setActive(false)
+        // MyMap.modifyTouchInteraction.setActive(false)
+        // MyMap.transformInteraction.setActive(false)
+
+        // dragHandle.innerHTML = ''
+
+        this.$store.state.base.drawEndFlg = false
+
+        console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
       }
     })
     this.$watch(function () {

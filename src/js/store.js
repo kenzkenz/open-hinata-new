@@ -113,6 +113,8 @@ const moduleBase = {
     toggleHole: false,
     toggle: false,
     toggleIdo: false,
+    toggleIdo2: false,
+    toggleText: true,
     toggleModify: false,
     // hyokozuDiv: {
     //   map01: {},
