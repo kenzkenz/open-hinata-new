@@ -8,7 +8,7 @@ import {Circle,LineString,Polygon,Point} from "ol/geom";
 import Feature from "ol/Feature";
 import OLCesium from "ol-cesium";
 import * as layers from "@/js/layers";
-import {drawLayer} from "../js/mymap";
+import {drawLayer, undoInteraction} from "../js/mymap";
 import {fromLonLat} from "ol/proj";
 export function permalinkEventSet (response) {
   // 起動時の処理------------------------------------------------------------------------------
@@ -76,13 +76,17 @@ export function permalinkEventSet (response) {
       const center3857 = transform(center, 'EPSG:4326', 'EPSG:3857')
       map.getView().setCenter(center3857)
       map.getView().setZoom(parts[0])
-    } else if (localStorage.getItem('startPositionCoord'))  {
+    } else if (localStorage.getItem('startPositionCoord')) {
       console.log(localStorage.getItem('startPositionCoord'))
       const coordSplit = localStorage.getItem('startPositionCoord').split(',')
-
       const center = [parseFloat(coordSplit[0]), parseFloat(coordSplit[1])]
       const zoom = localStorage.getItem('startPositionZoom')
       console.log(zoom)
+      map.getView().setCenter(center)
+      map.getView().setZoom(zoom)
+    } else {
+      const center = fromLonLat([140.097, 37.856])
+      const zoom = 6
       map.getView().setCenter(center)
       map.getView().setZoom(zoom)
     }
@@ -206,7 +210,9 @@ export function permalinkEventSet (response) {
       if (key === 'GJ') {
 
         // console.log(decodeURIComponent(obj[key]))
-
+        MyMap.undoInteraction.blockStart()
+        document.querySelector('#' + 'map01' + ' .ol-viewport').style.cursor = "wait"
+        console.log(document.querySelector('#' + 'map01'  + ' .ol-viewport'))
         const features = new GeoJSON({
           dataProjection: "EPSG:4326",
           featureProjection: "EPSG:3857",
@@ -231,13 +237,9 @@ export function permalinkEventSet (response) {
             moveEnd()
           }
         })
-
+        document.querySelector('#' + 'map01' + ' .ol-viewport').style.cursor = "default"
         MyMap.undoInteraction.blockEnd()
 
-
-
-
-        MyMap.undoInteraction.blockEnd()
 
 
         // const geojson = JSON.parse(decodeURIComponent(obj[key]))

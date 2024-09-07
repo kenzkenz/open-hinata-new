@@ -2,8 +2,10 @@
   <v-dialog :dialog="s_dialogGeojson" id="dialog-geojson">
     <div :style="contentSize">
       <b-button style="margin-top: 5px; margin-left: 0px;margin-bottom: 5px;" class='olbtn' size="sm" @click="hanei">反映</b-button>
+      <b-button style="margin-top: 5px; margin-left: 5px;margin-bottom: 5px;" class='olbtn' size="sm" @click="undo">戻す</b-button>
+      <b-button style="margin-top: 5px; margin-left: 5px;margin-bottom: 5px;" class='olbtn' size="sm" @click="redo">やり直し</b-button>
 
-      <prism-editor style="color: white!important;" class="my-editor height-200" v-model="s_tGeojson" :highlight="highlighter" line-numbers></prism-editor>
+      <prism-editor :style="maxHeight" class="my-editor height-200" v-model="s_tGeojson" :highlight="highlighter" line-numbers></prism-editor>
     </div>
   </v-dialog>
 </template>
@@ -28,6 +30,7 @@ export default {
   data () {
     return {
       contentSize: {'height': '100%', 'width': 'auto', 'margin': '5px', 'overflow': 'hidden', 'user-select': 'text'},
+      maxHeight: {'max-height':'600px'},
     }
   },
   components: {
@@ -47,6 +50,12 @@ export default {
     },
   },
   methods: {
+    undo () {
+      MyMap.undoInteraction.undo()
+    },
+    redo () {
+      MyMap.undoInteraction.redo()
+    },
     hanei () {
       try {
         const features = new GeoJSON({
@@ -72,16 +81,9 @@ export default {
     upLoad(){
       document.getElementById("my_form_input").click();
     },
-    changeName(e) {
-      const feature = this.$store.state.base.editFeature
-      feature.setProperties({name: this.$store.state.base.editFeatureName})
-      feature.setProperties({setumei: this.$store.state.base.editFeatureSetumei})
-      document.querySelector('#drawLayer2-name').innerHTML = this.$store.state.base.editFeatureName
-      document.querySelector('#drawLayer2-setumei').innerHTML = this.$store.state.base.editFeatureSetumei
-      moveEnd()
-    },
   },
   mounted () {
+    this.maxHeight["max-height"] = (window.innerHeight - 200) + 'px'
     console.log(this.$store.state.base.editFeatureColor)
   }
 }
@@ -101,7 +103,7 @@ export default {
   font-size: 14px;
   line-height: 1.5;
   padding: 5px;
-  max-height: 600px;
+  /*max-height: 600px;*/
   min-width: 500px;
 }
 @media screen and (max-width:400px) {

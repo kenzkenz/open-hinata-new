@@ -4,7 +4,7 @@
       <b-form-checkbox style="margin-bottom: 10px;" v-model="s_toggleText" name="check-button" switch>
         選択
       </b-form-checkbox>
-      <b-form-checkbox style="margin-bottom: 10px;position: absolute;top:0;margin-left:105px" v-model="s_toggleIdo" name="check-button" switch>
+      <b-form-checkbox style="margin-bottom: 10px;position: absolute;top:0;margin-left:90px" v-model="s_toggleIdo" name="check-button" switch>
         変形
       </b-form-checkbox>
       <b-form-checkbox style="margin-bottom: 10px;position: absolute;top:0;margin-left: 180px" v-model="s_toggleIdo2" name="check-button" switch>
@@ -256,14 +256,6 @@ export default {
       this.s_toggleIdo = false
     },
     openDialog2 () {
-
-      // console.log(this.$store.state.base.maps['map01'].getView())
-      // console.log(MyMap.drawLayer.getSource().getExtent())
-      // let ex = [14624845, 3749453, 14624846, 3749454]
-      // // this.$store.state.base.maps['map01'].setView()
-      // ex = MyMap.drawLayer.getSource().getExtent()
-      // this.$store.state.base.maps['map01'].getView().fit(ex)
-
       const tGeojson = new GeoJSON().writeFeatures(MyMap.drawLayer.getSource().getFeatures(), {
         featureProjection: "EPSG:3857"
       })
@@ -811,7 +803,7 @@ export default {
         // MyMap.drawLayer.getSource().changed()
 
         MyMap.overlay['0'].setPosition(undefined)
-        store.state.base.editFeature = null
+        // store.state.base.editFeature = null
         MyMap.drawLayer.getSource().changed()
       } else {
         console.log('off')
@@ -857,7 +849,7 @@ export default {
 
         MyMap.overlay['0'].setPosition(undefined)
         MyMap.overlay['0'].setPosition(undefined)
-        store.state.base.editFeature = null
+        // store.state.base.editFeature = null
         MyMap.drawLayer.getSource().changed()
       } else {
         console.log('off')

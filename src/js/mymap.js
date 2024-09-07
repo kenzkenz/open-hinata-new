@@ -49,6 +49,7 @@ import {Heatmap} from 'ol/layer'
 import DrawHole from 'ol-ext/interaction/DrawHole'
 import ModifyTouch from 'ol-ext/interaction/ModifyTouch'
 import {ZoomToExtent, defaults as defaultControls} from 'ol/control.js';
+import {getType} from "@turf/turf";
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
     let zoom = 0;
@@ -110,6 +111,7 @@ function drawLayerStylefunction (){
         let fillColor
         let polygonStrokeWidth = 1
         let pointStrokeWidth = 1
+        let polygonStrokeColor = 'black'
 
         if (prop._color) {
             color = prop._color
@@ -136,31 +138,36 @@ function drawLayerStylefunction (){
         if (feature === store.state.base.editFeature) {
             // fillColor = 'rgba(255,165,0,0.5)'
             polygonStrokeWidth = 4
+            polygonStrokeColor = 'blue'
+        }
+        if (store.state.base.toggleIdo) {
+            polygonStrokeColor = 'rgb(255,255,0)'
+            polygonStrokeWidth = 4
         }
         const styles = []
         const pointStyle = new Style({
-            // image: new Icon({
-            //     src: require('@/assets/icon/whitecircle.png'),
-            //     color: color,
-            //     scale: 1.5
-            // })
-            image: new Circle0({
-              radius: 8,
-              fill: new Fill({
-                color: color
-              }),
-              stroke: new Stroke({
-                color: "black",
-                width: pointStrokeWidth
-              })
-            }),
+            image: new Icon({
+                src: require('@/assets/icon/whitecircle.png'),
+                color: color,
+                scale: 1.5
+            })
+            // image: new Circle0({
+            //   radius: 8,
+            //   fill: new Fill({
+            //     color: color
+            //   }),
+            //   stroke: new Stroke({
+            //     color: "black",
+            //     width: pointStrokeWidth
+            //   })
+            // }),
         })
         const polygonStyle = new Style({
             fill: new Fill({
                 color: fillColor
             }),
             stroke: new Stroke({
-                color: "black",
+                color: polygonStrokeColor,
                 width: polygonStrokeWidth
             }),
             // zIndex: 0
@@ -415,13 +422,12 @@ danmenInteraction.on('drawend', function (event) {
     history ('断面図')
 })
 
-modifyInteraction.on('modifyend', function (event) {
+modifyTouchInteraction.on('modifyend', function (event) {
     const feature = event.features.array_[0]
     const coordAr = event.features.array_[0].getGeometry().getCoordinates()
     const geoType = event.features.array_[0].getGeometry().getType()
     measure (geoType,feature,coordAr)
     moveEnd()
-    // if (store.state.base.drawType === 'danmen') danmen(feature)
 })
 
 drawLayer.getSource().on("change", function(e) {
@@ -715,31 +721,119 @@ export function initMap (vm) {
             // })
             // map.addInteraction(modifyTouchInteraction)
             // console.log(document.querySelector('.modifytouch'))
+
+            const point = function () {
+                store.state.base.togglePoint0 = true
+            }
+            const polygon = function () {
+                store.state.base.toggleMenseki = true
+            }
+            const lineString = function () {
+                store.state.base.toggleLine = true
+            }
+            const circle = function () {
+                store.state.base.toggleCircle = true
+            }
+            const deleteFeature = function () {
+                store.state.base.toggleText = true
+                if (!store.state.base.editFeature) {
+                    alert('選択されていません。')
+                    store.state.base.toggleText = true
+                }
+                drawLayer.getSource().removeFeature(store.state.base.editFeature)
+                const tFeatures = transformInteraction.getFeatures().array_
+                tFeatures.forEach((feature) => {
+                    drawLayer.getSource().removeFeature(feature)
+                })
+                overlay['0'].setPosition(undefined)
+                moveEnd()
+            }
+            const undo = function () {
+                undoInteraction.undo()
+            }
+            const contextmenu = new ContextMenu({
+                width: 170,
+                defaultItems: false, // defaultItems are (for now) Zoom In/Zoom Out
+                items: [
+                    {
+                        text: '点',
+                        classname: 'some-style-class', // add some CSS rules
+                        callback: point
+                    },
+                    {
+                        text: 'ポリゴン',
+                        classname: 'some-style-class', // you can add this icon with a CSS class
+                        // instead of `icon` property (see next line)
+                        // icon: 'img/marker.png', // this can be relative or absolute
+                        callback: polygon
+                    },
+                    // '-', // this is a separator
+                    {
+                        text: '線',
+                        callback: lineString
+                    },
+                    {
+                        text: '円',
+                        callback: circle
+                    },
+                    {
+                        text: '削除',
+                        callback: deleteFeature
+                    },
+                    {
+                        text: '戻す',
+                        callback: undo
+                    },
+                ],
+            });
+            map.addControl(contextmenu)
+            contextmenu.on('open', function (evt) {
+                const feature = map.forEachFeatureAtPixel(evt.pixel,
+                    function (feature) {
+                        return feature
+                    })
+                const layerNames = map.forEachFeatureAtPixel(evt.pixel,
+                    function (feature,layer) {
+                        if (layer) return  layer.get('name')
+                    })
+                if (layerNames) {
+                    if (layerNames.indexOf('drawLayer') !== -1 ) {
+                        // store.state.base.toggleIdo = false
+                        if (store.state.base.toggleText) {
+                            // store.state.base.toggleIdo = true
+                            store.commit('base/incrDialogMaxZindex')
+                            store.state.base.dialogs.measureDialog.style["z-index"] = this.s_dialogMaxZindex
+                            store.state.base.dialogs.measureDialog.style.display = 'block'
+                            if (!store.state.base.toggleIdo) {
+                                store.state.base.editFeature = feature
+                            } else {
+                                store.state.base.editFeature = transformInteraction.getFeatures().array_[0]
+                            }
+                            drawLayer.getSource().changed()
+                        } else {
+                            // store.state.base.editFeature = null
+                            // drawLayer.getSource().changed()
+                        }
+                    } else if (layerNames.indexOf('syochiki2020') !== -1) {
+                        store.state.base.clickedFeature = feature.getProperties().KEY_CODE
+                        syochiiki2020MvtObj['map01'].getSource().changed()
+                        syochiiki2020MvtObj['map02'].getSource().changed()
+                    } else {
+                        store.state.base.editFeature = ''
+                        drawLayer.getSource().changed()
+                        store.state.base.clickedFeature = ''
+                        syochiiki2020MvtObj['map01'].getSource().changed()
+                        syochiiki2020MvtObj['map02'].getSource().changed()
+                    }
+                } else {
+                    store.state.base.editFeature = ''
+                    drawLayer.getSource().changed()
+                    store.state.base.clickedFeature = ''
+                    syochiiki2020MvtObj['map01'].getSource().changed()
+                    syochiiki2020MvtObj['map02'].getSource().changed()
+                }
+            })
         }
-
-        const contextmenu = new ContextMenu({
-            width: 170,
-            defaultItems: false, // defaultItems are (for now) Zoom In/Zoom Out
-            items: [
-                {
-                    text: '準備中',
-                    classname: 'some-style-class', // add some CSS rules
-                    // callback: center, // `center` is your callback function
-                },
-                {
-                    text: '準備中',
-                    classname: 'some-style-class', // you can add this icon with a CSS class
-                    // instead of `icon` property (see next line)
-                    // icon: 'img/marker.png', // this can be relative or absolute
-                    // callback: marker,
-                },
-                // '-', // this is a separator
-            ],
-        });
-        map.addControl(contextmenu)
-
-
-
 
         // ------------------------
         const drawEndFunction =  function (feature,interaction) {
@@ -754,12 +848,7 @@ export function initMap (vm) {
                     feature.setProperties({_fillColor: rgba})
                 }
             }
-            // const tGeojson = new GeoJSON().writeFeatures(drawLayer.getSource().getFeatures(), {
-            //     featureProjection: "EPSG:3857"
-            // })
-            // // console.log(JSON.stringify(JSON.parse(tGeojson),null,2))
-            // store.state.base.tGeojson = JSON.stringify(JSON.parse(tGeojson),null,2)
-            // store.state.base.drawEndFlg = true
+            // store.state.base.editFeature =
             moveEnd()
         }
 
@@ -1054,7 +1143,56 @@ export function initMap (vm) {
         // コントロール追加ここまで----------------------------------------------------------------------
 
         // イベント追加---------------------------------------------------------------
-
+        // drawLayerのポイントのインタラクションの制御
+        map.on("pointermove",function(evt){
+            const pixel = (evt.map).getPixelFromCoordinate(evt.coordinate)
+            const features = []
+            const layers = []
+            evt.map.forEachFeatureAtPixel(pixel,function(feature,layer){
+                features.push(feature)
+                layers.push(layer)
+            })
+            if (store.state.base.toggleIdo) {
+                if (features.length > 0) {
+                    try {
+                        if (features[0].getGeometry().getType() === 'Point' && layers[0].get('name') === 'drawLayer') {
+                            if (modifyTouchInteraction.getActive()) {
+                                modifyTouchInteraction.setActive(false)
+                                modifyInteraction.setActive(false)
+                            }
+                        } else {
+                            if (store.state.base.toggleIdo) {
+                                if (!modifyTouchInteraction.getActive()) {
+                                    modifyTouchInteraction.setActive(true)
+                                    modifyInteraction.setActive(true)
+                                }
+                            }
+                        }
+                    } catch (e) {
+                    }
+                }
+            }
+            if (store.state.base.toggleIdo2) {
+                if (features.length > 0) {
+                    try {
+                        if (features[0].getGeometry().getType() === 'Point' && layers[0].get('name') === 'drawLayer') {
+                            if (transformInteraction.getActive()) {
+                                modifyInteraction.setActive(true)
+                            }
+                        } else {
+                            if (store.state.base.toggleIdo2) {
+                                if (!transformInteraction.getActive()) {
+                                    transformInteraction.setActive(true)
+                                }
+                                modifyInteraction.setActive(false)
+                            }
+                        }
+                    } catch (e) {
+                        // modifyInteraction.setActive(false)
+                    }
+                }
+            }
+        })
         // フィーチャーにマウスがあたったとき
         map.on("pointermove",function(evt){
 
@@ -1694,11 +1832,8 @@ export function initMap (vm) {
                 }
             })
         }
-
         // ------------------------------------------------------------
-
         map.on('singleclick', function (evt) {
-
             const feature = map.forEachFeatureAtPixel(evt.pixel,
                 function (feature) {
                     return feature
@@ -1711,9 +1846,7 @@ export function initMap (vm) {
                 })
             if (layerNames) {
                 if (layerNames.indexOf('drawLayer') !== -1 ) {
-
                     // store.state.base.toggleIdo = false
-
                     if (store.state.base.toggleText) {
                          // store.state.base.toggleIdo = true
                          store.commit('base/incrDialogMaxZindex')
@@ -1727,8 +1860,8 @@ export function initMap (vm) {
                          console.log(store.state.base.editFeature)
                          drawLayer.getSource().changed()
                      } else {
-                         store.state.base.editFeature = null
-                         drawLayer.getSource().changed()
+                         // store.state.base.editFeature = null
+                         // drawLayer.getSource().changed()
                      }
                 } else if (layerNames.indexOf('syochiki2020') !== -1) {
                     console.log(feature.getProperties().KEY_CODE)
