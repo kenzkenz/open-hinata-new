@@ -2,7 +2,7 @@
   <v-dialog :dialog="S_measureDialog" id="dialog-measure">
     <div :style="menuContentSize">
       <b-form-checkbox style="margin-bottom: 10px;" v-model="s_toggleText" name="check-button" switch>
-        テキスト
+        選択
       </b-form-checkbox>
       <b-form-checkbox style="margin-bottom: 10px;position: absolute;top:0;margin-left:105px" v-model="s_toggleIdo" name="check-button" switch>
         変形
@@ -735,6 +735,12 @@ export default {
       this.toggleDelete = false
       this.toggleDanmen = false
 
+      if (!store.state.base.editFeature) {
+        alert('選択されていません。')
+        this.s_toggleText = true
+      }
+
+
       drawLayer.getSource().removeFeature(store.state.base.editFeature)
       const tFeatures = MyMap.transformInteraction.getFeatures().array_
       tFeatures.forEach((feature) => {
@@ -774,7 +780,7 @@ export default {
   mounted () {
 
     const dragHandle = document.querySelector('#dialog-measure .drag-handle');
-    dragHandle.innerHTML = '<span style="color: blue;">テキストモード中</span>'
+    dragHandle.innerHTML = '<span style="color: blue;">選択モード中</span>'
 
     this.$watch(function () {
       return [this.s_toggleIdo]
@@ -805,6 +811,8 @@ export default {
         // MyMap.drawLayer.getSource().changed()
 
         MyMap.overlay['0'].setPosition(undefined)
+        store.state.base.editFeature = null
+        MyMap.drawLayer.getSource().changed()
       } else {
         console.log('off')
         console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
@@ -848,6 +856,9 @@ export default {
         MyMap.drawLayer.getSource().changed()
 
         MyMap.overlay['0'].setPosition(undefined)
+        MyMap.overlay['0'].setPosition(undefined)
+        store.state.base.editFeature = null
+        MyMap.drawLayer.getSource().changed()
       } else {
         console.log('off')
         console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
@@ -885,7 +896,7 @@ export default {
         MyMap.modifyTouchInteraction.setActive(false)
         MyMap.transformInteraction.setActive(false)
 
-        dragHandle.innerHTML = '<span style="color: blue;">テキストモード中</span>'
+        dragHandle.innerHTML = '<span style="color: blue;">選択モード中</span>'
         MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
         // this.$store.state.base.editFeature = null
         MyMap.drawLayer.getSource().changed()

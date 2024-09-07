@@ -1033,6 +1033,11 @@ export function initMap (vm) {
 
         // フィーチャーにマウスがあたったとき
         map.on("pointermove",function(evt){
+
+            // console.log(evt)
+
+
+
             //少しでも処理を早めるためにMw5レイヤーがあったら抜ける。-----------
             // const layers00 = evt.map.getLayers().getArray();
             // let mw5 = layers00.find(el => el.get('mw'));
@@ -1682,17 +1687,25 @@ export function initMap (vm) {
                 })
             if (layerNames) {
                 if (layerNames.indexOf('drawLayer') !== -1 ) {
-                    // store.state.base.toggleIdo = true
-                    store.commit('base/incrDialogMaxZindex')
-                    store.state.base.dialogs.measureDialog.style["z-index"] = this.s_dialogMaxZindex
-                    store.state.base.dialogs.measureDialog.style.display = 'block'
-                    if (!store.state.base.toggleIdo) {
-                        store.state.base.editFeature = feature
-                    } else {
-                        store.state.base.editFeature = transformInteraction.getFeatures().array_[0]
-                    }
-                    console.log(store.state.base.editFeature)
-                    drawLayer.getSource().changed()
+
+                    // store.state.base.toggleIdo = false
+
+                    if (store.state.base.toggleText) {
+                         // store.state.base.toggleIdo = true
+                         store.commit('base/incrDialogMaxZindex')
+                         store.state.base.dialogs.measureDialog.style["z-index"] = this.s_dialogMaxZindex
+                         store.state.base.dialogs.measureDialog.style.display = 'block'
+                         if (!store.state.base.toggleIdo) {
+                             store.state.base.editFeature = feature
+                         } else {
+                             store.state.base.editFeature = transformInteraction.getFeatures().array_[0]
+                         }
+                         console.log(store.state.base.editFeature)
+                         drawLayer.getSource().changed()
+                     } else {
+                         store.state.base.editFeature = null
+                         drawLayer.getSource().changed()
+                     }
                 } else if (layerNames.indexOf('syochiki2020') !== -1) {
                     console.log(feature.getProperties().KEY_CODE)
                     store.state.base.clickedFeature = feature.getProperties().KEY_CODE

@@ -1129,41 +1129,43 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
         case 'drawLayer':
         case 'heatmap':
           console.log(store.state.base.drawEndFlg)
-          if (store.state.base.drawEndFlg === true) {
-            store.state.base.drawEndFlg = false
-          } else {
-            if (cont.indexOf('draw-layer') === -1) {
-              if (features0.length >= 1) {
-                let block = 'block'
-                if (prop.src) {
-                  block = 'block'
-                } else {
-                  block = 'none'
-                }
-                console.log(prop.description)
-                let cont2 = ''
-                Object.keys(prop).forEach(function(key) {
-                  if (key !== 'geometry') {
-                    if (key !== 'distance' && key !== 'name'
-                        && key !== 'description' && key !== 'src'
-                        && key !== 'center' && key !== 'radius') {
-                      if (key.slice(0, 1) !== '_') {
-                        cont2 += key + '=' + prop[key] + '<br>'
+          if (store.state.base.toggleText) {
+            if (store.state.base.drawEndFlg === true) {
+              store.state.base.drawEndFlg = false
+            } else {
+              if (cont.indexOf('draw-layer') === -1) {
+                if (features0.length >= 1) {
+                  let block = 'block'
+                  if (prop.src) {
+                    block = 'block'
+                  } else {
+                    block = 'none'
+                  }
+                  console.log(prop.description)
+                  let cont2 = ''
+                  Object.keys(prop).forEach(function(key) {
+                    if (key !== 'geometry') {
+                      if (key !== 'distance' && key !== 'name'
+                          && key !== 'description' && key !== 'src'
+                          && key !== 'center' && key !== 'radius') {
+                        if (key.slice(0, 1) !== '_') {
+                          cont2 += key + '=' + prop[key] + '<br>'
+                        }
                       }
                     }
-                  }
-                })
-                cont += '<div class="draw-layer" style=width:300px;>' +
-                    '<h4 id="drawLayer2-name">' + ru(prop.name) + '</h4>' +
-                    '<span id="drawLayer2-setumei">' + ru(prop.description) + '</span>' +
-                    cont2 +
-                    '<a style="display: ' + block + '" id="drawLayer2-href" href="' + prop.src + '" target="_blank" ><img id="drawLayer2-src" src="' + prop.src + '" style="object-fit: cover;width: 300px;"></a><br>' +
-                    '</div><hr>'
-                store.state.base.editFeature = features[0]
-                store.state.base.editFeatureName = features[0].getProperties().name
-                store.state.base.editFeatureSetumei = features[0].getProperties().description
-                store.state.base.editFeatureSrc = features[0].getProperties().src
+                  })
+                  cont += '<div class="draw-layer" style=width:300px;>' +
+                      '<h4 id="drawLayer2-name">' + ru(prop.name) + '</h4>' +
+                      '<span id="drawLayer2-setumei">' + ru(prop.description) + '</span>' +
+                      cont2 +
+                      '<a style="display: ' + block + '" id="drawLayer2-href" href="' + prop.src + '" target="_blank" ><img id="drawLayer2-src" src="' + prop.src + '" style="object-fit: cover;width: 300px;"></a><br>' +
+                      '</div><hr>'
+                  store.state.base.editFeature = features[0]
+                  store.state.base.editFeatureName = features[0].getProperties().name
+                  store.state.base.editFeatureSetumei = features[0].getProperties().description
+                  store.state.base.editFeatureSrc = features[0].getProperties().src
 
+                }
               }
             }
           }
