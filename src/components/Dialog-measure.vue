@@ -676,10 +676,10 @@ export default {
         alert('選択されていません。')
         return
       }
-      // if (targetFeature.getGeometry().getType() !== 'LineString' && targetFeature.getGeometry().getType() !== 'Polygon') {
-      //   alert('線又はポリゴンではありません。')
-      //   return
-      // }
+      if (targetFeature.getGeometry().getType() !== 'LineString' && targetFeature.getGeometry().getType() !== 'MultiLineString' && targetFeature.getGeometry().getType() !== 'Polygon') {
+        alert('線又はポリゴンではありません。')
+        return
+      }
       const fiatureGeojson = new GeoJSON().writeFeatures([targetFeature], {
         featureProjection: "EPSG:3857"
       })
@@ -698,15 +698,22 @@ export default {
         const lineString = new LineString(coordinates)
         newFeature = new Feature(lineString)
       } else if (targetFeature.getGeometry().getType() === 'MultiLineString') {
-          // sinpleFeature.geometry.coordinates.forEach((coord) => {
-          //   coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
-          // })
-          const multiLineString = new MultiLineString(coordinates)
-          newFeature = new Feature(multiLineString)
+        sinpleFeature.geometry.coordinates.forEach((coords,i) => {
+          coordinates.push([])
+          coords.forEach((coord) => {
+            coordinates[i].push(transform(coord, "EPSG:4326", "EPSG:3857"))
+          })
+        })
+        const multiLineString = new MultiLineString(coordinates)
+        newFeature = new Feature(multiLineString)
       } else {
         sinpleFeature.geometry.coordinates[0].forEach((coord) => {
           polygonCoordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
         })
+        sinpleFeature.geometry.coordinates[0].forEach((coord) => {
+          polygonCoordinates.push(coord)
+        })
+        console.log(polygonCoordinates)
         const polygon = new Polygon([polygonCoordinates])
         newFeature = new Feature(polygon)
       }
@@ -756,6 +763,11 @@ export default {
       a.click()
     },
     saveGpx () {
+
+
+      // this.$store.state.base.tGeojson
+
+
       const features = drawLayer.getSource().getFeatures()
       const drawSourceGpx = new GPX().writeFeatures(features, {
         featureProjection: "EPSG:3857"
