@@ -246,7 +246,6 @@ function drawLayerStylefunction (){
                 stroke: new Stroke({ width:2, color:'red' })
             })
         })
-        console.log(feature.getGeometry())
         const firstLastPoint = new Style({
             image: new RegularShape({ radius: 4, points:4, fill: new Fill({ color: '#f00' }) }),
             geometry: new MultiPoint(
