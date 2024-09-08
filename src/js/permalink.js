@@ -224,14 +224,13 @@ export function permalinkEventSet (response) {
         MyMap.drawLayer.getSource().getFeatures().forEach((feature) =>{
           if (feature.getGeometry().getType() === 'GeometryCollection') {
             drawLayer.getSource().removeFeature(feature)
-            const distance = feature.getProperties().distance
             const circle = new Circle(feature.get('center'), feature.get('radius'));
             const newFeature = new Feature(circle);
             newFeature.setProperties({
-              distance: distance,
+              _distance: feature.getProperties()._distance,
               name: feature.getProperties().name,
               setumei: feature.getProperties().setumei,
-              _fillColor: feature.getProperties()._fillColor
+              _fillColor: feature.getProperties()._fillColor,
             })
             drawLayer.getSource().addFeature(newFeature)
             moveEnd()

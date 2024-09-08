@@ -110,9 +110,9 @@ export default {
           // this.$store.state.base.editFeatureColor = rgba
           const feature = this.$store.state.base.editFeature
           const geoType = feature.getGeometry().getType()
-          if (!feature.getProperties()._fillColor) {
-            feature.setProperties({_fillColor: 'rgba(0,0,255,0.5)'})
-          }
+          // if (!feature.getProperties()._fillColor) {
+          //   feature.setProperties({_fillColor: 'rgba(0,0,255,0.5)'})
+          // }
           const before = {
             prop: feature.getProperties(),
             feature: feature

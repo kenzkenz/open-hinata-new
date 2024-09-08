@@ -144,6 +144,10 @@ function drawLayerStylefunction (){
             polygonStrokeColor = 'rgb(255,255,0)'
             polygonStrokeWidth = 4
         }
+        if (prop._voronoi) {
+            polygonStrokeColor = 'black'
+            polygonStrokeWidth = 2
+        }
         const styles = []
         const pointStyle = new Style({
             image: new Icon({
@@ -178,19 +182,27 @@ function drawLayerStylefunction (){
                 width:4
             })
         })
+        let target
+        console.log(geoType)
+        if (geoType === 'LineString' || geoType === 'Circle') {
+            target = '_distance'
+        } else if (geoType === 'Polygon'){
+            target = '_area'
+        }
         if (prop.name) {
-            if (!prop.distance || !store.state.base.drawMeasure) {
+            if (!prop[target] || !store.state.base.drawMeasure) {
                 text = prop.name
             } else {
-                text = prop.name + '\n' + prop.distance
+                text = prop.name + '\n' + prop[target]
             }
         } else {
-            if (!prop.distance || !store.state.base.drawMeasure) {
+            if (!prop[target] || !store.state.base.drawMeasure) {
                 text = prop.name
             } else {
-                text = prop.distance
+                text = prop[target]
             }
         }
+
         let textAlign = ''
         let offsetX = 0
         let offsetY = 0
@@ -303,7 +315,7 @@ export function measure (geoType,feature,coordAr) {
             tDistance = (tDistance * 1000).toFixed(2) + 'm'
         }
         // console.log(tDistance2)
-        feature.setProperties({distance: tDistance})
+        feature.setProperties({_distance: tDistance})
         return {'tDistance':tDistance,'tDistance2':tDistance2}
     } else if (geoType === 'Polygon') {
         let tPolygon = turf.polygon(coordAr)
@@ -316,7 +328,7 @@ export function measure (geoType,feature,coordAr) {
             // tArea = String((Math.floor(tArea/1000000*100)/100)) + "km2"
             tArea = (tArea / 1000000).toFixed(2) + "km2"
         }
-        feature.setProperties({distance: tArea})
+        feature.setProperties({_area: tArea})
     } else if (geoType === 'Circle') {
         const extent = feature.getGeometry().getExtent()
         const fromCoord = turf.point(turf.toWgs84([extent[0],extent[1]]))
@@ -327,7 +339,7 @@ export function measure (geoType,feature,coordAr) {
         } else {
             distance = '半径' + (distance * 1000).toFixed(2) + 'm'
         }
-        feature.setProperties({distance: distance})
+        feature.setProperties({_distance: distance})
     }
 }
 
@@ -439,10 +451,11 @@ drawLayer.getSource().on("change", function(e) {
     history ('ドロー')
 })
 pointInteraction.on('drawend', function (event) {
-    const feature = event.feature;
-    const coordAr = feature.getGeometry().getCoordinates()
-    const geoType = feature.getGeometry().getType()
-    measure (geoType,feature,coordAr)
+    // const feature = event.feature;
+    // const coordAr = feature.getGeometry().getCoordinates()
+    // const geoType = feature.getGeometry().getType()
+    // measure (geoType,feature,coordAr)
+    event.feature.setProperties({name:''})
     moveEnd()
 })
 lineInteraction.on('drawend', function (event) {
@@ -1039,13 +1052,19 @@ export function initMap (vm) {
                         })
                         const multiPolygon = new MultiPolygon(coordinates)
                         newFeature = new Feature(multiPolygon)
+                    } else if (row.geoType === 'GeometryCollection') {
+                        console.log(row.center, row.radius)
+                        const circle = new Circle(JSON.parse(row.center), Number(row.radius))
+                        newFeature = new Feature(circle)
+
                     }
                     newFeature.setProperties({
                             'name': row.名称,
                             'description': row.説明,
                             '_color': row.色,
                             '_fillColor': row.塗りつぶし色,
-                            'distance': row.距離,
+                            '_distance': row.距離,
+                            '_area': row.面積,
                         }
                     )
                     drawLayer.getSource().addFeature(newFeature)
@@ -1087,14 +1106,14 @@ export function initMap (vm) {
                 drawLayer.getSource().getFeatures().forEach((feature) =>{
                     if (feature.getGeometry().getType() === 'GeometryCollection') {
                         drawLayer.getSource().removeFeature(feature)
-                        const distance = feature.getProperties().distance
                         const circle = new Circle(feature.get('center'), feature.get('radius'));
                         const newFeature = new Feature(circle);
                         newFeature.setProperties({
-                            distance: distance,
                             name: feature.getProperties().name,
                             setumei: feature.getProperties().setumei,
-                            _fillColor: feature.getProperties()._fillColor
+                            _fillColor: feature.getProperties()._fillColor,
+                            _distance: feature.getProperties()._distance,
+                            _area: feature.getProperties()._area
                         })
                         drawLayer.getSource().addFeature(newFeature)
                         moveEnd()

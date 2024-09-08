@@ -63,10 +63,16 @@
       </div>
 
       <hr>
-      <b-button style="margin-top: 5px;" class='olbtn' :size="btnSize" @click="saveGeojson">geojson保存</b-button>
-      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveGpx">GPX保存</b-button>
-      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveKml">kml保存</b-button>
-      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveCsv">csv保存</b-button>
+      <b-button style="margin-top: 5px;" class='olbtn' :size="btnSize" @click="saveGeojson">geojson</b-button>
+      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveGpx">GPX</b-button>
+      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveKml">kml</b-button>
+      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveCsv">csv</b-button>
+
+      <form id="load_form" style="display: none">
+        <input id="load_form_input" type="file" name="file_" accept=".geojson,.kml,.gpx,.csv" @change="file_upload()">
+      </form>
+      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' size="sm" @click="upLoad">読み込み</b-button>
+
 
       <a id="download" download="draw.geojson"></a>
       <a id="download-gpx" download="draw.gpx"></a>
@@ -88,10 +94,12 @@ import * as permalink from "@/js/permalink";
 import store from "@/js/store";
 import * as turf from '@turf/turf';
 import {transform} from "ol/proj";
-import {LineString, Point, Polygon} from "ol/geom";
+import {Circle, LineString, MultiPolygon, Point, Polygon} from "ol/geom";
 import Feature from "ol/Feature";
 import {measure, modifyTouchInteraction} from "../js/mymap";
 import * as d3 from "d3";
+import {parse} from 'csv-parse/lib/sync'
+
 
 export default {
   name: "dialog-measure",
@@ -238,6 +246,141 @@ export default {
     },
   },
   methods: {
+    upLoad(){
+      document.getElementById("load_form_input").click();
+    },
+    file_upload() {
+      const vm = this
+      document.querySelector('#map01 .loadingImg').style.display = 'block'
+      const [file] = document.getElementById("load_form_input").files
+      const extension = file.name.split('.')[1]
+      const reader = new FileReader()
+      reader.addEventListener(
+          "load",
+          () => {
+            aaa(extension,reader.result)
+          },
+          false,
+      )
+      if (file) {
+        reader.readAsText(file);
+      }
+
+      function aaa (extension,text) {
+        let features = []
+        if (extension === 'geojson') {
+          features = new GeoJSON({
+            dataProjection: "EPSG:4326",
+            featureProjection: "EPSG:3857",
+          }).readFeatures(JSON.parse(text))
+          MyMap.undoInteraction.blockStart()
+          MyMap.drawLayer.getSource().clear()
+          MyMap.drawLayer.getSource().addFeatures(features)
+        } else if (extension === 'kml') {
+          features = new KML({
+          }).readFeatures(text,{
+            dataProjection: "EPSG:4326",
+            featureProjection: "EPSG:3857",
+          })
+          const geojson = new GeoJSON().writeFeatures(features, {
+            featureProjection: "EPSG:3857"
+          })
+          const geojsonFeatures = new GeoJSON({
+            dataProjection: "EPSG:4326",
+            featureProjection: "EPSG:3857",
+          }).readFeatures(geojson)
+          MyMap.undoInteraction.blockStart()
+          MyMap.drawLayer.getSource().clear()
+          MyMap.drawLayer.getSource().addFeatures(geojsonFeatures)
+        } else if (extension === 'gpx') {
+          features = new GPX({
+          }).readFeatures(text,{
+            dataProjection: "EPSG:4326",
+            featureProjection: "EPSG:3857",
+          })
+          MyMap.undoInteraction.blockStart()
+          MyMap.drawLayer.getSource().clear()
+          MyMap.drawLayer.getSource().addFeatures(features)
+        } else if (extension === 'csv') {
+          MyMap.undoInteraction.blockStart()
+          const records = parse(text, { columns: true})
+          let newFeature
+          records.forEach((row) => {
+            if (row.geoType === 'Point') {
+              const coordinates = transform([row.経度, row.緯度], "EPSG:4326", "EPSG:3857")
+              const point = new Point(coordinates)
+              newFeature = new Feature(point)
+            } else if (row.geoType === 'LineString') {
+              let coordinates = []
+              JSON.parse(row.coords).forEach((coord) => {
+                coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
+              })
+              const lineString = new LineString(coordinates)
+              newFeature = new Feature(lineString)
+            } else if (row.geoType === 'Polygon') {
+              let coordinates = []
+              JSON.parse(row.coords).forEach((coords,i) => {
+                coordinates.push([])
+                coords.forEach((coord) => {
+                  coordinates[i].push(transform(coord, "EPSG:4326", "EPSG:3857"))
+                })
+              })
+              const polygon = new Polygon(coordinates)
+              newFeature = new Feature(polygon)
+            } else if (row.geoType === 'MultiPolygon') {
+              let coordinates = []
+              JSON.parse(row.coords).forEach((coords,i) => {
+                coordinates.push([])
+                coords.forEach((coord,ii) => {
+                  coordinates[i].push([])
+                  coord.forEach((c) => {
+                    coordinates[i][ii].push(transform(c, "EPSG:4326", "EPSG:3857"))
+                  })
+
+                })
+              })
+              const multiPolygon = new MultiPolygon(coordinates)
+              newFeature = new Feature(multiPolygon)
+            } else if (row.geoType === 'GeometryCollection') {
+              console.log(row.center, row.radius)
+              const circle = new Circle(JSON.parse(row.center), Number(row.radius))
+              newFeature = new Feature(circle)
+
+            }
+            newFeature.setProperties({
+                  'name': row.名称,
+                  'description': row.説明,
+                  '_color': row.色,
+                  '_fillColor': row.塗りつぶし色,
+                  '_distance': row.距離,
+                  '_area': row.面積,
+                }
+            )
+            MyMap.drawLayer.getSource().addFeature(newFeature)
+          })
+        }
+        features.forEach((feature) =>{
+          if (feature.getGeometry().getType() === 'GeometryCollection') {
+            drawLayer.getSource().removeFeature(feature)
+            const circle = new Circle(feature.get('center'), feature.get('radius'));
+            const newFeature = new Feature(circle);
+            newFeature.setProperties({
+              name: feature.getProperties().name,
+              setumei: feature.getProperties().setumei,
+              _fillColor: feature.getProperties()._fillColor,
+              _distance: feature.getProperties()._distance,
+              _area: feature.getProperties()._area
+            })
+            drawLayer.getSource().addFeature(newFeature)
+            moveEnd()
+          }
+        })
+        MyMap.undoInteraction.blockEnd()
+        vm.$store.state.base.maps['map01'].getView().fit(drawLayer.getSource().getExtent(),{padding: [100, 100, 100, 100]})
+        document.querySelector('#map01 .loadingImg').style.display = 'none'
+        document.getElementById("load_form_input").value = ''
+      }
+    },
     highlighter: function(code) {
       return Prism.highlight(code, Prism.languages.js, "js");
     },
@@ -643,11 +786,11 @@ export default {
       const pGeojson = JSON.parse(tGeojson)
       console.log(pGeojson.features)
       const bom = new Uint8Array([0xef, 0xbb, 0xbf]);
-      const header = "geoType,経度,緯度,coords,名称,説明,色,塗りつぶし色,距離\r\n";
+      const header = "geoType,経度,緯度,coords,名称,説明,色,塗りつぶし色,距離,面積,center,radius\r\n";
       let data = header
       pGeojson.features.forEach((feature) => {
         console.log(feature)
-        console.log(feature.geometry.coordinates[0])
+        // console.log(feature.geometry.coordinates[0])
         data += feature.geometry.type + ","
         if (feature.geometry.type === 'Point') {
           data += feature.geometry.coordinates[0] + ","
@@ -662,6 +805,10 @@ export default {
           data += ','
           data += ud(JSON.stringify(feature.geometry.coordinates)) + ','
           console.log(ud(JSON.stringify(feature.geometry.coordinates)))
+        } else if (feature.geometry.type === 'GeometryCollection') {
+          data += ','
+          data += ','
+          data += ','
         }
         if (!feature.properties) {
           feature.properties = {}
@@ -677,7 +824,18 @@ export default {
           data += ","
           data += ud(prop._fillColor) + ","
         }
-        data += ud(prop.distance) + ","
+        data += ud(prop._distance) + ","
+        data += ud(prop._area) + ","
+        if (feature.geometry.type === 'GeometryCollection') {
+          console.log(prop.radius)
+          data += ud(JSON.stringify(prop.center))+ ","
+          data += prop.radius+ ","
+        } else {
+          data += ","
+          data += ","
+        }
+
+
         // Object.keys(prop).forEach(function(key) {
         //   console.log(key)
         //   console.log(prop[key])

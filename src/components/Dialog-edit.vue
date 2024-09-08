@@ -192,25 +192,6 @@ export default {
     }
   },
   mounted () {
-    // const dragHandle = document.querySelector('#dialog-edit .drag-handle');
-    // dragHandle.innerHTML = ''
-    // this.$watch(function () {
-    //   return [this.s_toggleModify]
-    // }, function () {
-    //   if (this.s_toggleModify) {
-    //     this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
-    //     this.$store.state.base.maps['map01'].addInteraction(MyMap.transformInteraction)
-    //     this.s_togglePoint = false
-    //     this.$store.state.base.toggleIdo = true
-    //     dragHandle.innerHTML = '<span style="color: red;">移動＆変形モード中</span>'
-    //     MyMap.overlay['0'].setPosition(undefined)
-    //   } else {
-    //     this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
-    //     this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
-    //     this.$store.state.base.toggleIdo = false
-    //     dragHandle.innerHTML = ''
-    //   }
-    // })
   }
 }
 </script>
