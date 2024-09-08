@@ -763,11 +763,6 @@ export default {
       a.click()
     },
     saveGpx () {
-
-
-      // this.$store.state.base.tGeojson
-
-
       const features = drawLayer.getSource().getFeatures()
       const drawSourceGpx = new GPX().writeFeatures(features, {
         featureProjection: "EPSG:3857"
@@ -889,7 +884,6 @@ export default {
         data = data.slice(0, -1)
         data += "\r\n";
       })
-
 
       const type = "text/plain";
       const blob = new Blob([bom,data], {type: type});

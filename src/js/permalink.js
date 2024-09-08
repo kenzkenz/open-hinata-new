@@ -211,7 +211,6 @@ export function permalinkEventSet (response) {
 
         // console.log(decodeURIComponent(obj[key]))
         MyMap.undoInteraction.blockStart()
-        document.querySelector('#' + 'map01' + ' .ol-viewport').style.cursor = "wait"
         console.log(document.querySelector('#' + 'map01'  + ' .ol-viewport'))
         const features = new GeoJSON({
           dataProjection: "EPSG:4326",
@@ -236,7 +235,6 @@ export function permalinkEventSet (response) {
             moveEnd()
           }
         })
-        document.querySelector('#' + 'map01' + ' .ol-viewport').style.cursor = "default"
         MyMap.undoInteraction.blockEnd()
 
 
@@ -661,13 +659,13 @@ export function moveEnd () {
   // if(store.state.base.increment > 4) {
     let params = new URLSearchParams();
     params.append('parameters', parameters);
-    console.log(params)
+    // console.log(params)
     axios.post('https://kenzkenz.xsrv.jp/open-hinata/php/insert2.php', params)
         // axios.post('/php/insert2.php', params)
         .then(response => {
           window.history.pushState(state, 'map', "#s" + response.data.urlid);
           console.log('保存しました。')
-          console.log(window.location.href)
+          // console.log(window.location.href)
           store.state.base.shareUrl = window.location.href
           MyMap.history('moveend', window.location.href)
         })

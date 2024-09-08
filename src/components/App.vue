@@ -410,6 +410,7 @@
       },
     },
     mounted () {
+
       // RESAS人口ピラミッド----------------------------------------------------------------
       const vm = this
       const randRange = function (min, max) {
@@ -1552,6 +1553,7 @@
       }
 
       this.$nextTick(function () {
+        // document.querySelector('#map01 .loadingImg').style.display = 'block'
 
         // http://localhost:8080/#Ldd6
         // http://localhost:8080/#yweq

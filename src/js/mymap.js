@@ -183,7 +183,7 @@ function drawLayerStylefunction (){
             })
         })
         let target
-        console.log(geoType)
+        // console.log(geoType)
         if (geoType === 'LineString' || geoType === 'Circle') {
             target = '_distance'
         } else if (geoType === 'Polygon'){
@@ -1157,6 +1157,7 @@ export function initMap (vm) {
                 ],
             })
             dragAndDropInteraction.on('addfeatures', function (event) {
+                document.querySelector('#map01 .loadingImg').style.display = 'block'
                 undoInteraction.blockStart()
                 event.features.forEach((feature) => {
                     drawLayer.getSource().addFeature(feature)
@@ -1179,6 +1180,7 @@ export function initMap (vm) {
                 })
                 map.getView().fit(drawLayer.getSource().getExtent(),{padding: [100, 100, 100, 100]})
                 undoInteraction.blockEnd()
+                document.querySelector('#map01 .loadingImg').style.display = 'none'
             })
             map.addInteraction(dragAndDropInteraction)
         }
