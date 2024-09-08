@@ -30,9 +30,13 @@
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawUndo">戻す</b-button>
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawRedo">やり直す</b-button>
       <br>
-      <b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawKodo">高度編集</b-button>
-      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="openDialog2">geojson編集</b-button>
-
+      <div style="position: relative">
+        <b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawKodo">高度編集</b-button>
+        <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="openDialog2">geojson編集</b-button>
+        <b-form-checkbox style="margin-top: 10px;position: absolute;top:0;margin-left:180px" v-model="s_toggleVertex" name="check-button" switch>
+          頂点を表示
+        </b-form-checkbox>
+      </div>
       <div class="kodo" v-if="kodo">
         <input type='number' value="0.001" step="0.0005" v-model="tolerance" style="width: 100px;margin-top: 0px;">
         <b-button style="margin-top: 0px; margin-left: 2px;" class='olbtn' :size="btnSize" @click="drawSinple">線、ポリゴンをシンプル化</b-button>
@@ -95,7 +99,7 @@ import * as permalink from "@/js/permalink";
 import store from "@/js/store";
 import * as turf from '@turf/turf';
 import {transform} from "ol/proj";
-import {Circle, LineString, MultiPolygon, Point, Polygon} from "ol/geom";
+import {Circle, LineString, MultiLineString, MultiPolygon, Point, Polygon} from "ol/geom";
 import Feature from "ol/Feature";
 import {measure, modifyTouchInteraction} from "../js/mymap";
 import * as d3 from "d3";
@@ -251,6 +255,15 @@ export default {
       },
       set(value) {
         this.$store.state.base.toggleSplit = value
+      }
+    },
+    s_toggleVertex: {
+      get() {
+        return this.$store.state.base.toggleVertex
+      },
+      set(value) {
+        this.$store.state.base.toggleVertex = value
+        MyMap.drawLayer.getSource().changed()
       }
     },
   },
@@ -663,10 +676,10 @@ export default {
         alert('選択されていません。')
         return
       }
-      if (targetFeature.getGeometry().getType() !== 'LineString' && targetFeature.getGeometry().getType() !== 'Polygon') {
-        alert('線又はポリゴンではありません。')
-        return
-      }
+      // if (targetFeature.getGeometry().getType() !== 'LineString' && targetFeature.getGeometry().getType() !== 'Polygon') {
+      //   alert('線又はポリゴンではありません。')
+      //   return
+      // }
       const fiatureGeojson = new GeoJSON().writeFeatures([targetFeature], {
         featureProjection: "EPSG:3857"
       })
@@ -684,6 +697,12 @@ export default {
         })
         const lineString = new LineString(coordinates)
         newFeature = new Feature(lineString)
+      } else if (targetFeature.getGeometry().getType() === 'MultiLineString') {
+          // sinpleFeature.geometry.coordinates.forEach((coord) => {
+          //   coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
+          // })
+          const multiLineString = new MultiLineString(coordinates)
+          newFeature = new Feature(multiLineString)
       } else {
         sinpleFeature.geometry.coordinates[0].forEach((coord) => {
           polygonCoordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))

@@ -115,6 +115,7 @@ const moduleBase = {
     toggleIdo: false,
     toggleIdo2: false,
     toggleSplit: false,
+    toggleVertex: false,
     toggleText: true,
     toggleModify: false,
     // hyokozuDiv: {

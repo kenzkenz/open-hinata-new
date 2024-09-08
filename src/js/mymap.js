@@ -142,6 +142,7 @@ function drawLayerStylefunction (){
         if (store.state.base.toggleIdo) {
             polygonStrokeColor = 'rgb(255,255,0)'
             polygonStrokeWidth = 4
+            color = 'rgb(255,255,0)'
         }
         if (prop._voronoi) {
             polygonStrokeColor = 'black'
@@ -257,15 +258,38 @@ function drawLayerStylefunction (){
         const vertexPoint = new Style({
             image: new RegularShape({ radius: 4, points:4, fill: new Fill({ color: '#f00' }) }),
             geometry: function (feature) {
-                const coordinates = feature.getGeometry().getCoordinates();
-                return new MultiPoint(coordinates);
+                let coordinates = []
+                if (geoType === 'LineString') {
+                    coordinates = feature.getGeometry().getCoordinates()
+                    return new MultiPoint(coordinates)
+                } else if (geoType === 'MultiLineString') {
+                    feature.getGeometry().getCoordinates().forEach((coords) => {
+                        coords.forEach((coord) => {
+                            coordinates.push([coord[0],coord[1]])
+                        })
+                    })
+                    return new MultiPoint(coordinates)
+                } else if (geoType === 'Polygon') {
+                    coordinates = feature.getGeometry().getCoordinates()[0]
+                    return new MultiPoint(coordinates)
+                } else if (geoType === 'MultiPolygon') {
+                    feature.getGeometry().getCoordinates().forEach((coords) => {
+                        coords.forEach((coord) => {
+                            coord.forEach((c) => {
+                                coordinates.push(c)
+                            })
+                        })
+                    })
+                    return new MultiPoint(coordinates)
+                }
             },
         })
         styles.push(polygonStyle)
         if (geoType === 'Point') styles.push(pointStyle)
-        if (geoType === 'LineString') styles.push(lineStyle)
+        if (geoType === 'LineString' || geoType === 'MultiLineString') styles.push(lineStyle)
         if (zoom >= 12) styles.push(textStyle)
         if (geoType === 'LineString') styles.push(firstLastPoint)
+        if (store.state.base.toggleVertex) styles.push(vertexPoint)
         // if (geoType === 'Circle') styles.push(textStyle2)
         return styles
     }
