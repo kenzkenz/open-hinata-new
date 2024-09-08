@@ -61,8 +61,8 @@
                     <b-button class='olbtn-red' :size="btnSize" @click="openDialog(s_dialogs[mapName])">背景</b-button>
                 </div>
                 <div class="top-right-div">
+                  <b-button style="margin-right: 5px;" v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="openDialog(s_dialogs['dialogShare'])">共有</b-button>
                   <b-button i v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="openDialog(s_dialogs['measureDialog'])"><i class="fa-solid fa-pen"></i></b-button>
-<!--                  <b-button style="margin-left: 10px" i v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="openDialog(s_dialogs['dialogEdit0'])"><i class="fa-solid fa-pen"></i></b-button>-->
                 </div>
 
                 <div class="bottom-right-div">
@@ -78,7 +78,7 @@
                 <v-dialog-color :mapName=mapName />
                 <v-dialog-dokuji v-if="mapName === 'map01'"/>
                 <v-dialog-geojson v-if="mapName === 'map01'"/>
-
+                <v-dialog-share v-if="mapName === 'map01'"/>
 
 <!--                <div class="zoom-div">{{ zoom[mapName] }}</div>-->
                 <div class="zoom-div">
@@ -120,6 +120,8 @@
   import OLCesium from 'ol-cesium'
   import * as d3 from "d3"
   import DialogGeojson from './Daialog-gepjson'
+  import DialogShare from './Dialog-share'
+  import {moveEnd} from "@/js/permalink"
 
   let heading
   let tilt
@@ -136,6 +138,7 @@
       'v-dialog-color': DialogColor,
       'v-dialog-dokuji': DialogDokuji,
       'v-dialog-geojson': DialogGeojson,
+      'v-dialog-share': DialogShare,
     },
     data () {
       return {
@@ -245,12 +248,11 @@
         if (dialog.style.display === 'block') {
           dialog.style.display = 'none'
         } else {
+          moveEnd()
           this.$store.commit('base/incrDialogMaxZindex');
           dialog.style["z-index"] = this.s_dialogMaxZindex;
           dialog.style.display = 'block'
           MyMap.overlay['0'].setPosition(undefined)
-
-          // this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction2)
         }
       },
       swipeMap () {
@@ -1474,7 +1476,6 @@
                     'z-index': vm.s_dialogMaxZindex
                   }
                 }
-
 
             vm.$store.state.base.cityName = e.target.getAttribute("city")
             vm.$store.state.info.ssdsDataBar = data

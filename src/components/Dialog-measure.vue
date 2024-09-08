@@ -38,6 +38,8 @@
         <b-button style="margin-top: 0px; margin-left: 2px;" class='olbtn' :size="btnSize" @click="drawSinple">線、ポリゴンをシンプル化</b-button>
         <b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawBezier">線を滑らかにする（ベジェ曲線）</b-button>
         <b-button style="margin-top: 5px; margin-left: 0px;margin-bottom: 5px;" class='olbtn' :size="btnSize" @click="drawPolygonSmooth">ポリゴンをスムーズにする</b-button>
+        <b-button style="margin-left: 5px;" :pressed.sync="s_toggleSplit" class='olbtn' :size="btnSize">線を分割する</b-button>
+
         <br><input type='number' value="0" step="0.1" v-model="radius" style="width: 100px;margin-top: 0px;">
         <b-button style="margin-top: 0px; margin-left: 2px;" class='olbtn' :size="btnSize" @click="drawBuffer">バッファー</b-button>
         <br>
@@ -72,7 +74,6 @@
         <input id="load_form_input" type="file" name="file_" accept=".geojson,.kml,.gpx,.csv" @change="file_upload()">
       </form>
       <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' size="sm" @click="upLoad">読み込み</b-button>
-
 
       <a id="download" download="draw.geojson"></a>
       <a id="download-gpx" download="draw.gpx"></a>
@@ -242,6 +243,14 @@ export default {
       },
       set(value) {
         this.$store.state.base.toggleIdo2 = value
+      }
+    },
+    s_toggleSplit: {
+      get() {
+        return this.$store.state.base.toggleSplit
+      },
+      set(value) {
+        this.$store.state.base.toggleSplit = value
       }
     },
   },
@@ -857,23 +866,7 @@ export default {
       a.href = window.URL.createObjectURL(blob);
       a.click()
     },
-    drawStop () {
-      this.toggleLine = false
-      this.togglePoint = false
-      this.toggleMenseki = false
-      this.toggleCircle = false
-      this.toggleDelete = false
-      this.toggleDanmen = false
-      this.toggleIdo = false
-      this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
-      this.$store.state.base.maps['map01'].removeInteraction(MyMap.polygonInteraction)
-      this.$store.state.base.maps['map01'].removeInteraction(MyMap.circleInteraction)
-      // this.$store.state.base.maps['map01'].addInteraction(MyMap.transformInteraction)
-      this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
-      // this.$store.state.base.maps['map02'].addInteraction(MyMap.modifyInteraction)
-    },
     drawReset () {
-
       this.s_togglePoint0 = false
       this.s_toggleLine = false
       this.s_toggleFreeHand = false
@@ -884,12 +877,12 @@ export default {
       this.s_toggleShikaku = false
       this.toggleDelete = false
       this.toggleDanmen = false
-
+      this.s_toggleHole = false
+      this.s_toggleSplit = false
       if (!store.state.base.editFeature) {
         alert('選択されていません。')
         this.s_toggleText = true
       }
-
 
       drawLayer.getSource().removeFeature(store.state.base.editFeature)
       const tFeatures = MyMap.transformInteraction.getFeatures().array_
@@ -950,6 +943,8 @@ export default {
         this.s_toggleHole = false
         this.s_toggleIdo2 = false
         this.s_toggleText = false
+        this.s_toggleHole = false
+        this.s_toggleSplit = false
 
         MyMap.modifyInteraction.setActive(true)
         MyMap.modifyTouchInteraction.setActive(true)
@@ -995,6 +990,9 @@ export default {
         this.s_toggleHole = false
         this.s_toggleIdo = false
         this.s_toggleText = false
+        this.s_toggleHole = false
+        this.s_toggleSplit = false
+
 
         MyMap.modifyInteraction.setActive(false)
         MyMap.modifyTouchInteraction.setActive(false)
@@ -1041,6 +1039,8 @@ export default {
         // this.s_toggleHole = false
         this.s_toggleIdo = false
         this.s_toggleIdo2 = false
+        this.s_toggleSplit = false
+
 
         MyMap.modifyInteraction.setActive(false)
         MyMap.modifyTouchInteraction.setActive(false)
@@ -1080,7 +1080,7 @@ export default {
         this.toggleDelete = false
         this.toggleDanmen = false
         this.s_toggleHole = false
-
+        this.s_toggleSplit = false
 
         this.$store.state.base.maps['map01'].addInteraction(MyMap.circleInteraction)
 
@@ -1106,7 +1106,7 @@ export default {
         this.toggleDelete = false
         this.toggleDanmen = false
         this.s_toggleHole = false
-
+        this.s_toggleSplit = false
 
         this.$store.state.base.maps['map01'].addInteraction(MyMap.daenInteraction)
 
@@ -1130,7 +1130,7 @@ export default {
         this.toggleDelete = false
         this.toggleDanmen = false
         this.s_toggleHole = false
-
+        this.s_toggleSplit = false
 
         this.$store.state.base.maps['map01'].addInteraction(MyMap.polygonInteraction)
         this.$store.state.base.maps['map01'].addInteraction(MyMap.snapnteraction)
@@ -1156,6 +1156,8 @@ export default {
         this.toggleDelete = false
         this.toggleDanmen = false
         this.s_toggleHole = false
+        this.s_toggleSplit = false
+
         this.$store.state.base.maps['map01'].addInteraction(MyMap.regularInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
@@ -1180,6 +1182,8 @@ export default {
         this.toggleCircle = false
         this.toggleDelete = false
         this.s_toggleHole = false
+        this.s_toggleSplit = false
+
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.selectInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.lineInteraction)
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.pointInteraction)
@@ -1210,6 +1214,8 @@ export default {
         this.toggleDelete = false
         this.toggleDanmen = false
         this.s_toggleHole = false
+        this.s_toggleSplit = false
+
         this.$store.state.base.maps['map01'].addInteraction(MyMap.lineInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
@@ -1240,6 +1246,8 @@ export default {
         this.toggleDelete = false
         this.toggleDanmen = false
         this.s_toggleHole = false
+        this.s_toggleSplit = false
+
         this.$store.state.base.maps['map01'].addInteraction(MyMap.freeHandInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
@@ -1271,6 +1279,8 @@ export default {
         this.toggleDelete = false
         this.toggleDanmen = false
         this.s_toggleHole = false
+        this.s_toggleSplit = false
+
         this.$store.state.base.maps['map01'].addInteraction(MyMap.pointInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
         // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
@@ -1295,12 +1305,36 @@ export default {
         this.toggleDelete = false
         this.toggleDanmen = false
         this.toggleDaen = false
+        this.s_toggleSplit = false
 
         this.$store.state.base.maps['map01'].addInteraction(MyMap.drawHoleInteraction)
 
       } else {
         console.log('off')
         this.$store.state.base.maps['map01'].removeInteraction(MyMap.drawHoleInteraction)
+      }
+    })
+    this.$watch(function () {
+      return [this.s_toggleSplit]
+    }, function () {
+      if (this.s_toggleSplit) {
+        this.s_togglePoint0 = false
+        this.s_toggleLine = false
+        this.s_toggleFreeHand = false
+        this.s_togglePoint = false
+        this.s_toggleMenseki = false
+        this.s_toggleCircle = false
+        this.s_toggleShikaku = false
+        this.toggleDelete = false
+        this.toggleDanmen = false
+        this.toggleDaen = false
+        this.s_toggleHole = false
+
+        MyMap.splitInteraction.setActive(true)
+
+      } else {
+        console.log('off')
+        MyMap.splitInteraction.setActive(false)
       }
     })
 

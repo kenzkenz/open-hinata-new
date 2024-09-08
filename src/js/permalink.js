@@ -628,8 +628,6 @@ export function moveEnd () {
   parameter += '&H=' + JSON.stringify(store.state.info.divs)
   parameter += '&HG=' + JSON.stringify(store.state.info.gradationCheck)
 
-
-
   // const maps = ['map01','map02','map03','map04']
   const maps = ['map01','map02']
   maps.forEach((map) => {
@@ -660,15 +658,17 @@ export function moveEnd () {
   // const parameters = decodeURIComponent(window.location.hash)
   const parameters = hash + parameter
   // console.log(parameters)
-  if(store.state.base.increment > 4) {
-
+  // if(store.state.base.increment > 4) {
     let params = new URLSearchParams();
     params.append('parameters', parameters);
+    console.log(params)
     axios.post('https://kenzkenz.xsrv.jp/open-hinata/php/insert2.php', params)
         // axios.post('/php/insert2.php', params)
         .then(response => {
           window.history.pushState(state, 'map', "#s" + response.data.urlid);
           console.log('保存しました。')
+          console.log(window.location.href)
+          store.state.base.shareUrl = window.location.href
           MyMap.history('moveend', window.location.href)
         })
         .catch(error => {
@@ -696,7 +696,7 @@ export function moveEnd () {
     //     })
     //     .finally(function () {
     //     });
-  } else {
-    store.commit('base/increment')
-  }
+  // } else {
+  //   store.commit('base/increment')
+  // }
 }

@@ -29,7 +29,7 @@ import {Fill, Stroke, Style, Text, Circle as Circle0 } from "ol/style"
 import * as turf from '@turf/turf';
 import Select from 'ol/interaction/Select.js'
 // import {click, pointerMove, altKeyOnly} from 'ol/events/condition.js';
-import {Circle, LineString, Point, Polygon, MultiPolygon} from "ol/geom"
+import {Circle, LineString, Point, Polygon, MultiPolygon, MultiPoint} from "ol/geom"
 import Feature from 'ol/Feature'
 import {moveEnd} from "./permalink"
 import Dialog from 'ol-ext/control/Dialog'
@@ -48,8 +48,7 @@ import {parse} from 'csv-parse/lib/sync'
 import {Heatmap} from 'ol/layer'
 import DrawHole from 'ol-ext/interaction/DrawHole'
 import ModifyTouch from 'ol-ext/interaction/ModifyTouch'
-import {ZoomToExtent, defaults as defaultControls} from 'ol/control.js';
-import {getType} from "@turf/turf";
+import Split from 'ol-ext/interaction/Split'
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
     let zoom = 0;
@@ -247,10 +246,27 @@ function drawLayerStylefunction (){
                 stroke: new Stroke({ width:2, color:'red' })
             })
         })
+        console.log(feature.getGeometry())
+        const firstLastPoint = new Style({
+            image: new RegularShape({ radius: 4, points:4, fill: new Fill({ color: '#f00' }) }),
+            geometry: new MultiPoint(
+                [
+                    feature.getGeometry().getFirstCoordinate(),
+                    feature.getGeometry().getLastCoordinate()]
+            )
+        })
+        const vertexPoint = new Style({
+            image: new RegularShape({ radius: 4, points:4, fill: new Fill({ color: '#f00' }) }),
+            geometry: function (feature) {
+                const coordinates = feature.getGeometry().getCoordinates();
+                return new MultiPoint(coordinates);
+            },
+        })
         styles.push(polygonStyle)
         if (geoType === 'Point') styles.push(pointStyle)
         if (geoType === 'LineString') styles.push(lineStyle)
         if (zoom >= 12) styles.push(textStyle)
+        if (geoType === 'LineString') styles.push(firstLastPoint)
         // if (geoType === 'Circle') styles.push(textStyle2)
         return styles
     }
@@ -562,6 +578,21 @@ undoInteraction.define(
         drawLayer.getSource().changed()
     }
 )
+
+export const splitInteraction = new Split ({
+    sources: drawSource
+})
+
+splitInteraction.on('aftersplit', function(e) {
+    const features = drawLayer.getSource().getFeatures()
+    features.forEach((feature) =>{
+        const coordAr = feature.getGeometry().getCoordinates()
+        const geoType = feature.getGeometry().getType()
+        measure (geoType,feature,coordAr)
+    })
+    moveEnd()
+})
+
 export const myCollection = new Collection()
 
 export const copyInteraction = new CopyPaste({
@@ -675,6 +706,8 @@ export function initMap (vm) {
             map.addInteraction(transformInteraction)
             map.addInteraction(copyInteraction)
 
+            map.addInteraction(splitInteraction)
+
             // const circle = new RegularShape({
             //     fill: new Fill({color:[255,255,255,0.01]}),
             //     stroke: new Stroke({width:1, color:[0,0,0,0.01]}),
@@ -714,6 +747,8 @@ export function initMap (vm) {
             modifyInteraction.setActive(false)
             modifyTouchInteraction.setActive(false)
             transformInteraction.setActive(false)
+
+            splitInteraction.setActive(false)
 
             const tooltipOverlay = new Tooltip()
             map.addOverlay(tooltipOverlay)
