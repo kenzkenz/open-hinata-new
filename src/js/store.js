@@ -33,6 +33,10 @@ const moduleBase = {
         map01: {style: {top: '320px', right: '10px', 'z-index': 1, height: 'auto', 'width': '250px', display: 'none'}},
         map02: {style: {top: '320px', right: '10px', 'z-index': 1, height: 'auto', 'width': '250px', display: 'none'}}
       },
+      dialogColor2:{
+        map01: {style: {top: '320px', right: '10px', 'z-index': 1, height: 'auto', 'width': '250px', display: 'none'}},
+        map02: {style: {top: '320px', right: '10px', 'z-index': 1, height: 'auto', 'width': '250px', display: 'none'}}
+      },
       dialogGeojson:{style: {top: '56px', left: '10px', 'z-index': 1, 'max-height': 'auto', 'width': 'auto', display: 'none'}},
       dialogShare:{style: {top: '56px', right: '10px', 'z-index': 1, height: 'auto', 'width': '380px', display: 'none'}},
       dialogDokuji:{style: {top: '56px', left: '10px', 'z-index': 1, height: 'auto', 'width': '320px', display: 'none'}},
@@ -136,6 +140,10 @@ const moduleBase = {
     editFeatureColor:{
       map01: {r: 25, g: 77, b: 51, a: 0.5},
       map02: {r: 25, g: 77, b: 51, a: 0.5},
+    },
+    hyokoColor:{
+      map01: '',
+      map02: '',
     },
     // editFeatureColor: null,
     hyokou: 0,

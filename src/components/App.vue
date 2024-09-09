@@ -76,6 +76,7 @@
                 <v-dialog-main-info v-if="mapName === 'map01'"/>
                 <v-dialog-edit v-if="mapName === 'map01'"/>
                 <v-dialog-color :mapName=mapName />
+                <v-dialog-color2 :mapName=mapName />
                 <v-dialog-dokuji v-if="mapName === 'map01'"/>
                 <v-dialog-geojson v-if="mapName === 'map01'"/>
                 <v-dialog-share v-if="mapName === 'map01'"/>
@@ -111,6 +112,7 @@
   import DialogMainInfo from './Dialog-edit0'
   import DialogEdit from './Dialog-edit'
   import DialogColor from './Dialog-color'
+  import DialogColor2 from './Dialog-color2'
   import DialogDokuji from './Dialog-dokuji'
   import * as Permalink from '../js/permalink'
   import Inobounce from '../js/inobounce'
@@ -136,6 +138,7 @@
       'v-dialog-main-info': DialogMainInfo,
       'v-dialog-edit': DialogEdit,
       'v-dialog-color': DialogColor,
+      'v-dialog-color2': DialogColor2,
       'v-dialog-dokuji': DialogDokuji,
       'v-dialog-geojson': DialogGeojson,
       'v-dialog-share': DialogShare,

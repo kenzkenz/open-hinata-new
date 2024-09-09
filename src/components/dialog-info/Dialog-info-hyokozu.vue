@@ -283,7 +283,7 @@ export default {
       //------------------------------------------------------------------
     },
     openDialog (div) {
-      const dialog = this.s_dialogs['dialogColor'][this.mapName]
+      const dialog = this.s_dialogs['dialogColor2'][this.mapName]
       const element = document.querySelector('#' + this.mapName + '-div-color-' + div.id)
 
       let left
@@ -304,10 +304,10 @@ export default {
       let color = div.rgb
       const rgba = d3.rgb(color)
       const colorP = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.opacity }
-      this.$store.state.base.editFeatureColor[this.mapName] = colorP
+      this.$store.state.base.hyokoColor[this.mapName] = colorP
     },
     openDialog2 (aaa) {
-      const dialog = this.s_dialogs['dialogColor'][this.mapName]
+      const dialog = this.s_dialogs['dialogColor2'][this.mapName]
       const element = document.querySelector('#' + this.mapName + '-div-color-g' + aaa)
 
       let left
@@ -337,7 +337,7 @@ export default {
 
       const rgba = d3.rgb(color)
       const colorP = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.opacity }
-      this.$store.state.base.editFeatureColor[this.mapName] = colorP
+      this.$store.state.base.hyokoColor[this.mapName] = colorP
     },
     reply () {
       const result = window.confirm('初期値に戻しますか。')
