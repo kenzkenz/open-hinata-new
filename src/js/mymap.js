@@ -910,15 +910,30 @@ export function initMap (vm) {
         const drawEndFunction =  function (feature,interaction) {
             if (interaction !== 'point') store.state.base.toggleIdo = true
             overlay[i].setPosition(undefined)
-            if (store.state.base.editFeatureColor['map01'].rgba) {
-                const c = store.state.base.editFeatureColor['map01'].rgba
-                const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
-                // console.log(feature.getGeometry().getType())
-                const geoType = feature.getGeometry().getType()
-                if (geoType !== 'Point' && geoType !== 'LineString') {
+            const geoType = feature.getGeometry().getType()
+            if (geoType === 'Polygon' || geoType === 'Circle') {
+                if (store.state.base.editFeatureFillColor['map01']) {
+                    const c = store.state.base.editFeatureFillColor['map01'].rgba
+                    const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
                     feature.setProperties({_fillColor: rgba})
                 }
+            } else {
+                if (store.state.base.editFeatureColor['map01']) {
+                    const c = store.state.base.editFeatureColor['map01'].rgba
+                    const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
+                    feature.setProperties({_color: rgba})
+                }
             }
+
+            // if (store.state.base.editFeatureFillColor['map01'].rgba) {
+            //     const c = store.state.base.editFeatureFillColor['map01'].rgba
+            //     const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
+            //     // console.log(feature.getGeometry().getType())
+            //     const geoType = feature.getGeometry().getType()
+            //     if (geoType !== 'Point' && geoType !== 'LineString') {
+            //         feature.setProperties({_fillColor: rgba})
+            //     }
+            // }
             // store.state.base.editFeature =
             moveEnd()
         }
@@ -973,36 +988,6 @@ export function initMap (vm) {
             store.state.base.toggleHole = false
             drawEndFunction(feature)
         })
-        const olPopup = document.querySelector('#map01' + ' .ol-popup0')
-        olPopup.addEventListener('click', (e) => {
-            if (e.target && e.target.classList.contains("edit-button")) {
-
-                store.state.base.dialogs.dialogEdit.style.display = 'block'
-                const rect = document.querySelector('#map01-popup').getBoundingClientRect()
-                const left = rect.x + 'px'
-                const top = (rect.top + rect.height + 50) + 'px'
-                store.state.base.dialogs.dialogEdit.style.top = top
-                store.state.base.dialogs.dialogEdit.style.left = left
-
-                const geoType = store.state.base.editFeature.getGeometry().getType()
-                let color
-                if (geoType === 'Point' || geoType === 'LineString') {
-                    color = store.state.base.editFeature.values_._color
-                    if (!color) color = 'rgba(0,0,255,1)'
-                } else if (geoType === 'Polygon' || geoType === 'Circle') {
-                    color = store.state.base.editFeature.values_._fillColor
-                    if (!color) color = 'rgba(0,0,255,0.5)'
-                }
-                const rgba = d3.rgb(color)
-                const colorP = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.opacity }
-                store.state.base.editFeatureColor['map01'] = colorP
-
-                // overlay[i].setPosition(undefined)
-                moveEnd()
-                store.state.base.drawEndFlg = true
-            }
-        })
-
         //-----------------------
 
 

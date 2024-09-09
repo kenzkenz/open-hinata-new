@@ -20,7 +20,7 @@ export default {
   props: ['mapName'],
   data () {
     return {
-      featureColor: { r: 25, g: 77, b: 51, a: 0.5 },
+      color: '',
       contentSize: {'height': 'auto', 'margin': '10px', 'overflow': 'hidden', 'user-select': 'text'},
     }
   },
@@ -29,6 +29,9 @@ export default {
     'chrome-picker': Chrome
   },
   computed: {
+    s_editFeature () {
+      return this.$store.state.base.editFeature
+    },
     s_dialogColor () {
       // const mapName = this.$store.state.base.editMap
       return this.$store.state.base.dialogs.dialogColor[this.mapName]
@@ -39,21 +42,16 @@ export default {
     // 重要
     s_featureColor: {
       get () {
-        // const feature = this.$store.state.base.editFeature
-        // const geoType = feature.getGeometry().getType()
-        // if (geoType === 'Polygon' || geoType === 'Circle') {
-        //   return this.$store.state.base.editFeatureFillColor[this.mapName]
-        // } else {
-        //   return this.$store.state.base.editFeatureColor[this.mapName]
-        // }
-
-        return this.$store.state.base.editFeatureFillColor[this.mapName]
+        // return 'rgba(0,0,255)'
+        return this.color
+        // return this.$store.state.base.editFeatureFillColor[this.mapName]
       },
       set (value) {
         const feature = this.$store.state.base.editFeature
         const geoType = feature.getGeometry().getType()
         if (geoType === 'Polygon' || geoType === 'Circle') {
           this.$store.state.base.editFeatureFillColor[this.mapName] = value
+          console.log(9999)
         } else {
           this.$store.state.base.editFeatureColor[this.mapName] = value
 
@@ -106,6 +104,20 @@ export default {
       document.querySelector('#drawLayer2-setumei').innerHTML = this.$store.state.base.editFeatureSetumei
       moveEnd()
     },
+  },
+  watch: {
+    s_editFeature(newValue, oldValue) {
+      const feature = this.$store.state.base.editFeature
+      const geoType = feature.getGeometry().getType()
+      if (geoType === 'Polygon' || geoType === 'Circle') {
+        this.color = this.$store.state.base.editFeatureFillColor[this.mapName]
+        console.log(this.color)
+        if (!this.color) this.color = 'rgba(0,0,255,0.5)'
+      } else {
+        this.color = this.$store.state.base.editFeatureColor[this.mapName]
+        if (!this.color) this.color = 'rgba(0,0,255,1)'
+      }
+    }
   },
   mounted () {
     console.log(this.$store.state.base.editFeatureFillColor)
