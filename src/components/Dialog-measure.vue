@@ -1000,6 +1000,7 @@ export default {
         this.$store.state.base.drawEndFlg = false
 
         console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
+        MyMap.drawLayer.getSource().changed()
       }
     })
     this.$watch(function () {
@@ -1049,6 +1050,7 @@ export default {
         this.$store.state.base.drawEndFlg = false
 
         console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
+        MyMap.drawLayer.getSource().changed()
       }
     })
     this.$watch(function () {

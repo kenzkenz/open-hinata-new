@@ -108,17 +108,22 @@ function drawLayerStylefunction (){
         let text
         let color
         let fillColor
+        let lineColor
+        let lineWidth = 4
         let polygonStrokeWidth = 1
         let pointStrokeWidth = 1
         let polygonStrokeColor = 'black'
+        let pointStrokeColor = 'black'
 
         if (prop._color) {
             color = prop._color
+            lineColor = prop._color
         } else {
             if (geoType === 'Point') {
                 color = 'rgba(0,0,255,1)'
             } else {
                 color = 'rgba(0,0,255,0.5)'
+                lineColor = 'rgba(0,0,255,0.5)'
             }
         }
         // console.log(color)
@@ -138,11 +143,14 @@ function drawLayerStylefunction (){
             // fillColor = 'rgba(255,165,0,0.5)'
             polygonStrokeWidth = 4
             polygonStrokeColor = 'blue'
+            lineWidth = 6
         }
         if (store.state.base.toggleIdo) {
             polygonStrokeColor = 'rgb(255,255,0)'
             polygonStrokeWidth = 4
-            color = 'rgb(255,255,0)'
+            pointStrokeColor = 'rgb(255,255,0)'
+            pointStrokeWidth = 4
+            lineColor = 'orange'
         }
         if (prop._voronoi) {
             polygonStrokeColor = 'black'
@@ -150,21 +158,21 @@ function drawLayerStylefunction (){
         }
         const styles = []
         const pointStyle = new Style({
-            image: new Icon({
-                src: require('@/assets/icon/whitecircle.png'),
-                color: color,
-                scale: 1.5
-            })
-            // image: new Circle0({
-            //   radius: 8,
-            //   fill: new Fill({
-            //     color: color
-            //   }),
-            //   stroke: new Stroke({
-            //     color: "black",
-            //     width: pointStrokeWidth
-            //   })
-            // }),
+            // image: new Icon({
+            //     src: require('@/assets/icon/whitecircle.png'),
+            //     color: color,
+            //     scale: 1.5
+            // })
+            image: new Circle0({
+              radius: 8,
+              fill: new Fill({
+                color: color
+              }),
+              stroke: new Stroke({
+                color: pointStrokeColor,
+                width: pointStrokeWidth
+              })
+            }),
         })
         const polygonStyle = new Style({
             fill: new Fill({
@@ -178,8 +186,8 @@ function drawLayerStylefunction (){
         })
         const lineStyle = new Style({
             stroke: new Stroke({
-                color: color,
-                width:4
+                color: lineColor,
+                width: lineWidth
             })
         })
         let target
@@ -284,6 +292,7 @@ function drawLayerStylefunction (){
                 }
             },
         })
+        console.log(color)
         styles.push(polygonStyle)
         if (geoType === 'Point') styles.push(pointStyle)
         if (geoType === 'LineString' || geoType === 'MultiLineString') styles.push(lineStyle)
@@ -924,17 +933,6 @@ export function initMap (vm) {
                     feature.setProperties({_color: rgba})
                 }
             }
-
-            // if (store.state.base.editFeatureFillColor['map01'].rgba) {
-            //     const c = store.state.base.editFeatureFillColor['map01'].rgba
-            //     const rgba = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + c.a + ')'
-            //     // console.log(feature.getGeometry().getType())
-            //     const geoType = feature.getGeometry().getType()
-            //     if (geoType !== 'Point' && geoType !== 'LineString') {
-            //         feature.setProperties({_fillColor: rgba})
-            //     }
-            // }
-            // store.state.base.editFeature =
             moveEnd()
         }
 
