@@ -106,16 +106,16 @@ export default {
     },
   },
   watch: {
-    s_editFeature(newValue, oldValue) {
-      const feature = this.$store.state.base.editFeature
-      const geoType = feature.getGeometry().getType()
-      if (geoType === 'Polygon' || geoType === 'Circle') {
-        this.color = this.$store.state.base.editFeatureFillColor[this.mapName]
-        console.log(this.color)
-        if (!this.color) this.color = 'rgba(0,0,255,0.5)'
-      } else {
-        this.color = this.$store.state.base.editFeatureColor[this.mapName]
-        if (!this.color) this.color = 'rgba(0,0,255,1)'
+    s_editFeature(editFeature) {
+      if (editFeature) {
+        const geoType = editFeature.getGeometry().getType()
+        if (geoType === 'Polygon' || geoType === 'Circle') {
+          this.color = this.$store.state.base.editFeatureFillColor[this.mapName]
+          if (!this.color) this.color = 'rgba(0,0,255,0.5)'
+        } else {
+          this.color = this.$store.state.base.editFeatureColor[this.mapName]
+          if (!this.color) this.color = 'rgba(0,0,255,1)'
+        }
       }
     }
   },

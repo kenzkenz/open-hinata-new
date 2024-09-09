@@ -1,15 +1,20 @@
 <template>
   <v-dialog :dialog="S_measureDialog" id="dialog-measure">
     <div :style="menuContentSize">
-      <b-form-checkbox style="margin-bottom: 10px;" v-model="s_toggleText" name="check-button" switch>
-        選択
-      </b-form-checkbox>
-      <b-form-checkbox style="margin-bottom: 10px;position: absolute;top:0;margin-left:90px" v-model="s_toggleIdo" name="check-button" switch>
-        変形
-      </b-form-checkbox>
-      <b-form-checkbox style="margin-bottom: 10px;position: absolute;top:0;margin-left: 180px" v-model="s_toggleIdo2" name="check-button" switch>
-        移動,拡大
-      </b-form-checkbox>
+      <b-form-radio-group style="margin-bottom: 10px"
+          v-model="s_drawMode"
+          :options="options"
+          name="radio-inline"
+      ></b-form-radio-group>
+<!--      <b-form-checkbox style="margin-bottom: 10px;" v-model="s_toggleText" name="check-button" switch>-->
+<!--        選択-->
+<!--      </b-form-checkbox>-->
+<!--      <b-form-checkbox style="margin-bottom: 10px;top:0;margin-left:90px" v-model="s_toggleIdo" name="check-button" switch>-->
+<!--        変形-->
+<!--      </b-form-checkbox>-->
+<!--      <b-form-checkbox style="margin-bottom: 10px;top:0;margin-left: 180px" v-model="s_toggleIdo2" name="check-button" switch>-->
+<!--        移動,拡大-->
+<!--      </b-form-checkbox>-->
       <b-button :pressed.sync="s_togglePoint0" class='olbtn' :size="btnSize">点</b-button>
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleLine" class='olbtn' :size="btnSize">線</b-button>
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleFreeHand" class='olbtn' :size="btnSize">フリー</b-button>
@@ -101,7 +106,7 @@ import * as turf from '@turf/turf';
 import {transform} from "ol/proj";
 import {Circle, LineString, MultiLineString, MultiPolygon, Point, Polygon} from "ol/geom";
 import Feature from "ol/Feature";
-import {measure, modifyTouchInteraction} from "../js/mymap";
+import {measure} from "../js/mymap";
 import * as d3 from "d3";
 import {parse} from 'csv-parse/lib/sync'
 
@@ -112,6 +117,12 @@ export default {
   },
   data () {
     return {
+      selected: 'sentaku',
+      options: [
+        { text: '選択', value: 'sentaku' },
+        { text: '変形', value: 'henkei' },
+        { text: '移動・変形', value: 'ido' }
+      ],
       address: '',
       menuContentSize: {'height': 'auto','margin': '10px', 'overflow': 'auto', 'user-select': 'text', 'position': 'relative'},
       btnSize: 'sm',
@@ -119,12 +130,12 @@ export default {
       toggleCenter: true,
       toggleDanmen: false,
       toggleDelete: false,
-      selected: 20,
-      options: [
-        { value: '20', text: '20' },
-        { value: '30', text: '30' },
-        { value: '50', text: '50' }
-      ],
+      // selected: 20,
+      // options: [
+      //   { value: '20', text: '20' },
+      //   { value: '30', text: '30' },
+      //   { value: '50', text: '50' }
+      // ],
       kodo: false,
       tolerance: 0.001,
       radius: 0,
@@ -132,6 +143,14 @@ export default {
     }
   },
   computed: {
+    s_drawMode: {
+      get() {
+        return this.$store.state.base.drawMode
+      },
+      set(value) {
+        this.$store.state.base.drawMode = value
+      }
+    },
     s_dialogMaxZindex () { return this.$store.state.base.dialogMaxZindex},
     s_dialogs () { return this.$store.state.base.dialogs},
     s_drawMeasure: {
@@ -225,30 +244,30 @@ export default {
         this.$store.state.base.toggleHole = value
       }
     },
-    s_toggleText: {
-      get() {
-        return this.$store.state.base.toggleText
-      },
-      set(value) {
-        this.$store.state.base.toggleText = value
-      }
-    },
-    s_toggleIdo: {
-      get() {
-        return this.$store.state.base.toggleIdo
-      },
-      set(value) {
-        this.$store.state.base.toggleIdo = value
-      }
-    },
-    s_toggleIdo2: {
-      get() {
-        return this.$store.state.base.toggleIdo2
-      },
-      set(value) {
-        this.$store.state.base.toggleIdo2 = value
-      }
-    },
+    // s_toggleText: {
+    //   get() {
+    //     return this.$store.state.base.toggleText
+    //   },
+    //   set(value) {
+    //     this.$store.state.base.toggleText = value
+    //   }
+    // },
+    // s_toggleIdo: {
+    //   get() {
+    //     return this.$store.state.base.toggleIdo
+    //   },
+    //   set(value) {
+    //     this.$store.state.base.toggleIdo = value
+    //   }
+    // },
+    // s_toggleIdo2: {
+    //   get() {
+    //     return this.$store.state.base.toggleIdo2
+    //   },
+    //   set(value) {
+    //     this.$store.state.base.toggleIdo2 = value
+    //   }
+    // },
     s_toggleSplit: {
       get() {
         return this.$store.state.base.toggleSplit
@@ -700,8 +719,10 @@ export default {
         sinpleFeature.geometry.coordinates.forEach((coord) => {
           coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
         })
+        console.log(coordinates)
         const lineString = new LineString(coordinates)
         newFeature = new Feature(lineString)
+        console.log(newFeature)
       } else if (targetFeature.getGeometry().getType() === 'MultiLineString') {
         sinpleFeature.geometry.coordinates.forEach((coords,i) => {
           coordinates.push([])
@@ -714,9 +735,6 @@ export default {
       } else {
         sinpleFeature.geometry.coordinates[0].forEach((coord) => {
           polygonCoordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
-        })
-        sinpleFeature.geometry.coordinates[0].forEach((coord) => {
-          polygonCoordinates.push(coord)
         })
         console.log(polygonCoordinates)
         const polygon = new Polygon([polygonCoordinates])
@@ -948,18 +966,20 @@ export default {
     s_drawVisible(newValue) {
       MyMap.drawLayer.setVisible(Number(newValue))
       permalink.moveEnd()
-    }
-  },
-  mounted () {
-
-    const dragHandle = document.querySelector('#dialog-measure .drag-handle');
-    dragHandle.innerHTML = '<span style="color: blue;">選択モード中</span>'
-
-    this.$watch(function () {
-      return [this.s_toggleIdo]
-    }, function () {
-      if (this.s_toggleIdo) {
-        console.log('on')
+    },
+    s_drawMode(newValue) {
+      console.log(newValue)
+      const dragHandle = document.querySelector('#dialog-measure .drag-handle');
+      if (newValue === 'sentaku') {
+        MyMap.modifyInteraction.setActive(false)
+        MyMap.modifyTouchInteraction.setActive(false)
+        MyMap.transformInteraction.setActive(false)
+        dragHandle.innerHTML = '<span style="color: blue;">選択モード中</span>'
+        MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
+        // this.$store.state.base.editFeature = null
+        MyMap.drawLayer.getSource().changed()
+        MyMap.overlay['0'].setPosition(undefined)
+      } else if (newValue === 'henkei') {
         this.s_togglePoint0 = false
         this.s_toggleLine = false
         this.s_toggleFreeHand = false
@@ -971,7 +991,6 @@ export default {
         this.toggleDelete = false
         this.toggleDanmen = false
         this.s_toggleHole = false
-        this.s_toggleIdo2 = false
         this.s_toggleText = false
         this.s_toggleHole = false
         this.s_toggleSplit = false
@@ -984,30 +1003,10 @@ export default {
         // MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
         // this.$store.state.base.editFeature = null
         // MyMap.drawLayer.getSource().changed()
-
         MyMap.overlay['0'].setPosition(undefined)
         // store.state.base.editFeature = null
         MyMap.drawLayer.getSource().changed()
-      } else {
-        console.log('off')
-        console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
-        MyMap.modifyInteraction.setActive(false)
-        MyMap.modifyTouchInteraction.setActive(false)
-        // MyMap.transformInteraction.setActive(false)
-
-        // dragHandle.innerHTML = ''
-
-        this.$store.state.base.drawEndFlg = false
-
-        console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
-        MyMap.drawLayer.getSource().changed()
-      }
-    })
-    this.$watch(function () {
-      return [this.s_toggleIdo2]
-    }, function () {
-      if (this.s_toggleIdo2) {
-        console.log('on')
+      } else if (newValue === 'ido') {
         this.s_togglePoint0 = false
         this.s_toggleLine = false
         this.s_toggleFreeHand = false
@@ -1023,8 +1022,6 @@ export default {
         this.s_toggleText = false
         this.s_toggleHole = false
         this.s_toggleSplit = false
-
-
         MyMap.modifyInteraction.setActive(false)
         MyMap.modifyTouchInteraction.setActive(false)
         MyMap.transformInteraction.setActive(true)
@@ -1032,72 +1029,157 @@ export default {
         dragHandle.innerHTML = '<span style="color: red;">移動,拡大モード中</span>'
         MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
         // this.$store.state.base.editFeature = null
-        MyMap.drawLayer.getSource().changed()
-
         MyMap.overlay['0'].setPosition(undefined)
-        MyMap.overlay['0'].setPosition(undefined)
-        // store.state.base.editFeature = null
-        MyMap.drawLayer.getSource().changed()
-      } else {
-        console.log('off')
-        console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
-        // MyMap.modifyInteraction.setActive(false)
-        // MyMap.modifyTouchInteraction.setActive(false)
-        // MyMap.transformInteraction.setActive(false)
-
-        // dragHandle.innerHTML = ''
-
-        this.$store.state.base.drawEndFlg = false
-
-        console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
         MyMap.drawLayer.getSource().changed()
       }
-    })
-    this.$watch(function () {
-      return [this.s_toggleText]
-    }, function () {
-      if (this.s_toggleText) {
-        console.log('on')
-        // this.s_togglePoint0 = false
-        // this.s_toggleLine = false
-        // this.s_toggleFreeHand = false
-        // this.s_togglePoint = false
-        // this.s_toggleMenseki = false
-        // this.s_toggleCircle = false
-        // this.s_toggleDaen = false
-        // this.s_toggleShikaku = false
-        // this.toggleDelete = false
-        // this.toggleDanmen = false
-        // this.s_toggleHole = false
-        this.s_toggleIdo = false
-        this.s_toggleIdo2 = false
-        this.s_toggleSplit = false
-
-
-        MyMap.modifyInteraction.setActive(false)
-        MyMap.modifyTouchInteraction.setActive(false)
-        MyMap.transformInteraction.setActive(false)
-
-        dragHandle.innerHTML = '<span style="color: blue;">選択モード中</span>'
-        MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
-        // this.$store.state.base.editFeature = null
-        MyMap.drawLayer.getSource().changed()
-
-        MyMap.overlay['0'].setPosition(undefined)
-      } else {
-        console.log('off')
-        console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
-        // MyMap.modifyInteraction.setActive(false)
-        // MyMap.modifyTouchInteraction.setActive(false)
-        // MyMap.transformInteraction.setActive(false)
-
-        // dragHandle.innerHTML = ''
-
-        this.$store.state.base.drawEndFlg = false
-
-        console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
-      }
-    })
+    }
+  },
+  mounted () {
+    const dragHandle = document.querySelector('#dialog-measure .drag-handle');
+    dragHandle.innerHTML = '<span style="color: blue;">選択モード中</span>'
+    // this.$watch(function () {
+    //   return [this.s_toggleIdo]
+    // }, function () {
+    //   if (this.s_toggleIdo) {
+    //     console.log('on')
+    //     this.s_togglePoint0 = false
+    //     this.s_toggleLine = false
+    //     this.s_toggleFreeHand = false
+    //     this.s_togglePoint = false
+    //     this.s_toggleMenseki = false
+    //     this.s_toggleCircle = false
+    //     this.s_toggleDaen = false
+    //     this.s_toggleShikaku = false
+    //     this.toggleDelete = false
+    //     this.toggleDanmen = false
+    //     this.s_toggleHole = false
+    //     this.s_toggleIdo2 = false
+    //     this.s_toggleText = false
+    //     this.s_toggleHole = false
+    //     this.s_toggleSplit = false
+    //
+    //     MyMap.modifyInteraction.setActive(true)
+    //     MyMap.modifyTouchInteraction.setActive(true)
+    //     MyMap.transformInteraction.setActive(false)
+    //
+    //     dragHandle.innerHTML = '<span style="color: yellow;">変形モード中</span>'
+    //     // MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
+    //     // this.$store.state.base.editFeature = null
+    //     // MyMap.drawLayer.getSource().changed()
+    //
+    //     MyMap.overlay['0'].setPosition(undefined)
+    //     // store.state.base.editFeature = null
+    //     MyMap.drawLayer.getSource().changed()
+    //   } else {
+    //     console.log('off')
+    //     console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
+    //     MyMap.modifyInteraction.setActive(false)
+    //     MyMap.modifyTouchInteraction.setActive(false)
+    //     // MyMap.transformInteraction.setActive(false)
+    //
+    //     // dragHandle.innerHTML = ''
+    //
+    //     this.$store.state.base.drawEndFlg = false
+    //
+    //     console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
+    //     MyMap.drawLayer.getSource().changed()
+    //   }
+    // })
+    // this.$watch(function () {
+    //   return [this.s_toggleIdo2]
+    // }, function () {
+    //   if (this.s_toggleIdo2) {
+    //     console.log('on')
+    //     this.s_togglePoint0 = false
+    //     this.s_toggleLine = false
+    //     this.s_toggleFreeHand = false
+    //     this.s_togglePoint = false
+    //     this.s_toggleMenseki = false
+    //     this.s_toggleCircle = false
+    //     this.s_toggleDaen = false
+    //     this.s_toggleShikaku = false
+    //     this.toggleDelete = false
+    //     this.toggleDanmen = false
+    //     this.s_toggleHole = false
+    //     this.s_toggleIdo = false
+    //     this.s_toggleText = false
+    //     this.s_toggleHole = false
+    //     this.s_toggleSplit = false
+    //
+    //
+    //     MyMap.modifyInteraction.setActive(false)
+    //     MyMap.modifyTouchInteraction.setActive(false)
+    //     MyMap.transformInteraction.setActive(true)
+    //
+    //     dragHandle.innerHTML = '<span style="color: red;">移動,拡大モード中</span>'
+    //     MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
+    //     // this.$store.state.base.editFeature = null
+    //     MyMap.drawLayer.getSource().changed()
+    //
+    //     MyMap.overlay['0'].setPosition(undefined)
+    //     MyMap.overlay['0'].setPosition(undefined)
+    //     // store.state.base.editFeature = null
+    //     MyMap.drawLayer.getSource().changed()
+    //   } else {
+    //     console.log('off')
+    //     console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
+    //     // MyMap.modifyInteraction.setActive(false)
+    //     // MyMap.modifyTouchInteraction.setActive(false)
+    //     // MyMap.transformInteraction.setActive(false)
+    //
+    //     // dragHandle.innerHTML = ''
+    //
+    //     this.$store.state.base.drawEndFlg = false
+    //
+    //     console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
+    //     MyMap.drawLayer.getSource().changed()
+    //   }
+    // })
+    // this.$watch(function () {
+    //   return [this.s_toggleText]
+    // }, function () {
+    //   if (this.s_toggleText) {
+    //     console.log('on')
+    //     // this.s_togglePoint0 = false
+    //     // this.s_toggleLine = false
+    //     // this.s_toggleFreeHand = false
+    //     // this.s_togglePoint = false
+    //     // this.s_toggleMenseki = false
+    //     // this.s_toggleCircle = false
+    //     // this.s_toggleDaen = false
+    //     // this.s_toggleShikaku = false
+    //     // this.toggleDelete = false
+    //     // this.toggleDanmen = false
+    //     // this.s_toggleHole = false
+    //     this.s_toggleIdo = false
+    //     this.s_toggleIdo2 = false
+    //     this.s_toggleSplit = false
+    //
+    //
+    //     MyMap.modifyInteraction.setActive(false)
+    //     MyMap.modifyTouchInteraction.setActive(false)
+    //     MyMap.transformInteraction.setActive(false)
+    //
+    //     dragHandle.innerHTML = '<span style="color: blue;">選択モード中</span>'
+    //     MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
+    //     // this.$store.state.base.editFeature = null
+    //     MyMap.drawLayer.getSource().changed()
+    //
+    //     MyMap.overlay['0'].setPosition(undefined)
+    //   } else {
+    //     console.log('off')
+    //     console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
+    //     // MyMap.modifyInteraction.setActive(false)
+    //     // MyMap.modifyTouchInteraction.setActive(false)
+    //     // MyMap.transformInteraction.setActive(false)
+    //
+    //     // dragHandle.innerHTML = ''
+    //
+    //     this.$store.state.base.drawEndFlg = false
+    //
+    //     console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
+    //   }
+    // })
     this.$watch(function () {
       return [this.s_toggleCircle]
     }, function () {
@@ -1115,8 +1197,6 @@ export default {
         this.s_toggleSplit = false
 
         this.$store.state.base.maps['map01'].addInteraction(MyMap.circleInteraction)
-
-
         this.$store.state.base.drawType = 'circle'
       } else {
         console.log('off')
@@ -1249,10 +1329,7 @@ export default {
         this.s_toggleSplit = false
 
         this.$store.state.base.maps['map01'].addInteraction(MyMap.lineInteraction)
-        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
-        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
-        // this.$store.state.base.maps['map01'].addInteraction(MyMap.modifyInteraction)
-        // this.$store.state.base.maps['map02'].addInteraction(MyMap.modifyInteraction)
+
         this.$store.state.base.drawType = 'line'
 
       } else {
@@ -1265,8 +1342,6 @@ export default {
       return [this.s_toggleFreeHand]
     }, function () {
       if (this.s_toggleFreeHand) {
-        // this.$store.state.base.maps['map01'].removeLayer(MyMap.drawLayer)
-        // this.$store.state.base.maps['map01'].addLayer(MyMap.drawLayer)
         console.log('on')
         this.s_togglePoint0 = false
         this.s_toggleLine = false
@@ -1281,8 +1356,6 @@ export default {
         this.s_toggleSplit = false
 
         this.$store.state.base.maps['map01'].addInteraction(MyMap.freeHandInteraction)
-        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
-        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
 
         this.$store.state.base.drawType = 'line'
 
@@ -1296,8 +1369,6 @@ export default {
       return [this.s_togglePoint0]
     }, function () {
       if (this.s_togglePoint0) {
-        // this.$store.state.base.maps['map01'].removeLayer(MyMap.drawLayer)
-        // this.$store.state.base.maps['map01'].addLayer(MyMap.drawLayer)
         console.log('on')
         // alert()
         this.s_toggleLine = false
@@ -1314,8 +1385,7 @@ export default {
         this.s_toggleSplit = false
 
         this.$store.state.base.maps['map01'].addInteraction(MyMap.pointInteraction)
-        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.modifyInteraction)
-        // this.$store.state.base.maps['map01'].removeInteraction(MyMap.transformInteraction)
+
         this.$store.state.base.drawType = 'point'
       } else {
         console.log('off')

@@ -102,6 +102,7 @@ const moduleBase = {
       nensyo: 0
     },
     ssdsStatName: '',
+    drawMode: 'sentaku',
     drawVisible: true,
     drawMeasure: true,
     drawEndFlg: false,
@@ -116,11 +117,11 @@ const moduleBase = {
     toggleDaen: false,
     toggleHole: false,
     toggle: false,
-    toggleIdo: false,
-    toggleIdo2: false,
+    // toggleIdo: false,
+    // toggleIdo2: false,
+    // toggleText: true,
     toggleSplit: false,
     toggleVertex: false,
-    toggleText: true,
     toggleModify: false,
     // hyokozuDiv: {
     //   map01: {},

@@ -1129,7 +1129,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
         case 'drawLayer':
         case 'heatmap':
           console.log(store.state.base.drawEndFlg)
-          if (store.state.base.toggleText) {
+          if (store.state.base.drawMode === 'sentaku') {
             if (store.state.base.drawEndFlg === true) {
               store.state.base.drawEndFlg = false
             } else {

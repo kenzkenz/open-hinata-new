@@ -145,7 +145,7 @@ function drawLayerStylefunction (){
             polygonStrokeColor = 'blue'
             lineWidth = 6
         }
-        if (store.state.base.toggleIdo) {
+        if (store.state.base.drawMode === 'henkei') {
             polygonStrokeColor = 'rgb(255,255,0)'
             polygonStrokeWidth = 4
             pointStrokeColor = 'rgb(255,255,0)'
@@ -917,7 +917,7 @@ export function initMap (vm) {
 
         // ------------------------
         const drawEndFunction =  function (feature,interaction) {
-            if (interaction !== 'point') store.state.base.toggleIdo = true
+            if (interaction !== 'point') store.state.base.drawMode = 'henkei'
             overlay[i].setPosition(undefined)
             const geoType = feature.getGeometry().getType()
             if (geoType === 'Polygon' || geoType === 'Circle') {
@@ -1214,7 +1214,7 @@ export function initMap (vm) {
                 features.push(feature)
                 layers.push(layer)
             })
-            if (store.state.base.toggleIdo) {
+            if (store.state.base.drawMode === 'henkei') {
                 if (features.length > 0) {
                     try {
                         if (features[0].getGeometry().getType() === 'Point' && layers[0].get('name') === 'drawLayer') {
@@ -1234,7 +1234,7 @@ export function initMap (vm) {
                     }
                 }
             }
-            if (store.state.base.toggleIdo2) {
+            if (store.state.base.drawMode === 'ido') {
                 if (features.length > 0) {
                     try {
                         if (features[0].getGeometry().getType() === 'Point' && layers[0].get('name') === 'drawLayer') {
@@ -1242,12 +1242,10 @@ export function initMap (vm) {
                                 modifyInteraction.setActive(true)
                             }
                         } else {
-                            if (store.state.base.toggleIdo2) {
-                                if (!transformInteraction.getActive()) {
-                                    transformInteraction.setActive(true)
-                                }
-                                modifyInteraction.setActive(false)
+                            if (!transformInteraction.getActive()) {
+                                transformInteraction.setActive(true)
                             }
+                            modifyInteraction.setActive(false)
                         }
                     } catch (e) {
                         // modifyInteraction.setActive(false)
@@ -1909,16 +1907,18 @@ export function initMap (vm) {
             if (layerNames) {
                 if (layerNames.indexOf('drawLayer') !== -1 ) {
                     // store.state.base.toggleIdo = false
-                    if (store.state.base.toggleText) {
+                    console.log(store.state.base.drawMode)
+                    if (store.state.base.drawMode === 'sentaku') {
                          // store.state.base.toggleIdo = true
                          store.commit('base/incrDialogMaxZindex')
                          store.state.base.dialogs.measureDialog.style["z-index"] = this.s_dialogMaxZindex
                          store.state.base.dialogs.measureDialog.style.display = 'block'
-                         if (!store.state.base.toggleIdo) {
-                             store.state.base.editFeature = feature
-                         } else {
-                             store.state.base.editFeature = transformInteraction.getFeatures().array_[0]
-                         }
+                         store.state.base.editFeature = feature
+                         // if (!store.state.base.toggleIdo) {
+                         //     store.state.base.editFeature = feature
+                         // } else {
+                         //     store.state.base.editFeature = transformInteraction.getFeatures().array_[0]
+                         // }
                          console.log(store.state.base.editFeature)
                          drawLayer.getSource().changed()
                      } else {
