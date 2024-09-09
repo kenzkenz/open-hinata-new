@@ -450,7 +450,7 @@ export default {
         dialog.style["z-index"] = this.s_dialogMaxZindex;
         dialog.style.display = 'block'
         const rect = document.querySelector('#color-btn0').getBoundingClientRect()
-        const left = (rect.x + 50 ) + 'px'
+        const left = (rect.x + 0 ) + 'px'
         const top = (rect.top - 0) + 'px'
         dialog.style.left = left
         dialog.style.top = top
