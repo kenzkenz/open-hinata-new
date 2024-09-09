@@ -466,7 +466,7 @@ export default {
         }
         const rgba = d3.rgb(color)
         const colorP = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.opacity }
-        this.$store.state.base.editFeatureColor['map01'] = colorP
+        this.$store.state.base.editFeatureFillColor['map01'] = colorP
       }
     },
     drawKodo () {

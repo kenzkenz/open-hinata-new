@@ -137,9 +137,13 @@ const moduleBase = {
     editFeatureName:'',
     editFeatureSetumei:'',
     editFeatureSrc:'',
-    editFeatureColor:{
+    editFeatureColor9:{
       map01: {r: 25, g: 77, b: 51, a: 0.5},
       map02: {r: 25, g: 77, b: 51, a: 0.5},
+    },
+    editFeatureFillColor:{
+      map01: '',
+      map02: '',
     },
     hyokoColor:{
       map01: '',

@@ -39,95 +39,32 @@ export default {
     // 重要
     s_featureColor: {
       get () {
-        return this.$store.state.base.editFeatureColor[this.mapName]
+        return this.$store.state.base.editFeatureFillColor[this.mapName]
       },
       set (value) {
-        if (this.$store.state.base.editGColorElm) {
-          const targetElm = this.$store.state.base.editGColorElm
-          const rgb = 'rgb(' + value.rgba.r + ',' + value.rgba.g + ',' + value.rgba.b + ')'
-          targetElm.style.backgroundColor = rgb
-          if (this.$store.state.base.editGColoraaa === 0) {
-            this.$store.state.info.gColor0[this.mapName]  = rgb
-          } else {
-            this.$store.state.info.gColor1[this.mapName]  = rgb
-          }
-        } else if (this.$store.state.base.editDiv) {
-          const id = this.$store.state.base.editDiv.id
-          const result = this.$store.state.info.divs[this.mapName].find((div) => {
-            return div.id === id
-          })
-          const rgb = 'rgb(' + value.rgba.r + ',' + value.rgba.g + ',' + value.rgba.b + ')'
-          result.rgb = rgb
-          // ---------------------------------------------------------------
-          const bai = 100
-          let divs2 = JSON.parse(JSON.stringify(this.s_divs[this.mapName]))
-          divs2.forEach((div) => {
-            div.m = div.m * 100
-            div.rgb = d3.rgb(div.rgb)
-          })
-          divs2 = divs2.filter((div) => {
-            return div.id !== 9999
-          })
-          this.$store.state.info.divs2[this.mapName] = divs2
-          // ---------------------------------------------------------------
-          let divs = JSON.parse(JSON.stringify(this.s_divs[this.mapName]))
-          divs.sort(function(a, b) {
-            if (a.m > b.m) {
-              return 1;
-            } else {
-              return -1;
-            }
-          })
-          const aaa = divs.find((div) => {
-            return div.id === 9999
-          })
-          this.$store.state.info.maxRgb[this.mapName] = d3.rgb(aaa.rgb)
-          divs = divs.filter((div) => {
-            return div.id !== 9999
-          })
-          const maxM = d3.max(divs, function(d){ return d.m; }) * bai
-          this.$store.state.info.maxM[this.mapName] = maxM
-          const minM = d3.min(divs, function(d){ return d.m; })
-          const mArr = divs.map((v) => {
-            return v.m * bai
-          })
-          const rgbArr = divs.map((v) => {
-            return v.rgb
-          })
-          const hyokozuColor = d3.scaleLinear().domain(mArr).range(rgbArr)
 
-          for (let i = 0; i < maxM; i++) {
-            this.$store.state.info.hyokozuColors[this.mapName][i] = d3.rgb(hyokozuColor(i))
-          }
-          Layer.hyokozu1Obj[this.mapName].getSource().changed()
-          Layer.hyokozu2Obj[this.mapName].getSource().changed()
-          // ---------------------------------------------------------------
-
-        } else {
-          this.$store.state.base.editFeatureColor[this.mapName] = value
-          // const rgb = 'rgb(' + this.s_featureColor.rgba.r + ',' + this.s_featureColor.rgba.g + ',' + this.s_featureColor.rgba.b + ')'
-          const rgba = 'rgba(' + value.rgba.r + ',' + value.rgba.g + ',' + value.rgba.b + ',' + value.rgba.a + ')'
-          // this.$store.state.base.editFeatureColor = rgba
-          const feature = this.$store.state.base.editFeature
-          const geoType = feature.getGeometry().getType()
-          // if (!feature.getProperties()._fillColor) {
-          //   feature.setProperties({_fillColor: 'rgba(0,0,255,0.5)'})
-          // }
-          const before = {
-            prop: feature.getProperties(),
-            feature: feature
-          }
-
-          if (geoType === 'Point' || geoType === 'LineString') {
-            feature.setProperties({_color: rgba})
-          }
-          if (geoType === 'Polygon' || geoType === 'Circle') {
-            feature.setProperties({_fillColor: rgba})
-          }
-          const after = {prop:feature.getProperties(),feature:feature}
-          MyMap.undoInteraction.push('drawProp', { before: before, after: after });
+        this.$store.state.base.editFeatureFillColor[this.mapName] = value
+        // const rgb = 'rgb(' + this.s_featureColor.rgba.r + ',' + this.s_featureColor.rgba.g + ',' + this.s_featureColor.rgba.b + ')'
+        const rgba = 'rgba(' + value.rgba.r + ',' + value.rgba.g + ',' + value.rgba.b + ',' + value.rgba.a + ')'
+        // this.$store.state.base.editFeatureFillColor = rgba
+        const feature = this.$store.state.base.editFeature
+        const geoType = feature.getGeometry().getType()
+        // if (!feature.getProperties()._fillColor) {
+        //   feature.setProperties({_fillColor: 'rgba(0,0,255,0.5)'})
+        // }
+        const before = {
+          prop: feature.getProperties(),
+          feature: feature
         }
 
+        if (geoType === 'Point' || geoType === 'LineString') {
+          feature.setProperties({_color: rgba})
+        }
+        if (geoType === 'Polygon' || geoType === 'Circle') {
+          feature.setProperties({_fillColor: rgba})
+        }
+        const after = {prop:feature.getProperties(),feature:feature}
+        MyMap.undoInteraction.push('drawProp', { before: before, after: after });
         moveEnd()
       }
     },
@@ -157,7 +94,7 @@ export default {
     },
   },
   mounted () {
-    console.log(this.$store.state.base.editFeatureColor)
+    console.log(this.$store.state.base.editFeatureFillColor)
   }
 }
 </script>
