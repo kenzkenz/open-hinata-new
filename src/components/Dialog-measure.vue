@@ -121,7 +121,7 @@ export default {
       options: [
         { text: '選択', value: 'sentaku' },
         { text: '変形', value: 'henkei' },
-        { text: '移動・変形', value: 'ido' }
+        { text: '移動・拡大', value: 'ido' }
       ],
       address: '',
       menuContentSize: {'height': 'auto','margin': '10px', 'overflow': 'auto', 'user-select': 'text', 'position': 'relative'},
