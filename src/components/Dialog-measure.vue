@@ -466,7 +466,12 @@ export default {
         }
         const rgba = d3.rgb(color)
         const colorP = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.opacity }
-        this.$store.state.base.editFeatureFillColor['map01'] = colorP
+        // this.$store.state.base.editFeatureFillColor['map01'] = colorP
+        if (geoType === 'Polygon' || geoType === 'Circle') {
+          this.$store.state.base.editFeatureFillColor['map01'] = colorP
+        } else {
+          this.$store.state.base.editFeatureColor['map01'] = colorP
+        }
       }
     },
     drawKodo () {
