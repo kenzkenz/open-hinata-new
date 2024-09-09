@@ -39,16 +39,30 @@ export default {
     // 重要
     s_featureColor: {
       get () {
+        // const feature = this.$store.state.base.editFeature
+        // const geoType = feature.getGeometry().getType()
+        // if (geoType === 'Polygon' || geoType === 'Circle') {
+        //   return this.$store.state.base.editFeatureFillColor[this.mapName]
+        // } else {
+        //   return this.$store.state.base.editFeatureColor[this.mapName]
+        // }
+
         return this.$store.state.base.editFeatureFillColor[this.mapName]
       },
       set (value) {
+        const feature = this.$store.state.base.editFeature
+        const geoType = feature.getGeometry().getType()
+        if (geoType === 'Polygon' || geoType === 'Circle') {
+          this.$store.state.base.editFeatureFillColor[this.mapName] = value
+        } else {
+          this.$store.state.base.editFeatureColor[this.mapName] = value
 
-        this.$store.state.base.editFeatureFillColor[this.mapName] = value
+        }
+
         // const rgb = 'rgb(' + this.s_featureColor.rgba.r + ',' + this.s_featureColor.rgba.g + ',' + this.s_featureColor.rgba.b + ')'
         const rgba = 'rgba(' + value.rgba.r + ',' + value.rgba.g + ',' + value.rgba.b + ',' + value.rgba.a + ')'
         // this.$store.state.base.editFeatureFillColor = rgba
-        const feature = this.$store.state.base.editFeature
-        const geoType = feature.getGeometry().getType()
+
         // if (!feature.getProperties()._fillColor) {
         //   feature.setProperties({_fillColor: 'rgba(0,0,255,0.5)'})
         // }
