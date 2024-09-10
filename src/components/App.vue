@@ -1438,6 +1438,20 @@
           }
         })
       })
+      // ダイアログエディット--------------------------------------------------------------
+      maps.forEach((mapName) => {
+        const olPopup = document.querySelector('#' + mapName + ' .ol-popup0')
+        olPopup.addEventListener('click', (e) => {
+          if (e.target && e.target.classList.contains("edit-button") ) {
+            const rect = document.querySelector('#map01-popup').getBoundingClientRect()
+            const left = rect.x + 'px'
+            const top = (rect.top + rect.height + 50) + 'px'
+            vm.$store.state.base.dialogs.dialogEdit.style.top = top
+            vm.$store.state.base.dialogs.dialogEdit.style.left = left
+            vm.$store.state.base.dialogs.dialogEdit.style.display = 'block'
+          }
+        })
+      })
       // ssds棒グラフ------------------------------------------------------
       maps.forEach((mapName) => {
         const olPopup = document.querySelector('#' + mapName + ' .ol-popup0')

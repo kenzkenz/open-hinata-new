@@ -2055,11 +2055,13 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
     return cont
   }
   // エディットダイアログの表示位置用-------------------------------------------
+  // これ動いていない？削除する？
   if (!cont || cont === undefined) {
     store.state.base.dialogs.dialogEdit.style.display = 'none'
     return
   }
   const rect = document.querySelector('#map01-popup').getBoundingClientRect()
+  console.log(rect)
   const left = rect.x + 'px'
   const top = (rect.top + rect.height + 20) + 'px'
   store.state.base.dialogs.dialogEdit.style.top = top
