@@ -516,6 +516,7 @@ export default {
       }
     },
     drawVoronoi () {
+      //-------------------------------------------------------------
       MyMap.undoInteraction.blockStart()
       MyMap.drawLayer.getSource().getFeatures().forEach((feature) =>{
         if (feature.getProperties()._voronoi) {
@@ -523,6 +524,7 @@ export default {
         }
       })
       MyMap.undoInteraction.blockEnd()
+      //-------------------------------------------------------------
 
       let turfPoints = []
       MyMap.drawLayer.getSource().getFeatures().forEach((feature) => {
@@ -564,10 +566,7 @@ export default {
       }
 
       // ------------------------------------------------------
-      const tGeojson = new GeoJSON().writeFeatures([targetFeature], {
-        featureProjection: "EPSG:3857"
-      })
-      const tFeature = JSON.parse(tGeojson).features[0]
+      const turfPoint = turf.point(targetFeature.getGeometry().getCoordinates())
       let count = 0
       let countArr = []
       MyMap.drawLayer.getSource().getFeatures().forEach((feature) => {
@@ -575,11 +574,11 @@ export default {
           featureProjection: "EPSG:3857"
         })
         const features = JSON.parse(featureGeojson).features
+
+
         if (features[0].geometry.type === 'Polygon') {
           const pointOnPolygon = turf.pointOnFeature(features[0])
-          console.log(turf.truncate(turf.point(pointOnPolygon.geometry.coordinates)).geometry.coordinates)
-          console.log(turf.truncate(turf.point(tFeature.geometry.coordinates)).geometry.coordinates)
-          if (JSON.stringify(turf.truncate(turf.point(pointOnPolygon.geometry.coordinates)).geometry.coordinates) === JSON.stringify(turf.truncate(turf.point(tFeature.geometry.coordinates)).geometry.coordinates)){
+          if (JSON.stringify(turf.truncate(turf.point(pointOnPolygon.geometry.coordinates)).geometry.coordinates) === JSON.stringify(turf.truncate(turfPoint).geometry.coordinates)){
             countArr.push(count)
           }
         }
@@ -624,18 +623,13 @@ export default {
         alert('選択されていません。')
         return
       }
-      if (targetFeature.getGeometry().getType() !== 'Polygon') {
+      if (targetFeature.getGeometry().getType() !== 'Polygon' && targetFeature.getGeometry().getType() !== 'MultiPolygon') {
         alert('ポリゴンではありません。')
         return
       }
-      const fiatureGeojson = new GeoJSON().writeFeatures([targetFeature], {
-        featureProjection: "EPSG:4326"
-      })
-      const features = JSON.parse(fiatureGeojson).features
-      console.log(features[0])
-      const smoothFeature = turf.polygonSmooth(features[0], { iterations: 3 })
+      const turfPolygon = turf.polygon(targetFeature.getGeometry().getCoordinates())
+      const smoothFeature = turf.polygonSmooth(turfPolygon, { iterations: 3 })
       const polygonCoordinates = smoothFeature.features[0].geometry.coordinates[0]
-      console.log(polygonCoordinates)
       const polygon = new Polygon([polygonCoordinates])
       const newFeature = new Feature(polygon)
 
@@ -667,11 +661,9 @@ export default {
         alert('線ではありません。')
         return
       }
-      const fiatureGeojson = new GeoJSON().writeFeatures([targetFeature], {
-        featureProjection: "EPSG:4326"
-      })
-      const features = JSON.parse(fiatureGeojson).features
-      const bezierSpline = turf.bezierSpline(features[0])
+
+      const turfLine = turf.lineString(targetFeature.getGeometry().getCoordinates())
+      const bezierSpline = turf.bezierSpline(turfLine)
       const coordinates = bezierSpline.geometry.coordinates
       const lineString = new LineString(coordinates)
       const newFeature = new Feature(lineString)
@@ -694,7 +686,6 @@ export default {
       this.$store.state.base.editFeature = newFeature
     },
     drawSinple () {
-      // this.s_toggleIdo = false
       const targetFeature = this.$store.state.base.editFeature
       if (!targetFeature) {
         alert('選択されていません。')
