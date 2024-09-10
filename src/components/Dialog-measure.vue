@@ -130,12 +130,6 @@ export default {
       toggleCenter: true,
       toggleDanmen: false,
       toggleDelete: false,
-      // selected: 20,
-      // options: [
-      //   { value: '20', text: '20' },
-      //   { value: '30', text: '30' },
-      //   { value: '50', text: '50' }
-      // ],
       kodo: false,
       tolerance: 0.001,
       radius: 0,
@@ -244,30 +238,6 @@ export default {
         this.$store.state.base.toggleHole = value
       }
     },
-    // s_toggleText: {
-    //   get() {
-    //     return this.$store.state.base.toggleText
-    //   },
-    //   set(value) {
-    //     this.$store.state.base.toggleText = value
-    //   }
-    // },
-    // s_toggleIdo: {
-    //   get() {
-    //     return this.$store.state.base.toggleIdo
-    //   },
-    //   set(value) {
-    //     this.$store.state.base.toggleIdo = value
-    //   }
-    // },
-    // s_toggleIdo2: {
-    //   get() {
-    //     return this.$store.state.base.toggleIdo2
-    //   },
-    //   set(value) {
-    //     this.$store.state.base.toggleIdo2 = value
-    //   }
-    // },
     s_toggleSplit: {
       get() {
         return this.$store.state.base.toggleSplit
@@ -564,38 +534,19 @@ export default {
         alert('点ではありません。')
         return
       }
-
-      // ------------------------------------------------------
-      const turfPoint = turf.point(targetFeature.getGeometry().getCoordinates())
-      let count = 0
-      let countArr = []
-      MyMap.drawLayer.getSource().getFeatures().forEach((feature) => {
-        const featureGeojson = new GeoJSON().writeFeatures([feature], {
-          featureProjection: "EPSG:3857"
-        })
-        const features = JSON.parse(featureGeojson).features
-
-
-        if (features[0].geometry.type === 'Polygon') {
-          const pointOnPolygon = turf.pointOnFeature(features[0])
-          if (JSON.stringify(turf.truncate(turf.point(pointOnPolygon.geometry.coordinates)).geometry.coordinates) === JSON.stringify(turf.truncate(turfPoint).geometry.coordinates)){
-            countArr.push(count)
-          }
+      MyMap.drawLayer.getSource().getFeatures().forEach((feature) =>{
+        if (feature.getProperties()._buffer) {
+          MyMap.drawLayer.getSource().removeFeature(feature)
         }
-        count++
       })
-      countArr.forEach((count) => {
-        MyMap.drawLayer.getSource().removeFeature(MyMap.drawLayer.getSource().getFeatures()[count])
-      })
-      // ------------------------------------------------------
 
       const featureGeojson = new GeoJSON().writeFeatures([targetFeature], {
         featureProjection: "EPSG:3857"
       })
       const features = JSON.parse(featureGeojson).features
 
-      // const turfPolygon = turf.polygon(targetFeature.getGeometry().getCoordinates())
-      
+      // const point0 = turf.point(targetFeature.getGeometry().getCoordinates());
+      // console.log(point0)
 
       const point = turf.point(features[0].geometry.coordinates);
       const bufferFeature = turf.buffer(point, Number(this.radius));
@@ -606,6 +557,7 @@ export default {
       })
       const polygon = new Polygon([polygonCoordinates])
       newFeature = new Feature(polygon)
+      newFeature.setProperties({_buffer:true})
 
       if (targetFeature.values_) {
         Object.keys(targetFeature.values_).forEach(function (key) {
