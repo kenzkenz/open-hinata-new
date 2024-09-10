@@ -1223,11 +1223,9 @@ export function initMap (vm) {
                                 modifyInteraction.setActive(false)
                             }
                         } else {
-                            if (store.state.base.toggleIdo) {
-                                if (!modifyTouchInteraction.getActive()) {
-                                    modifyTouchInteraction.setActive(true)
-                                    modifyInteraction.setActive(true)
-                                }
+                            if (!modifyTouchInteraction.getActive()) {
+                                modifyTouchInteraction.setActive(true)
+                                modifyInteraction.setActive(true)
                             }
                         }
                     } catch (e) {
