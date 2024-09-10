@@ -496,6 +496,11 @@ drawLayer.getSource().on("change", function(e) {
         featureProjection: "EPSG:3857"
     })
     store.state.base.tGeojson = JSON.stringify(JSON.parse(tGeojson),null,2)
+    // const tKml = new KML().writeFeatures(drawLayer.getSource().getFeatures(), {
+    //     featureProjection: "EPSG:3857"
+    // })
+    // store.state.base.tKml = tKml
+    // console.log(tKml)
     history ('ドロー')
 })
 pointInteraction.on('drawend', function (event) {
@@ -831,6 +836,15 @@ export function initMap (vm) {
             const undo = function () {
                 undoInteraction.undo()
             }
+            const sentakuMode = function () {
+                store.state.base.drawMode = 'sentaku'
+            }
+            const henkeiMode = function () {
+                store.state.base.drawMode = 'henkei'
+            }
+            const idoMode = function () {
+                store.state.base.drawMode = 'ido'
+            }
             const contextmenu = new ContextMenu({
                 width: 170,
                 defaultItems: false, // defaultItems are (for now) Zoom In/Zoom Out
@@ -863,6 +877,23 @@ export function initMap (vm) {
                     {
                         text: '戻す',
                         callback: undo
+                    },
+                    {
+                        text: 'モード変更',
+                        items: [
+                            {
+                                text: '選択モード',
+                                callback: sentakuMode,
+                            },
+                            {
+                                text: '変形モード',
+                                callback: henkeiMode,
+                            },
+                            {
+                                text: '移動・拡大モード',
+                                callback: idoMode,
+                            },
+                        ],
                     },
                 ],
             });

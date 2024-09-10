@@ -248,6 +248,7 @@
       },
       // ダイアログを開く------------------------------------------------------------------
       openDialog (dialog) {
+        MyMap.history (dialog)
         if (dialog.style.display === 'block') {
           dialog.style.display = 'none'
         } else {

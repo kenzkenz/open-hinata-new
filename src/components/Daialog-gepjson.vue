@@ -14,8 +14,6 @@
 import * as MyMap from '../js/mymap'
 import {moveEnd} from "@/js/permalink"
 import store from "@/js/store";
-import * as d3 from "d3";
-import * as Layer from "@/js/layers";
 import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css'; // import the styles somewhere
 // import highlighting library (you can use any library you want just return html string)
@@ -46,6 +44,14 @@ export default {
       },
       set(value) {
         this.$store.state.base.tGeojson = value
+      }
+    },
+    s_tKml: {
+      get() {
+        return this.$store.state.base.tKml
+      },
+      set(value) {
+        this.$store.state.base.tKml = value
       }
     },
   },

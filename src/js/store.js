@@ -154,6 +154,7 @@ const moduleBase = {
     hyokou: 0,
     resasOrEstat:'',
     tGeojson:'',
+    tKml:'',
     shareUrl:'',
     prefId:[{pref:'北海道', id:1}, {pref:'青森県', id:2}, {pref:'岩手県', id:3}, {pref:'宮城県', id:4},
           {pref:'秋田県', id:5}, {pref:'山形県', id:6}, {pref:'福島県', id:7}, {pref:'茨城県', id:8},
