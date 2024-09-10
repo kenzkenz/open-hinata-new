@@ -593,6 +593,10 @@ export default {
         featureProjection: "EPSG:3857"
       })
       const features = JSON.parse(featureGeojson).features
+
+      // const turfPolygon = turf.polygon(targetFeature.getGeometry().getCoordinates())
+      
+
       const point = turf.point(features[0].geometry.coordinates);
       const bufferFeature = turf.buffer(point, Number(this.radius));
       let polygonCoordinates = []
@@ -699,7 +703,11 @@ export default {
         featureProjection: "EPSG:3857"
       })
       const features = JSON.parse(fiatureGeojson).features
-      console.log(features)
+      console.log(features[0])
+
+      // const turfLine = turf.lineString(targetFeature.getGeometry().getCoordinates())
+      // console.log(turfLine)
+
       //0.001
       const sinpleFeature = turf.simplify(features[0], { tolerance: this.tolerance, highQuality: false })
       console.log(sinpleFeature)
@@ -710,10 +718,8 @@ export default {
         sinpleFeature.geometry.coordinates.forEach((coord) => {
           coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
         })
-        console.log(coordinates)
         const lineString = new LineString(coordinates)
         newFeature = new Feature(lineString)
-        console.log(newFeature)
       } else if (targetFeature.getGeometry().getType() === 'MultiLineString') {
         sinpleFeature.geometry.coordinates.forEach((coords,i) => {
           coordinates.push([])
