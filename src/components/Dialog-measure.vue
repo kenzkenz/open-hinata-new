@@ -545,16 +545,15 @@ export default {
       })
       const features = JSON.parse(featureGeojson).features
 
-      // const point0 = turf.point(targetFeature.getGeometry().getCoordinates());
-      // console.log(point0)
-
-      const point = turf.point(features[0].geometry.coordinates);
-      const bufferFeature = turf.buffer(point, Number(this.radius));
+      const point = turf.point(features[0].geometry.coordinates)
+      const bufferFeature = turf.buffer(point, Number(this.radius))
+      console.log(bufferFeature.geometry.coordinates[0])
       let polygonCoordinates = []
       let newFeature
       bufferFeature.geometry.coordinates[0].forEach((coord) => {
         polygonCoordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
       })
+      console.log(polygonCoordinates)
       const polygon = new Polygon([polygonCoordinates])
       newFeature = new Feature(polygon)
       newFeature.setProperties({_buffer:true})
