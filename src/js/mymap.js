@@ -295,7 +295,6 @@ function drawLayerStylefunction (){
                 }
             },
         })
-        console.log(color)
         styles.push(polygonStyle)
         if (geoType === 'Point') styles.push(pointStyle)
         if (geoType === 'LineString' || geoType === 'MultiLineString') styles.push(lineStyle)
@@ -359,24 +358,22 @@ export function measure (geoType,feature,coordAr) {
         }
         let tDistance2 = tDistance
         if (tDistance > 10) {
-            // tDistance2 = tDistance
             tDistance = tDistance.toFixed(2) + 'km'
         } else {
-            // tDistance2 = tDistance * 1000
             tDistance = (tDistance * 1000).toFixed(2) + 'm'
         }
-        // console.log(tDistance2)
         feature.setProperties({_distance: tDistance})
         return {'tDistance':tDistance,'tDistance2':tDistance2}
-    } else if (geoType === 'Polygon') {
+        } else if (feature.getProperties()._buffer) {
+
+
+        } else if (geoType === 'Polygon') {
         let tPolygon = turf.polygon(coordAr)
         tPolygon = turf.toWgs84(tPolygon)
         let tArea = turf.area(tPolygon)
         if (tArea < 1000000) {
-            // tArea = String((Math.floor(tArea*100)/100)) + "m2"
             tArea = tArea.toFixed(2) + "m2"
         } else {
-            // tArea = String((Math.floor(tArea/1000000*100)/100)) + "km2"
             tArea = (tArea / 1000000).toFixed(2) + "km2"
         }
         feature.setProperties({_area: tArea})

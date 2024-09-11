@@ -106,7 +106,7 @@ import * as turf from '@turf/turf';
 import {transform} from "ol/proj";
 import {Circle, LineString, MultiLineString, MultiPolygon, Point, Polygon} from "ol/geom";
 import Feature from "ol/Feature";
-import {geolocationDrawInteraction, measure} from "../js/mymap";
+import {measure} from "../js/mymap";
 import * as d3 from "d3";
 import {parse} from 'csv-parse/lib/sync'
 
@@ -357,7 +357,6 @@ export default {
                   coord.forEach((c) => {
                     coordinates[i][ii].push(transform(c, "EPSG:4326", "EPSG:3857"))
                   })
-
                 })
               })
               const multiPolygon = new MultiPolygon(coordinates)
@@ -366,7 +365,6 @@ export default {
               console.log(row.center, row.radius)
               const circle = new Circle(JSON.parse(row.center), Number(row.radius))
               newFeature = new Feature(circle)
-
             }
             newFeature.setProperties({
                   'name': row.名称,
@@ -474,7 +472,6 @@ export default {
       }
     },
     drawKodo () {
-      // this.s_toggleIdo = false
       this.kodo = !this.kodo
     },
     drawHeatMap () {
@@ -531,7 +528,6 @@ export default {
         })
         MyMap.drawLayer.getSource().addFeature(newFeature)
       })
-      // this.$store.state.base.maps['map01'].getView().fit(extent)
       MyMap.undoInteraction.blockEnd()
     },
     drawBuffer () {
@@ -549,25 +545,13 @@ export default {
           MyMap.drawLayer.getSource().removeFeature(feature)
         }
       })
-
-      const featureGeojson = new GeoJSON().writeFeatures([targetFeature], {
-        featureProjection: "EPSG:3857"
-      })
-      const features = JSON.parse(featureGeojson).features
-
-      const point = turf.point(features[0].geometry.coordinates)
-      const bufferFeature = turf.buffer(point, Number(this.radius))
-      console.log(bufferFeature.geometry.coordinates[0])
-      let polygonCoordinates = []
+      // Wgs84でないとなぜかbufferが作れない。
+      const point = turf.point(turf.toWgs84(targetFeature.getGeometry().getCoordinates()))
+      const bufferFeature = turf.toMercator(turf.buffer(point, Number(this.radius)))
       let newFeature
-      bufferFeature.geometry.coordinates[0].forEach((coord) => {
-        polygonCoordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
-      })
-      console.log(polygonCoordinates)
-      const polygon = new Polygon([polygonCoordinates])
+      const polygon = new Polygon(bufferFeature.geometry.coordinates)
       newFeature = new Feature(polygon)
       newFeature.setProperties({_buffer:true})
-
       if (targetFeature.values_) {
         Object.keys(targetFeature.values_).forEach(function (key) {
           if (key !== 'geometry') newFeature.setProperties({[key]: targetFeature.values_[key]})
