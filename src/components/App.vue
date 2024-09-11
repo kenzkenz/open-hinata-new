@@ -57,10 +57,11 @@
                     <b-button v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="home" style="margin-right:5px;"><i class="fa-solid fa-house"></i></b-button>
                     <b-button style="margin-right:5px;" :pressed.sync="s_toggle3d[mapName]" class='olbtn' :size="btnSize" @click="click3d(mapName)">{{ s_toggle3d[mapName] ? '2D' : '3D' }}</b-button>
                     <b-button id='split-map-btn' v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="splitMap" style="margin-right:5px;">分割</b-button>
-                    <b-button id='split-map-btn' v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="swipeMap" style="margin-right:5px;">swipe</b-button>
+                    <b-button id='swipe-map-btn' v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="swipeMap" style="margin-right:5px;"></b-button>
                     <b-button class='olbtn-red' :size="btnSize" @click="openDialog(s_dialogs[mapName])">背景</b-button>
                 </div>
                 <div class="top-right-div">
+                  <b-button style="margin-right: 5px;" v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="openDialog(s_dialogs['dialogTrack'])"><i class="fa-solid fa-person-walking"></i></b-button>
                   <b-button style="margin-right: 5px;" v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="openDialog(s_dialogs['dialogShare'])">共有</b-button>
                   <b-button i v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="openDialog(s_dialogs['measureDialog'])"><i class="fa-solid fa-pen"></i></b-button>
                 </div>
@@ -80,6 +81,7 @@
                 <v-dialog-dokuji v-if="mapName === 'map01'"/>
                 <v-dialog-geojson v-if="mapName === 'map01'"/>
                 <v-dialog-share v-if="mapName === 'map01'"/>
+                <v-dialog-track v-if="mapName === 'map01'"/>
 
 <!--                <div class="zoom-div">{{ zoom[mapName] }}</div>-->
                 <div class="zoom-div">
@@ -123,6 +125,7 @@
   import * as d3 from "d3"
   import DialogGeojson from './Daialog-gepjson'
   import DialogShare from './Dialog-share'
+  import DialogTrack from './Dialog-track'
   import {moveEnd} from "@/js/permalink"
 
   let heading
@@ -142,6 +145,7 @@
       'v-dialog-dokuji': DialogDokuji,
       'v-dialog-geojson': DialogGeojson,
       'v-dialog-share': DialogShare,
+      'v-dialog-track': DialogTrack,
     },
     data () {
       return {
@@ -2299,6 +2303,14 @@
     /*  top:0px;*/
     /*  left:0px;*/
     /*}*/
+    #swipe-map-btn:after {
+      content: "swipe";
+    }
+    @media screen and (max-width:500px) {
+      #swipe-map-btn:after {
+        content: "s";
+      }
+    }
 </style>
 <style>
 @import '../css/ol-ext.css';

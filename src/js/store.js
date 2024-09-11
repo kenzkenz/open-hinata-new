@@ -39,6 +39,8 @@ const moduleBase = {
       },
       dialogGeojson:{style: {top: '56px', left: '10px', 'z-index': 1, 'max-height': 'auto', 'width': 'auto', display: 'none'}},
       dialogShare:{style: {top: '56px', right: '10px', 'z-index': 1, height: 'auto', 'width': '380px', display: 'none'}},
+      dialogTrack: {style: {top: '56px', right: '10px', 'z-index': 1, height: 'auto', 'width': '380px', display: 'none'}},
+
       dialogDokuji:{style: {top: '56px', left: '10px', 'z-index': 1, height: 'auto', 'width': '320px', display: 'none'}},
       menuDialog: {style: {top: '56px', left: '10px', 'z-index': 1, height: 'auto', 'min-width': '150px', display: 'none'}},
       measureDialog: {style: {top: '56px', right: '10px', 'z-index': 1, height: 'auto', 'width': '380px', display: 'none'}},

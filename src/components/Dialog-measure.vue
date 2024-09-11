@@ -24,10 +24,10 @@
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleDaen" class='olbtn' :size="btnSize">楕円</b-button>
       <br>
       <b-button style="margin-top: 5px; margin-left: 0px;" :pressed.sync="s_toggleHole" class='olbtn' :size="btnSize">穴をあける</b-button>
-
       <b-button id="color-btn0" style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="openDialog">色</b-button>
-      <!--      <b-button style="margin-left: 5px;" :pressed.sync="s_toggleText" class='olbtn' :size="btnSize">文字</b-button>-->
-<!--      <b-button style="margin-left: 10px;" :pressed.sync="toggleDanmen" class='olbtn' :size="btnSize">{{ toggleDanmen ? '断面図' : '断面図' }}</b-button>-->
+      <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawTrack">トラッキング</b-button>
+
+      <!--      <b-button style="margin-left: 10px;" :pressed.sync="toggleDanmen" class='olbtn' :size="btnSize">{{ toggleDanmen ? '断面図' : '断面図' }}</b-button>-->
       <br>
       <b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' :size="btnSize" @click="drawReset">削除</b-button>
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawAllReset">全て削除</b-button>
@@ -106,7 +106,7 @@ import * as turf from '@turf/turf';
 import {transform} from "ol/proj";
 import {Circle, LineString, MultiLineString, MultiPolygon, Point, Polygon} from "ol/geom";
 import Feature from "ol/Feature";
-import {measure} from "../js/mymap";
+import {geolocationDrawInteraction, measure} from "../js/mymap";
 import * as d3 from "d3";
 import {parse} from 'csv-parse/lib/sync'
 
@@ -257,7 +257,17 @@ export default {
     },
   },
   methods: {
-    upLoad(){
+    drawTrack () {
+      const dialog = this.$store.state.base.dialogs.dialogTrack
+      if (dialog.style.display === 'block') {
+        dialog.style.display = 'none'
+      } else {
+        this.$store.commit('base/incrDialogMaxZindex')
+        dialog.style["z-index"] = this.s_dialogMaxZindex
+        dialog.style.display = 'block'
+      }
+    },
+    upLoad (){
       document.getElementById("load_form_input").click();
     },
     file_upload() {

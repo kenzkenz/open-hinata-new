@@ -49,6 +49,9 @@ import {Heatmap} from 'ol/layer'
 import DrawHole from 'ol-ext/interaction/DrawHole'
 import ModifyTouch from 'ol-ext/interaction/ModifyTouch'
 import Split from 'ol-ext/interaction/Split'
+import Gauge from 'ol-ext/control/Gauge'
+import GeolocationDraw from 'ol-ext/interaction/GeolocationDraw'
+
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
     let zoom = 0;
@@ -655,6 +658,14 @@ export const scaleLine = new ScaleLine()
 export const scaleLine2 = new ScaleLine()
 export const swipeControl = new Swipe()
 export const swipeControl2 = new Swipe()
+
+export const gaugeControl = new Gauge({ title:'正確さ:', max:200 });
+export const geolocationDrawInteraction = new GeolocationDraw({
+    source: drawLayer.getSource(),
+    zoom: 17,
+    minAccuracy:10000
+});
+
 // ダイアログ
 export const dialog = new Dialog({ fullscreen: true, zoom: true, closeBox: true });
 
@@ -742,8 +753,17 @@ export function initMap (vm) {
             map.addInteraction(modifyTouchInteraction)
             map.addInteraction(transformInteraction)
             map.addInteraction(copyInteraction)
-
             map.addInteraction(splitInteraction)
+            // map.addControl(gaugeControl)
+            map.addInteraction(geolocationDrawInteraction)
+
+            geolocationDrawInteraction.on("tracking", function(e) {
+                // $("#accuracy").width((e.geolocation.getAccuracy()));
+                // gaugeControl.val(e.geolocation.getAccuracy());
+                // $("#heading").val(e.geolocation.getHeading());
+                // $("#z").val(e.geolocation.getAltitude());
+            })
+
 
             // const circle = new RegularShape({
             //     fill: new Fill({color:[255,255,255,0.01]}),
@@ -789,7 +809,6 @@ export function initMap (vm) {
 
             const tooltipOverlay = new Tooltip()
             map.addOverlay(tooltipOverlay)
-            // Set feature on drawstart
             lineInteraction.on('drawstart', tooltipOverlay.setFeature.bind(tooltipOverlay))
             lineInteraction.on(['change:active','drawend'], tooltipOverlay.removeFeature.bind(tooltipOverlay))
             polygonInteraction.on('drawstart', tooltipOverlay.setFeature.bind(tooltipOverlay))
@@ -800,12 +819,6 @@ export function initMap (vm) {
             regularInteraction.on(['change:active','drawend'], tooltipOverlay.removeFeature.bind(tooltipOverlay))
             daenInteraction.on('drawstart', tooltipOverlay.setFeature.bind(tooltipOverlay))
             daenInteraction.on(['change:active','drawend'], tooltipOverlay.removeFeature.bind(tooltipOverlay))
-
-            // const modifyTouchInteraction = new ModifyTouch({
-            //     source: drawLayer.getSource()
-            // })
-            // map.addInteraction(modifyTouchInteraction)
-            // console.log(document.querySelector('.modifytouch'))
 
             const point = function () {
                 store.state.base.togglePoint0 = true
@@ -2145,8 +2158,6 @@ export function currentPosition () {
 
     const currentPosition1 = store.state.base.maps['map01'].overlays_.getArray()[2]
     const currentPosition2 = store.state.base.maps['map02'].overlays_.getArray()[2]
-    // const currentPosition3 = store.state.base.maps['map03'].overlays_.getArray()[2]
-    // const currentPosition4 = store.state.base.maps['map04'].overlays_.getArray()[2]
 
     store.commit('base/toggleCurrentPosition')
     const map = store.state.base.maps['map01'];
@@ -2161,8 +2172,6 @@ export function currentPosition () {
         });
         currentPosition1.setPosition(center)
         currentPosition2.setPosition(center)
-        // currentPosition3.setPosition(center)
-        // currentPosition4.setPosition(center)
     }
     const  fail = (error) =>{alert('位置情報の取得に失敗しました。エラーコード：' + error.code)}
     // let interval
@@ -2177,8 +2186,6 @@ export function currentPosition () {
         stop()
         currentPosition1.setPosition(undefined)
         currentPosition2.setPosition(undefined)
-        // currentPosition3.setPosition(undefined)
-        // currentPosition4.setPosition(undefined)
     }
 }
 
