@@ -7,7 +7,6 @@
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' size="sm" @click="drawPause">ポーズ</b-button>
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' size="sm" @click="drawStop">停止</b-button>
       <b-button style="margin-top: 5px; margin-left: 35px;" class='olbtn' size="sm" @click="drawPoint">ポイント一点だけ</b-button>
-
     </div>
   </v-dialog>
 </template>
@@ -51,6 +50,7 @@ export default {
         const point = new Point(center)
         const newFeature = new Feature(point)
         MyMap.drawLayer.getSource().addFeature(newFeature)
+        MyMap.history('トラッキング現在地取得')
         moveEnd()
       }
       const  fail = (error) =>{alert('位置情報の取得に失敗しました。エラーコード：' + error.code)}
@@ -58,6 +58,7 @@ export default {
     },
     drawStart () {
       MyMap.geolocationDrawInteraction.start()
+      MyMap.history('トラッキングスタート')
       moveEnd()
     },
     drawPause () {
@@ -66,6 +67,8 @@ export default {
     },
     drawStop () {
       MyMap.geolocationDrawInteraction.stop()
+      MyMap.history('トラッキングストップ')
+      MyMap.drawLayer.getSource().changed()
       moveEnd()
     },
   },
