@@ -650,8 +650,8 @@ export default {
       const features = JSON.parse(fiatureGeojson).features
       console.log(features[0])
 
-      // const turfLine = turf.lineString(targetFeature.getGeometry().getCoordinates())
-      // console.log(turfLine)
+      const ooord = turf.toWgs84(targetFeature.getGeometry().getCoordinates())
+      // const bufferFeature = turf.toMercator(turf.buffer(point, Number(this.radius)))
 
       //0.001
       const sinpleFeature = turf.simplify(features[0], { tolerance: this.tolerance, highQuality: false })

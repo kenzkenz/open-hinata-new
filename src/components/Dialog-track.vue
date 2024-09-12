@@ -1,7 +1,7 @@
 <template>
   <v-dialog :dialog="s_dialogTrack" id="dialog-share">
     <div :style="contentSize">
-      <p>トラッキングします。ズーム17で固定されます。トラッキング中は操作ができません。</p>
+      <p>トラッキングします。トラッキング中は操作ができません。スリープしません。</p>
       <p>精度：{{ accuracy }}</p>
       <b-button style="margin-top: 5px; margin-left: 0px;" class='olbtn' size="sm" @click="drawStart">スタート</b-button>
       <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' size="sm" @click="drawPause">ポーズ</b-button>
@@ -12,13 +12,14 @@
 </template>
 
 <script>
-
+const noSleep = new NoSleep()
 import * as MyMap from "@/js/mymap";
 import {geolocationDrawInteraction} from "@/js/mymap";
 import {moveEnd} from "@/js/permalink"
 import {transform} from "ol/proj";
 import {Circle,LineString,Polygon,Point} from "ol/geom";
-import Feature from "ol/Feature";
+import Feature from "ol/Feature"
+import NoSleep from 'nosleep.js'
 
 export default {
   name: "dialog-track",
@@ -59,6 +60,7 @@ export default {
     drawStart () {
       MyMap.geolocationDrawInteraction.start()
       MyMap.history('トラッキングスタート')
+      noSleep.enable()
       moveEnd()
     },
     drawPause () {
@@ -69,6 +71,7 @@ export default {
       MyMap.geolocationDrawInteraction.stop()
       MyMap.history('トラッキングストップ')
       MyMap.drawLayer.getSource().changed()
+      noSleep.disable()
       moveEnd()
     },
   },
