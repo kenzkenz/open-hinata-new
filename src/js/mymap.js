@@ -590,28 +590,35 @@ undoInteraction.on('undo', function(e) {
         const geoType = feature.getGeometry().getType()
         measure (geoType,feature,coordAr)
     })
-    store.state.base.editFeature = null
+    // store.state.base.editFeature = null
 })
 export let drawProp
 undoInteraction.define(
     'drawProp',
     function (s) {
         drawProp = s.before
-        console.log(s.before)
-        Object.keys(s.before.prop).forEach(function(key) {
+        Object.keys(s.before.beforeFeature.values_).forEach(function(key) {
             if (key !== 'geometry') {
-                s.before.feature.values_[key] = s.before.prop[key]
+                s.before.feature.values_[key] = s.before.beforeFeature.values_[key]
             }
         })
+        store.state.base.editFeatureName = s.before.beforeFeature.values_.name
+        store.state.base.editFeatureSetumei = s.before.beforeFeature.values_.description
+        document.querySelector('#drawLayer2-name').innerHTML = s.before.beforeFeature.values_.name
+        document.querySelector('#drawLayer2-setumei').innerHTML = s.before.beforeFeature.values_.description
         drawLayer.getSource().changed()
     },
     function(s) {
         drawProp = s.after
-        Object.keys(s.after.prop).forEach(function(key) {
+        Object.keys(s.after.afterFeature.values_).forEach(function(key) {
             if (key !== 'geometry') {
-                s.after.feature.values_[key] = s.after.prop[key]
+                s.after.feature.values_[key] = s.after.afterFeature.values_[key]
             }
         })
+        store.state.base.editFeatureName = s.after.afterFeature.values_.name
+        store.state.base.editFeatureSetumei = s.after.afterFeature.values_.description
+        document.querySelector('#drawLayer2-name').innerHTML = s.after.afterFeature.values_.name
+        document.querySelector('#drawLayer2-setumei').innerHTML = s.after.afterFeature.values_.description
         drawLayer.getSource().changed()
     }
 )
@@ -670,6 +677,16 @@ export const dialogMap = new Dialog({ hideOnClick: false, className: 'center' })
 // dialogMap.on('button', function(e) {
 //     alert(e.button)
 // });
+
+
+// window.addEventListener('beforeunload', (e) => {
+//     if (drawLayer.getSource().getFeatures().length > 0) {
+//         const message = ''
+//         e.preventDefault()
+//         e.returnValue = message
+//         return message
+//     }
+// })
 //-------------------------------------------------------------------------------------------
 export const overlay = []
 export function initMap (vm) {

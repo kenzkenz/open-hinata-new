@@ -148,14 +148,15 @@ export default {
     },
     changeName(e) {
       const feature = this.$store.state.base.editFeature
+      const before = {feature:feature,beforeFeature:JSON.parse(JSON.stringify(feature))}
       feature.setProperties({name: this.$store.state.base.editFeatureName})
       feature.setProperties({description: this.$store.state.base.editFeatureSetumei})
+      const after = {feature:feature,afterFeature:JSON.parse(JSON.stringify(feature))}
       document.querySelector('#drawLayer2-name').innerHTML = this.$store.state.base.editFeatureName
-      console.log(this.$store.state.base.editFeatureSetumei)
-
-
       document.querySelector('#drawLayer2-setumei').innerHTML = this.$store.state.base.editFeatureSetumei
-      console.log(document.querySelector('#drawLayer2-setumei').innerHTML)
+
+      MyMap.undoInteraction.push('drawProp', { before: before, after: after });
+
       moveEnd()
     },
     file_upload() {
