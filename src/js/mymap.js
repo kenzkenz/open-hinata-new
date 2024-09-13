@@ -679,14 +679,27 @@ export const dialogMap = new Dialog({ hideOnClick: false, className: 'center' })
 // });
 
 
-// window.addEventListener('beforeunload', (e) => {
-//     if (drawLayer.getSource().getFeatures().length > 0) {
-//         const message = ''
-//         e.preventDefault()
-//         e.returnValue = message
-//         return message
-//     }
-// })
+window.addEventListener('beforeunload', (e) => {
+    if (store.state.base.noSleepFlg === true) {
+        const message = ''
+        e.preventDefault()
+        e.returnValue = message
+        return message
+    }
+})
+//
+// window.addEventListener("pagehide", function(e) {
+//     alert("test");
+// }, false);
+//
+// window.addEventListener('visibilitychange', () => {
+//     alert("test2")
+// });
+// window.addEventListener('unload', () => {
+//     alert("test3")
+// });
+
+
 //-------------------------------------------------------------------------------------------
 export const overlay = []
 export function initMap (vm) {

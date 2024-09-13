@@ -66,6 +66,7 @@ export default {
       MyMap.geolocationDrawInteraction.start()
       MyMap.history('トラッキングスタート')
       noSleep.enable()
+      this.$store.state.base.noSleepFlg = true
       moveEnd()
     },
     drawPause () {
@@ -77,6 +78,7 @@ export default {
       MyMap.history('トラッキングストップ')
       MyMap.drawLayer.getSource().changed()
       noSleep.disable()
+      this.$store.state.base.noSleepFlg = false
       moveEnd()
     },
   },
