@@ -14802,19 +14802,13 @@ export const Layers =
       ]},
     { text: 'その他',
       children: [
-        { text: 'op', data: { id: "op", layer: LayersMvt.opObj, opacity: 1, summary: LayersMvt.homusyomiyazaki2024Summ } },
-
+        { text: 'OpenStreetMap features', data: { id: "op", layer: LayersMvt.opObj, opacity: 1, summary: LayersMvt.homusyomiyazaki2024Summ, component: {name: 'op', values:[]} } },
         { text: '登記所備付地図データ(宮崎市)', data: { id: "homusyomiyazakishi", layer: LayersMvt.homusyomiyazaki2024Obj, opacity: 1, summary: LayersMvt.homusyomiyazaki2024Summ } },
         { text: '2021土地利用細分メッシュ(100m)', data: { id: "tochiriyosaibun", layer: LayersMvt.mesh100mTochiriyoObj, opacity: 1, summary: LayersMvt.mesh1kmObjSumm } },
-
         { text: '交通事故統計情報', data: { id: "kotujiko", layer: LayersMvt.kotujikoObj, opacity: 1, summary: LayersMvt.kotujikoSumm} },
-
         // { text: '一等三角点', data: { id: "itto", layer: LayersMvt.ittosankakutenObj, opacity: 1, summary: LayersMvt.ittosankakutenSumm } },
-
         { text: '基準点', data: { id: "kizyunten", layer: LayersMvt.kizyuntenObj, opacity: 1, summary: LayersMvt.kizyuntenSumm, component: {name: 'kijyunten', values:[]} } },
-
         { text: '基準点v2', data: { id: "kizyuntenv2", layer: LayersMvt.kizyunten2Obj, opacity: 1, summary: LayersMvt.kizyunten2Summ } },
-
         { text: 'ウィキメディア・コモンズ', data: { id: "wiki", layer: LayersMvt.wikiObj, opacity: 1, summary: LayersMvt.wikiSumm } },
         { text: '気象庁予報区（一次細分区域等 ）', data: { id: "yohouku1", layer: LayersMvt.yohouku1Obj, opacity: 1, summary: LayersMvt.yohoukuSumm } },
         { text: '夜の明かり', data: { id: "japanLight", layer: LayersMvt.japanLightObj, opacity: 1, summary: LayersMvt.japanLightSumm } },

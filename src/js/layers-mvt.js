@@ -158,35 +158,58 @@ for (let i of mapsStr) {
 
 
 export const overPassSource = new Overpass({
-  //way: false,
-  // filter: [ 'highway=bus_stop' ],
-  // filter: [ 'leisure' ],
-  // filter: [ 'leisure', 'sport=swimming' ],
   filter: [ 'highway' ],
-  // Tile strategy load at zoom 14
   strategy: tile(createXYZ({ minZoom: 14, maxZoom: 14, tileSize:512  })),
-  // Bbox strategy : reload at each move
-  //strategy: ol.loadingstrategy.bbox,
 });
-
-var vector = new VectorLayer({
-  name: 'OSM',
-  source: overPassSource,
-  // Limit resolution to avoid large area request
-  maxResolution: 10, // > zoom 14
-});
-
 function Op(){
   this.name = 'default'
   this.source = overPassSource
   this.maxResolution = zoom14 // > zoom 14
-  // this.style = kumamotoShinrinStyleFunction()
+  this.style = opStyleFunction()
 }
 export const opObj = {}
 for (let i of mapsStr) {
   opObj[i] = new VectorLayer(new Op())
 }
-
+function opStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const geoType = feature.getGeometry().getType()
+    const styles = []
+    const pointStyle = new Style({
+      image: new Icon({
+        // anchor: [0.5, 1],
+        src: require('@/assets/icon/whitecircle.png'),
+        color: 'orange',
+        scale: 1.5
+      }),
+      stroke: new Stroke({
+        color: "white",
+        width: 1
+      }),
+    })
+    const lineStyle = new Style({
+      stroke: new Stroke({
+        color: 'blue',
+        width: 4,
+      }),
+    })
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: 'rgba(0,128,0,0.7)'
+      }),
+      stroke: new Stroke({
+        color: "black",
+        width: 1
+      }),
+    })
+    if (geoType === 'Point') styles.push(pointStyle)
+    if (geoType === 'LineString') styles.push(lineStyle)
+    if (geoType === 'Polygon') styles.push(polygonStyle)
+    return styles
+  }
+}
 
 // 熊本森林計画図----------------------------------------------------
 function KumamotoShinrin(){

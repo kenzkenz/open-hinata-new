@@ -776,12 +776,41 @@ export function initMap (vm) {
 
         if (i==='0')  {
 
-            // map.getView().on('change:resolution', function(evt) {
-            //     overPassSource.clear();
-            //     // select.getFeatures().clear();
-            //     // if (map.getView().getZoom() < 14) $("#select").text("Zoom to load data...");
-            //     // else $("#select").first().text("");
-            // });
+            LineString.prototype.getCoordinateAtSeg = function (r, seg) {
+                var c, d;
+                if (r < 1e-10) {
+                    if (seg)  {
+                        c = this.getCoordinates();
+                        seg[0] = c[0];
+                        seg[1] = c[1];
+                    }
+                    return this.getFirstCoordinate();
+                }
+                if (this.getLength()-r < 1e-10) {
+                    if (seg) {
+                        c = this.getCoordinates();
+                        seg[0] = c[c.length-2];
+                        seg[1] = c[c.length-1];
+                    }
+                    return this.getLastCoordinate();
+                }
+                if (!seg) seg=[];
+                var s = 0;
+                var coord = this.getCoordinates();
+                for (var i=1; i<coord.length; i++) {
+                    d = ol.coordinate.dist2d(coord[i-1], coord[i]);
+                    if (s+d >= r) {
+                        var p0 = seg[0] = coord[i-1];
+                        var p1 = seg[1] = coord[i];
+                        d = ol.coordinate.dist2d(p0,p1)
+                        return [
+                            p0[0] + (r-s) * (p1[0]-p0[0]) /d,
+                            p0[1] + (r-s) * (p1[1]-p0[1]) /d
+                        ];
+                    }
+                    s += d;
+                }
+            };
 
 
 

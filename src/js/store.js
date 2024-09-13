@@ -512,6 +512,12 @@ const moduleInfo = {
       map03: '',
       map04: ''
     },
+    op: {
+      map01: 'highway',
+      map02: 'highway',
+      map03: 'highway',
+      map04: 'highway'
+    },
     tansyashin: {
       map01: 'all',
       map02: 'all',
@@ -844,6 +850,9 @@ const moduleInfo = {
           } else if (payload.order === 1) {
             variable = 'iryoukikankamoku'
           }
+          break
+        case 'op':
+          variable = 'op'
           break
       }
       console.log(payload.value)
