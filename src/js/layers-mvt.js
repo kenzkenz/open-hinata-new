@@ -24,6 +24,9 @@ import WebGLTile from "ol/layer/WebGLTile"
 // import { gsiOptVtLayer } from '@cieloazul310/ol-gsi-vt'
 import { gsiOptVtStyle } from "@cieloazul310/ol-gsi-vt-style"
 import { gsiVtStyle } from '@cieloazul310/ol-gsi-vt-style'
+import Overpass from 'ol-ext/source/Overpass'
+import {tile} from 'ol/loadingstrategy'
+
 const zoom0 = 156543.03
 const zoom7 = 1222.99
 const zoom8 = 611.496226
@@ -32,6 +35,7 @@ const zoom10 = 152.874057
 const zoom11 = 76.437028
 const zoom12 = 38.218514
 const zoom13 = 	19.109257
+const zoom14 = 	9.554629
 
 const transformE = extent => {
   function compareFunc(a, b) {
@@ -150,6 +154,37 @@ for (let i of mapsStr) {
   v[i] = new VectorLayer({
     sourceg
   })
+}
+
+
+export const overPassSource = new Overpass({
+  //way: false,
+  // filter: [ 'highway=bus_stop' ],
+  // filter: [ 'leisure' ],
+  // filter: [ 'leisure', 'sport=swimming' ],
+  filter: [ 'highway' ],
+  // Tile strategy load at zoom 14
+  strategy: tile(createXYZ({ minZoom: 14, maxZoom: 14, tileSize:512  })),
+  // Bbox strategy : reload at each move
+  //strategy: ol.loadingstrategy.bbox,
+});
+
+var vector = new VectorLayer({
+  name: 'OSM',
+  source: overPassSource,
+  // Limit resolution to avoid large area request
+  maxResolution: 10, // > zoom 14
+});
+
+function Op(){
+  this.name = 'default'
+  this.source = overPassSource
+  this.maxResolution = zoom14 // > zoom 14
+  // this.style = kumamotoShinrinStyleFunction()
+}
+export const opObj = {}
+for (let i of mapsStr) {
+  opObj[i] = new VectorLayer(new Op())
 }
 
 

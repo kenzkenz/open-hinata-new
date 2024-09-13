@@ -38,7 +38,7 @@ import * as d3 from "d3"
 import PrintDialog from 'ol-ext/control/PrintDialog.js'
 import muni from './muni'
 import UndoRedo from 'ol-ext/interaction/UndoRedo'
-import {syochiiki2020MvtObj} from "@/js/layers-mvt"
+import {overPassSource, syochiiki2020MvtObj} from "@/js/layers-mvt"
 import CopyPaste from 'ol-ext/interaction/CopyPaste'
 import Swipe from 'ol-ext/control/Swipe'
 import RegularShape from 'ol/style/RegularShape'
@@ -775,6 +775,16 @@ export function initMap (vm) {
         pinchRotateInteraction.setActive(false);
 
         if (i==='0')  {
+
+            // map.getView().on('change:resolution', function(evt) {
+            //     overPassSource.clear();
+            //     // select.getFeatures().clear();
+            //     // if (map.getView().getZoom() < 14) $("#select").text("Zoom to load data...");
+            //     // else $("#select").first().text("");
+            // });
+
+
+
             map.addInteraction(undoInteraction)
             map.addInteraction(modifyInteraction)
             map.addInteraction(modifyTouchInteraction)

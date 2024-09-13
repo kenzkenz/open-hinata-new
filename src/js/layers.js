@@ -14802,6 +14802,7 @@ export const Layers =
       ]},
     { text: 'その他',
       children: [
+        { text: 'op', data: { id: "op", layer: LayersMvt.opObj, opacity: 1, summary: LayersMvt.homusyomiyazaki2024Summ } },
 
         { text: '登記所備付地図データ(宮崎市)', data: { id: "homusyomiyazakishi", layer: LayersMvt.homusyomiyazaki2024Obj, opacity: 1, summary: LayersMvt.homusyomiyazaki2024Summ } },
         { text: '2021土地利用細分メッシュ(100m)', data: { id: "tochiriyosaibun", layer: LayersMvt.mesh100mTochiriyoObj, opacity: 1, summary: LayersMvt.mesh1kmObjSumm } },
