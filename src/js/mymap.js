@@ -51,6 +51,11 @@ import ModifyTouch from 'ol-ext/interaction/ModifyTouch'
 import Split from 'ol-ext/interaction/Split'
 import Gauge from 'ol-ext/control/Gauge'
 import GeolocationDraw from 'ol-ext/interaction/GeolocationDraw'
+import VectorImage from 'ol/layer/VectorImage'
+import FlowLine from 'ol-ext/style/FlowLine'
+// import {dist2d} from 'ol-ext/dist/ol-ext.js'
+// import {dist2d} from 'ol/coordinate'
+
 
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
@@ -99,6 +104,11 @@ export const haatMapDrawLayer2 = new Heatmap({
     source: drawSource,
     style: drawLayerStylefunction()
 })
+export const flowLineDrawLayer = new VectorImage({
+    name: 'drawLayer',
+    source: drawSource,
+    style: styleFn
+});
 export const selectInteraction = new Select({
     layers: [drawLayer]
 })
@@ -305,6 +315,60 @@ function drawLayerStylefunction (){
         return styles
     }
 }
+var min, max;
+function getMinMax (feature) {
+    if (feature) {
+        feature.getGeometry().getCoordinates()[0].forEach( function(p){
+            // console.log(p)
+            max = Math.max(max||-Infinity, p[2]);
+            min = Math.min(min||Infinity, p[2]);
+        });
+        max = Math.round(max/10+.4)*10;
+        min = Math.round(min/10-.4)*10;
+    }
+}
+drawSource.once('change',function(e) {
+    if (drawSource.getState() === 'ready'){
+        getMinMax (drawSource.getFeatures()[0]);
+        console.log(111)
+        // createLegend ();
+        // profile.setGeometry(source.getFeatures()[0]);
+    }
+});
+// Get the line color at dh
+function getColor(dh) {
+    if (dh<128) return [2*dh,160-dh,0];
+    else return [ 255, (dh-128)*4, (dh-128)*1.5 ];
+}
+function styleFn(f) {
+    // console.log(f.getGeometry().getType())
+    // if (f.getGeometry().getType() !== 'MultiLineString') return
+    return new FlowLine({
+        visible: false,
+        lineCap: 'round',
+        color: function(f, step){
+            var seg = [];
+            let line
+            if (f.getGeometry().getType() === 'MultiLineString') {
+                line = f.getGeometry().getLineString(0)
+            } else if (f.getGeometry().getType() === 'LineString'){
+                line = f.getGeometry()
+            }
+            line.getCoordinateAtSeg(step*line.getLength(), seg);
+            var h = (seg[0][2]+seg[0][2])/2;
+            var dh = 255*(h-min)/(max-min);
+            return getColor(dh);
+        },
+        width: 5,
+        geometry: function (f) {
+            if (f.getGeometry().getType() === 'MultiLineString') {
+                return f.getGeometry().getLineString(0);
+            } else {
+                return f.getGeometry();
+            }
+        }
+    })
+}
 
 export const danmenInteraction = new Draw({
     source: drawSource,
@@ -471,7 +535,6 @@ function danmen(feature) {
                 }
             }
         store.state.base.erevArr = dataSet
-        console.log(dataSet)
         store.commit('base/pushDialogs2',{mapName: 'map01', dialog: diialog})
     }
     created()
@@ -504,10 +567,6 @@ drawLayer.getSource().on("change", function(e) {
     history ('ドロー')
 })
 pointInteraction.on('drawend', function (event) {
-    // const feature = event.feature;
-    // const coordAr = feature.getGeometry().getCoordinates()
-    // const geoType = feature.getGeometry().getType()
-    // measure (geoType,feature,coordAr)
     event.feature.setProperties({name:''})
     moveEnd()
 })
@@ -773,7 +832,11 @@ export function initMap (vm) {
             return interaction instanceof PinchRotate;
         })[0];
         pinchRotateInteraction.setActive(false);
-
+        function dist2d(p1, p2) {
+            var dx = p1[0] - p2[0]
+            var dy = p1[1] - p2[1]
+            return Math.sqrt(dx * dx + dy * dy)
+        }
         if (i==='0')  {
 
             LineString.prototype.getCoordinateAtSeg = function (r, seg) {
@@ -798,11 +861,11 @@ export function initMap (vm) {
                 var s = 0;
                 var coord = this.getCoordinates();
                 for (var i=1; i<coord.length; i++) {
-                    d = ol.coordinate.dist2d(coord[i-1], coord[i]);
+                    d = dist2d(coord[i-1], coord[i]);
                     if (s+d >= r) {
                         var p0 = seg[0] = coord[i-1];
                         var p1 = seg[1] = coord[i];
-                        d = ol.coordinate.dist2d(p0,p1)
+                        d = dist2d(p0,p1)
                         return [
                             p0[0] + (r-s) * (p1[0]-p0[0]) /d,
                             p0[1] + (r-s) * (p1[1]-p0[1]) /d
@@ -2321,11 +2384,6 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
     oldLayerList[0].forEach(value => {
         map.removeLayer(value.layer);
     })
-
-    // console.log(newLayerList)
-    // const layer = newLayerList[0][0].title
-    // history (layer)
-    // store.commit('base/updateFirstFlg')
     //[0]はレイヤーリスト。[1]はlength
     // 逆ループ
     let myZindex = 0;
@@ -2450,6 +2508,8 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
     map.addLayer(drawLayer)
     map.removeLayer(danmenLayer)
     map.addLayer(danmenLayer)
+    // map.removeLayer(flowLineDrawLayer)
+    // map.addLayer(flowLineDrawLayer)
     // スワイプ設定-------
     try {
         if (map.values_.target === 'map01') {

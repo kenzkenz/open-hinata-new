@@ -21,11 +21,11 @@ import WikiCommons from 'ol-ext/source/WikiCommons'
 import  * as Tilegrid from 'ol/tilegrid'
 import * as Loadingstrategy from 'ol/loadingstrategy'
 import WebGLTile from "ol/layer/WebGLTile"
-// import { gsiOptVtLayer } from '@cieloazul310/ol-gsi-vt'
-import { gsiOptVtStyle } from "@cieloazul310/ol-gsi-vt-style"
-import { gsiVtStyle } from '@cieloazul310/ol-gsi-vt-style'
+import {gsiOptVtStyle} from "@cieloazul310/ol-gsi-vt-style"
+import {gsiVtStyle} from '@cieloazul310/ol-gsi-vt-style'
 import Overpass from 'ol-ext/source/Overpass'
 import {tile} from 'ol/loadingstrategy'
+import axios from "axios"
 
 const zoom0 = 156543.03
 const zoom7 = 1222.99
@@ -155,8 +155,11 @@ for (let i of mapsStr) {
     sourceg
   })
 }
+// ----------------------------------------------------------------------------
 
 
+
+// ----------------------------------------------------------------------------
 export const overPassSource = new Overpass({
   filter: [ 'highway' ],
   strategy: tile(createXYZ({ minZoom: 14, maxZoom: 14, tileSize:512  })),

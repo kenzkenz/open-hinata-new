@@ -119,8 +119,8 @@
   import * as Permalink from '../js/permalink'
   import Inobounce from '../js/inobounce'
   import * as MyMap from '../js/mymap'
-  import axios from "axios";
-  import store from "@/js/store";
+  import axios from "axios"
+  import store from "@/js/store"
   import OLCesium from 'ol-cesium'
   import * as d3 from "d3"
   import DialogGeojson from './Daialog-gepjson'
