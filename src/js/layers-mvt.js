@@ -25,7 +25,6 @@ import {gsiOptVtStyle} from "@cieloazul310/ol-gsi-vt-style"
 import {gsiVtStyle} from '@cieloazul310/ol-gsi-vt-style'
 import Overpass from 'ol-ext/source/Overpass'
 import {tile} from 'ol/loadingstrategy'
-import axios from "axios"
 
 const zoom0 = 156543.03
 const zoom7 = 1222.99
@@ -163,7 +162,7 @@ for (let i of mapsStr) {
 export const overPassSource = new Overpass({
   filter: [ 'highway' ],
   strategy: tile(createXYZ({ minZoom: 14, maxZoom: 14, tileSize:512  })),
-});
+})
 function Op(){
   this.name = 'default'
   this.source = overPassSource

@@ -20,14 +20,8 @@ import  * as MaskDep from './mask-dep'
 import  * as LayersMvt from './layers-mvt'
 // import BingMaps from 'ol/source/BingMaps'
 import * as d3 from "d3"
-import {
-  gifuDetailObj,
-  hokkaidoTsunamiMvtObj, hudeAllObj,
-  kotujikoObj, kotujikoSumm,
-  testpmObj,
-  tokyoTochiriyoObj,
-  tottorimusenLanSumm
-} from "./layers-mvt";
+import axios from "axios"
+
 const mapsStr = ['map01','map02']
 const transformE = extent => {
   function compareFunc(a, b) {
@@ -37,6 +31,24 @@ const transformE = extent => {
   extent = [extent[2],extent[0],extent[3],extent[1]]
   return transformExtent(extent,'EPSG:4326','EPSG:3857')
 }
+// 気象庁ナウキャスト----------------------------------------------------------
+function Nowcast () {
+  this.name = 'nowCast'
+  this.multiply = true
+  this.preload = Infinity
+  this.source = new XYZ({
+    // url: 'https://www.jma.go.jp/bosai/jmatile/data/nowc/20240914031000/none/20240914041000/surf/hrpns/{z}/{x}/{y}.png',
+    crossOrigin: 'anonymous',
+    minZoom: 1,
+    maxZoom: 10
+  })
+}
+export const nowCastObj = {}
+for (let i of mapsStr) {
+  nowCastObj[i] = new TileLayer(new Nowcast())
+}
+export const nowCastSumm = ''
+// -----------------------------------------------------------
 const floodColor = d3.scaleLinear()
     .domain([0, 100, 1000, 2500,9000, 20000])
     .range([
@@ -68,23 +80,6 @@ const floodColor2 = d3.scaleLinear()
 for (let i = 0; i < 20000; i++) {
   store.state.info.floodColors2[i] = d3.rgb(floodColor2(i))
 }
-
-
-// const hyokozuColor = d3.scaleLinear()
-//     .domain([0, 100, 1000, 2500,9000, 20000])
-//     .range([
-//       "#00FF00",
-//       // "#00FF66",
-//       // "#ffff00",
-//       "#ffff00",
-//       "#ff8c00",
-//       "#ff4400",
-//       "red",
-//       "#880000"
-//     ])
-// for (let i = 0; i < 20000; i++) {
-//   store.state.info.hyokozuColors[i] = d3.rgb(hyokozuColor(i))
-// }
 
 function flood(pixels, data) {
   const pixel = pixels[0]
@@ -14645,6 +14640,8 @@ export const Layers =
             { text: '都城市洪水ハザードマップﾟ', data: { id: 'miyakonozyousiHm', layer: miyakonozyousiHmObj, opacity: 1, zoom: 13, center: [131.07797970576192, 31.78882205640913], summary: miyakonozyousiHmSumm } },
             { text: '日向市防災ハザードマップﾟ', data: { id: 'hyuugasiHm', layer: hyuugasiHmObj, opacity: 1, zoom: 13, center: [131.6400086045909, 32.395198966795306], summary: hyuugasiHmSumm } },
           ]},
+        { text: '雨雲の動き', data: { id: 'nowcast', layer: nowCastObj, opacity: 1, summary: nowCastSumm, component: {name: 'amagumo', values:[]}} },
+
         { text: '洪水浸水想定（想定最大規模）', data: { id: 'shinsuishin', layer: shinsuishinObj, opacity: 1, summary: shinsuishinSumm } },
         { text: '洪水浸水想定（計画規模）', data: { id: 'shinsuishinK', layer: shinsuishinKObj, opacity: 1, summary: shinsuishinKSumm } },
         { text: '津波浸水想定', data: { id: 'tunami', layer: tsunamiObj, opacity: 1, summary: tunamiSumm } },

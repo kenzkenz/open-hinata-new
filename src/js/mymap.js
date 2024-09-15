@@ -2384,206 +2384,257 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
     oldLayerList[0].forEach(value => {
         map.removeLayer(value.layer);
     })
+    const result = newLayerList[0].find((layer) => {
+        return layer.title === '雨雲の動き'
+    })
+    if(result) {
+        const urls = ['targetTimes_N1.json','targetTimes_N2.json']
+        async function created() {
+            const fetchData = urls.map((url) => {
+                return axios
+                    .get('https://www.jma.go.jp/bosai/jmatile/data/nowc/' + url,{})
+            })
+            await Promise.all([
+                ...fetchData
+            ])
+                .then((response) => {
+                    response[0].data.sort((a, b) =>
+                        a.validtime > b.validtime ? 1 : -1
+                    )
+                    response[1].data.sort((a, b) =>
+                        a.validtime > b.validtime ? 1 : -1
+                    )
+                    store.state.info.amagumoTimes = response[0].data.concat(response[1].data)
+                    const basetime = response[1].data.slice(-1)[0].basetime
+                    // -----------------------------------------------------------
+                    const t = basetime
+                    const nen = t.slice(0,4)
+                    const tuki = t.slice(4,6) - 1
+                    const hi = t.slice(6,8)
+                    let ji = Number(t.slice(8,10))
+                    const fun = t.slice(10,12)
+                    const date = new Date(nen,tuki,hi,ji,fun,0)
+                    date.setHours(date.getHours() + 9)
+                    const tukihi = date.toLocaleDateString()
+                    const time = date.toLocaleTimeString()
+                    const nen2 = tukihi.split('/')[0] + '年'
+                    const tuki2 = tukihi.split('/')[1] + '月'
+                    const hi2 = tukihi.split('/')[2] + '日'
+                    const ji2 = time.split(':')[0] + '時'
+                    const fun2 = time.split(':')[1] + '分'
+                    store.state.info.time['map01'] =  nen2 + tuki2 + hi2 + ' ' + ji2 + fun2
+                    store.state.info.time['map02'] =  nen2 + tuki2 + hi2 + ' ' + ji2 + fun2
+                    // -----------------------------------------------------------
+                    aaa(basetime,basetime)
+                })
+                .catch(function (response) {
+                    alert('エラーです。')
+                })
+        }
+        created()
+    } else {
+        aaa()
+    }
     //[0]はレイヤーリスト。[1]はlength
     // 逆ループ
-    let myZindex = 0;
-    for (let i = newLayerList[0].length - 1; i >= 0; i--) {
-        // リストクリックによる追加したレイヤーで リストの先頭で リストの増加があったとき
-        const layer = newLayerList[0][i].layer;
-        // グループレイヤーで個別にzindexを触っているときがあるのでリセット。重くなるようならここを再検討。
-        if (layer.values_.layers) {
-            const gLayers = layer.values_.layers.array_;
-            for (let i in gLayers) {
-                gLayers[i].setZIndex(undefined);
-                // mw5,mw20のためのコード。気にしすぎ、なくてもいい。
-                const extent2 = gLayers[i].values_['extent2'];
-                if(extent2) gLayers[i].setExtent(extent2);
-                // 古地図のためのコード。気にしすぎ、なくてもいい。
-                const dep = gLayers[i].values_['dep'];
-                if (dep) Layers.mask(dep,gLayers[i])
+    function aaa (basetime,validtime) {
+        let myZindex = 0
+        for (let i = newLayerList[0].length - 1; i >= 0; i--) {
+            // リストクリックによる追加したレイヤーで リストの先頭で リストの増加があったとき
+            const layer = newLayerList[0][i].layer
+            const title = newLayerList[0][i].title
+            // グループレイヤーで個別にzindexを触っているときがあるのでリセット。重くなるようならここを再検討。
+            if (layer.values_.layers) {
+                const gLayers = layer.values_.layers.array_;
+                for (let i in gLayers) {
+                    gLayers[i].setZIndex(undefined);
+                    // mw5,mw20のためのコード。気にしすぎ、なくてもいい。
+                    const extent2 = gLayers[i].values_['extent2'];
+                    if(extent2) gLayers[i].setExtent(extent2);
+                    // 古地図のためのコード。気にしすぎ、なくてもいい。
+                    const dep = gLayers[i].values_['dep'];
+                    if (dep) Layers.mask(dep,gLayers[i])
+                }
             }
-        }
-        // グループレイヤーのときzindexは効かないようだ。しかしz順が必要になるときがあるので項目を作っている。
-        layer['myZindex'] = myZindex++
+            if (title === '雨雲の動き') {
+                const url = 'https://www.jma.go.jp/bosai/jmatile/data/nowc/' + basetime + '/none/' + validtime + '/surf/hrpns/{z}/{x}/{y}.png'
+                Layers.nowCastObj.map01.getSource().setUrl(url)
+                Layers.nowCastObj.map02.getSource().setUrl(url)
+            }
+            // グループレイヤーのときzindexは効かないようだ。しかしz順が必要になるときがあるので項目を作っている。
+            layer['myZindex'] = myZindex++
 
-        map.addLayer(layer);
-        if (newLayerList[0][i].check === undefined) {
-            newLayerList[0][i].check = true
-            layer.setVisible(true)
-        } else {
-            layer.setVisible(newLayerList[0][i].check)
-        }
+            map.addLayer(layer);
+            if (newLayerList[0][i].check === undefined) {
+                newLayerList[0][i].check = true
+                layer.setVisible(true)
+            } else {
+                layer.setVisible(newLayerList[0][i].check)
+            }
 
-        if (layer.values_.layers) {
-            const gLayers = layer.values_.layers.array_;
-            for (let j in gLayers) {
-                if (newLayerList[0][i].multipli===false) {
-                    gLayers[j].on("prerender", function (evt) {
-                        evt.context.globalCompositeOperation = 'source-over';
-                    });
-                    gLayers[j].on("postrender", function (evt) {
-                        evt.context.globalCompositeOperation = '';
-                    });
-                } else if (newLayerList[0][i].multipli===undefined) {
-                    if (layer.get('multiply')) {
-                        newLayerList[0][i].multipli = true
-                        gLayers[j].on("prerender", function (evt) {
-                            evt.context.globalCompositeOperation = 'multiply';
-                        });
-                        gLayers[j].on("postrender", function (evt) {
-                            evt.context.globalCompositeOperation = 'source-over';
-                        })
-                    } else {
+            if (layer.values_.layers) {
+                const gLayers = layer.values_.layers.array_;
+                for (let j in gLayers) {
+                    if (newLayerList[0][i].multipli===false) {
                         gLayers[j].on("prerender", function (evt) {
                             evt.context.globalCompositeOperation = 'source-over';
                         });
                         gLayers[j].on("postrender", function (evt) {
                             evt.context.globalCompositeOperation = '';
-                        })
+                        });
+                    } else if (newLayerList[0][i].multipli===undefined) {
+                        if (layer.get('multiply')) {
+                            newLayerList[0][i].multipli = true
+                            gLayers[j].on("prerender", function (evt) {
+                                evt.context.globalCompositeOperation = 'multiply';
+                            });
+                            gLayers[j].on("postrender", function (evt) {
+                                evt.context.globalCompositeOperation = 'source-over';
+                            })
+                        } else {
+                            gLayers[j].on("prerender", function (evt) {
+                                evt.context.globalCompositeOperation = 'source-over';
+                            });
+                            gLayers[j].on("postrender", function (evt) {
+                                evt.context.globalCompositeOperation = '';
+                            })
+                        }
+                    } else {
+                        gLayers[j].on("prerender", function(evt){
+                            evt.context.globalCompositeOperation = 'multiply';
+                        });
+                        gLayers[j].on("postrender", function(evt){
+                            evt.context.globalCompositeOperation = 'source-over';
+                        });
                     }
-                } else {
-                    gLayers[j].on("prerender", function(evt){
-                        evt.context.globalCompositeOperation = 'multiply';
-                    });
-                    gLayers[j].on("postrender", function(evt){
-                        evt.context.globalCompositeOperation = 'source-over';
-                    });
                 }
             }
-        }
-        if (newLayerList[0][i].multipli===false) {
-            layer.on("prerender", function (evt) {
-                evt.context.globalCompositeOperation = 'source-over';
-            });
-            layer.on("postrender", function (evt) {
-                evt.context.globalCompositeOperation = '';
-            })
-        } else if(newLayerList[0][i].multipli===undefined) {
-            if (layer.get('multiply')) {
-                newLayerList[0][i].multipli = true
-                layer.on("prerender", function (evt) {
-                    evt.context.globalCompositeOperation = 'multiply';
-                });
-                layer.on("postrender", function (evt) {
-                    evt.context.globalCompositeOperation = 'source-over';
-                })
-            } else {
+            if (newLayerList[0][i].multipli===false) {
                 layer.on("prerender", function (evt) {
                     evt.context.globalCompositeOperation = 'source-over';
                 });
                 layer.on("postrender", function (evt) {
                     evt.context.globalCompositeOperation = '';
                 })
+            } else if(newLayerList[0][i].multipli===undefined) {
+                if (layer.get('multiply')) {
+                    newLayerList[0][i].multipli = true
+                    layer.on("prerender", function (evt) {
+                        evt.context.globalCompositeOperation = 'multiply';
+                    });
+                    layer.on("postrender", function (evt) {
+                        evt.context.globalCompositeOperation = 'source-over';
+                    })
+                } else {
+                    layer.on("prerender", function (evt) {
+                        evt.context.globalCompositeOperation = 'source-over';
+                    });
+                    layer.on("postrender", function (evt) {
+                        evt.context.globalCompositeOperation = '';
+                    })
+                }
+            } else {
+                layer.on("prerender", function(evt){
+                    evt.context.globalCompositeOperation = 'multiply';
+                });
+                layer.on("postrender", function(evt){
+                    evt.context.globalCompositeOperation = 'source-over';
+                });
             }
-        } else {
-            layer.on("prerender", function(evt){
-                evt.context.globalCompositeOperation = 'multiply';
-            });
-            layer.on("postrender", function(evt){
-                evt.context.globalCompositeOperation = 'source-over';
-            });
-        }
 
-        // グループレイヤーのとき
-        if (layer.values_.layers) {
-            layer.values_.layers.getArray(0).forEach(object =>{
-                object.setOpacity(newLayerList[0][i].opacity)
-            })
-        }
-        layer.setOpacity(newLayerList[0][i].opacity)
-        // 新規追加したレイヤーだけにズームとセンターを設定する。
-        if(!store.state.base.firstFlg) {
-            if (store.state.base.jumpFlg) {
-                if (newLayerList[0][0].zoom) {
-                    map.getView().setZoom(newLayerList[0][0].zoom)
+            // グループレイヤーのとき
+            if (layer.values_.layers) {
+                layer.values_.layers.getArray(0).forEach(object =>{
+                    object.setOpacity(newLayerList[0][i].opacity)
+                })
+            }
+            layer.setOpacity(newLayerList[0][i].opacity)
+            // 新規追加したレイヤーだけにズームとセンターを設定する。
+            if(!store.state.base.firstFlg) {
+                if (store.state.base.jumpFlg) {
+                    if (newLayerList[0][0].zoom) {
+                        map.getView().setZoom(newLayerList[0][0].zoom)
+                    }
+                    if (newLayerList[0][0].center) {
+                        map.getView().setCenter(transform(newLayerList[0][0].center, "EPSG:4326", "EPSG:3857"));
+                    }
                 }
-                if (newLayerList[0][0].center) {
-                    map.getView().setCenter(transform(newLayerList[0][0].center, "EPSG:4326", "EPSG:3857"));
+            }
+        }
+        store.commit('base/updateFirstFlg',false)
+        map.removeLayer(drawLayer)
+        map.addLayer(drawLayer)
+        map.removeLayer(danmenLayer)
+        map.addLayer(danmenLayer)
+        // map.removeLayer(flowLineDrawLayer)
+        // map.addLayer(flowLineDrawLayer)
+        // スワイプ設定-------
+        try {
+            if (map.values_.target === 'map01') {
+                if (newLayerList[0][0].layer.values_.layers) {
+                    newLayerList[0][0].layer.values_.layers.getArray().forEach((layer) => {
+                        swipeControl.removeLayer(layer)
+                    })
+                } else {
+                    swipeControl.removeLayer(newLayerList[0][0].layer)
+                }
+                if (newLayerList[0][1].layer.values_.layers) {
+                    newLayerList[0][1].layer.values_.layers.getArray().forEach((layer) => {
+                        swipeControl.removeLayer(layer)
+                    })
+                } else {
+                    swipeControl.removeLayer(newLayerList[0][1].layer)
+                }
+                //---------------------------------------------------
+                if (newLayerList[0][0].layer.values_.layers) {
+                    newLayerList[0][0].layer.values_.layers.getArray().forEach((layer) => {
+                        swipeControl.addLayer(layer)
+                    })
+                } else {
+                    swipeControl.addLayer(newLayerList[0][0].layer)
+                }
+                if (newLayerList[0][1].layer.values_.layers) {
+                    newLayerList[0][1].layer.values_.layers.getArray().forEach((layer) => {
+                        swipeControl.addLayer(layer,true)
+                    })
+                } else {
+                    swipeControl.addLayer(newLayerList[0][1].layer,true)
+                }
+            } else {
+                if (newLayerList[0][0].layer.values_.layers) {
+                    newLayerList[0][0].layer.values_.layers.getArray().forEach((layer) => {
+                        swipeControl2.removeLayer(layer)
+                    })
+                } else {
+                    swipeControl2.removeLayer(newLayerList[0][0].layer)
+                }
+                if (newLayerList[0][1].layer.values_.layers) {
+                    newLayerList[0][1].layer.values_.layers.getArray().forEach((layer) => {
+                        swipeControl2.removeLayer(layer)
+                    })
+                } else {
+                    swipeControl2.removeLayer(newLayerList[0][1].layer)
+                }
+                //---------------------------------------------------
+                if (newLayerList[0][0].layer.values_.layers) {
+                    newLayerList[0][0].layer.values_.layers.getArray().forEach((layer) => {
+                        swipeControl2.addLayer(layer)
+                    })
+                } else {
+                    swipeControl2.addLayer(newLayerList[0][0].layer)
+                }
+                if (newLayerList[0][1].layer.values_.layers) {
+                    newLayerList[0][1].layer.values_.layers.getArray().forEach((layer) => {
+                        swipeControl2.addLayer(layer,true)
+                    })
+                } else {
+                    swipeControl2.addLayer(newLayerList[0][1].layer,true)
                 }
             }
+        } catch (e){
         }
+        // スワイプ設定ここまで-------
     }
-    store.commit('base/updateFirstFlg',false)
-    map.removeLayer(drawLayer)
-    map.addLayer(drawLayer)
-    map.removeLayer(danmenLayer)
-    map.addLayer(danmenLayer)
-    // map.removeLayer(flowLineDrawLayer)
-    // map.addLayer(flowLineDrawLayer)
-    // スワイプ設定-------
-    try {
-        if (map.values_.target === 'map01') {
-            if (newLayerList[0][0].layer.values_.layers) {
-                newLayerList[0][0].layer.values_.layers.getArray().forEach((layer) => {
-                    swipeControl.removeLayer(layer)
-                })
-            } else {
-                swipeControl.removeLayer(newLayerList[0][0].layer)
-            }
-            if (newLayerList[0][1].layer.values_.layers) {
-                newLayerList[0][1].layer.values_.layers.getArray().forEach((layer) => {
-                    swipeControl.removeLayer(layer)
-                })
-            } else {
-                swipeControl.removeLayer(newLayerList[0][1].layer)
-            }
-            //---------------------------------------------------
-            if (newLayerList[0][0].layer.values_.layers) {
-                newLayerList[0][0].layer.values_.layers.getArray().forEach((layer) => {
-                    swipeControl.addLayer(layer)
-                })
-            } else {
-                swipeControl.addLayer(newLayerList[0][0].layer)
-            }
-            if (newLayerList[0][1].layer.values_.layers) {
-                newLayerList[0][1].layer.values_.layers.getArray().forEach((layer) => {
-                    swipeControl.addLayer(layer,true)
-                })
-            } else {
-                swipeControl.addLayer(newLayerList[0][1].layer,true)
-            }
-            // swipeControl.removeLayer(newLayerList[0][0].layer)
-            // swipeControl.removeLayer(newLayerList[0][1].layer)
-            // swipeControl.addLayer(newLayerList[0][0].layer)
-            // swipeControl.addLayer(newLayerList[0][1].layer,true)
-        } else {
-            if (newLayerList[0][0].layer.values_.layers) {
-                newLayerList[0][0].layer.values_.layers.getArray().forEach((layer) => {
-                    swipeControl2.removeLayer(layer)
-                })
-            } else {
-                swipeControl2.removeLayer(newLayerList[0][0].layer)
-            }
-            if (newLayerList[0][1].layer.values_.layers) {
-                newLayerList[0][1].layer.values_.layers.getArray().forEach((layer) => {
-                    swipeControl2.removeLayer(layer)
-                })
-            } else {
-                swipeControl2.removeLayer(newLayerList[0][1].layer)
-            }
-            //---------------------------------------------------
-            if (newLayerList[0][0].layer.values_.layers) {
-                newLayerList[0][0].layer.values_.layers.getArray().forEach((layer) => {
-                    swipeControl2.addLayer(layer)
-                })
-            } else {
-                swipeControl2.addLayer(newLayerList[0][0].layer)
-            }
-            if (newLayerList[0][1].layer.values_.layers) {
-                newLayerList[0][1].layer.values_.layers.getArray().forEach((layer) => {
-                    swipeControl2.addLayer(layer,true)
-                })
-            } else {
-                swipeControl2.addLayer(newLayerList[0][1].layer,true)
-            }
-            // swipeControl2.removeLayer(newLayerList[0][0].layer)
-            // swipeControl2.removeLayer(newLayerList[0][1].layer)
-            // swipeControl2.addLayer(newLayerList[0][0].layer)
-            // swipeControl2.addLayer(newLayerList[0][1].layer,true)
-        }
-    } catch (e){
-    }
-    // スワイプ設定ここまで-------
 }
 
 export function opacityChange (item) {
