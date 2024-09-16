@@ -38,6 +38,7 @@
             <v-hyokozu :item="item" :mapName="mapName" v-else-if="item.component.name === 'hyokozu'"/>
             <v-op :item="item" :mapName="mapName" v-else-if="item.component.name === 'op'"/>
             <v-amagumo :item="item" :mapName="mapName" v-else-if="item.component.name === 'amagumo'"/>
+            <v-himawari :item="item" :mapName="mapName" v-else-if="item.component.name === 'himawari'"/>
         </div>
     </div>
 </template>
@@ -68,7 +69,7 @@
   import DialogInfoHyokozu from '@/components/dialog-info/Dialog-info-hyokozu'
   import DialogInfoOp from '@/components/dialog-info/Dialog-info-op'
   import DialogInfoAmagumo from '@/components/dialog-info/Dialog-info-amagumo'
-
+  import DialogInfoHimawari from '@/components/dialog-info/Dialog-info-himawari'
 
   export default {
     name: "v-dialog-info",
@@ -98,6 +99,7 @@
       'v-hyokozu':DialogInfoHyokozu,
       'v-op':DialogInfoOp,
       'v-amagumo':DialogInfoAmagumo,
+      'v-himawari':DialogInfoHimawari,
     },
     props: ['mapName'],
     computed: {

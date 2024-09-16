@@ -48,6 +48,23 @@ for (let i of mapsStr) {
   nowCastObj[i] = new TileLayer(new Nowcast())
 }
 export const nowCastSumm = ''
+
+function Himawari () {
+  this.name = 'himawari'
+  this.multiply = true
+  this.preload = Infinity
+  this.source = new XYZ({
+    // url: 'https://www.jma.go.jp/bosai/himawari/data/satimg/20240915084000/jp/20240915084000/REP/ETC/{z}/{x}/{y}.jpg',
+    crossOrigin: 'anonymous',
+    minZoom: 3,
+    maxZoom: 5
+  })
+}
+export const himawariObj = {}
+for (let i of mapsStr) {
+  himawariObj[i] = new TileLayer(new Himawari())
+}
+export const himawariSumm = ''
 // -----------------------------------------------------------
 const floodColor = d3.scaleLinear()
     .domain([0, 100, 1000, 2500,9000, 20000])
@@ -14641,6 +14658,7 @@ export const Layers =
             { text: '日向市防災ハザードマップﾟ', data: { id: 'hyuugasiHm', layer: hyuugasiHmObj, opacity: 1, zoom: 13, center: [131.6400086045909, 32.395198966795306], summary: hyuugasiHmSumm } },
           ]},
         { text: '雨雲の動き', data: { id: 'nowcast', layer: nowCastObj, opacity: 1, summary: nowCastSumm, component: {name: 'amagumo', values:[]}} },
+        { text: 'ひまわり', data: { id: 'himawari', layer: himawariObj, opacity: 1, summary: himawariSumm, component: {name: 'himawari', values:[]}} },
 
         { text: '洪水浸水想定（想定最大規模）', data: { id: 'shinsuishin', layer: shinsuishinObj, opacity: 1, summary: shinsuishinSumm } },
         { text: '洪水浸水想定（計画規模）', data: { id: 'shinsuishinK', layer: shinsuishinKObj, opacity: 1, summary: shinsuishinKSumm } },

@@ -58,8 +58,8 @@
           </b-form-checkbox>
           <b-button style="margin-top: 5px; margin-left: 60px;" class='olbtn' :size="btnSize" @click="drawVoronoi">ボロノイ図</b-button>
           <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawHeatMap">ヒートマップ</b-button>
-        </div>
 
+        </div>
       </div>
 
       <div class="range-div">

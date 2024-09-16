@@ -519,6 +519,15 @@ const moduleInfo = {
       map03: 'highway',
       map04: 'highway'
     },
+    timeH:  {
+      map01: '',
+      map02: '',
+    },
+    himawariTimes: [],
+    himawariTime: {
+      map01: 212,
+      map02: 212,
+    },
     time:  {
       map01: '',
       map02: '',

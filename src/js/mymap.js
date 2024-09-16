@@ -2332,27 +2332,15 @@ export function synch (vm) {
         }
         console.log(viewArr[0])
         store.state.base.maps.map02.setView(viewArr[0]);
-        // store.state.base.maps.map03.setView(viewArr[1]);
-        // store.state.base.maps.map04.setView(viewArr[2]);
-        // console.log(store.state.base.maps.map01.interactions)
         store.state.base.maps.map01.removeInteraction(store.state.base.maps.map01.getInteractions().array_[10])
         store.state.base.maps.map02.removeInteraction(store.state.base.maps.map02.getInteractions().array_[10])
-        // store.state.base.maps.map03.removeInteraction(store.state.base.maps.map03.getInteractions().array_[10])
-        // store.state.base.maps.map04.removeInteraction(store.state.base.maps.map04.getInteractions().array_[10])
         // 2回削除する。
         store.state.base.maps.map01.removeInteraction(store.state.base.maps.map01.getInteractions().array_[10])
         store.state.base.maps.map02.removeInteraction(store.state.base.maps.map02.getInteractions().array_[10])
-        // store.state.base.maps.map03.removeInteraction(store.state.base.maps.map03.getInteractions().array_[10])
-        // store.state.base.maps.map04.removeInteraction(store.state.base.maps.map04.getInteractions().array_[10])
+
     } else {
         store.state.base.maps.map02.setView(map01View);
-    //     // store.state.base.maps.map03.setView(map01View);
-    //     // store.state.base.maps.map04.setView(map01View)
-    //     store.state.base.maps.map01.addInteraction(new Synchronize({ maps: [store.state.base.maps.map02,store.state.base.maps.map03,store.state.base.maps.map04]}));
-    //     store.state.base.maps.map02.addInteraction(new Synchronize({ maps: [store.state.base.maps.map01,store.state.base.maps.map03,store.state.base.maps.map04]}));
-    // //     store.state.base.maps.map03.addInteraction(new Synchronize({ maps: [store.state.base.maps.map01,store.state.base.maps.map02,store.state.base.maps.map04]}));
-    // //     store.state.base.maps.map04.addInteraction(new Synchronize({ maps: [store.state.base.maps.map01,store.state.base.maps.map02,store.state.base.maps.map03]}));
-    }
+  }
 }
 
 export function resize () {
@@ -2385,14 +2373,16 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
         map.removeLayer(value.layer);
     })
     const result = newLayerList[0].find((layer) => {
-        return layer.title === '雨雲の動き'
+        return layer.title === '雨雲の動き' || layer.title === 'ひまわり'
     })
     if(result) {
-        const urls = ['targetTimes_N1.json','targetTimes_N2.json']
+        const urls = ['https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N1.json',
+            'https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N2.json',
+            'https://www.jma.go.jp/bosai/himawari/data/satimg/targetTimes_fd.json' ]
         async function created() {
             const fetchData = urls.map((url) => {
                 return axios
-                    .get('https://www.jma.go.jp/bosai/jmatile/data/nowc/' + url,{})
+                    .get(url,{})
             })
             await Promise.all([
                 ...fetchData
@@ -2405,27 +2395,49 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                         a.validtime > b.validtime ? 1 : -1
                     )
                     store.state.info.amagumoTimes = response[0].data.concat(response[1].data)
+                    store.state.info.himawariTimes = response[2].data
+                    console.log(store.state.info.himawariTimes)
                     const basetime = response[1].data.slice(-1)[0].basetime
+                    const basetimeHimawari = response[2].data.slice(-1)[0].basetime
                     // -----------------------------------------------------------
-                    const t = basetime
-                    const nen = t.slice(0,4)
-                    const tuki = t.slice(4,6) - 1
-                    const hi = t.slice(6,8)
-                    let ji = Number(t.slice(8,10))
-                    const fun = t.slice(10,12)
-                    const date = new Date(nen,tuki,hi,ji,fun,0)
-                    date.setHours(date.getHours() + 9)
-                    const tukihi = date.toLocaleDateString()
-                    const time = date.toLocaleTimeString()
-                    const nen2 = tukihi.split('/')[0] + '年'
-                    const tuki2 = tukihi.split('/')[1] + '月'
-                    const hi2 = tukihi.split('/')[2] + '日'
-                    const ji2 = time.split(':')[0] + '時'
-                    const fun2 = time.split(':')[1] + '分'
-                    store.state.info.time['map01'] =  nen2 + tuki2 + hi2 + ' ' + ji2 + fun2
-                    store.state.info.time['map02'] =  nen2 + tuki2 + hi2 + ' ' + ji2 + fun2
+                    function time (basetime) {
+                        const t = basetime
+                        const nen = t.slice(0,4)
+                        const tuki = t.slice(4,6) - 1
+                        const hi = t.slice(6,8)
+                        let ji = Number(t.slice(8,10))
+                        const fun = t.slice(10,12)
+                        const date = new Date(nen,tuki,hi,ji,fun,0)
+                        date.setHours(date.getHours() + 9)
+                        const tukihi = date.toLocaleDateString()
+                        const time = date.toLocaleTimeString()
+                        const nen2 = tukihi.split('/')[0] + '年'
+                        const tuki2 = tukihi.split('/')[1] + '月'
+                        const hi2 = tukihi.split('/')[2] + '日'
+                        const ji2 = time.split(':')[0] + '時'
+                        const fun2 = time.split(':')[1] + '分'
+                        return nen2 + tuki2 + hi2 + ' ' + ji2 + fun2
+                    }
+                    store.state.info.time[map.values_.target] = time (basetime)
+                    store.state.info.timeH[map.values_.target] = time (basetimeHimawari)
+                    // const t = basetime
+                    // const nen = t.slice(0,4)
+                    // const tuki = t.slice(4,6) - 1
+                    // const hi = t.slice(6,8)
+                    // let ji = Number(t.slice(8,10))
+                    // const fun = t.slice(10,12)
+                    // const date = new Date(nen,tuki,hi,ji,fun,0)
+                    // date.setHours(date.getHours() + 9)
+                    // const tukihi = date.toLocaleDateString()
+                    // const time = date.toLocaleTimeString()
+                    // const nen2 = tukihi.split('/')[0] + '年'
+                    // const tuki2 = tukihi.split('/')[1] + '月'
+                    // const hi2 = tukihi.split('/')[2] + '日'
+                    // const ji2 = time.split(':')[0] + '時'
+                    // const fun2 = time.split(':')[1] + '分'
+                    // store.state.info.time[map.values_.target] =  nen2 + tuki2 + hi2 + ' ' + ji2 + fun2
                     // -----------------------------------------------------------
-                    aaa(basetime,basetime)
+                    aaa(basetime,basetime,basetimeHimawari)
                 })
                 .catch(function (response) {
                     alert('エラーです。')
@@ -2437,7 +2449,7 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
     }
     //[0]はレイヤーリスト。[1]はlength
     // 逆ループ
-    function aaa (basetime,validtime) {
+    function aaa (basetime,validtime,basetimeHimawari) {
         let myZindex = 0
         for (let i = newLayerList[0].length - 1; i >= 0; i--) {
             // リストクリックによる追加したレイヤーで リストの先頭で リストの増加があったとき
@@ -2456,11 +2468,19 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                     if (dep) Layers.mask(dep,gLayers[i])
                 }
             }
+            // ---------------------------------------------------------------------------------------------------------
             if (title === '雨雲の動き') {
                 const url = 'https://www.jma.go.jp/bosai/jmatile/data/nowc/' + basetime + '/none/' + validtime + '/surf/hrpns/{z}/{x}/{y}.png'
                 Layers.nowCastObj.map01.getSource().setUrl(url)
                 Layers.nowCastObj.map02.getSource().setUrl(url)
             }
+            // ---------------------------------------------------------------------------------------------------------
+            if (title === 'ひまわり') {
+                const url = 'https://www.jma.go.jp/bosai/himawari/data/satimg/' + basetimeHimawari + '/jp/' + basetimeHimawari + '/B13/TBB/{z}/{x}/{y}.jpg'
+                Layers.himawariObj.map01.getSource().setUrl(url)
+                Layers.himawariObj.map02.getSource().setUrl(url)
+            }
+            // ---------------------------------------------------------------------------------------------------------
             // グループレイヤーのときzindexは効かないようだ。しかしz順が必要になるときがあるので項目を作っている。
             layer['myZindex'] = myZindex++
 
