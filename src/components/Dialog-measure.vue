@@ -58,8 +58,10 @@
           </b-form-checkbox>
           <b-button style="margin-top: 5px; margin-left: 60px;" class='olbtn' :size="btnSize" @click="drawVoronoi">ボロノイ図</b-button>
           <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawHeatMap">ヒートマップ</b-button>
-
         </div>
+        <b-form-checkbox style="margin-top: 10px;" v-model="hyokoColor" name="check-button" @change="hyokoColorChange" switch>
+          標高のあるGPXを標高で色つけ
+        </b-form-checkbox>
       </div>
 
       <div class="range-div">
@@ -134,6 +136,7 @@ export default {
       tolerance: 0.001,
       radius: 0,
       voronoiColor: true,
+      hyokoColor : false
     }
   },
   computed: {
@@ -257,6 +260,13 @@ export default {
     },
   },
   methods: {
+    hyokoColorChange () {
+      if(this.hyokoColor) {
+        this.$store.state.base.maps['map01'].addLayer(MyMap.flowLineDrawLayer)
+      } else {
+        this.$store.state.base.maps['map01'].removeLayer(MyMap.flowLineDrawLayer)
+      }
+    },
     drawTrack () {
       const dialog = this.$store.state.base.dialogs.dialogTrack
       if (dialog.style.display === 'block') {

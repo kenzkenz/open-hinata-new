@@ -315,21 +315,32 @@ function drawLayerStylefunction (){
         return styles
     }
 }
-var min, max;
+let min = 99999 , max = 0;
 function getMinMax (feature) {
+    let min0, max0;
     if (feature) {
         feature.getGeometry().getCoordinates()[0].forEach( function(p){
-            // console.log(p)
-            max = Math.max(max||-Infinity, p[2]);
-            min = Math.min(min||Infinity, p[2]);
-        });
-        max = Math.round(max/10+.4)*10;
-        min = Math.round(min/10-.4)*10;
+            if(p[2]) {
+                max0 = Math.max(max0||-Infinity, p[2])
+                min0 = Math.min(min0||Infinity, p[2])
+            }
+        })
+        max0 = Math.round(max0/10+.4)*10
+        min0 = Math.round(min0/10-.4)*10
+        if (min>min0) min = min0
+        if (max<max0) max = max0
     }
+    console.log(min,max)
 }
-drawSource.once('change',function(e) {
+drawSource.on('change',function(e) {
     if (drawSource.getState() === 'ready'){
-        getMinMax (drawSource.getFeatures()[0]);
+        drawSource.getFeatures().forEach((feature) => {
+            if (feature.getGeometry().getType() === 'LineString' || feature.getGeometry().getType() === 'MultiLineString') {
+                getMinMax (feature)
+            }
+        })
+
+        // getMinMax (drawSource.getFeatures()[0])
         console.log(111)
         // createLegend ();
         // profile.setGeometry(source.getFeatures()[0]);
