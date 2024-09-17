@@ -6,15 +6,6 @@
           :options="options"
           name="radio-inline"
       ></b-form-radio-group>
-<!--      <b-form-checkbox style="margin-bottom: 10px;" v-model="s_toggleText" name="check-button" switch>-->
-<!--        選択-->
-<!--      </b-form-checkbox>-->
-<!--      <b-form-checkbox style="margin-bottom: 10px;top:0;margin-left:90px" v-model="s_toggleIdo" name="check-button" switch>-->
-<!--        変形-->
-<!--      </b-form-checkbox>-->
-<!--      <b-form-checkbox style="margin-bottom: 10px;top:0;margin-left: 180px" v-model="s_toggleIdo2" name="check-button" switch>-->
-<!--        移動,拡大-->
-<!--      </b-form-checkbox>-->
       <b-button :pressed.sync="s_togglePoint0" class='olbtn' :size="btnSize">点</b-button>
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleLine" class='olbtn' :size="btnSize">線</b-button>
       <b-button style="margin-left: 5px;" :pressed.sync="s_toggleFreeHand" class='olbtn' :size="btnSize">フリー</b-button>
@@ -155,6 +146,13 @@ export default {
         return this.$store.state.base.drawMeasure
       },
       set(value) {
+        const features = drawLayer.getSource().getFeatures()
+        features.forEach((feature) =>{
+          const coordAr = feature.getGeometry().getCoordinates()
+          const geoType = feature.getGeometry().getType()
+          console.log(geoType)
+          measure (geoType,feature,coordAr)
+        })
         this.$store.state.base.drawMeasure = value
       }
     },

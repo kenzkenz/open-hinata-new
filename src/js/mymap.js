@@ -258,6 +258,7 @@ function drawLayerStylefunction (){
                     color: "white",
                     width: 3
                 }),
+                overflow: true,
             })
         })
         const textStyle2 = new Style({
@@ -308,7 +309,8 @@ function drawLayerStylefunction (){
         styles.push(polygonStyle)
         if (geoType === 'Point') styles.push(pointStyle)
         if (geoType === 'LineString' || geoType === 'MultiLineString') styles.push(lineStyle)
-        if (zoom >= 12) styles.push(textStyle)
+        // if (zoom >= 12) styles.push(textStyle)
+        styles.push(textStyle)
         if (geoType === 'LineString') styles.push(firstLastPoint)
         if (store.state.base.toggleVertex) styles.push(vertexPoint)
         // if (geoType === 'Circle') styles.push(textStyle2)
@@ -449,10 +451,11 @@ export function measure (geoType,feature,coordAr) {
         tPolygon = turf.toWgs84(tPolygon)
         let tArea = turf.area(tPolygon)
         if (tArea < 100000) {
-            tArea = tArea.toFixed(2) + "m2"
+            tArea = tArea.toFixed(0) + "m2"
         } else {
             tArea = (tArea / 1000000).toFixed(2) + "km2"
         }
+        console.log(tArea)
         feature.setProperties({_area: tArea})
     } else if (geoType === 'Circle') {
         const extent = feature.getGeometry().getExtent()

@@ -6,7 +6,7 @@
       <b-form-select v-model="s_op" :options="options" @change="selectChange"></b-form-select>
     </div>
     <hr>
-    ズーム14以上で表示します。
+    ズーム14以上で表示します。表示に時間がかかります。
   </div>
 </template>
 
@@ -31,6 +31,9 @@ export default {
         { value: 'natural', text: '自然物' },
         { value: 'historic=tomb', text: '歴史的な墓' },
         { value: 'emergency=defibrillator', text: 'AED' },
+        { value: 'amenity=place_of_worship', text: '神社仏閣、教会、モスク' },
+        { value: 'amenity=school', text: '小学校、中学校' },
+        { value: 'building', text: '建物' },
       ]
     }
   },
@@ -47,12 +50,18 @@ export default {
   },
   methods: {
     selectChange (value) {
-        // console.log('filter:',filter.split(','))
       const overPassSource = new Overpass({
         filter: value.split(','),
         strategy: tile(createXYZ({ minZoom: 14, maxZoom: 14, tileSize:512  })),
       })
       LayersMvt.opObj[this.mapName].setSource(overPassSource)
+      // let maxResolution = 9.554629
+      // switch (value) {
+      //   case 'emergency=defibrillator':
+      //     maxResolution =  152.874057
+      //     break
+      // }
+      // LayersMvt.opObj[this.mapName].setMaxResolution(maxResolution)
       this.storeUpdate()
     },
     storeUpdate () {

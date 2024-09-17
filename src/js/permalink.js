@@ -602,7 +602,7 @@ export function moveEnd () {
   let parameter = '?S=' + store.state.base.splitFlg
 
   parameter += '&DL=' + JSON.stringify(store.state.info.dokujiLayers)
-  
+
   // const url = JSON.stringify({
   //   url:store.state.info.dokujiUrl['map01'],
   //   name:store.state.info.dokujiName['map01']

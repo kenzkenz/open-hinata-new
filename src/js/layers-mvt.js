@@ -95,7 +95,6 @@ for (let i of mapsStr) {
   saitekika0Obj[i] = new VectorTileLayer(new saitekika0())
 }
 
-
 function saitekika(){
   this.source = new olpmtiles.PMTilesVectorSource({
     url:"https://cyberjapandata.gsi.go.jp/xyz/optimal_bvmap-v1/optimal_bvmap-v1.pmtiles",
@@ -166,7 +165,7 @@ export const overPassSource = new Overpass({
 function Op(){
   this.name = 'default'
   this.source = overPassSource
-  this.maxResolution = zoom14 // > zoom 14
+  this.maxResolution = zoom14 //  zoom 14
   this.style = opStyleFunction()
 }
 export const opObj = {}
