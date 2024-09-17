@@ -25,9 +25,12 @@ export default {
     return {
       options: [
         { value: 'highway', text: '道路' },
+        { value: 'highway=bus_stop', text: 'バス停' },
         { value: 'railway', text: '鉄道' },
         { value: 'leisure', text: 'レジャー' },
         { value: 'natural', text: '自然物' },
+        { value: 'historic=tomb', text: '歴史的な墓' },
+        { value: 'emergency=defibrillator', text: 'AED' },
       ]
     }
   },

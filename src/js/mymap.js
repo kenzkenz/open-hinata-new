@@ -422,9 +422,9 @@ export const drawHoleInteraction = new DrawHole ({
 })
 
 export function measure (geoType,feature,coordAr) {
-        if (geoType === 'Point') {
-            feature.setProperties({distance: ''})
-        } else if (geoType === 'LineString') {
+    if (geoType === 'Point') {
+        feature.setProperties({distance: ''})
+    } else if (geoType === 'LineString') {
         let tDistance = 0
         for (var i = 0; i < coordAr.length - 1; i++) {
             const fromCoord = turf.point(turf.toWgs84(coordAr[i]))
@@ -439,14 +439,14 @@ export function measure (geoType,feature,coordAr) {
         }
         feature.setProperties({_distance: tDistance})
         return {'tDistance':tDistance,'tDistance2':tDistance2}
-        } else if (feature.getProperties()._buffer) {
+    } else if (feature.getProperties()._buffer) {
 
 
-        } else if (geoType === 'Polygon') {
+    } else if (geoType === 'Polygon') {
         let tPolygon = turf.polygon(coordAr)
         tPolygon = turf.toWgs84(tPolygon)
         let tArea = turf.area(tPolygon)
-        if (tArea < 1000000) {
+        if (tArea < 100000) {
             tArea = tArea.toFixed(2) + "m2"
         } else {
             tArea = (tArea / 1000000).toFixed(2) + "km2"
