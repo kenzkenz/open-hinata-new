@@ -341,7 +341,7 @@ drawSource.on('change',function(e) {
         })
 
         // getMinMax (drawSource.getFeatures()[0])
-        console.log(111)
+        // console.log(111)
         // createLegend ();
         // profile.setGeometry(source.getFeatures()[0]);
     }
@@ -353,32 +353,34 @@ function getColor(dh) {
 }
 function styleFn(f) {
     // console.log(f.getGeometry().getType())
-    // if (f.getGeometry().getType() !== 'MultiLineString') return
-    return new FlowLine({
-        visible: false,
-        lineCap: 'round',
-        color: function(f, step){
-            var seg = [];
-            let line
-            if (f.getGeometry().getType() === 'MultiLineString') {
-                line = f.getGeometry().getLineString(0)
-            } else if (f.getGeometry().getType() === 'LineString'){
-                line = f.getGeometry()
+    if (f.getGeometry().getType() !== 'MultiLineString') return
+    if (f.getGeometry().getCoordinates()[0][2]) {
+        return new FlowLine({
+            visible: false,
+            lineCap: 'round',
+            color: function(f, step){
+                var seg = [];
+                let line
+                if (f.getGeometry().getType() === 'MultiLineString') {
+                    line = f.getGeometry().getLineString(0)
+                } else if (f.getGeometry().getType() === 'LineString'){
+                    line = f.getGeometry()
+                }
+                line.getCoordinateAtSeg(step*line.getLength(), seg);
+                var h = (seg[0][2]+seg[0][2])/2;
+                var dh = 255*(h-min)/(max-min);
+                return getColor(dh);
+            },
+            width: 5,
+            geometry: function (f) {
+                if (f.getGeometry().getType() === 'MultiLineString') {
+                    return f.getGeometry().getLineString(0);
+                } else {
+                    return f.getGeometry();
+                }
             }
-            line.getCoordinateAtSeg(step*line.getLength(), seg);
-            var h = (seg[0][2]+seg[0][2])/2;
-            var dh = 255*(h-min)/(max-min);
-            return getColor(dh);
-        },
-        width: 5,
-        geometry: function (f) {
-            if (f.getGeometry().getType() === 'MultiLineString') {
-                return f.getGeometry().getLineString(0);
-            } else {
-                return f.getGeometry();
-            }
-        }
-    })
+        })
+    }
 }
 
 export const danmenInteraction = new Draw({
@@ -1336,7 +1338,7 @@ export function initMap (vm) {
                         const newFeature = new Feature(circle);
                         newFeature.setProperties({
                             name: feature.getProperties().name,
-                            setumei: feature.getProperties().setumei,
+                            description: feature.getProperties().description,
                             _fillColor: feature.getProperties()._fillColor,
                             _distance: feature.getProperties()._distance,
                             _area: feature.getProperties()._area
