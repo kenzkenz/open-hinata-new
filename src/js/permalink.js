@@ -8,8 +8,9 @@ import {Circle,LineString,Polygon,Point} from "ol/geom";
 import Feature from "ol/Feature";
 import OLCesium from "ol-cesium";
 import * as layers from "@/js/layers";
-import {drawLayer, undoInteraction} from "../js/mymap";
+import {drawLayer, pt, undoInteraction} from "../js/mymap";
 import {fromLonLat} from "ol/proj";
+import {feature} from "@turf/turf";
 export function permalinkEventSet (response) {
   // 起動時の処理------------------------------------------------------------------------------
   // value.layerはオブジェクトになっており、map01から04が入っている。
@@ -209,15 +210,27 @@ export function permalinkEventSet (response) {
       // }
       if (key === 'GJ') {
 
+        // MyMap.drawLayer.getSource().getFeatures().forEach((feature) => {
+        //   if (feature.getProperties().pt) {
+        //     drawLayer.getSource().removeFeature(feature)
+        //   }
+        // })
+
         // console.log(decodeURIComponent(obj[key]))
         MyMap.undoInteraction.blockStart()
         console.log(document.querySelector('#' + 'map01'  + ' .ol-viewport'))
-        const features = new GeoJSON({
+        let features = new GeoJSON({
           dataProjection: "EPSG:4326",
           featureProjection: "EPSG:3857",
         }).readFeatures(JSON.parse(decodeURIComponent(obj[key])))
         MyMap.undoInteraction.blockStart()
         MyMap.drawLayer.getSource().clear()
+
+        features = features.filter((f) =>{
+          return !f.getProperties().pt
+        })
+
+
         MyMap.drawLayer.getSource().addFeatures(features)
 
         MyMap.drawLayer.getSource().getFeatures().forEach((feature) =>{
@@ -235,6 +248,9 @@ export function permalinkEventSet (response) {
             moveEnd()
           }
         })
+
+
+
         MyMap.undoInteraction.blockEnd()
 
         // const geojson = JSON.parse(decodeURIComponent(obj[key]))
@@ -567,6 +583,8 @@ export function permalinkEventSet (response) {
   }
   // マップ移動時イベント------------------------------------------------------------------------
   // store.state.base.maps.map01.on('moveend', moveEnd)
+  // MyMap.drawLayer.removeFeature(pt)
+
 }
 
 export function moveEnd () {

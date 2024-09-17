@@ -1473,5 +1473,12 @@ export default {
   font-size: large!important;
   cursor: pointer!important;
 }
+.ol-profile {
+  top: auto!important;
+  bottom: 20px;
+}
+.ol-profile button{
+  display: none!important;
+}
 </style>
 

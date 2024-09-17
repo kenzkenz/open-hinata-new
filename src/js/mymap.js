@@ -53,8 +53,9 @@ import Gauge from 'ol-ext/control/Gauge'
 import GeolocationDraw from 'ol-ext/interaction/GeolocationDraw'
 import VectorImage from 'ol/layer/VectorImage'
 import FlowLine from 'ol-ext/style/FlowLine'
-// import {dist2d} from 'ol-ext/dist/ol-ext.js'
-// import {dist2d} from 'ol/coordinate'
+import Profile from 'ol-ext/control/Profile'
+
+let zzz = false
 
 
 // ドロー関係-------------------------------------------------------------------------------
@@ -334,20 +335,7 @@ function getMinMax (feature) {
     }
     console.log(min,max)
 }
-drawSource.on('change',function(e) {
-    if (drawSource.getState() === 'ready'){
-        drawSource.getFeatures().forEach((feature) => {
-            if (feature.getGeometry().getType() === 'LineString' || feature.getGeometry().getType() === 'MultiLineString') {
-                getMinMax (feature)
-            }
-        })
 
-        // getMinMax (drawSource.getFeatures()[0])
-        // console.log(111)
-        // createLegend ();
-        // profile.setGeometry(source.getFeatures()[0]);
-    }
-});
 // Get the line color at dh
 function getColor(dh) {
     if (dh<128) return [2*dh,160-dh,0];
@@ -571,10 +559,13 @@ modifyTouchInteraction.on('modifyend', function (event) {
 
 drawLayer.getSource().on("change", function(e) {
     // moveEnd()
-    const tGeojson = new GeoJSON().writeFeatures(drawLayer.getSource().getFeatures(), {
-        featureProjection: "EPSG:3857"
-    })
-    store.state.base.tGeojson = JSON.stringify(JSON.parse(tGeojson),null,2)
+    if (!zzz) {
+        const tGeojson = new GeoJSON().writeFeatures(drawLayer.getSource().getFeatures(), {
+            featureProjection: "EPSG:3857"
+        })
+        store.state.base.tGeojson = JSON.stringify(JSON.parse(tGeojson),null,2)
+    }
+
     // const tKml = new KML().writeFeatures(drawLayer.getSource().getFeatures(), {
     //     featureProjection: "EPSG:3857"
     // })
@@ -743,7 +734,63 @@ export const geolocationDrawInteraction = new GeolocationDraw({
     source: drawLayer.getSource(),
     zoom: 17,
     minAccuracy:10000
-});
+})
+
+// drawLayer.getSource().getFeatures().forEach((feature) => {
+//     console.log(feature.getProperties())
+//     if (feature.getProperties().pt) {
+//         drawLayer.getSource().removeFeature(feature)
+//     }
+// })
+export const profileControl = new Profile()
+export let pt
+drawSource.on('change',function(e) {
+    if (drawSource.getState() === 'ready'){
+        drawSource.getFeatures().forEach((feature) => {
+            if (feature.getGeometry().getCoordinates()[0][2]) {
+                if(!pt) {
+                    profileControl.setGeometry(feature)
+                    const profileBtn = document.querySelector('#map01 .ol-profile button')
+                    profileBtn.click()
+                    pt = new Feature(new Point([feature.getGeometry().getCoordinates()[0], feature.getGeometry().getCoordinates()[1]]));
+                    pt.setStyle([]);
+                    pt.setProperties({pt: true})
+                    drawSource.addFeature(pt)
+                    getMinMax(feature)
+                } else {
+
+                }
+            }
+        })
+    }
+})
+// drawSource.on('change',function(e) {
+//     if (drawSource.getState() === 'ready'){
+//         drawSource.getFeatures().forEach((feature) => {
+//             if (feature.getGeometry().getType() === 'LineString' || feature.getGeometry().getType() === 'MultiLineString') {
+//                 getMinMax (feature)
+//             }
+//         })
+//     }
+// });
+
+function drawPoint(e) {
+    zzz = true
+    if (!pt) return;
+    if (e.type=="over"){
+        // Show point at coord
+        pt.setGeometry(new Point(e.coord));
+        pt.setStyle(null);
+    } else {
+        // hide point
+        zzz = false
+        pt.setStyle([]);
+    }
+}
+profileControl.on(["over","out"], function(e) {
+    if (e.type=="over") profileControl.popup(e.coord[2]+" m");
+    drawPoint(e);
+})
 
 // ダイアログ
 export const dialog = new Dialog({ fullscreen: true, zoom: true, closeBox: true });
@@ -854,6 +901,11 @@ export function initMap (vm) {
             return Math.sqrt(dx * dx + dy * dy)
         }
         if (i==='0')  {
+
+            map.addControl(profileControl)
+
+
+
 
             LineString.prototype.getCoordinateAtSeg = function (r, seg) {
                 var c, d;
