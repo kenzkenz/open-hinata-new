@@ -22,6 +22,9 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism-tomorrow.css'; // import syntax highlighting styles
 import {GPX, GeoJSON, IGC, KML, TopoJSON} from 'ol/format.js'
+import {Circle} from "ol/geom";
+import Feature from "ol/Feature";
+import {drawLayer} from "../js/mymap";
 export default {
   name: "dialog-geojson",
   props: ['mapName'],
@@ -71,6 +74,22 @@ export default {
         MyMap.undoInteraction.blockStart()
         MyMap.drawLayer.getSource().clear()
         MyMap.drawLayer.getSource().addFeatures(features)
+        features.forEach((feature) =>{
+          if (feature.getGeometry().getType() === 'GeometryCollection') {
+            drawLayer.getSource().removeFeature(feature)
+            const circle = new Circle(feature.get('center'), feature.get('radius'));
+            const newFeature = new Feature(circle);
+            newFeature.setProperties({
+              name: feature.getProperties().name,
+              description: feature.getProperties().description,
+              _fillColor: feature.getProperties()._fillColor,
+              _distance: feature.getProperties()._distance,
+              _area: feature.getProperties()._area
+            })
+            drawLayer.getSource().addFeature(newFeature)
+            moveEnd()
+          }
+        })
         MyMap.undoInteraction.blockEnd()
       } catch (e) {
         const result = window.confirm('間違えています。元に戻しますか？');

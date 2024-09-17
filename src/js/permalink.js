@@ -226,9 +226,9 @@ export function permalinkEventSet (response) {
             const circle = new Circle(feature.get('center'), feature.get('radius'));
             const newFeature = new Feature(circle);
             newFeature.setProperties({
-              _distance: feature.getProperties()._distance,
               name: feature.getProperties().name,
-              setumei: feature.getProperties().setumei,
+              description: feature.getProperties().description,
+              _distance: feature.getProperties()._distance,
               _fillColor: feature.getProperties()._fillColor,
             })
             drawLayer.getSource().addFeature(newFeature)
@@ -236,8 +236,6 @@ export function permalinkEventSet (response) {
           }
         })
         MyMap.undoInteraction.blockEnd()
-
-
 
         // const geojson = JSON.parse(decodeURIComponent(obj[key]))
         //
