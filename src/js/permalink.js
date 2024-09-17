@@ -361,13 +361,9 @@ export function permalinkEventSet (response) {
         // 初期レイヤーをリセット
         store.commit('base/updateList', {value: [], mapName: 'map01'});
         store.commit('base/updateList', {value: [], mapName: 'map02'});
-        // store.commit('base/updateList', {value: [], mapName: 'map03'});
-        // store.commit('base/updateList', {value: [], mapName: 'map04'});
         store.state.base.maps.map01.removeLayer(store.state.base.maps.map01.getLayers().getArray()[0]);
         store.state.base.maps.map02.removeLayer(store.state.base.maps.map02.getLayers().getArray()[0]);
-        // store.state.base.maps.map03.removeLayer(store.state.base.maps.map03.getLayers().getArray()[0]);
-        // store.state.base.maps.map04.removeLayer(store.state.base.maps.map04.getLayers().getArray()[0]);
-        const urlLayerListArr = JSON.parse(obj[key]);
+        const urlLayerListArr = JSON.parse(decodeURIComponent(obj[key]))
         // ②----------------------------
         if (layerList.length > 0) {
           urlLayerListArr[0] = layerList
@@ -606,15 +602,14 @@ export function moveEnd () {
   let parameter = '?S=' + store.state.base.splitFlg
 
   parameter += '&DL=' + JSON.stringify(store.state.info.dokujiLayers)
-
-
+  
   // const url = JSON.stringify({
   //   url:store.state.info.dokujiUrl['map01'],
   //   name:store.state.info.dokujiName['map01']
   // })
   // parameter += '&DL=' + url
 
-  parameter += '&L=' + store.getters['base/layerLists'];
+  parameter += '&L=' + encodeURIComponent(store.getters['base/layerLists'])
 
   // console.log(store.getters['base/layerLists'])
   parameter += '&GJ=' + geojsonT
