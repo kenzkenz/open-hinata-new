@@ -563,14 +563,10 @@ modifyTouchInteraction.on('modifyend', function (event) {
 })
 
 drawLayer.getSource().on("change", function(e) {
-    // moveEnd()
-
     const tGeojson = new GeoJSON().writeFeatures(drawLayer.getSource().getFeatures(), {
         featureProjection: "EPSG:3857"
     })
     store.state.base.tGeojson = JSON.stringify(JSON.parse(tGeojson),null,2)
-
-
     // const tKml = new KML().writeFeatures(drawLayer.getSource().getFeatures(), {
     //     featureProjection: "EPSG:3857"
     // })
@@ -749,23 +745,23 @@ export const geolocationDrawInteraction = new GeolocationDraw({
 // })
 export const profileControl = new Profile()
 export let point
-drawSource.on('change',function(e) {
-    if (drawSource.getState() === 'ready'){
-        drawSource.getFeatures().forEach((feature) => {
-            if (feature.getGeometry().getCoordinates()[0][2]) {
-                // if(!point) {
-                    profileControl.setGeometry(feature)
-                    const profileBtn = document.querySelector('#map01 .ol-profile button')
-                    profileBtn.click()
-                    point = new Feature(new Point([feature.getGeometry().getCoordinates()[0], feature.getGeometry().getCoordinates()[1]]));
-                    point.setStyle([]);
-                    profileDrawSource.addFeature(point)
-                    getMinMax(feature)
-                // }
-            }
-        })
-    }
-})
+// drawSource.on('change',function(e) {
+//     if (drawSource.getState() === 'ready'){
+//         drawSource.getFeatures().forEach((feature) => {
+//             if (feature.getGeometry().getCoordinates()[0][2]) {
+//                 // if(!point) {
+//                     profileControl.setGeometry(feature)
+//                     const profileBtn = document.querySelector('#map01 .ol-profile button')
+//                     profileBtn.click()
+//                     point = new Feature(new Point([feature.getGeometry().getCoordinates()[0], feature.getGeometry().getCoordinates()[1]]));
+//                     point.setStyle([]);
+//                     profileDrawSource.addFeature(point)
+//                     getMinMax(feature)
+//                 // }
+//             }
+//         })
+//     }
+// })
 
 function drawPoint(e) {
     if (!point) return;
@@ -2142,12 +2138,24 @@ export function initMap (vm) {
                          store.state.base.dialogs.measureDialog.style["z-index"] = this.s_dialogMaxZindex
                          store.state.base.dialogs.measureDialog.style.display = 'block'
                          store.state.base.editFeature = feature
-                         // if (!store.state.base.toggleIdo) {
-                         //     store.state.base.editFeature = feature
-                         // } else {
-                         //     store.state.base.editFeature = transformInteraction.getFeatures().array_[0]
-                         // }
                          console.log(store.state.base.editFeature)
+
+
+                        profileControl.setGeometry(feature)
+                        console.log(document.querySelector('.ol-profile').style)
+                        if (!store.state.base.profile) {
+                            const profileBtn = document.querySelector('#map01 .ol-profile button')
+                            profileBtn.click()
+                            store.state.base.profile = true
+                        }
+
+                        point = new Feature(new Point([feature.getGeometry().getCoordinates()[0], feature.getGeometry().getCoordinates()[1]]));
+                        point.setStyle([]);
+                        profileDrawSource.addFeature(point)
+
+
+
+
                          drawLayer.getSource().changed()
                      } else {
                          // store.state.base.editFeature = null

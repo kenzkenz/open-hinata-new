@@ -160,6 +160,7 @@ const moduleBase = {
     shareUrl:'',
     noSleepFlg: false,
     basetime: 0,
+    profile: false,
     prefId:[{pref:'北海道', id:1}, {pref:'青森県', id:2}, {pref:'岩手県', id:3}, {pref:'宮城県', id:4},
           {pref:'秋田県', id:5}, {pref:'山形県', id:6}, {pref:'福島県', id:7}, {pref:'茨城県', id:8},
           {pref:'栃木県', id:9}, {pref:'群馬県', id:10}, {pref:'埼玉県', id:11}, {pref:'千葉県', id:12},
