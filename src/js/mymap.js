@@ -821,6 +821,15 @@ window.addEventListener('beforeunload', (e) => {
 export const overlay = []
 export function initMap (vm) {
     // -------------------------------------------------------------
+    let width = 340
+    let height = 200
+    store.state.base.dialogs.dialogProfile.style.height = '280px'
+    if (window.innerWidth > 1000) {
+        width = 600
+        height = 300
+        store.state.base.dialogs.dialogProfile.style.width = '650px'
+        store.state.base.dialogs.dialogProfile.style.height = '380px'
+    }
     const profileControl = new Profile({
         target: document.querySelector("#profile-div"),
         selectable: true,
@@ -828,7 +837,8 @@ export function initMap (vm) {
         style: new Style({
             fill: new Fill({ color: '#ccc' })
         }),
-        width:340, height:200
+        width:width,
+        height:height
     })
     function drawPoint(e) {
         if (!point) return;
