@@ -82,6 +82,7 @@
                 <v-dialog-geojson v-if="mapName === 'map01'"/>
                 <v-dialog-share v-if="mapName === 'map01'"/>
                 <v-dialog-track v-if="mapName === 'map01'"/>
+                <v-dialog-profile v-if="mapName === 'map01'"/>
 
 <!--                <div class="zoom-div">{{ zoom[mapName] }}</div>-->
                 <div class="zoom-div">
@@ -108,25 +109,26 @@
 </template>
 
 <script>
-  import DialogMenu from './Dialog-menu'
-  import DialogMeasure from './Dialog-measure'
-  import DialogLayer from './Dialog-layer'
-  import DialogMainInfo from './Dialog-edit0'
-  import DialogEdit from './Dialog-edit'
-  import DialogColor from './Dialog-color'
-  import DialogColor2 from './Dialog-color2'
-  import DialogDokuji from './Dialog-dokuji'
-  import * as Permalink from '../js/permalink'
-  import Inobounce from '../js/inobounce'
-  import * as MyMap from '../js/mymap'
-  import axios from "axios"
-  import store from "@/js/store"
-  import OLCesium from 'ol-cesium'
-  import * as d3 from "d3"
-  import DialogGeojson from './Daialog-gepjson'
-  import DialogShare from './Dialog-share'
-  import DialogTrack from './Dialog-track'
-  import {moveEnd} from "@/js/permalink"
+import {moveEnd} from "@/js/permalink"
+import DialogMenu from './Dialog-menu'
+import DialogMeasure from './Dialog-measure'
+import DialogLayer from './Dialog-layer'
+import DialogMainInfo from './Dialog-edit0'
+import DialogEdit from './Dialog-edit'
+import DialogColor from './Dialog-color'
+import DialogColor2 from './Dialog-color2'
+import DialogDokuji from './Dialog-dokuji'
+import * as Permalink from '../js/permalink'
+import Inobounce from '../js/inobounce'
+import * as MyMap from '../js/mymap'
+import axios from "axios"
+import store from "@/js/store"
+import OLCesium from 'ol-cesium'
+import * as d3 from "d3"
+import DialogGeojson from './Daialog-gepjson'
+import DialogShare from './Dialog-share'
+import DialogTrack from './Dialog-track'
+import DialogProfile from './Dialog-profile'
 
   let heading
   let tilt
@@ -146,6 +148,7 @@
       'v-dialog-geojson': DialogGeojson,
       'v-dialog-share': DialogShare,
       'v-dialog-track': DialogTrack,
+      'v-dialog-profile': DialogProfile,
     },
     data () {
       return {

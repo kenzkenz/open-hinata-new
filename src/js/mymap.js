@@ -743,7 +743,17 @@ export const geolocationDrawInteraction = new GeolocationDraw({
 //         drawLayer.getSource().removeFeature(feature)
 //     }
 // })
-export const profileControl = new Profile()
+export const profileControl2 = new Profile()
+// console.log(document.querySelector("#profile-div"))
+// export const profileControl = new Profile({
+//     target: document.querySelector("#profile-div"),
+//     selectable: true,
+//     // zoomable: true,
+//     style: new Style({
+//         fill: new Fill({ color: '#ccc' })
+//     }),
+//     width:400, height:200
+// })
 export let point
 // drawSource.on('change',function(e) {
 //     if (drawSource.getState() === 'ready'){
@@ -763,19 +773,19 @@ export let point
 //     }
 // })
 
-function drawPoint(e) {
-    if (!point) return;
-    if (e.type=="over"){
-        point.setGeometry(new Point(e.coord));
-        point.setStyle(null);
-    } else {
-        point.setStyle([]);
-    }
-}
-profileControl.on(["over","out"], function(e) {
-    if (e.type=="over") profileControl.popup(e.coord[2]+" m");
-    drawPoint(e);
-})
+// function drawPoint(e) {
+//     if (!point) return;
+//     if (e.type=="over"){
+//         point.setGeometry(new Point(e.coord));
+//         point.setStyle(null);
+//     } else {
+//         point.setStyle([]);
+//     }
+// }
+// profileControl.on(["over","out"], function(e) {
+//     if (e.type=="over") profileControl.popup(e.coord[2]+" m");
+//     drawPoint(e);
+// })
 
 // ダイアログ
 export const dialog = new Dialog({ fullscreen: true, zoom: true, closeBox: true });
@@ -810,6 +820,31 @@ window.addEventListener('beforeunload', (e) => {
 //-------------------------------------------------------------------------------------------
 export const overlay = []
 export function initMap (vm) {
+    // -------------------------------------------------------------
+    const profileControl = new Profile({
+        target: document.querySelector("#profile-div"),
+        selectable: true,
+        zoomable: true,
+        style: new Style({
+            fill: new Fill({ color: '#ccc' })
+        }),
+        width:340, height:200
+    })
+    function drawPoint(e) {
+        if (!point) return;
+        if (e.type=="over"){
+            point.setGeometry(new Point(e.coord));
+            point.setStyle(null);
+        } else {
+            point.setStyle([]);
+        }
+    }
+    profileControl.on(["over","out"], function(e) {
+        if (e.type=="over") profileControl.popup(e.coord[2]+" m");
+        drawPoint(e);
+    })
+    // -------------------------------------------------------------
+
     const map01 = document.getElementById('map01');
     map01.addEventListener('mouseleave', () => {
         moveEnd()
@@ -886,7 +921,7 @@ export function initMap (vm) {
             return Math.sqrt(dx * dx + dy * dy)
         }
         if (i==='0')  {
-
+            // map.addControl(profileControl2)
             map.addControl(profileControl)
 
 
@@ -2133,30 +2168,25 @@ export function initMap (vm) {
                     // store.state.base.toggleIdo = false
                     console.log(store.state.base.drawMode)
                     if (store.state.base.drawMode === 'sentaku') {
-                         // store.state.base.toggleIdo = true
-                         store.commit('base/incrDialogMaxZindex')
-                         store.state.base.dialogs.measureDialog.style["z-index"] = this.s_dialogMaxZindex
-                         store.state.base.dialogs.measureDialog.style.display = 'block'
-                         store.state.base.editFeature = feature
-                         console.log(store.state.base.editFeature)
+                        // store.state.base.toggleIdo = true
+                        store.commit('base/incrDialogMaxZindex')
+                        store.state.base.dialogs.measureDialog.style["z-index"] = this.s_dialogMaxZindex
+                        store.state.base.dialogs.measureDialog.style.display = 'block'
+                        store.state.base.editFeature = feature
+                        console.log(store.state.base.editFeature)
 
-
-                        profileControl.setGeometry(feature)
-                        console.log(document.querySelector('.ol-profile').style)
-                        if (!store.state.base.profile) {
-                            const profileBtn = document.querySelector('#map01 .ol-profile button')
-                            profileBtn.click()
-                            store.state.base.profile = true
+                        if (feature.getGeometry().getCoordinates()[0][2]) {
+                            profileControl.setGeometry(feature)
+                            const dialog = store.state.base.dialogs.dialogProfile
+                            store.commit('base/incrDialogMaxZindex');
+                            dialog.style["z-index"] = this.s_dialogMaxZindex;
+                            dialog.style.display = 'block'
+                            point = new Feature(new Point([feature.getGeometry().getCoordinates()[0], feature.getGeometry().getCoordinates()[1]]));
+                            point.setStyle([]);
+                            profileDrawSource.addFeature(point)
                         }
 
-                        point = new Feature(new Point([feature.getGeometry().getCoordinates()[0], feature.getGeometry().getCoordinates()[1]]));
-                        point.setStyle([]);
-                        profileDrawSource.addFeature(point)
-
-
-
-
-                         drawLayer.getSource().changed()
+                        drawLayer.getSource().changed()
                      } else {
                          // store.state.base.editFeature = null
                          // drawLayer.getSource().changed()
