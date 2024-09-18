@@ -55,9 +55,6 @@ import VectorImage from 'ol/layer/VectorImage'
 import FlowLine from 'ol-ext/style/FlowLine'
 import Profile from 'ol-ext/control/Profile'
 
-let zzz = false
-
-
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
     let zoom = 0;
@@ -113,6 +110,14 @@ export const flowLineDrawLayer = new VectorImage({
 export const selectInteraction = new Select({
     layers: [drawLayer]
 })
+const profileDrawSource = new VectorSource({wrapX: false})
+export const profileDrawLayer = new VectorLayer({
+    name: 'profile',
+    source: profileDrawSource,
+    style: drawLayerStylefunction()
+})
+
+
 
 function drawLayerStylefunction (){
     return function (feature, resolution) {
@@ -559,12 +564,12 @@ modifyTouchInteraction.on('modifyend', function (event) {
 
 drawLayer.getSource().on("change", function(e) {
     // moveEnd()
-    if (!zzz) {
-        const tGeojson = new GeoJSON().writeFeatures(drawLayer.getSource().getFeatures(), {
-            featureProjection: "EPSG:3857"
-        })
-        store.state.base.tGeojson = JSON.stringify(JSON.parse(tGeojson),null,2)
-    }
+
+    const tGeojson = new GeoJSON().writeFeatures(drawLayer.getSource().getFeatures(), {
+        featureProjection: "EPSG:3857"
+    })
+    store.state.base.tGeojson = JSON.stringify(JSON.parse(tGeojson),null,2)
+
 
     // const tKml = new KML().writeFeatures(drawLayer.getSource().getFeatures(), {
     //     featureProjection: "EPSG:3857"
@@ -743,48 +748,32 @@ export const geolocationDrawInteraction = new GeolocationDraw({
 //     }
 // })
 export const profileControl = new Profile()
-export let pt
+export let point
 drawSource.on('change',function(e) {
     if (drawSource.getState() === 'ready'){
         drawSource.getFeatures().forEach((feature) => {
             if (feature.getGeometry().getCoordinates()[0][2]) {
-                if(!pt) {
+                // if(!point) {
                     profileControl.setGeometry(feature)
                     const profileBtn = document.querySelector('#map01 .ol-profile button')
                     profileBtn.click()
-                    pt = new Feature(new Point([feature.getGeometry().getCoordinates()[0], feature.getGeometry().getCoordinates()[1]]));
-                    pt.setStyle([]);
-                    pt.setProperties({pt: true})
-                    drawSource.addFeature(pt)
+                    point = new Feature(new Point([feature.getGeometry().getCoordinates()[0], feature.getGeometry().getCoordinates()[1]]));
+                    point.setStyle([]);
+                    profileDrawSource.addFeature(point)
                     getMinMax(feature)
-                } else {
-
-                }
+                // }
             }
         })
     }
 })
-// drawSource.on('change',function(e) {
-//     if (drawSource.getState() === 'ready'){
-//         drawSource.getFeatures().forEach((feature) => {
-//             if (feature.getGeometry().getType() === 'LineString' || feature.getGeometry().getType() === 'MultiLineString') {
-//                 getMinMax (feature)
-//             }
-//         })
-//     }
-// });
 
 function drawPoint(e) {
-    zzz = true
-    if (!pt) return;
+    if (!point) return;
     if (e.type=="over"){
-        // Show point at coord
-        pt.setGeometry(new Point(e.coord));
-        pt.setStyle(null);
+        point.setGeometry(new Point(e.coord));
+        point.setStyle(null);
     } else {
-        // hide point
-        zzz = false
-        pt.setStyle([]);
+        point.setStyle([]);
     }
 }
 profileControl.on(["over","out"], function(e) {
@@ -2656,6 +2645,8 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
         map.addLayer(danmenLayer)
         // map.removeLayer(flowLineDrawLayer)
         // map.addLayer(flowLineDrawLayer)
+        map.removeLayer(profileDrawLayer)
+        map.addLayer(profileDrawLayer)
         // スワイプ設定-------
         try {
             if (map.values_.target === 'map01') {

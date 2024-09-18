@@ -225,12 +225,6 @@ export function permalinkEventSet (response) {
         }).readFeatures(JSON.parse(decodeURIComponent(obj[key])))
         MyMap.undoInteraction.blockStart()
         MyMap.drawLayer.getSource().clear()
-
-        features = features.filter((f) =>{
-          return !f.getProperties().pt
-        })
-
-
         MyMap.drawLayer.getSource().addFeatures(features)
 
         MyMap.drawLayer.getSource().getFeatures().forEach((feature) =>{

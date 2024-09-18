@@ -1147,7 +1147,7 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                     if (key !== 'geometry') {
                       if (key !== 'distance' && key !== 'name'
                           && key !== 'description' && key !== 'src'
-                          && key !== 'center' && key !== 'radius') {
+                          && key !== 'center' && key !== 'radius' && key !== 'extensionsNode_') {
                         if (key.slice(0, 1) !== '_') {
                           cont2 += key + '=' + prop[key] + '<br>'
                         }
