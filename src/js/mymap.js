@@ -853,7 +853,7 @@ export function initMap (vm) {
     const profileControl = new Profile({
         target: document.querySelector("#profile-div"),
         selectable: true,
-        zoomable: true,
+        // zoomable: true,
         style: new Style({
             fill: new Fill({ color: '#ccc' })
         }),
@@ -2189,17 +2189,13 @@ export function initMap (vm) {
                 })
             if (layerNames) {
                 if (layerNames.indexOf('drawLayer') !== -1 ) {
-                    // store.state.base.toggleIdo = false
-                    console.log(store.state.base.drawMode)
                     if (store.state.base.drawMode === 'sentaku') {
-                        // store.state.base.toggleIdo = true
-                        store.commit('base/incrDialogMaxZindex')
-                        store.state.base.dialogs.measureDialog.style["z-index"] = this.s_dialogMaxZindex
-                        store.state.base.dialogs.measureDialog.style.display = 'block'
+                        if (window.innerWidth > 1000) {
+                            store.commit('base/incrDialogMaxZindex')
+                            store.state.base.dialogs.measureDialog.style["z-index"] = this.s_dialogMaxZindex
+                            store.state.base.dialogs.measureDialog.style.display = 'block'
+                        }
                         store.state.base.editFeature = feature
-                        console.log(store.state.base.editFeature)
-                        console.log(feature.getGeometry().getCoordinates()[0][2])
-                        console.log(feature.getGeometry().getType())
                         if (feature.getGeometry().getType() === 'LineString' || feature.getGeometry().getType() === 'MultiLineString') {
                             if (feature.getGeometry().getCoordinates()[0][2]) {
                                 profileControl.setGeometry(feature)
