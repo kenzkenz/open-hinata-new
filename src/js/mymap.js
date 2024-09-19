@@ -2198,21 +2198,23 @@ export function initMap (vm) {
                         store.state.base.dialogs.measureDialog.style.display = 'block'
                         store.state.base.editFeature = feature
                         console.log(store.state.base.editFeature)
-
-                        if (feature.getGeometry().getCoordinates()[0][2]) {
-                            profileControl.setGeometry(feature)
-                            const dialog = store.state.base.dialogs.dialogProfile
-                            store.commit('base/incrDialogMaxZindex');
-                            dialog.style["z-index"] = this.s_dialogMaxZindex;
-                            dialog.style.display = 'block'
-                            point = new Feature(new Point([feature.getGeometry().getCoordinates()[0], feature.getGeometry().getCoordinates()[1]]));
-                            point.setStyle([]);
-                            profileDrawSource.addFeature(point)
-                            if (feature.getProperties().name) {
-                                document.querySelector('#dialog-profile .drag-handle').innerHTML = feature.getProperties().name
+                        console.log(feature.getGeometry().getCoordinates()[0][2])
+                        console.log(feature.getGeometry().getType())
+                        if (feature.getGeometry().getType() === 'LineString' || feature.getGeometry().getType() === 'MultiLineString') {
+                            if (feature.getGeometry().getCoordinates()[0][2]) {
+                                profileControl.setGeometry(feature)
+                                const dialog = store.state.base.dialogs.dialogProfile
+                                store.commit('base/incrDialogMaxZindex');
+                                dialog.style["z-index"] = this.s_dialogMaxZindex;
+                                dialog.style.display = 'block'
+                                point = new Feature(new Point([feature.getGeometry().getCoordinates()[0], feature.getGeometry().getCoordinates()[1]]));
+                                point.setStyle([]);
+                                profileDrawSource.addFeature(point)
+                                if (feature.getProperties().name) {
+                                    document.querySelector('#dialog-profile .drag-handle').innerHTML = feature.getProperties().name
+                                }
                             }
                         }
-
                         drawLayer.getSource().changed()
                      } else {
                          // store.state.base.editFeature = null
