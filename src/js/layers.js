@@ -13524,6 +13524,8 @@ export const Layers =
             { text: '2020人口500m', data: { id: "jinko500m", layer: LayersMvt.mesh500Obj, opacity: 1, summary: LayersMvt.mesh500ObjSumm, component: {name: 'jinko500m', values:[]} } },
             { text: '2020人口250m', data: { id: "jinko250m", layer: LayersMvt.mesh250Obj, opacity: 1, summary: LayersMvt.mesh250ObjSumm, component: {name: 'jinko250m', values:[]} } },
             { text: '2020人口100m(簡易)', data: { id: "jinko100m", layer: LayersMvt.mesh100Obj, opacity: 1, summary: LayersMvt.mesh100ObjSumm, component: {name: 'jinko100m', values:[]}  } },
+            { text: '2020人口250m地理院版', data: { id: "chiriin250m", layer: LayersMvt.chiriin250mObj, opacity: 1, summary: LayersMvt.chiriin250mSumm } },
+
           ]},
         { text: '推計人口',
           children: [

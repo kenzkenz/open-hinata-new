@@ -1947,6 +1947,13 @@ export function popUp(map,layers,features,overlay,evt,content,content2) {
                 '</div><hr>'
           // }
           break
+        case 'chiriin250m':
+          if (cont.indexOf('chiriin250m') === -1) {
+          cont += '<div class="chiriin250m" style=width:200px;>' +
+              '<h4>人口=' + prop['人口（人）'] + '人</h4>' +
+              '</div><hr>'
+          }
+          break
       }
     })
   }

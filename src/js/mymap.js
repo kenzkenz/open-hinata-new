@@ -38,7 +38,7 @@ import * as d3 from "d3"
 import PrintDialog from 'ol-ext/control/PrintDialog.js'
 import muni from './muni'
 import UndoRedo from 'ol-ext/interaction/UndoRedo'
-import {overPassSource, syochiiki2020MvtObj} from "@/js/layers-mvt"
+import {syochiiki2020MvtObj} from "@/js/layers-mvt"
 import CopyPaste from 'ol-ext/interaction/CopyPaste'
 import Swipe from 'ol-ext/control/Swipe'
 import RegularShape from 'ol/style/RegularShape'

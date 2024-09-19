@@ -243,7 +243,47 @@ function kumamotoShinrinStyleFunction() {
     return styles
   }
 }
-
+// 250mメッシュ地理院版---------------------------------------------------
+function Chiriin250m (){
+  this.name = 'chiriin250m'
+  // this.name = 'default'
+  this.source = new VectorTileSource({
+    format: new GeoJSON({defaultProjection:'EPSG:4326'}),
+    tileGrid: new createXYZ({
+      minZoom:12,
+      maxZoom:18
+    }),
+    url:"https://maps.gsi.go.jp/xyz/population/{z}/{x}/{y}.geojson"
+  })
+  this.style = chiriin250mFunction()
+  this.pointer = true
+  this.maxResolution = zoom12
+}
+export const chiriin250mSumm = "<a href='https://www.gsi.go.jp/johofukyu/johofukyu60001_00015.html' target='_blank'>国土地理院</a>"
+export  const chiriin250mObj = {};
+for (let i of mapsStr) {
+  chiriin250mObj[i] = new VectorTileLayer(new Chiriin250m())
+}
+function chiriin250mFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    const rgb = d3.rgb(prop._fillColor)
+    const rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + prop._fillOpacity +  ")"
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: rgba
+      }),
+      stroke: new Stroke({
+        color: "gray",
+        width: 1
+      }),
+    })
+    styles.push(polygonStyle)
+    return styles
+  }
+}
 // 空港等の周辺空域---------------------------------------------------
 function Kuiki(){
   this.name = 'kuiki'
@@ -273,7 +313,8 @@ function kuikiFunction() {
     const rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + prop._fillOpacity +  ")"
     const polygonStyle = new Style({
       fill: new Fill({
-        color: rgba
+        color: rgba,
+        opacity: 0.8
       }),
       stroke: new Stroke({
         color: "black",
