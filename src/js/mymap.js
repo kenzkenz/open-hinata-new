@@ -114,10 +114,8 @@ const profileDrawSource = new VectorSource({wrapX: false})
 export const profileDrawLayer = new VectorLayer({
     name: 'profile',
     source: profileDrawSource,
-    style: drawLayerStylefunction()
+    style: profileStylefunction()
 })
-
-
 
 function drawLayerStylefunction (){
     return function (feature, resolution) {
@@ -323,6 +321,26 @@ function drawLayerStylefunction (){
         return styles
     }
 }
+function profileStylefunction () {
+    return function (feature, resolution) {
+        const styles = []
+        const pointStyle = new Style({
+            image: new Circle0({
+                radius: 8,
+                fill: new Fill({
+                    color: 'red'
+                }),
+                stroke: new Stroke({
+                    color: 'black',
+                    width: 1
+                })
+            }),
+        })
+        styles.push(pointStyle)
+        return styles
+    }
+}
+
 let min = 99999 , max = 0;
 function getMinMax (feature) {
     let min0, max0;
@@ -754,7 +772,7 @@ export const profileControl2 = new Profile()
 //     }),
 //     width:400, height:200
 // })
-export let point
+// export let point
 // drawSource.on('change',function(e) {
 //     if (drawSource.getState() === 'ready'){
 //         drawSource.getFeatures().forEach((feature) => {
@@ -821,6 +839,8 @@ window.addEventListener('beforeunload', (e) => {
 export const overlay = []
 export function initMap (vm) {
     // -------------------------------------------------------------
+    // #profile-divが存在している必要があるため、ここに書いている。
+    let point
     let width = 340
     let height = 200
     store.state.base.dialogs.dialogProfile.style.height = '280px'
@@ -837,8 +857,8 @@ export function initMap (vm) {
         style: new Style({
             fill: new Fill({ color: '#ccc' })
         }),
-        width:width,
-        height:height
+        width: width,
+        height: height
     })
     function drawPoint(e) {
         if (!point) return;
@@ -864,9 +884,8 @@ export function initMap (vm) {
     const maps = [
         {mapName: 'map01', map:store.state.base.map01},
         {mapName: 'map02', map:store.state.base.map02},
-        // {mapName: 'map03', map:store.state.base.map03},
-        // {mapName: 'map04', map:store.state.base.map04}
     ];
+    // 現在使っていない。
     const view01 = new View({
         center: fromLonLat([140.097, 37.856]),
         zoom: 6,
@@ -934,9 +953,6 @@ export function initMap (vm) {
             // map.addControl(profileControl2)
             map.addControl(profileControl)
 
-
-
-
             LineString.prototype.getCoordinateAtSeg = function (r, seg) {
                 var c, d;
                 if (r < 1e-10) {
@@ -972,8 +988,6 @@ export function initMap (vm) {
                     s += d;
                 }
             };
-
-
 
             map.addInteraction(undoInteraction)
             map.addInteraction(modifyInteraction)
@@ -2194,6 +2208,9 @@ export function initMap (vm) {
                             point = new Feature(new Point([feature.getGeometry().getCoordinates()[0], feature.getGeometry().getCoordinates()[1]]));
                             point.setStyle([]);
                             profileDrawSource.addFeature(point)
+                            if (feature.getProperties().name) {
+                                document.querySelector('#dialog-profile .drag-handle').innerHTML = feature.getProperties().name
+                            }
                         }
 
                         drawLayer.getSource().changed()
