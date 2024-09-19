@@ -90,7 +90,8 @@ const drawSource = new VectorSource({wrapX: false})
 export const drawLayer = new VectorLayer({
     name: 'drawLayer',
     source: drawSource,
-    style: drawLayerStylefunction()
+    style: drawLayerStylefunction(),
+    // altitudeMode: 'clampToGround'
 })
 export const haatMapDrawLayer = new Heatmap({
     name: 'heatmap',
@@ -931,7 +932,7 @@ export function initMap (vm) {
             interactions: defaultInteractions().extend([
                 new DragRotateAndZoom()
             ]),
-            layers: [drawLayer],
+            // layers: [drawLayer],
             overlays: [overlay[i],marker[i],currentPosition[i]],
             target: mapName,
             // view: view01,
