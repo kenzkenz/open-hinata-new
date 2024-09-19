@@ -251,7 +251,7 @@ function Chiriin250m (){
     format: new GeoJSON({defaultProjection:'EPSG:4326'}),
     tileGrid: new createXYZ({
       minZoom:12,
-      maxZoom:18
+      maxZoom:15
     }),
     url:"https://maps.gsi.go.jp/xyz/population/{z}/{x}/{y}.geojson"
   })
@@ -275,10 +275,10 @@ function chiriin250mFunction() {
       fill: new Fill({
         color: rgba
       }),
-      stroke: new Stroke({
-        color: "gray",
-        width: 1
-      }),
+      // stroke: new Stroke({
+      //   color: "gray",
+      //   width: 1
+      // }),
     })
     styles.push(polygonStyle)
     return styles
