@@ -13504,6 +13504,12 @@ export const Layers =
         { text: 'MIERUNE', data: { id: 'mierune', layer: mieruneObj, opacity: 1, summary: mieruneSumm } },
         { text: 'MIERUNE mono', data: { id: 'mierunemono', layer: mieruneGrayObj, opacity: 1, summary: mieruneSumm } },
       ]},
+    {
+      text: '天気',
+      children: [
+        { text: '雨雲の動き', data: { id: 'nowcast', layer: nowCastObj, opacity: 1, summary: nowCastSumm, component: {name: 'amagumo', values:[]}} },
+        { text: 'ひまわり', data: { id: 'himawari', layer: himawariObj, opacity: 1, summary: himawariSumm, component: {name: 'himawari', values:[]}} },
+      ]},
     { text:'統計',
       children: [
         { text: '社会・人口統計体系',
@@ -13525,7 +13531,6 @@ export const Layers =
             { text: '2020人口250m', data: { id: "jinko250m", layer: LayersMvt.mesh250Obj, opacity: 1, summary: LayersMvt.mesh250ObjSumm, component: {name: 'jinko250m', values:[]} } },
             { text: '2020人口100m(簡易)', data: { id: "jinko100m", layer: LayersMvt.mesh100Obj, opacity: 1, summary: LayersMvt.mesh100ObjSumm, component: {name: 'jinko100m', values:[]}  } },
             { text: '2020人口250m地理院版', data: { id: "chiriin250m", layer: LayersMvt.chiriin250mObj, opacity: 1, summary: LayersMvt.chiriin250mSumm } },
-
           ]},
         { text: '推計人口',
           children: [
@@ -13596,8 +13601,6 @@ export const Layers =
         { text: '長岡市航空写真', data: { id: 'nagaokaOrt', layer: nagaokaOrthoObj, opacity: 1, summary: nagaokaOrthoSumm } },
         { text: '朝来市航空写真', data: { id: 'asagoOrt', layer: asagoOrthoObj, opacity: 1, summary: asagoOrthoSumm } },
         { text: '半田市航空写真', data: { id: 'handaOrt', layer: handaOrthoObj, opacity: 1, summary: handaOrthoSumm } },
-
-
         { text: '令和6年能登半島地震',
           children: [
             { text: '能登地区（2024年4月5日～26日撮影）', data: { id: 'noto20240405Ort', layer: noto20240405Obj, opacity: 1, summary: noto20240405Summ } },
@@ -14478,10 +14481,7 @@ export const Layers =
         { text: '承応年間飫肥城下図(宮崎県)', data: { id: 'obi', layer: obiObj, opacity: 1, zoom: 15, center: [131.3502,31.6289], summary: obiSumm } },
         { text: '東西蝦夷山川地理取調図', data: { id: 'ezosansen', layer: ezosansenObj, opacity: 1, zoom: 8, center: [142.6944008210318, 43.241646716680606], summary: ezosansenSumm } },
         { text: '東西蝦夷山川地理取調図2', data: { id: 'ezosansen2', layer: ezosansen2Obj, opacity: 1, zoom: 8, center: [142.6944008210318, 43.241646716680606], summary: ezosansenSumm2 } },
-
         { text: '北海道実測切図', data: { id: 'jissoku', layer: jissokukirizuobj, opacity: 1, zoom: 8, center: [142.6944008210318, 43.241646716680606], summary: jissokuSumm } },
-
-
         { text: '東京市火災動態地図大正12年', data: { id: 'tokyokasai', layer: tokyokasaiObj, opacity: 1, zoom: 13, center: [139.77487921714783, 35.688761948611315], summary: tokyokasaiSumm } },
         { text: 'ヤマシロマップ', data: { id: 'yamashiro', layer: yamashiroObj, opacity: 1, zoom: 11, center: [135.74390550133873,35.00293563827127], summary: yamashiroSumm } },
       ]},
@@ -14489,11 +14489,8 @@ export const Layers =
       children: [
         // { text: '幕末の郡(国で色分け)', data: { id: "gunbakumatu", layer: LayersMvt.gunbakumatuObj, opacity: 1, summary: LayersMvt.gunSumm } },
         { text: '日本歴史地名大系', data: { id: "chimei", layer: LayersMvt.chimei0Obj, opacity: 1, summary: LayersMvt.chimeiSumm } },
-
         { text: '幕末期近世の村', data: { id: "kinseipoint", layer: LayersMvt.kinseiPointObj, opacity: 1, summary: LayersMvt.kinseiSumm,component: {name: 'kinsei', values:[]} } },
         { text: '幕末期近世の村ポイント', data: { id: "kinseipoint2", layer: LayersMvt.kinseiPointMvtObj, opacity: 1, summary: LayersMvt.kinseiSumm } },
-
-
         { text: '明治中期の郡', data: { id: "gun", layer: LayersMvt.gunObj, opacity: 1, summary: LayersMvt.gunSumm,component: {name: 'meijigun', values:[]} } },
         // { text: '明治中期の郡(国で色分け)', data: { id: "gunkuni", layer: LayersMvt.gunkuniObj, opacity: 1, summary: LayersMvt.gunSumm } },
         { text: 'T09市町村', data: { id: "cityT9", layer: LayersMvt.cityT9Obj, opacity: 1, summary: LayersMvt.cityT9Summ,component: {name: 't09city', values:[]} } },
@@ -14627,7 +14624,6 @@ export const Layers =
             { text: 'H30公示価格', data: { id: "kouziH30", layer: LayersMvt.kouziH30Obj, opacity: 1, summary: LayersMvt.kouziH30Summ,component: {name: 'kouzi', values:[]} } },
             { text: 'R04公示価格', data: { id: "kouziR04", layer: LayersMvt.kouziR04Obj, opacity: 1, summary: LayersMvt.kouziR04Summ,component: {name: 'kouzi', values:[]} } },
             // { text: 'R05公示価格', data: { id: "kouziR05", layer: LayersMvt.kouziR05Obj, opacity: 1, summary: LayersMvt.kouziR05Summ,component: {name: 'kouzi', values:[]} } },
-
           ]},
         { text: '都市地域',
           children: [
@@ -14678,9 +14674,6 @@ export const Layers =
             { text: '都城市洪水ハザードマップﾟ', data: { id: 'miyakonozyousiHm', layer: miyakonozyousiHmObj, opacity: 1, zoom: 13, center: [131.07797970576192, 31.78882205640913], summary: miyakonozyousiHmSumm } },
             { text: '日向市防災ハザードマップﾟ', data: { id: 'hyuugasiHm', layer: hyuugasiHmObj, opacity: 1, zoom: 13, center: [131.6400086045909, 32.395198966795306], summary: hyuugasiHmSumm } },
           ]},
-        { text: '雨雲の動き', data: { id: 'nowcast', layer: nowCastObj, opacity: 1, summary: nowCastSumm, component: {name: 'amagumo', values:[]}} },
-        { text: 'ひまわり', data: { id: 'himawari', layer: himawariObj, opacity: 1, summary: himawariSumm, component: {name: 'himawari', values:[]}} },
-
         { text: '洪水浸水想定（想定最大規模）', data: { id: 'shinsuishin', layer: shinsuishinObj, opacity: 1, summary: shinsuishinSumm } },
         { text: '洪水浸水想定（計画規模）', data: { id: 'shinsuishinK', layer: shinsuishinKObj, opacity: 1, summary: shinsuishinKSumm } },
         { text: '津波浸水想定', data: { id: 'tunami', layer: tsunamiObj, opacity: 1, summary: tunamiSumm } },

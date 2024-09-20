@@ -6,6 +6,7 @@
       <input type="range" min="0" max="48" step="1" class="amagumo-range" v-model.number="s_amagumoTime" />
     </div>
     <hr>
+    <a href="https://www.jma.go.jp/bosai/nowc/" target="_blank">気象庁ナウキャスト</a>
   </div>
 </template>
 

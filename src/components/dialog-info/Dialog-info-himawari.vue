@@ -7,6 +7,7 @@
       <b-form-select v-model="type" :options="options" @change="selectChange"></b-form-select>
     </div>
     <hr>
+    気象庁
   </div>
 </template>
 
