@@ -13,6 +13,7 @@
 <script>
 import * as Layers from '@/js/layers'
 import * as permalink from '@/js/permalink'
+
 export default {
   name: "Dialog-info-amagumo",
   props: ['mapName', 'item'],
@@ -20,12 +21,6 @@ export default {
   },
   data () {
     return {
-      options: [
-        { value: 'highway', text: '道路' },
-        { value: 'railway', text: '鉄道' },
-        { value: 'leisure', text: 'レジャー' },
-        { value: 'natural', text: '自然物' },
-      ]
     }
   },
   computed: {
@@ -52,6 +47,7 @@ export default {
           url = 'https://www.jma.go.jp/bosai/jmatile/data/nowc/' + basetime + '/none/' + validtime + '/surf/hrpns/{z}/{x}/{y}.png'
         }
         Layers.nowCastObj[this.mapName].getSource().setUrl(url)
+        Layers.nowCastMonoObj[this.mapName].getSource().setUrl(url)
         // -----------------------------------------------------------
         const t = validtime
         const nen = t.slice(0,4)

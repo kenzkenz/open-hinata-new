@@ -2494,7 +2494,7 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
         map.removeLayer(value.layer);
     })
     const result = newLayerList[0].find((layer) => {
-        return layer.title === '雨雲の動き' || layer.title === 'ひまわり'
+        return layer.title === '雨雲の動き' || layer.title === '雨雲の動きモノクロ' || layer.title === 'ひまわり'
     })
     if(result) {
         const urls = ['https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N1.json',
@@ -2541,22 +2541,6 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                     }
                     store.state.info.time[map.values_.target] = time (basetime)
                     store.state.info.timeH[map.values_.target] = time (basetimeHimawari)
-                    // const t = basetime
-                    // const nen = t.slice(0,4)
-                    // const tuki = t.slice(4,6) - 1
-                    // const hi = t.slice(6,8)
-                    // let ji = Number(t.slice(8,10))
-                    // const fun = t.slice(10,12)
-                    // const date = new Date(nen,tuki,hi,ji,fun,0)
-                    // date.setHours(date.getHours() + 9)
-                    // const tukihi = date.toLocaleDateString()
-                    // const time = date.toLocaleTimeString()
-                    // const nen2 = tukihi.split('/')[0] + '年'
-                    // const tuki2 = tukihi.split('/')[1] + '月'
-                    // const hi2 = tukihi.split('/')[2] + '日'
-                    // const ji2 = time.split(':')[0] + '時'
-                    // const fun2 = time.split(':')[1] + '分'
-                    // store.state.info.time[map.values_.target] =  nen2 + tuki2 + hi2 + ' ' + ji2 + fun2
                     // -----------------------------------------------------------
                     aaa(basetime,basetime,basetimeHimawari)
                 })
@@ -2594,6 +2578,12 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                 const url = 'https://www.jma.go.jp/bosai/jmatile/data/nowc/' + basetime + '/none/' + validtime + '/surf/hrpns/{z}/{x}/{y}.png'
                 Layers.nowCastObj.map01.getSource().setUrl(url)
                 Layers.nowCastObj.map02.getSource().setUrl(url)
+            }
+            // ---------------------------------------------------------------------------------------------------------
+            if (title === '雨雲の動きモノクロ') {
+                const url = 'https://www.jma.go.jp/bosai/jmatile/data/nowc/' + basetime + '/none/' + validtime + '/surf/hrpns/{z}/{x}/{y}.png'
+                Layers.nowCastMonoObj.map01.getSource().setUrl(url)
+                Layers.nowCastMonoObj.map02.getSource().setUrl(url)
             }
             // ---------------------------------------------------------------------------------------------------------
             if (title === 'ひまわり') {

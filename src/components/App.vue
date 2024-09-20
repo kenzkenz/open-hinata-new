@@ -2113,15 +2113,6 @@ import {drawLayer} from "../js/mymap";
 </style>
 <style>
     /*ol関係のスタイル*/
-    .ol-print {
-      display: none;
-    }
-    .ol-attribution button {
-      display: none;
-    }
-    .ol-overlaycontainer-stopevent{
-      z-index: 2!important;
-    }
     .gray-scale {
       /*mix-blend-mode: multiply;*/
       filter: grayScale(1);
@@ -2137,6 +2128,15 @@ import {drawLayer} from "../js/mymap";
     }
     .hanten-scale {
       filter: brightness(1.1) invert(100%) hue-rotate(180deg) ;
+    }
+    .ol-print {
+      display: none;
+    }
+    .ol-attribution button {
+      display: none;
+    }
+    .ol-overlaycontainer-stopevent{
+      z-index: 2!important;
     }
     .ol-title .ol-closebox {
       font-size: x-large;

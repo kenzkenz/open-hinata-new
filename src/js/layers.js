@@ -20,7 +20,6 @@ import  * as MaskDep from './mask-dep'
 import  * as LayersMvt from './layers-mvt'
 // import BingMaps from 'ol/source/BingMaps'
 import * as d3 from "d3"
-import axios from "axios"
 
 const mapsStr = ['map01','map02']
 const transformE = extent => {
@@ -48,6 +47,22 @@ for (let i of mapsStr) {
   nowCastObj[i] = new TileLayer(new Nowcast())
 }
 export const nowCastSumm = ''
+function NowcastMono () {
+  this.name = 'nowCast'
+  this.className = 'gray-scale'
+  // this.multiply = true
+  this.preload = Infinity
+  this.source = new XYZ({
+    // url: 'https://www.jma.go.jp/bosai/jmatile/data/nowc/20240914031000/none/20240914041000/surf/hrpns/{z}/{x}/{y}.png',
+    crossOrigin: 'anonymous',
+    minZoom: 1,
+    maxZoom: 10
+  })
+}
+export const nowCastMonoObj = {}
+for (let i of mapsStr) {
+  nowCastMonoObj[i] = new TileLayer(new NowcastMono())
+}
 
 function Himawari () {
   this.name = 'himawari'
@@ -13446,7 +13461,7 @@ export const Layers =
         { text: '能登傾斜区分図（発災後:林野庁）', data: { id: 'notokeisyarinya', layer: notokeisyarinyaObj, opacity: 1, summary: notokeisyarinyaSumm } },
         { text: '能登斜面崩壊', data: { id: 'notosyamenhokai', layer: LayersMvt.notosyamenhokaiObj, opacity: 1, summary: LayersMvt.notosyamenhokaiSumm } },
         { text: '陸化したと思われる港', data: { id: 'notominato', layer: LayersMvt.notominatoObj, opacity: 1, summary: LayersMvt.notominatoSumm } },
-        { text: '能登西部赤色立kochiOrthoObj体地図', data: { id: 'notoseibu', layer: notoSeibuObj, opacity: 1, summary: notoSeubuSumm } },
+        { text: '能登西部赤色立体地図', data: { id: 'notoseibu', layer: notoSeibuObj, opacity: 1, summary: notoSeubuSumm } },
         { text: '液状化危険度分布図（石川県）', data: { id: 'ekizyouka17', layer: ekizyouka17Obj, opacity: 1, summary: ekizyoukaSumm } },
         { text: '富山県埋蔵文化財（2021.4.1）', data: { id: "toyamamaibun", layer: LayersMvt.toyamamaibunObj, opacity: 1, summary: LayersMvt.toyamamaibunSumm } },
         { text: '17石川県農地', data: { id: 'hude17', layer: LayersMvt.hude17Obj, opacity: 1, summary: LayersMvt.hude17Summ } },
@@ -13508,6 +13523,7 @@ export const Layers =
       text: '天気',
       children: [
         { text: '雨雲の動き', data: { id: 'nowcast', layer: nowCastObj, opacity: 1, summary: nowCastSumm, component: {name: 'amagumo', values:[]}} },
+        { text: '雨雲の動きモノクロ', data: { id: 'nowcastmono', layer: nowCastMonoObj, opacity: 1, summary: nowCastSumm, component: {name: 'amagumo', values:[]}} },
         { text: 'ひまわり', data: { id: 'himawari', layer: himawariObj, opacity: 1, summary: himawariSumm, component: {name: 'himawari', values:[]}} },
       ]},
     { text:'統計',
