@@ -605,7 +605,19 @@ lineInteraction.on('drawend', function (event) {
     measure (geoType,feature,coordAr)
     moveEnd()
     // ---------------------------------------------------------------------------
-    hyoko(feature,coordAr)
+    const sliceByNumber = (array, number) => {
+        const length = Math.ceil(array.length / number)
+        return new Array(length).fill().map((_, i) =>
+            array.slice(i * number, (i + 1) * number)
+        )
+    }
+    const len = coordAr.length / 100
+    const sliceCoordAr = sliceByNumber(coordAr,len)
+    console.log(sliceByNumber(coordAr,len))
+    for (let i = 1; i < len; i++) {
+        hyoko(feature, sliceCoordAr[i])
+    }
+    // hyoko(feature,coordAr)
 })
 async function hyoko(feature,coordAr) {
     d3.select('#map01 .loadingImg').style("display","block")
