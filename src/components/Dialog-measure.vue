@@ -652,42 +652,21 @@ export default {
         alert('線又はポリゴンではありません。')
         return
       }
-      const fiatureGeojson = new GeoJSON().writeFeatures([targetFeature], {
-        featureProjection: "EPSG:3857"
-      })
-      const features = JSON.parse(fiatureGeojson).features
-      console.log(features[0])
-
-      // const ooord = turf.toWgs84(targetFeature.getGeometry().getCoordinates())
-      // const bufferFeature = turf.toMercator(turf.buffer(point, Number(this.radius)))
-
-      //0.001
-      const sinpleFeature = turf.simplify(features[0], { tolerance: this.tolerance, highQuality: false })
-      console.log(sinpleFeature)
-      let coordinates = []
-      let polygonCoordinates = []
       let newFeature
       if (targetFeature.getGeometry().getType() === 'LineString') {
-        sinpleFeature.geometry.coordinates.forEach((coord) => {
-          coordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
-        })
-        const lineString = new LineString(coordinates)
+        const turfLine = turf.toWgs84(turf.lineString(targetFeature.getGeometry().getCoordinates()))
+        const sinpleFeature = turf.toMercator(turf.simplify(turfLine, { tolerance: this.tolerance, highQuality: false }))
+        const lineString = new LineString(sinpleFeature.geometry.coordinates)
         newFeature = new Feature(lineString)
       } else if (targetFeature.getGeometry().getType() === 'MultiLineString') {
-        sinpleFeature.geometry.coordinates.forEach((coords,i) => {
-          coordinates.push([])
-          coords.forEach((coord) => {
-            coordinates[i].push(transform(coord, "EPSG:4326", "EPSG:3857"))
-          })
-        })
-        const multiLineString = new MultiLineString(coordinates)
+        const turfLine = turf.toWgs84(turf.multiLineString(targetFeature.getGeometry().getCoordinates()))
+        const sinpleFeature = turf.toMercator(turf.simplify(turfLine, { tolerance: this.tolerance, highQuality: false }))
+        const multiLineString = new MultiLineString(sinpleFeature.geometry.coordinates)
         newFeature = new Feature(multiLineString)
       } else {
-        sinpleFeature.geometry.coordinates[0].forEach((coord) => {
-          polygonCoordinates.push(transform(coord, "EPSG:4326", "EPSG:3857"))
-        })
-        console.log(polygonCoordinates)
-        const polygon = new Polygon([polygonCoordinates])
+        const turfPolygon = turf.toWgs84(turf.polygon(targetFeature.getGeometry().getCoordinates()))
+        const sinpleFeature = turf.toMercator(turf.simplify(turfPolygon, { tolerance: this.tolerance, highQuality: false }))
+        const polygon = new Polygon(sinpleFeature.geometry.coordinates)
         newFeature = new Feature(polygon)
       }
       if (targetFeature.values_) {

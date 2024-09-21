@@ -247,6 +247,7 @@ import {drawLayer} from "../js/mymap";
         }
       },
       mapWarper: function () {
+        console.log(this.s_mwId)
         MyMap.history ('日本版mapwarperへ')
         window.open('https://mapwarper.h-gis.jp/maps/' + this.s_mwId, '_blank');
       },
