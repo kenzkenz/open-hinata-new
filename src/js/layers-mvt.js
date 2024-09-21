@@ -4369,7 +4369,6 @@ function SekaiLight () {
     url: "https://kenzkenz.github.io/sekai-light/{z}/{x}/{y}.mvt"
   });
   this.style = japanLightStyleFunction();
-  // this.useInterimTilesOnError = false
 }
 export  const japanLightObj = {};
 for (let i of mapsStr) {

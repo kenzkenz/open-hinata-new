@@ -579,6 +579,7 @@ modifyTouchInteraction.on('modifyend', function (event) {
     const geoType = event.features.array_[0].getGeometry().getType()
     measure (geoType,feature,coordAr)
     moveEnd()
+    if (geoType === 'LineString') hyoko(feature,coordAr)
 })
 
 drawLayer.getSource().on("change", function(e) {
@@ -603,13 +604,46 @@ lineInteraction.on('drawend', function (event) {
     const geoType = feature.getGeometry().getType()
     measure (geoType,feature,coordAr)
     moveEnd()
+    // ---------------------------------------------------------------------------
+    hyoko(feature,coordAr)
 })
+async function hyoko(feature,coordAr) {
+    d3.select('#map01 .loadingImg').style("display","block")
+    const coordAr84 = turf.toWgs84(turf.lineString(coordAr)).geometry.coordinates
+    const fetchData = coordAr84.map((coord) => {
+        return axios
+            .get('https://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php',{
+                params: {
+                    dataType: "json",
+                    lon: coord[0],
+                    lat: coord[1],
+                }
+            })
+    })
+    await Promise.all([
+        ...fetchData
+    ])
+        .then((response) => {
+            d3.select('#map01 .loadingImg').style("display","none")
+            coordAr.forEach((coord,index) => {
+                coord[2] = response[index].data.elevation
+            })
+            feature.getGeometry().setCoordinates(coordAr)
+        })
+        .catch(function (response) {
+            console.log(response)
+            hyoko(feature,coordAr)
+            // d3.select('#map01 .loadingImg').style("display","none")
+            // alert('標高取得に失敗しました。')
+        })
+}
 freeHandInteraction.on('drawend', function (event) {
     const feature = event.feature;
     const coordAr = feature.getGeometry().getCoordinates()
     const geoType = feature.getGeometry().getType()
     measure (geoType,feature,coordAr)
     moveEnd()
+    hyoko(feature,coordAr)
 })
 polygonInteraction.on('drawend', function (event) {
     const feature = event.feature;

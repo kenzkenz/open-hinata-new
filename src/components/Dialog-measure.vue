@@ -16,7 +16,7 @@
       <br>
       <b-button style="margin-top: 5px; margin-left: 0px;" :pressed.sync="s_toggleHole" class='olbtn' :size="btnSize">穴をあける</b-button>
       <b-button id="color-btn0" style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="openDialog">色</b-button>
-      <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawTrack">トラッキング</b-button>
+<!--      <b-button style="margin-top: 5px; margin-left: 5px;" class='olbtn' :size="btnSize" @click="drawTrack">トラッキング</b-button>-->
 
       <!--      <b-button style="margin-left: 10px;" :pressed.sync="toggleDanmen" class='olbtn' :size="btnSize">{{ toggleDanmen ? '断面図' : '断面図' }}</b-button>-->
       <br>
