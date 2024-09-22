@@ -579,12 +579,14 @@ modifyTouchInteraction.on('modifyend', function (event) {
     const geoType = event.features.array_[0].getGeometry().getType()
     measure (geoType,feature,coordAr)
     moveEnd()
-    const sliceCoord = sliceCoodAr(coordAr)
-    sliceCoord.forEach((coord,i) => {
-        setTimeout(function() {
-            hyoko(feature, coord, coordAr)
-        },1000 * i)
-    })
+    if (geoType === 'LineString' || geoType === 'MultiLineString') {
+        const sliceCoord = sliceCoodAr(coordAr)
+        sliceCoord.forEach((coord,i) => {
+            setTimeout(function() {
+                hyoko(feature, coord, coordAr)
+            },1000 * i)
+        })
+    }
 })
 
 drawLayer.getSource().on("change", function(e) {
@@ -1338,6 +1340,23 @@ export function initMap (vm) {
         map.addControl(notification);
         store.commit('base/setNotifications',{mapName:mapName, control: notification});
 
+
+
+        // map.getViewport().addEventListener('drop', function(event) {
+        //     event.preventDefault();
+        //     const files = event.dataTransfer.files;
+        //     for (let i = 0, ii = files.length; i < ii; ++i) {
+        //         const file = files.item(i);
+        //         loadshp({url: file, encoding: 'utf-8'}, function(geojson) {
+        //             const features = new GeoJSON().readFeatures(
+        //                 geojson,
+        //                 { featureProjection: map.getView().getProjection() }
+        //             );
+        //             console.log(features)
+        //             drawLayer.getSource().addFeatures(features)
+        //         });
+        //     }
+        // });
 
 
         map.getViewport().addEventListener('drop', function(event) {
