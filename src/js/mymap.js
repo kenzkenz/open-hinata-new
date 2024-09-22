@@ -579,7 +579,12 @@ modifyTouchInteraction.on('modifyend', function (event) {
     const geoType = event.features.array_[0].getGeometry().getType()
     measure (geoType,feature,coordAr)
     moveEnd()
-    if (geoType === 'LineString') hyoko(feature,coordAr)
+    const sliceCoord = sliceCoodAr(coordAr)
+    sliceCoord.forEach((coord,i) => {
+        setTimeout(function() {
+            hyoko(feature, coord, coordAr)
+        },1000*i)
+    })
 })
 
 drawLayer.getSource().on("change", function(e) {
@@ -605,21 +610,25 @@ lineInteraction.on('drawend', function (event) {
     measure (geoType,feature,coordAr)
     moveEnd()
     // ---------------------------------------------------------------------------
-    const sliceByNumber = (array, number) => {
-        const length = Math.ceil(array.length / number)
-        return new Array(length).fill().map((_, i) =>
-            array.slice(i * number, (i + 1) * number)
-        )
-    }
-    const len = coordAr.length / 100
-    const sliceCoordAr = sliceByNumber(coordAr,len)
-    console.log(sliceByNumber(coordAr,len))
-    for (let i = 1; i < len; i++) {
-        hyoko(feature, sliceCoordAr[i])
-    }
-    // hyoko(feature,coordAr)
+    const sliceCoord = sliceCoodAr(coordAr)
+    sliceCoord.forEach((coord,i) => {
+        setTimeout(function() {
+            hyoko(feature, coord, coordAr)
+        },1000*i)
+    })
+
 })
-async function hyoko(feature,coordAr) {
+function sliceCoodAr(array){
+    let slicedArr = []
+    const len = Math.ceil(array.length/100)
+    if (len > 0) {
+        for (let i = 0; i < len; i++) {
+            slicedArr.push(array.slice(100*i,100*(i+1)))
+        }
+    }
+    return slicedArr
+}
+async function hyoko(feature,coordAr,coordAr0) {
     d3.select('#map01 .loadingImg').style("display","block")
     const coordAr84 = turf.toWgs84(turf.lineString(coordAr)).geometry.coordinates
     const fetchData = coordAr84.map((coord) => {
@@ -640,13 +649,11 @@ async function hyoko(feature,coordAr) {
             coordAr.forEach((coord,index) => {
                 coord[2] = response[index].data.elevation
             })
-            feature.getGeometry().setCoordinates(coordAr)
+            feature.getGeometry().setCoordinates(coordAr0)
         })
         .catch(function (response) {
             console.log(response)
             hyoko(feature,coordAr)
-            // d3.select('#map01 .loadingImg').style("display","none")
-            // alert('標高取得に失敗しました。')
         })
 }
 freeHandInteraction.on('drawend', function (event) {
@@ -654,8 +661,12 @@ freeHandInteraction.on('drawend', function (event) {
     const coordAr = feature.getGeometry().getCoordinates()
     const geoType = feature.getGeometry().getType()
     measure (geoType,feature,coordAr)
-    moveEnd()
-    hyoko(feature,coordAr)
+    const sliceCoord = sliceCoodAr(coordAr)
+    sliceCoord.forEach((coord,i) => {
+        setTimeout(function() {
+        hyoko(feature, coord, coordAr)
+        },1000*i)
+    })
 })
 polygonInteraction.on('drawend', function (event) {
     const feature = event.feature;
@@ -775,7 +786,6 @@ export const copyInteraction = new CopyPaste({
     destination: drawLayer.getSource(),
     // features: transformInteraction.getFeatures()
     features: myCollection
-
 });
 
 copyInteraction.on('cut', function(e) {
@@ -801,56 +811,6 @@ export const geolocationDrawInteraction = new GeolocationDraw({
     zoom: 17,
     minAccuracy:10000
 })
-
-// drawLayer.getSource().getFeatures().forEach((feature) => {
-//     console.log(feature.getProperties())
-//     if (feature.getProperties().pt) {
-//         drawLayer.getSource().removeFeature(feature)
-//     }
-// })
-export const profileControl2 = new Profile()
-// console.log(document.querySelector("#profile-div"))
-// export const profileControl = new Profile({
-//     target: document.querySelector("#profile-div"),
-//     selectable: true,
-//     // zoomable: true,
-//     style: new Style({
-//         fill: new Fill({ color: '#ccc' })
-//     }),
-//     width:400, height:200
-// })
-// export let point
-// drawSource.on('change',function(e) {
-//     if (drawSource.getState() === 'ready'){
-//         drawSource.getFeatures().forEach((feature) => {
-//             if (feature.getGeometry().getCoordinates()[0][2]) {
-//                 // if(!point) {
-//                     profileControl.setGeometry(feature)
-//                     const profileBtn = document.querySelector('#map01 .ol-profile button')
-//                     profileBtn.click()
-//                     point = new Feature(new Point([feature.getGeometry().getCoordinates()[0], feature.getGeometry().getCoordinates()[1]]));
-//                     point.setStyle([]);
-//                     profileDrawSource.addFeature(point)
-//                     getMinMax(feature)
-//                 // }
-//             }
-//         })
-//     }
-// })
-
-// function drawPoint(e) {
-//     if (!point) return;
-//     if (e.type=="over"){
-//         point.setGeometry(new Point(e.coord));
-//         point.setStyle(null);
-//     } else {
-//         point.setStyle([]);
-//     }
-// }
-// profileControl.on(["over","out"], function(e) {
-//     if (e.type=="over") profileControl.popup(e.coord[2]+" m");
-//     drawPoint(e);
-// })
 
 // ダイアログ
 export const dialog = new Dialog({ fullscreen: true, zoom: true, closeBox: true });
