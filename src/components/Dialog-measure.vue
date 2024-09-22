@@ -99,7 +99,7 @@ import * as turf from '@turf/turf';
 import {transform} from "ol/proj";
 import {Circle, LineString, MultiLineString, MultiPolygon, Point, Polygon} from "ol/geom";
 import Feature from "ol/Feature";
-import {measure} from "../js/mymap";
+import {hyoko, measure, sliceCoodAr} from "../js/mymap";
 import * as d3 from "d3";
 import {parse} from 'csv-parse/lib/sync'
 
@@ -146,13 +146,24 @@ export default {
         return this.$store.state.base.drawMeasure
       },
       set(value) {
-        const features = drawLayer.getSource().getFeatures()
-        features.forEach((feature) =>{
-          const coordAr = feature.getGeometry().getCoordinates()
-          const geoType = feature.getGeometry().getType()
-          console.log(geoType)
-          measure (geoType,feature,coordAr)
-        })
+        if (value) {
+          const features = drawLayer.getSource().getFeatures()
+          features.forEach((feature) =>{
+            const coordAr = feature.getGeometry().getCoordinates()
+            const geoType = feature.getGeometry().getType()
+            console.log(geoType)
+            measure (geoType,feature,coordAr)
+            // ---------------------------------------------------------------------------
+            if (geoType === 'LineString' || geoType === 'MultiLineString') {
+              const sliceCoord = MyMap.sliceCoodAr(coordAr)
+              sliceCoord.forEach((coord,i) => {
+                setTimeout(function() {
+                  MyMap.hyoko(feature, coord, coordAr)
+                },1000 * i)
+              })
+            }
+          })
+        }
         this.$store.state.base.drawMeasure = value
       }
     },

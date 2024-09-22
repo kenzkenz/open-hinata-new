@@ -583,7 +583,7 @@ modifyTouchInteraction.on('modifyend', function (event) {
     sliceCoord.forEach((coord,i) => {
         setTimeout(function() {
             hyoko(feature, coord, coordAr)
-        },1000*i)
+        },1000 * i)
     })
 })
 
@@ -614,11 +614,10 @@ lineInteraction.on('drawend', function (event) {
     sliceCoord.forEach((coord,i) => {
         setTimeout(function() {
             hyoko(feature, coord, coordAr)
-        },1000*i)
+        },1000 * i)
     })
-
 })
-function sliceCoodAr(array){
+export function sliceCoodAr(array){
     let slicedArr = []
     const len = Math.ceil(array.length/100)
     if (len > 0) {
@@ -628,9 +627,15 @@ function sliceCoodAr(array){
     }
     return slicedArr
 }
-async function hyoko(feature,coordAr,coordAr0) {
+export async function hyoko(feature,coordAr,coordAr0) {
     d3.select('#map01 .loadingImg').style("display","block")
-    const coordAr84 = turf.toWgs84(turf.lineString(coordAr)).geometry.coordinates
+    let coordAr84
+    if (coordAr.length > 1) {
+        coordAr84 = turf.toWgs84(turf.lineString(coordAr)).geometry.coordinates
+    } else {
+        coordAr84 = turf.toWgs84(turf.point(coordAr[0],coordAr[1])).geometry.coordinates
+        coordAr84 = [coordAr84]
+    }
     const fetchData = coordAr84.map((coord) => {
         return axios
             .get('https://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php',{
