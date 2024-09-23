@@ -6,21 +6,38 @@
       <div class="share-div">
         {{s_shareUrl}}
       </div>
+      <vue-qrcode
+          v-if="s_shareUrl"
+          :value="s_shareUrl"
+          :options="option"
+      />
     </div>
   </v-dialog>
 </template>
 
 <script>
-
+import VueQrcode from '@chenfengyuan/vue-qrcode'
 export default {
   name: "dialog-share",
   props: ['mapName'],
   data () {
     return {
+      option: {
+        // errorCorrectionLevel: "M",
+        // maskPattern: 0,
+        // margin: 5,
+        // scale: 4,
+        width: 200,
+        // color: {
+        //   dark: "#000000FF",
+        //   light: "#FFFFFFFF"
+        // }
+      },
       contentSize: {'height': '100%', 'width': '100%', 'margin': '5px', 'overflow': 'hidden', 'user-select': 'text'},
     }
   },
   components: {
+    VueQrcode,
   },
   computed: {
     s_dialogShare () {
