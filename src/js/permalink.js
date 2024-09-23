@@ -11,7 +11,7 @@ import * as layers from "@/js/layers";
 import {drawLayer, pt, undoInteraction} from "../js/mymap";
 import {fromLonLat} from "ol/proj";
 import {feature} from "@turf/turf";
-export function permalinkEventSet (response) {
+export function permalinkEventSet (response,urlid) {
   // 起動時の処理------------------------------------------------------------------------------
   // value.layerはオブジェクトになっており、map01から04が入っている。
   store.commit('base/unshiftLayerList', {
@@ -36,30 +36,10 @@ export function permalinkEventSet (response) {
     },
     mapName: 'map02'
   });
-  store.commit('base/unshiftLayerList', {
-    value: {
-      id: 2,
-      title: '淡色地図',
-      layer: Layers.paleObj,
-      opacity: 1,
-      summary: Layers.paleSumm,
-      component: ''
-    },
-    mapName: 'map03'
-  });
-  store.commit('base/unshiftLayerList', {
-    value: {
-      id: 2,
-      title: '淡色地図',
-      layer: Layers.paleObj,
-      opacity: 1,
-      summary: Layers.paleSumm,
-      component: ''
-    },
-    mapName: 'map04'
-  });
 
-  if (window.location.hash !== '' || localStorage.getItem('startLayerList')) {
+  // if (window.location.hash !== '' || localStorage.getItem('startLayerList')) {
+  if (urlid !== '' || localStorage.getItem('startLayerList')) {
+    console.log(urlid)
     // const hash = decodeURIComponent(window.location.hash.replace('#', ''));
     // console.log(response.data)
     let hash
@@ -108,7 +88,7 @@ export function permalinkEventSet (response) {
     const startLayerList2 = JSON.parse(localStorage.getItem('startLayerList2'))
     let layerList = []
     let layerList2 = []
-    if (startLayerList && !window.location.hash) {
+    if (startLayerList && !urlid) {
       layerList = startLayerList.map((layer) => {
         return layer
       })
@@ -662,44 +642,20 @@ export function moveEnd () {
   const parameters = hash + parameter
   // console.log(parameters)
   // if(store.state.base.increment > 4) {
-    let params = new URLSearchParams();
-    params.append('parameters', parameters);
-    // console.log(params)
-    axios.post('https://kenzkenz.xsrv.jp/open-hinata/php/insert2.php', params)
-        // axios.post('/php/insert2.php', params)
-        .then(response => {
-          window.history.pushState(state, 'map', "#s" + response.data.urlid);
-          console.log('保存しました。')
-          // console.log(window.location.href)
-          store.state.base.shareUrl = window.location.href
-          MyMap.history('moveend', window.location.href)
-        })
-        .catch(error => {
-          console.log(error);
-        });
-
-
-    // axios
-    //     .get('https://kenzkenz.xsrv.jp/open-hinata/php/insert.php', {
-    //       params: {
-    //         parameters: parameters
-    //       }
-    //     })
-    //     // .post('https://kenzkenz.xsrv.jp/open-hinata/php/insert2.php', params)
-    //     .then(function (response) {
-    //       console.log(response)
-    //       // console.log(response.data.urlid)
-    //       // const url = new URL(window.location.href) // URLを取得
-    //       // window.history.replaceState(null, '', url.pathname) //パラメータを削除 FB対策
-    //       window.history.pushState(state, 'map', "#s" + response.data.urlid);
-    //       MyMap.history('moveend', window.location.href)
-    //     })
-    //     .catch(function (error) {
-    //       console.log(error);
-    //     })
-    //     .finally(function () {
-    //     });
-  // } else {
-  //   store.commit('base/increment')
-  // }
+  let params = new URLSearchParams();
+  params.append('parameters', parameters);
+  // console.log(params)
+  axios.post('https://kenzkenz.xsrv.jp/open-hinata/php/insert2.php', params)
+      // axios.post('/php/insert2.php', params)
+      .then(response => {
+        // window.history.pushState(state, 'map', "#s" + response.data.urlid)
+        window.history.pushState(state, 'map', "?s=" + response.data.urlid);
+        console.log('保存しました。')
+        // console.log(window.location.href)
+        store.state.base.shareUrl = window.location.href
+        MyMap.history('moveend', window.location.href)
+      })
+      .catch(error => {
+        console.log(error);
+      })
 }
