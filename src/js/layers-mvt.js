@@ -155,8 +155,39 @@ for (let i of mapsStr) {
 }
 // ----------------------------------------------------------------------------
 
-
-
+// 能登崩壊----------------------------------------------------
+function Notohokai(){
+  this.name = 'default'
+  this.source = new olpmtiles.PMTilesVectorSource({
+    url:'https://kenzkenz3.xsrv.jp/pmtiles/noto/hokai/h.pmtiles'
+  })
+  this.style = notoHokaiStyleFunction()
+}
+export const notoHokaiSumm = "<a href='' target='_blank'></a>"
+export  const notoHokaiObj = {}
+for (let i of mapsStr) {
+  notoHokaiObj[i] = new VectorTileLayer(new Notohokai())
+}
+function notoHokaiStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    const rgb = d3.rgb(prop._fillColor)
+    const rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + prop._fillOpacity +  ")"
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: rgba
+      }),
+      // stroke: new Stroke({
+      //   color: "gray",
+      //   width: 1
+      // }),
+    })
+    styles.push(polygonStyle)
+    return styles
+  }
+}
 // ----------------------------------------------------------------------------
 export const overPassSource = new Overpass({
   filter: [ 'highway' ],

@@ -812,6 +812,10 @@ export const scaleLine2 = new ScaleLine()
 export const swipeControl = new Swipe()
 export const swipeControl2 = new Swipe()
 
+export let synchronizeInteraction = null
+export let synchronizeInteraction2 = null
+
+
 export const gaugeControl = new Gauge({ title:'正確さ:', max:200 });
 export const geolocationDrawInteraction = new GeolocationDraw({
     source: drawLayer.getSource(),
@@ -1432,12 +1436,10 @@ export function initMap (vm) {
         })
 
         if (i==1) {
-            store.state.base.maps.map01.addInteraction(new Synchronize({ maps: [store.state.base.maps.map02]}));
-            store.state.base.maps.map02.addInteraction(new Synchronize({ maps: [store.state.base.maps.map01]}));
-            // store.state.base.maps.map01.addInteraction(new Synchronize({ maps: [store.state.base.maps.map02,store.state.base.maps.map03,store.state.base.maps.map04]}));
-            // store.state.base.maps.map02.addInteraction(new Synchronize({ maps: [store.state.base.maps.map01,store.state.base.maps.map03,store.state.base.maps.map04]}));
-            // store.state.base.maps.map03.addInteraction(new Synchronize({ maps: [store.state.base.maps.map01,store.state.base.maps.map02,store.state.base.maps.map04]}));
-            // store.state.base.maps.map04.addInteraction(new Synchronize({ maps: [store.state.base.maps.map01,store.state.base.maps.map02,store.state.base.maps.map03]}));
+            synchronizeInteraction = new Synchronize({ maps: [store.state.base.maps.map02]})
+            synchronizeInteraction2 = new Synchronize({ maps: [store.state.base.maps.map01]})
+            store.state.base.maps.map01.addInteraction(synchronizeInteraction);
+            store.state.base.maps.map02.addInteraction(synchronizeInteraction2);
         }
         let dragAndDropInteraction;
         function setInteraction() {
@@ -2472,7 +2474,7 @@ export function currentPosition () {
 export function synch (vm) {
     vm.synchFlg = !vm.synchFlg;
     let map01View = store.state.base.maps.map01.getView();
-    console.log(map01View)
+    console.log(map01View.getCenter())
     if (!vm.synchFlg) {
         const viewArr = [];
         for (let i = 0; i < 3; i++) {
@@ -2482,23 +2484,19 @@ export function synch (vm) {
             })
         }
         console.log(viewArr[0])
-        store.state.base.maps.map02.setView(viewArr[0]);
-        store.state.base.maps.map01.removeInteraction(store.state.base.maps.map01.getInteractions().array_[10])
-        store.state.base.maps.map02.removeInteraction(store.state.base.maps.map02.getInteractions().array_[10])
-        // 2回削除する。
-        store.state.base.maps.map01.removeInteraction(store.state.base.maps.map01.getInteractions().array_[10])
-        store.state.base.maps.map02.removeInteraction(store.state.base.maps.map02.getInteractions().array_[10])
-
+        store.state.base.maps.map02.setView(viewArr[0])
+        store.state.base.maps.map01.removeInteraction(synchronizeInteraction)
+        store.state.base.maps.map02.removeInteraction(synchronizeInteraction2)
     } else {
-        store.state.base.maps.map02.setView(map01View);
+        store.state.base.maps.map02.setView(map01View)
+        store.state.base.maps.map01.addInteraction(synchronizeInteraction)
+        store.state.base.maps.map02.addInteraction(synchronizeInteraction2)
   }
 }
 
 export function resize () {
     store.state.base.maps.map01.updateSize();
     store.state.base.maps.map02.updateSize();
-    // store.state.base.maps.map03.updateSize();
-    // store.state.base.maps.map04.updateSize()
 }
 
 export function history (layer,url) {

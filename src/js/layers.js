@@ -12987,7 +12987,7 @@ const wajima20240923Obj = {};
 for (let i of mapsStr) {
   wajima20240923Obj[i] = new TileLayer(new Wajima20240923())
 }
-const wajima20240923Summ = '<a href="" target="_blank"></a>'
+const wajima20240923Summ = '<a href="https://www.gsi.go.jp/BOUSAI/R6_noto_heavyrain.html" target="_blank">令和6年（2024年）9月20日からの大雨に関する情報</a>'
 
 
 
@@ -13474,6 +13474,7 @@ export const Layers =
     { text: '令和6年能登半島まとめ',
       children: [
         { text: '<span style="color: red;">輪島地区（9/23撮影）</span>', data: { id: 'wajima0923', layer: wajima20240923Obj, opacity: 1, summary: wajima20240923Summ } },
+        { text: '<span style="color: red;">斜面崩壊・土石流・堆積分布データ（9/23撮影）</span>', data: { id: 'notoHoka', layer: LayersMvt.notoHokaiObj, opacity: 1, summary: wajima20240923Summ } },
 
 
         { text: '能登CS立体図（発災前:森林総合研究所）', data: { id: 'notocs', layer: notoCsObj, opacity: 1, summary: notoCsSumm } },
