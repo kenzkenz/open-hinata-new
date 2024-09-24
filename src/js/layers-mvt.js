@@ -1746,6 +1746,9 @@ function kizyuntenStyleFunction(mapName) {
 function Homusyomiyazaki2024(){
   this.name = 'homusyomiyazaki2024'
   this.className = 'homusyomiyazaki2024'
+  // this.source = new olpmtiles.PMTilesVectorSource({
+  //   url:'https://habs.rad.naro.go.jp/spatial_data/amx/a.pmtiles'
+  // })
   this.source = new VectorTileSource({
     crossOrigin: 'Anonymous',
     format: new MVT(),

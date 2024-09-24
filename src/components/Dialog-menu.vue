@@ -193,7 +193,9 @@
       // リセット------------------------------------------------------------------------------------
       reset01() {
         MyMap.history ('リセット')
-        let url = window.location.origin
+        console.log(window.location)
+        let url = window.location.origin + window.location.pathname
+        console.log(url)
         history.pushState(null, null,url)
         window.location.reload(true)
       },
