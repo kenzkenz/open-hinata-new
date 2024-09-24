@@ -1,16 +1,21 @@
 <template>
   <v-dialog :dialog="s_dialogShare" id="dialog-share">
     <div :style="contentSize">
-      下記URLをコピーしてください。
+       下記URLをコピーしてください。
       <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' size="sm" @click="copy">コピー</b-button>
       <div class="share-div">
         {{s_shareUrl}}
       </div>
-      <vue-qrcode
-          v-if="s_shareUrl"
-          :value="s_shareUrl"
-          :options="option"
-      />
+      <div style="position: relative;width: 100%;">
+        <vue-qrcode
+            v-if="s_shareUrl"
+            :value="s_shareUrl"
+            :options="option"
+        />
+        <b-form-checkbox style="position: absolute;top:-10px;right:30px" v-model="kakudai" @change="kakudaiChange" name="check-button" switch>
+          拡大
+        </b-form-checkbox>
+      </div>
     </div>
   </v-dialog>
 </template>
@@ -22,10 +27,11 @@ export default {
   props: ['mapName'],
   data () {
     return {
+      kakudai: false,
       option: {
         // errorCorrectionLevel: "M",
         // maskPattern: 0,
-        // margin: 5,
+        margin: 2,
         // scale: 4,
         width: 200,
         // color: {
@@ -48,6 +54,16 @@ export default {
     },
   },
   methods: {
+    kakudaiChange () {
+      console.log(this.kakudai)
+      if (this.kakudai) {
+        this.option.width = 370
+        this.option.margin = 1
+      } else {
+        this.option.width = 200
+        this.option.margin = 2
+      }
+    },
     copy () {
       const txt = this.$store.state.base.shareUrl
       navigator.clipboard.writeText(txt).then(

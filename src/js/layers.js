@@ -12972,6 +12972,25 @@ for (let i of mapsStr) {
 }
 const tottorisakyuSumm = '<a href="https://www.geospatial.jp/ckan/dataset/tottori-sanddunes-data" target="_blank">G空間情報センター</a>';
 
+
+// 令和6年能登半島輪島地区正射画像（2024年9月23日撮影）---------------------------------------------------------------
+function Wajima20240923() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://maps.gsi.go.jp/xyz/20240923rain_wajima_0923do_sokuho/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 18
+  })
+}
+const wajima20240923Obj = {};
+for (let i of mapsStr) {
+  wajima20240923Obj[i] = new TileLayer(new Wajima20240923())
+}
+const wajima20240923Summ = '<a href="" target="_blank"></a>'
+
+
+
 // 令和6年能登半島地震能登地区正射画像（2024年4月5日～4月26日撮影）---------------------------------------------------------------
 function Noto20240405() {
   // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
@@ -13454,6 +13473,9 @@ export const Layers =
       ]},
     { text: '令和6年能登半島地震まとめ',
       children: [
+        { text: '輪島地区（9/23撮影）', data: { id: 'wajima0923', layer: wajima20240923Obj, opacity: 1, summary: wajima20240923Summ } },
+
+
         { text: '能登CS立体図（発災前:森林総合研究所）', data: { id: 'notocs', layer: notoCsObj, opacity: 1, summary: notoCsSumm } },
         { text: '能登CS立体図（発災後:林野庁）', data: { id: 'notocsrinya', layer: notocsrinyaObj, opacity: 1, summary: notocsrinyaSumm } },
         { text: '新潟県長岡CS立体図（発災後:林野庁）', data: { id: 'nagaokacsrinya', layer: nagaokaCsObj, opacity: 1, summary: nagaokaCsSumm } },
