@@ -13471,9 +13471,9 @@ export const Layers =
         // { text: '都城市洪水ハザードマップﾟ', data: { id: 'miyakonozyousiHm', layer: miyakonozyousiHmObj, opacity: 1, zoom: 13, center: [131.07797970576192, 31.78882205640913], summary: miyakonozyousiHmSumm } },
         // { text: '日向市防災ハザードマップﾟ', data: { id: 'hyuugasiHm', layer: hyuugasiHmObj, opacity: 1, zoom: 13, center: [131.6400086045909, 32.395198966795306], summary: hyuugasiHmSumm } },
       ]},
-    { text: '令和6年能登半島地震まとめ',
+    { text: '令和6年能登半島まとめ',
       children: [
-        { text: '輪島地区（9/23撮影）', data: { id: 'wajima0923', layer: wajima20240923Obj, opacity: 1, summary: wajima20240923Summ } },
+        { text: '<span style="color: red;">輪島地区（9/23撮影）</span>', data: { id: 'wajima0923', layer: wajima20240923Obj, opacity: 1, summary: wajima20240923Summ } },
 
 
         { text: '能登CS立体図（発災前:森林総合研究所）', data: { id: 'notocs', layer: notoCsObj, opacity: 1, summary: notoCsSumm } },
@@ -13489,7 +13489,7 @@ export const Layers =
         { text: '17石川県農地', data: { id: 'hude17', layer: LayersMvt.hude17Obj, opacity: 1, summary: LayersMvt.hude17Summ } },
         { text: '戦前地形図5万分の１', data: { id: 'mw5', layer: mw5Obj, opacity: 1, summary: mw5Summ } },
         { text: '17石川県古地図(大正14年)', data: { id: 'kotizu17isikawa', layer: kotizu17isikawaObj, opacity: 1, summary: kotizu17isikawaSumm } },
-        { text: '<span style="color: red;">能登地区（2024年4月5日～26日撮影）</span>', data: { id: 'noto20240405Ort', layer: noto20240405Obj, opacity: 1, summary: noto20240405Summ } },
+        { text: '能登地区（2024年4月5日～26日撮影）', data: { id: 'noto20240405Ort', layer: noto20240405Obj, opacity: 1, summary: noto20240405Summ } },
         { text: '輪島西地区（2024年1月17日撮影）', data: { id: 'wajimanishi20240117Ort', layer: wajimanishi20240117Obj, opacity: 1, summary: wajimanishi20240117Summ } },
         { text: '穴水地区（2024年1月17日撮影）', data: { id: 'anami20240117Ort', layer: anami20240117Obj, opacity: 1, summary: anami20240117Summ } },
         { text: '七尾地区（2024年1月17日撮影）', data: { id: 'nanao20240117Ort', layer: nanao20240117Obj, opacity: 1, summary: nanao20240117Summ } },
