@@ -209,6 +209,7 @@ function drawLayerStylefunction (){
             })
         })
         let target
+        let perimeter = ''
         if (geoType === 'LineString' || geoType === 'Circle') {
             target = '_distance'
         } else if (geoType === 'Polygon'){
@@ -218,13 +219,21 @@ function drawLayerStylefunction (){
             if (!prop[target] || !store.state.base.drawMeasure) {
                 text = prop.name
             } else {
-                text = prop.name + '\n面積' + prop[target] + '\n周長' +prop._perimeter
+                if (geoType === 'LineString' || geoType === 'Circle') {
+                    text = prop.name + '\n' + prop[target]
+                } else if (geoType === 'Polygon'){
+                    text = prop.name + '\n面積' + prop[target] + '\n周長' +prop._perimeter
+                }
             }
         } else {
             if (!prop[target] || !store.state.base.drawMeasure) {
                 text = prop.name
             } else {
-                text = '面積' + prop[target]+ '\n周長' +prop._perimeter
+                if (geoType === 'LineString' || geoType === 'Circle') {
+                    text = prop[target]
+                } else if (geoType === 'Polygon'){
+                    text = '面積' + prop[target]+ '\n周長' +prop._perimeter
+                }
             }
         }
 

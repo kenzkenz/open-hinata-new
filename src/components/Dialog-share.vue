@@ -2,10 +2,24 @@
   <v-dialog :dialog="s_dialogShare" id="dialog-share">
     <div :style="contentSize">
        下記URLをコピーしてください。
-      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' size="sm" @click="copy">コピー</b-button>
-      <div class="share-div">
-        {{s_shareUrl}}
-      </div>
+<!--      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' size="sm" @click="copy">コピー</b-button>-->
+<!--      <div class="share-div">-->
+<!--        {{s_shareUrl}}-->
+<!--      </div>-->
+
+
+      <b-input-group
+          style="margin-top: 10px;margin-bottom: 10px"
+          size="sm"
+      >
+        <b-form-input :value="s_shareUrl" style="font-size: small;"></b-form-input>
+        <b-input-group-append>
+          <b-button @click="copy" class='olbtn' size="sm" text="Button" >コピー</b-button>
+        </b-input-group-append>
+      </b-input-group>
+
+
+
       <div style="position: relative;width: 100%;">
         <vue-qrcode
             v-if="s_shareUrl"
@@ -39,7 +53,7 @@ export default {
         //   light: "#FFFFFFFF"
         // }
       },
-      contentSize: {'height': '100%', 'width': '100%', 'margin': '5px', 'overflow': 'hidden', 'user-select': 'text'},
+      contentSize: {'height': '100%', 'width': '100%', 'padding': '5px', 'overflow': 'hidden', 'user-select': 'text'},
     }
   },
   components: {
