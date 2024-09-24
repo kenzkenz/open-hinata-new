@@ -209,7 +209,6 @@ function drawLayerStylefunction (){
             })
         })
         let target
-        // console.log(geoType)
         if (geoType === 'LineString' || geoType === 'Circle') {
             target = '_distance'
         } else if (geoType === 'Polygon'){
@@ -219,13 +218,13 @@ function drawLayerStylefunction (){
             if (!prop[target] || !store.state.base.drawMeasure) {
                 text = prop.name
             } else {
-                text = prop.name + '\n' + prop[target]
+                text = prop.name + '\n面積' + prop[target] + '\n周長' +prop._perimeter
             }
         } else {
             if (!prop[target] || !store.state.base.drawMeasure) {
                 text = prop.name
             } else {
-                text = prop[target]
+                text = '面積' + prop[target]+ '\n周長' +prop._perimeter
             }
         }
 
@@ -467,8 +466,17 @@ export function measure (geoType,feature,coordAr) {
         } else {
             tArea = (tArea / 1000000).toFixed(2) + "km2"
         }
-        console.log(tArea)
         feature.setProperties({_area: tArea})
+        // ------------------------------------------
+        const line = turf.polygonToLine(tPolygon)
+        let length = turf.length(line)
+        if (length > 10) {
+            length = length.toFixed(2) + 'km'
+        } else {
+            length = (length * 1000).toFixed(2) + 'm'
+        }
+        console.log(length)
+        feature.setProperties({_perimeter: length})
     } else if (geoType === 'Circle') {
         const extent = feature.getGeometry().getExtent()
         const fromCoord = turf.point(turf.toWgs84([extent[0],extent[1]]))
