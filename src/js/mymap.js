@@ -2592,6 +2592,7 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
 
                             })
                             LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
+                            LayersMvt.typhoonObj.map02.getSource().addFeature(newFeature)
                             if (i > 1) {
                                 const lon0 = TyphoonData[i-1].center[1]
                                 const lat0 = TyphoonData[i-1].center[0]
@@ -2601,6 +2602,7 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                                 const line = new LineString(coordinates)
                                 const newFeature = new Feature(line)
                                 LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
+                                LayersMvt.typhoonObj.map02.getSource().addFeature(newFeature)
                                 //------------------------------------------------------------
                                 const radius = t.probabilityCircle.radius / 1000
                                 const options = { steps: 60}
@@ -2611,25 +2613,10 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                                     // '予想円半径': t.probabilityCircle.radius / 1000 + 'km',
                                 })
                                 LayersMvt.typhoonObj.map01.getSource().addFeature(newFeaturePolygon)
+                                LayersMvt.typhoonObj.map02.getSource().addFeature(newFeaturePolygon)
                             }
                         }
                     })
-
-                    // const Now_Lng = TyphoonData[1].center[1]
-                    // const Now_Lat = TyphoonData[1].center[0]
-                    // const jstDate = new Date(TyphoonData[1].validtime.JST)
-                    // typhoonObj = {
-                    //     lon:Now_Lng,
-                    //     lat:Now_Lat,
-                    //     no:Typhoon_No,
-                    //     name:Typhoon_Name,
-                    //     time:jstDate.toLocaleDateString() + ' ' + jstDate.toLocaleTimeString()
-                    // }
-                    // console.log(typhoonObj)
-
-
-
-
                 }
             }
             //---------------------------------------------------------------------------

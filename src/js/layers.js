@@ -12973,6 +12973,35 @@ for (let i of mapsStr) {
 const tottorisakyuSumm = '<a href="https://www.geospatial.jp/ckan/dataset/tottori-sanddunes-data" target="_blank">G空間情報センター</a>';
 
 
+// 令和6年能登半島輪島地区正射画像（2024年9月24日撮影）---------------------------------------------------------------
+function Wajima20240924tobu() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://maps.gsi.go.jp/xyz/20240923rain_wajimatobu_0924do_sokuho/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 18
+  })
+}
+const wajima20240924tobuObj = {};
+for (let i of mapsStr) {
+  wajima20240924tobuObj[i] = new TileLayer(new Wajima20240924tobu())
+}
+// 令和6年能登半島輪島地区正射画像（2024年9月24日撮影）---------------------------------------------------------------
+function Wajima20240924seibu() {
+  // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://maps.gsi.go.jp/xyz/20240923rain_wajimaseibu_0924do_sokuho/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    maxZoom: 18
+  })
+}
+const wajima20240924seibuObj = {};
+for (let i of mapsStr) {
+  wajima20240924seibuObj[i] = new TileLayer(new Wajima20240924seibu())
+}
+
 // 令和6年能登半島輪島地区正射画像（2024年9月23日撮影）---------------------------------------------------------------
 function Wajima20240923() {
   // this.extent = transformE([134.20965320505528,35.54872412834746, 134.2432860906127,35.53327858935438])
@@ -13473,6 +13502,9 @@ export const Layers =
       ]},
     { text: '令和6年能登半島まとめ',
       children: [
+        { text: '<span style="color: red;">輪島東部地区（9/24撮影）</span>', data: { id: 'wajima0924tobu', layer: wajima20240924tobuObj, opacity: 1, summary: wajima20240923Summ } },
+        { text: '<span style="color: red;">輪島西武地区（9/24撮影）</span>', data: { id: 'wajima0924seibu', layer: wajima20240924seibuObj, opacity: 1, summary: wajima20240923Summ } },
+
         { text: '<span style="color: red;">輪島地区（9/23撮影）</span>', data: { id: 'wajima0923', layer: wajima20240923Obj, opacity: 1, summary: wajima20240923Summ } },
         { text: '<span style="color: red;">斜面崩壊・土石流・堆積分布データ（9/23撮影）</span>', data: { id: 'notoHoka', layer: LayersMvt.notoHokaiObj, opacity: 1, summary: wajima20240923Summ } },
 
