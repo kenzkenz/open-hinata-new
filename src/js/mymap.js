@@ -2568,17 +2568,15 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
             let typhoonObj
             if(TyphoonList.length > 0) {
                 for (const typhoon of TyphoonList) {
-                    const TC_ID = typhoon.tropicalCyclone;
+                    const TC_ID = typhoon.tropicalCyclone
                     const Typhoon_Data_URL = "https://www.jma.go.jp/bosai/typhoon/data/" + TC_ID + "/forecast.json"
-                    const response = await fetch(Typhoon_Data_URL);
-                    const TyphoonData = await response.json();
-                    console.log(TyphoonData)
+                    const response = await fetch(Typhoon_Data_URL)
+                    const TyphoonData = await response.json()
+                    const Typhoon_No = "台風" + TyphoonData[0].typhoonNumber.slice(-2) + "号"
+                    const Typhoon_Name = TyphoonData[0].name.jp
+                    const Now_Lng = TyphoonData[1].center[1]
+                    const Now_Lat = TyphoonData[1].center[0]
                     const jstDate = new Date(TyphoonData[1].validtime.JST)
-                    console.log(jstDate.toLocaleDateString(),jstDate.toLocaleTimeString())
-                    const Typhoon_No = "台風" + TyphoonData[0].typhoonNumber.slice(-2) + "号";
-                    const Typhoon_Name = TyphoonData[0].name.jp;
-                    const Now_Lng = TyphoonData[1].center[1];
-                    const Now_Lat = TyphoonData[1].center[0];
                     typhoonObj = {
                         lon:Now_Lng,
                         lat:Now_Lat,
