@@ -1806,7 +1806,6 @@ export function initMap (vm) {
                     return layer.get('name')
                 }
             })
-            console.log(layerNames)
             // シームレス地質図-------------------------------------------------------------------------------
             function popupSeamless(evt) {
                 return new Promise(resolve => {
@@ -2566,25 +2565,71 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
             const response = await fetch(Typhoon_List_URL)
             const TyphoonList = await response.json()
             let typhoonObj
+            let TyphoonData
             if(TyphoonList.length > 0) {
                 for (const typhoon of TyphoonList) {
                     const TC_ID = typhoon.tropicalCyclone
                     const Typhoon_Data_URL = "https://www.jma.go.jp/bosai/typhoon/data/" + TC_ID + "/forecast.json"
                     const response = await fetch(Typhoon_Data_URL)
-                    const TyphoonData = await response.json()
+                    TyphoonData = await response.json()
                     const Typhoon_No = "台風" + TyphoonData[0].typhoonNumber.slice(-2) + "号"
                     const Typhoon_Name = TyphoonData[0].name.jp
-                    const Now_Lng = TyphoonData[1].center[1]
-                    const Now_Lat = TyphoonData[1].center[0]
-                    const jstDate = new Date(TyphoonData[1].validtime.JST)
-                    typhoonObj = {
-                        lon:Now_Lng,
-                        lat:Now_Lat,
-                        no:Typhoon_No,
-                        name:Typhoon_Name,
-                        time:jstDate.toLocaleDateString() + ' ' + jstDate.toLocaleTimeString()
-                    }
-                    console.log(typhoonObj)
+                    TyphoonData.forEach((t,i) => {
+                        if (i > 0) {
+                            console.log(t)
+                            const lon = t.center[1]
+                            const lat = t.center[0]
+                            const jstDate = new Date(t.validtime.JST)
+                            const coordinates = turf.toMercator(turf.point([lon, lat])).geometry.coordinates
+                            const point = new Point(coordinates)
+                            const newFeature = new Feature(point)
+                            newFeature.setProperties({
+                                '号': Typhoon_No,
+                                '名前': Typhoon_Name,
+                                '経度、緯度': lon + ',' + lat,
+                                '日': jstDate.toLocaleDateString().slice(5),
+                                '時': jstDate.toLocaleTimeString().slice(0, -3),
+
+                            })
+                            LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
+                            if (i > 1) {
+                                const lon0 = TyphoonData[i-1].center[1]
+                                const lat0 = TyphoonData[i-1].center[0]
+                                const lon = t.center[1]
+                                const lat = t.center[0]
+                                const coordinates = turf.toMercator(turf.lineString([[lon0,lat0],[lon, lat]])).geometry.coordinates
+                                const line = new LineString(coordinates)
+                                const newFeature = new Feature(line)
+                                LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
+                                //------------------------------------------------------------
+                                const radius = t.probabilityCircle.radius / 1000
+                                const options = { steps: 60}
+                                const circleCoordinates = turf.toMercator(turf.circle([lon, lat], radius, options)).geometry.coordinates
+                                const polygon = new Polygon(circleCoordinates)
+                                const newFeaturePolygon = new Feature(polygon)
+                                newFeaturePolygon.setProperties({
+                                    // '予想円半径': t.probabilityCircle.radius / 1000 + 'km',
+                                })
+                                LayersMvt.typhoonObj.map01.getSource().addFeature(newFeaturePolygon)
+                            }
+                        }
+                    })
+
+                    // const Now_Lng = TyphoonData[1].center[1]
+                    // const Now_Lat = TyphoonData[1].center[0]
+                    // const jstDate = new Date(TyphoonData[1].validtime.JST)
+                    // typhoonObj = {
+                    //     lon:Now_Lng,
+                    //     lat:Now_Lat,
+                    //     no:Typhoon_No,
+                    //     name:Typhoon_Name,
+                    //     time:jstDate.toLocaleDateString() + ' ' + jstDate.toLocaleTimeString()
+                    // }
+                    // console.log(typhoonObj)
+
+
+
+
                 }
             }
             //---------------------------------------------------------------------------
@@ -2604,7 +2649,6 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                     )
                     store.state.info.amagumoTimes = response[0].data.concat(response[1].data)
                     store.state.info.himawariTimes = response[2].data
-                    console.log(store.state.info.himawariTimes)
                     const basetime = response[1].data.slice(-1)[0].basetime
                     const basetimeHimawari = response[2].data.slice(-1)[0].basetime
                     // -----------------------------------------------------------
@@ -2629,7 +2673,7 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                     store.state.info.time[map.values_.target] = time (basetime)
                     store.state.info.timeH[map.values_.target] = time (basetimeHimawari)
                     // -----------------------------------------------------------
-                    aaa(basetime,basetime,basetimeHimawari,typhoonObj)
+                    aaa(basetime,basetime,basetimeHimawari,typhoonObj,TyphoonData)
                 })
                 .catch(function (response) {
                     alert('エラーです。')
@@ -2641,7 +2685,7 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
     }
     //[0]はレイヤーリスト。[1]はlength
     // 逆ループ
-    function aaa (basetime,validtime,basetimeHimawari,typhoonObj) {
+    function aaa (basetime,validtime,basetimeHimawari,typhoonObj,TyphoonData) {
         let myZindex = 0
         for (let i = newLayerList[0].length - 1; i >= 0; i--) {
             // リストクリックによる追加したレイヤーで リストの先頭で リストの増加があったとき
@@ -2677,20 +2721,6 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                 const url = 'https://www.jma.go.jp/bosai/himawari/data/satimg/' + basetimeHimawari + '/jp/' + basetimeHimawari + '/B13/TBB/{z}/{x}/{y}.jpg'
                 Layers.himawariObj.map01.getSource().setUrl(url)
                 Layers.himawariObj.map02.getSource().setUrl(url)
-            }
-            // ---------------------------------------------------------------------------------------------------------
-            if (title === '台風') {
-                const coordinates = turf.toMercator(turf.point([typhoonObj.lon,typhoonObj.lat])).geometry.coordinates
-                const point = new Point(coordinates)
-                const newFeature = new Feature(point)
-                newFeature.setProperties({
-                    '号':typhoonObj.no,
-                    '名前':typhoonObj.name,
-                    '経度、緯度':typhoonObj.lon + ',' + typhoonObj.lat,
-                    '時刻':typhoonObj.time + '現在',
-                    '備考':'半径は正しくありません。'
-                })
-                LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
             }
             // ---------------------------------------------------------------------------------------------------------
             // グループレイヤーのときzindexは効かないようだ。しかしz順が必要になるときがあるので項目を作っている。

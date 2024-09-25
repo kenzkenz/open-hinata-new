@@ -184,8 +184,8 @@ function typhoonStyleFunction() {
     })
     const textStyle = new Style({
       text: new Text({
-        font: "20px sans-serif",
-        text: prop.号,
+        font: "18px sans-serif",
+        text: prop.号 + ' ' + prop.日 + ' ' + prop.時,
         fill:  new Fill({
           color:"black"
         }),
@@ -196,8 +196,25 @@ function typhoonStyleFunction() {
         overflow: true,
       })
     })
+    const lineStyle = new Style({
+      stroke: new Stroke({
+        color:"black",
+        width:6
+      })
+    })
+    const polygonStyle = new Style({
+      fill: new Fill({
+        color: 'rgba(255,255,255,0.3)'
+      }),
+      // stroke: new Stroke({
+      //   color: "gray",
+      //   width: 1
+      // }),
+    })
+    styles.push(polygonStyle)
     styles.push(pointStyle)
-    styles.push(textStyle)
+    if (geoType === 'Point')styles.push(textStyle)
+    if (geoType === 'LineString') styles.push(lineStyle)
     return styles
   }
 }
