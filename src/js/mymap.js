@@ -11,6 +11,7 @@ import Synchronize from 'ol-ext/interaction/Synchronize'
 import Lego from 'ol-ext/filter/Lego'
 import Notification from 'ol-ext/control/Notification'
 import * as Layers from './layers'
+import * as LayersMvt from './layers-mvt'
 import * as PopUp from './popup'
 import {defaults as defaultInteractions, DragRotateAndZoom, Modify, Snap} from 'ol/interaction'
 import VectorSource from "ol/source/Vector.js"
@@ -1495,8 +1496,22 @@ export function initMap (vm) {
                         drawLayer.getSource().addFeature(newFeature)
                         moveEnd()
                     }
+                    // -----------------------------------------------------
+                    const coordAr = feature.getGeometry().getCoordinates()
+                    const geoType = feature.getGeometry().getType()
+                    measure (geoType,feature,coordAr)
+                    //------------------------------------------------------
+                    if (geoType === 'LineString' || geoType === 'MultiLineString') {
+                        const sliceCoord = sliceCoodAr(coordAr)
+                        sliceCoord.forEach((coord,i) => {
+                            setTimeout(function() {
+                                hyoko(feature, coord, coordAr)
+                            },1000 * i)
+                        })
+                    }
                 })
                 map.getView().fit(drawLayer.getSource().getExtent(),{padding: [100, 100, 100, 100]})
+
                 undoInteraction.blockEnd()
                 document.querySelector('#map01 .loadingImg').style.display = 'none'
             })
@@ -2539,13 +2554,42 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
         map.removeLayer(value.layer);
     })
     const result = newLayerList[0].find((layer) => {
-        return layer.title === '雨雲の動き' || layer.title === '雨雲の動きモノクロ' || layer.title === 'ひまわり'
+        return layer.title === '雨雲の動き' || layer.title === '雨雲の動きモノクロ' || layer.title === 'ひまわり' || layer.title === '台風'
     })
     if(result) {
         const urls = ['https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N1.json',
             'https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N2.json',
             'https://www.jma.go.jp/bosai/himawari/data/satimg/targetTimes_fd.json' ]
         async function created() {
+            // 台風-----------------------------------------------------------------------
+            const Typhoon_List_URL = "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json"
+            const response = await fetch(Typhoon_List_URL)
+            const TyphoonList = await response.json()
+            let typhoonObj
+            if(TyphoonList.length > 0) {
+                for (const typhoon of TyphoonList) {
+                    const TC_ID = typhoon.tropicalCyclone;
+                    const Typhoon_Data_URL = "https://www.jma.go.jp/bosai/typhoon/data/" + TC_ID + "/forecast.json"
+                    const response = await fetch(Typhoon_Data_URL);
+                    const TyphoonData = await response.json();
+                    console.log(TyphoonData)
+                    const jstDate = new Date(TyphoonData[1].validtime.JST)
+                    console.log(jstDate.toLocaleDateString(),jstDate.toLocaleTimeString())
+                    const Typhoon_No = "台風" + TyphoonData[0].typhoonNumber.slice(-2) + "号";
+                    const Typhoon_Name = TyphoonData[0].name.jp;
+                    const Now_Lng = TyphoonData[1].center[1];
+                    const Now_Lat = TyphoonData[1].center[0];
+                    typhoonObj = {
+                        lon:Now_Lng,
+                        lat:Now_Lat,
+                        no:Typhoon_No,
+                        name:Typhoon_Name,
+                        time:jstDate.toLocaleDateString() + ' ' + jstDate.toLocaleTimeString()
+                    }
+                    console.log(typhoonObj)
+                }
+            }
+            //---------------------------------------------------------------------------
             const fetchData = urls.map((url) => {
                 return axios
                     .get(url,{})
@@ -2587,7 +2631,7 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                     store.state.info.time[map.values_.target] = time (basetime)
                     store.state.info.timeH[map.values_.target] = time (basetimeHimawari)
                     // -----------------------------------------------------------
-                    aaa(basetime,basetime,basetimeHimawari)
+                    aaa(basetime,basetime,basetimeHimawari,typhoonObj)
                 })
                 .catch(function (response) {
                     alert('エラーです。')
@@ -2599,7 +2643,7 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
     }
     //[0]はレイヤーリスト。[1]はlength
     // 逆ループ
-    function aaa (basetime,validtime,basetimeHimawari) {
+    function aaa (basetime,validtime,basetimeHimawari,typhoonObj) {
         let myZindex = 0
         for (let i = newLayerList[0].length - 1; i >= 0; i--) {
             // リストクリックによる追加したレイヤーで リストの先頭で リストの増加があったとき
@@ -2635,6 +2679,20 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                 const url = 'https://www.jma.go.jp/bosai/himawari/data/satimg/' + basetimeHimawari + '/jp/' + basetimeHimawari + '/B13/TBB/{z}/{x}/{y}.jpg'
                 Layers.himawariObj.map01.getSource().setUrl(url)
                 Layers.himawariObj.map02.getSource().setUrl(url)
+            }
+            // ---------------------------------------------------------------------------------------------------------
+            if (title === '台風') {
+                const coordinates = turf.toMercator(turf.point([typhoonObj.lon,typhoonObj.lat])).geometry.coordinates
+                const point = new Point(coordinates)
+                const newFeature = new Feature(point)
+                newFeature.setProperties({
+                    '号':typhoonObj.no,
+                    '名前':typhoonObj.name,
+                    '経度、緯度':typhoonObj.lon + ',' + typhoonObj.lat,
+                    '時刻':typhoonObj.time + '現在',
+                    '備考':'半径は正しくありません。'
+                })
+                LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
             }
             // ---------------------------------------------------------------------------------------------------------
             // グループレイヤーのときzindexは効かないようだ。しかしz順が必要になるときがあるので項目を作っている。

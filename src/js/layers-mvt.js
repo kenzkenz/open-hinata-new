@@ -5,7 +5,7 @@ import GeoJSON from "ol/format/GeoJSON"
 import {createXYZ} from "ol/tilegrid"
 import VectorTileLayer from "ol/layer/VectorTile"
 import * as d3 from "d3"
-import {Fill, Stroke, Style, Text, Circle} from "ol/style"
+import {Fill, Stroke, Style, Text, Circle, Circle as Circle0} from "ol/style"
 import FontSymbol from 'ol-ext/style/FontSymbol'
 import {transformExtent} from "ol/proj"
 import LayerGroup from "ol/layer/Group"
@@ -153,7 +153,54 @@ for (let i of mapsStr) {
     sourceg
   })
 }
-// ----------------------------------------------------------------------------
+// 台風----------------------------------------------------------------------------
+function Typhoon(){
+  this.name = 'default'
+  this.source = new VectorSource({wrapX: false})
+  this.style = typhoonStyleFunction()
+}
+export const typhoonSumm = "<a href='' target='_blank'></a>"
+export  const typhoonObj = {}
+for (let i of mapsStr) {
+  typhoonObj[i] = new VectorLayer(new Typhoon())
+}
+function typhoonStyleFunction() {
+  return function (feature, resolution) {
+    const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const geoType = feature.getGeometry().getType()
+    const styles = []
+    const pointStyle = new Style({
+      image: new Circle0({
+        radius: 20,
+        fill: new Fill({
+          color: 'blue'
+        }),
+        stroke: new Stroke({
+          color: 'black',
+          width: 2
+        })
+      }),
+    })
+    const textStyle = new Style({
+      text: new Text({
+        font: "20px sans-serif",
+        text: prop.号,
+        fill:  new Fill({
+          color:"black"
+        }),
+        stroke: new Stroke({
+          color: "white",
+          width: 3
+        }),
+        overflow: true,
+      })
+    })
+    styles.push(pointStyle)
+    styles.push(textStyle)
+    return styles
+  }
+}
 
 // 能登崩壊----------------------------------------------------
 function Notohokai(){
@@ -9206,17 +9253,34 @@ const senkyokuColor = d3.scaleOrdinal(d3.schemeCategory10);
 function senkyokuStyleFunction() {
   return function (feature, resolution) {
     const prop = feature.getProperties();
-    const rgb = senkyokuColor(prop.ken)
-    const style = new Style({
+    const rgb = d3.rgb(senkyokuColor(prop.ken))
+    const rgba = "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.7)"
+    const styles = []
+    const poligonStyle = new Style({
       fill: new Fill({
-        color: rgb
+        color: rgba
       }),
       stroke: new Stroke({
         color: "black",
-        width: 1
+        width: 4
       }),
-    });
-    return style;
+    })
+    const textStyle = new Style({
+      text: new Text({
+        font: "20px sans-serif",
+        text: prop.kuname,
+        fill:  new Fill({
+          color:"black"
+        }),
+        stroke: new Stroke({
+          color: "white",
+          width: 3
+        })
+      })
+    })
+    styles.push(textStyle)
+    styles.push(poligonStyle)
+    return styles;
   }
 }
 // 郵便区---------------------------------------------------------------

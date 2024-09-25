@@ -13548,6 +13548,8 @@ export const Layers =
         { text: '雨雲の動き', data: { id: 'nowcast', layer: nowCastObj, opacity: 1, summary: nowCastSumm, component: {name: 'amagumo', values:[]}} },
         { text: '雨雲の動きモノクロ', data: { id: 'nowcastmono', layer: nowCastMonoObj, opacity: 1, summary: nowCastSumm, component: {name: 'amagumo', values:[]}} },
         { text: 'ひまわり', data: { id: 'himawari', layer: himawariObj, opacity: 1, summary: himawariSumm, component: {name: 'himawari', values:[]}} },
+        { text: '台風', data: { id: 'typhoon', layer: LayersMvt.typhoonObj, opacity: 1, summary: LayersMvt.typhoonSumm} },
+
       ]},
     { text:'統計',
       children: [

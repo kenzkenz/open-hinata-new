@@ -410,8 +410,21 @@ export default {
               _area: feature.getProperties()._area
             })
             drawLayer.getSource().addFeature(newFeature)
-            moveEnd()
           }
+          // -----------------------------------------------------
+          const coordAr = feature.getGeometry().getCoordinates()
+          const geoType = feature.getGeometry().getType()
+          measure (geoType,feature,coordAr)
+          //------------------------------------------------------
+          if (geoType === 'LineString' || geoType === 'MultiLineString') {
+            const sliceCoord = sliceCoodAr(coordAr)
+            sliceCoord.forEach((coord,i) => {
+              setTimeout(function() {
+                hyoko(feature, coord, coordAr)
+              },1000 * i)
+            })
+          }
+          moveEnd()
         })
         MyMap.undoInteraction.blockEnd()
         vm.$store.state.base.maps['map01'].getView().fit(drawLayer.getSource().getExtent(),{padding: [100, 100, 100, 100]})
