@@ -161,6 +161,7 @@
           left = '10px'
         }
         const result = this.s_dialogsINfo[this.mapName].find(el => el.id === item.id);
+        console.log(item.id)
         this.$store.commit('base/incrDialogMaxZindex');
         if (!result) {
           const infoDialog =
@@ -190,8 +191,12 @@
           // this.$store.state.info.layerUrl = result.data.layer.map01.values_.source.urls[0]
         } else {
           // 既に存在しているときは表示のみ。データを変更せずにスタイルを直接書き換えている。
-          result.style.display = 'block';
-          result.style["z-index"] = this.s_dialogMaxZindex
+          // document.querySelector('.dialog-div').style["z-index"] = null
+          // result.style.display = 'block';
+          console.log('.v-dialog-info-div-' + item.id)
+          document.querySelector('.v-dialog-info-div-' + item.id).style.display = 'block';
+          document.querySelector('.v-dialog-info-div-' + item.id).style["z-index"] = this.s_dialogMaxZindex
+          // result.style["z-index"] = this.s_dialogMaxZindex
           //------------------------------------------------------
           this.$store.state.info.layerId = item.id
           this.$store.state.info.layerTitle = item.title

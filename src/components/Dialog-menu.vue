@@ -30,6 +30,7 @@
               <b-form-checkbox style="margin-bottom: 10px;" v-model="s_centerFlg" switch>
                 中心十字
               </b-form-checkbox>
+
               <b-form-checkbox style="margin-bottom: 10px;" v-model="s_scaleFlg" switch>
                 スケール
               </b-form-checkbox>
@@ -90,7 +91,13 @@
           return this.$store.state.base.centerFlg
         },
         set(value) {
-          this.$store.state.base.centerFlg = value
+          console.log(value)
+          // if (!value) value = true
+          // this.$store.state.base.centerFlg = value
+          this.$store.commit('base/changeCenterFlg',value)
+          console.log(this.$store.state.base.centerFlg)
+
+
           const target = document.querySelectorAll(".center-target")[0]
           const target2 = document.querySelectorAll(".center-target")[1]
           if (value) {
@@ -100,7 +107,8 @@
             target.style.display = 'none'
             target2.style.display = 'none'
           }
-          localStorage.setItem('centerTarget',this.s_centerFlg)
+          // localStorage.setItem('centerTarget',this.s_centerFlg)
+          localStorage.setItem('centerTarget',value)
         }
       },
       s_scaleFlg: {

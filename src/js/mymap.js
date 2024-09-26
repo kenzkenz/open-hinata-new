@@ -2563,14 +2563,19 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
             const response = await fetch(Typhoon_List_URL)
             const TyphoonList = await response.json()
             let TyphoonData
+            console.log(TyphoonList)
             if (TyphoonList.length > 0) {
                 for (const typhoon of TyphoonList) {
                     const TC_ID = typhoon.tropicalCyclone
                     const Typhoon_Data_URL = "https://www.jma.go.jp/bosai/typhoon/data/" + TC_ID + "/forecast.json"
                     const response = await fetch(Typhoon_Data_URL)
                     TyphoonData = await response.json()
+                    console.log(TyphoonData)
                     const Typhoon_No = "台風" + TyphoonData[0].typhoonNumber.slice(-2) + "号"
-                    const Typhoon_Name = TyphoonData[0].name.jp
+                    let Typhoon_Name = ''
+                    if (TyphoonData[0].name) {
+                        Typhoon_Name = TyphoonData[0].name.jp
+                    }
                     TyphoonData.forEach((t, i) => {
                         if (i > 0) {
                             console.log(t)

@@ -1,6 +1,6 @@
-<script src="../js/layers.js"></script>
+<!--<script src="../js/layers.js"></script>-->
 <template>
-    <div :class="'dialog-div'" ref="div" :style="this.dialog.style" @mousedown="dialogMouseDown">
+    <div :class="'dialog-div'" ref="div" @mousedown="dialogMouseDown" :style="this.dialog.style">
         <div class="drag-handle" v-my-drag-handle>
         </div>
             <div>
@@ -38,7 +38,6 @@
         store.state.base.layerLists['map02'].forEach((value) =>{
           map2.removeLayer(value.layer)
         })
-
 
         store.state.base.layerLists['map01'] = []
         store.state.base.layerLists['map02'] = []
@@ -127,10 +126,12 @@
         // this.$refs.div.style.display = 'none'
       },
       dialogMouseDown () {
+        console.log(this.dialog)
         store.commit('base/incrDialogMaxZindex')
-        this.$refs.div.style["z-index"] = store.state.base.dialogMaxZindex
-        //
-        // this.dialog.style["z-index"] = store.state.base.dialogMaxZindex
+
+        this.dialog.style.top = this.$refs.div.style.top
+        this.dialog.style.left = this.$refs.div.style.left
+        this.dialog.style["z-index"] = store.state.base.dialogMaxZindex
       }
     },
     computed: {

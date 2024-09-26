@@ -138,6 +138,7 @@ import {drawLayer} from "../js/mymap";
   export default {
     name: 'App',
     components: {
+
       'v-dialog-layer': DialogLayer,
       'v-dialog-menu': DialogMenu,
       'v-dialog-measure': DialogMeasure,

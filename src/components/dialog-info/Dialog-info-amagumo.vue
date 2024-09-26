@@ -46,10 +46,8 @@ export default {
         } else {
           url = 'https://www.jma.go.jp/bosai/jmatile/data/nowc/' + basetime + '/none/' + validtime + '/surf/hrpns/{z}/{x}/{y}.png'
         }
-        if (url) {
-          Layers.nowCastObj[this.mapName].getSource().setUrl(url)
-          Layers.nowCastMonoObj[this.mapName].getSource().setUrl(url)
-        }
+        Layers.nowCastObj[this.mapName].getSource().setUrl(url)
+        Layers.nowCastMonoObj[this.mapName].getSource().setUrl(url)
         // -----------------------------------------------------------
         const t = validtime
         const nen = t.slice(0,4)
