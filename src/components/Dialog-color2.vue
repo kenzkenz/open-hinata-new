@@ -132,7 +132,7 @@ export default {
     },
   },
   mounted () {
-    console.log(this.$store.state.base.hyokoColor)
+    // console.log(this.$store.state.base.hyokoColor)
   }
 }
 </script>

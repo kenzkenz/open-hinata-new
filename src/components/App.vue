@@ -1374,13 +1374,13 @@ import {drawLayer} from "../js/mymap";
 
         const vm = this
         const url = new URL(window.location.href) // URLを取得
-        console.log(url.pathname)
+        // console.log(url.pathname)
 
         const href = url.href
         // window.history.replaceState(null, '', url.pathname + window.location.hash) //パラメータを削除 FB対策
         const hash = window.location.hash.replace('#','')
         let urlid
-        console.log(url.pathname)
+        // console.log(url.pathname)
         // console.log(href.split('?s=')[1].split('&')[0])
         if (hash.length >= 5 && hash.substring(0,1) === 's') {
           // 改善後の短縮URL 最初がsの５桁になっている。
@@ -1400,7 +1400,7 @@ import {drawLayer} from "../js/mymap";
         if (url.href.split('?s=')[1]) {
           urlid = url.href.split('?s=')[1].split('&')[0]
         }
-        console.log(urlid)
+        // console.log(urlid)
 
         window.history.replaceState(null, '', url.pathname + window.location.hash) //パラメータを削除 FB対策
 

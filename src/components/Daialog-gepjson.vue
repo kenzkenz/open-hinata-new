@@ -109,7 +109,7 @@ export default {
   },
   mounted () {
     this.maxHeight["max-height"] = (window.innerHeight - 200) + 'px'
-    console.log(this.$store.state.base.editFeatureColor)
+    // console.log(this.$store.state.base.editFeatureColor)
   }
 }
 </script>

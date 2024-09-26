@@ -120,7 +120,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$store.state.base.editFeatureFillColor)
+    // console.log(this.$store.state.base.editFeatureFillColor)
   }
 }
 </script>

@@ -39,7 +39,7 @@ export function permalinkEventSet (response,urlid) {
 
   // if (window.location.hash !== '' || localStorage.getItem('startLayerList')) {
   if (urlid !== '' || localStorage.getItem('startLayerList')) {
-    console.log(urlid)
+    // console.log(urlid)
     // const hash = decodeURIComponent(window.location.hash.replace('#', ''));
     // console.log(response.data)
     let hash
@@ -198,7 +198,7 @@ export function permalinkEventSet (response,urlid) {
 
         // console.log(decodeURIComponent(obj[key]))
         MyMap.undoInteraction.blockStart()
-        console.log(document.querySelector('#' + 'map01'  + ' .ol-viewport'))
+        // console.log(document.querySelector('#' + 'map01'  + ' .ol-viewport'))
         let features = new GeoJSON({
           dataProjection: "EPSG:4326",
           featureProjection: "EPSG:3857",
