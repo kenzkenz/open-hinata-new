@@ -2552,21 +2552,18 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
     oldLayerList[0].forEach(value => {
         map.removeLayer(value.layer);
     })
-    const result = newLayerList[0].find((layer) => {
-        return layer.title === '雨雲の動き' || layer.title === '雨雲の動きモノクロ' || layer.title === 'ひまわり' || layer.title === '台風'
+    // 台風作成-----------------------------------------------------------------
+    const resultT = newLayerList[0].find((layer) => {
+        return layer.title === '台風'
     })
-    if(result) {
-        const urls = ['https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N1.json',
-            'https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N2.json',
-            'https://www.jma.go.jp/bosai/himawari/data/satimg/targetTimes_fd.json' ]
-        async function created() {
+    if(resultT) {
+        async function tCreated() {
             // 台風-----------------------------------------------------------------------
             const Typhoon_List_URL = "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json"
             const response = await fetch(Typhoon_List_URL)
             const TyphoonList = await response.json()
-            let typhoonObj
             let TyphoonData
-            if(TyphoonList.length > 0) {
+            if (TyphoonList.length > 0) {
                 for (const typhoon of TyphoonList) {
                     const TC_ID = typhoon.tropicalCyclone
                     const Typhoon_Data_URL = "https://www.jma.go.jp/bosai/typhoon/data/" + TC_ID + "/forecast.json"
@@ -2574,7 +2571,7 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                     TyphoonData = await response.json()
                     const Typhoon_No = "台風" + TyphoonData[0].typhoonNumber.slice(-2) + "号"
                     const Typhoon_Name = TyphoonData[0].name.jp
-                    TyphoonData.forEach((t,i) => {
+                    TyphoonData.forEach((t, i) => {
                         if (i > 0) {
                             console.log(t)
                             const lon = t.center[1]
@@ -2594,18 +2591,18 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                             LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
                             LayersMvt.typhoonObj.map02.getSource().addFeature(newFeature)
                             if (i > 1) {
-                                const lon0 = TyphoonData[i-1].center[1]
-                                const lat0 = TyphoonData[i-1].center[0]
+                                const lon0 = TyphoonData[i - 1].center[1]
+                                const lat0 = TyphoonData[i - 1].center[0]
                                 const lon = t.center[1]
                                 const lat = t.center[0]
-                                const coordinates = turf.toMercator(turf.lineString([[lon0,lat0],[lon, lat]])).geometry.coordinates
+                                const coordinates = turf.toMercator(turf.lineString([[lon0, lat0], [lon, lat]])).geometry.coordinates
                                 const line = new LineString(coordinates)
                                 const newFeature = new Feature(line)
                                 LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
                                 LayersMvt.typhoonObj.map02.getSource().addFeature(newFeature)
                                 //------------------------------------------------------------
                                 const radius = t.probabilityCircle.radius / 1000
-                                const options = { steps: 60}
+                                const options = {steps: 60}
                                 const circleCoordinates = turf.toMercator(turf.circle([lon, lat], radius, options)).geometry.coordinates
                                 const polygon = new Polygon(circleCoordinates)
                                 const newFeaturePolygon = new Feature(polygon)
@@ -2619,7 +2616,19 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                     })
                 }
             }
-            //---------------------------------------------------------------------------
+        }
+        tCreated()
+    }
+    // 台風作成終わり------------------------------------------------------------------------
+
+    const result = newLayerList[0].find((layer) => {
+        return layer.title === '雨雲の動き' || layer.title === '雨雲の動きモノクロ' || layer.title === 'ひまわり'
+    })
+    if(result) {
+        const urls = ['https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N1.json',
+            'https://www.jma.go.jp/bosai/jmatile/data/nowc/targetTimes_N2.json',
+            'https://www.jma.go.jp/bosai/himawari/data/satimg/targetTimes_fd.json' ]
+        async function created() {
             const fetchData = urls.map((url) => {
                 return axios
                     .get(url,{})
@@ -2660,11 +2669,11 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                     store.state.info.time[map.values_.target] = time (basetime)
                     store.state.info.timeH[map.values_.target] = time (basetimeHimawari)
                     // -----------------------------------------------------------
-                    aaa(basetime,basetime,basetimeHimawari,typhoonObj,TyphoonData)
+                    aaa(basetime,basetime,basetimeHimawari)
                 })
-                .catch(function (response) {
-                    alert('エラーです。')
-                })
+                // .catch(function (response) {
+                //     alert('エラーです。')
+                // })
         }
         created()
     } else {
@@ -2672,7 +2681,7 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
     }
     //[0]はレイヤーリスト。[1]はlength
     // 逆ループ
-    function aaa (basetime,validtime,basetimeHimawari,typhoonObj,TyphoonData) {
+    function aaa (basetime,validtime,basetimeHimawari) {
         let myZindex = 0
         for (let i = newLayerList[0].length - 1; i >= 0; i--) {
             // リストクリックによる追加したレイヤーで リストの先頭で リストの増加があったとき
