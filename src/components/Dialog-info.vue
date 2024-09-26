@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div ref="div" style="position: relative">
         <div class="v-dialog-info-div" v-for="item in info" :key="item.id" :style="item.style" @mousedown="dialogMouseDown(item)">
             <div class="drag-handle" v-my-drag-handle></div>
             <div class="close-btn-div" @click="close(item)"><i style="" class="fa-solid fa-xmark hover close-btn"></i></div>
@@ -115,8 +115,10 @@
       },
       dialogMouseDown (item) {
         const result = this.$store.state.base.dialogsInfo[this.mapName] .find(el => el.id === item.id);
-        this.$store.commit('base/incrDialogMaxZindex');
-        result.style["z-index"] = this.$store.state.base.dialogMaxZindex
+        this.$store.commit('base/incrDialogMaxZindex')
+        console.log(this.$refs.div)
+        this.$refs.div.style["z-index"] = this.$store.state.base.dialogMaxZindex
+        // result.style["z-index"] = this.$store.state.base.dialogMaxZindex
       }
     }
   }

@@ -1,6 +1,6 @@
 <script src="../js/layers.js"></script>
 <template>
-    <div class="dialog-div" :style="this.dialog.style" @mousedown="dialogMouseDown">
+    <div :class="'dialog-div'" ref="div" :style="this.dialog.style" @mousedown="dialogMouseDown">
         <div class="drag-handle" v-my-drag-handle>
         </div>
             <div>
@@ -124,10 +124,13 @@
       },
       closeBtn () {
         this.dialog.style.display = 'none'
+        // this.$refs.div.style.display = 'none'
       },
       dialogMouseDown () {
-        store.commit('base/incrDialogMaxZindex');
-        this.dialog.style["z-index"] = store.state.base.dialogMaxZindex
+        store.commit('base/incrDialogMaxZindex')
+        this.$refs.div.style["z-index"] = store.state.base.dialogMaxZindex
+        //
+        // this.dialog.style["z-index"] = store.state.base.dialogMaxZindex
       }
     },
     computed: {
