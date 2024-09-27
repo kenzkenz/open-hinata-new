@@ -2563,22 +2563,22 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
             const response = await fetch(Typhoon_List_URL)
             const TyphoonList = await response.json()
             let TyphoonData
-            console.log(TyphoonList)
             if (TyphoonList.length > 0) {
                 for (const typhoon of TyphoonList) {
                     const TC_ID = typhoon.tropicalCyclone
                     const Typhoon_Data_URL = "https://www.jma.go.jp/bosai/typhoon/data/" + TC_ID + "/forecast.json"
                     const response = await fetch(Typhoon_Data_URL)
                     TyphoonData = await response.json()
-                    console.log(TyphoonData)
-                    let Typhoon_No = "台風" + TyphoonData[0].typhoonNumber.slice(-2) + "号"
+                    let Typhoon_No
                     let Typhoon_Name = ''
                     if (TyphoonData[0].name) {
+                        Typhoon_No = "台風" + TyphoonData[0].typhoonNumber.slice(-2) + "号"
                         Typhoon_Name = TyphoonData[0].name.jp
+                    } else {
+                        Typhoon_No = '熱帯低気圧 ' + TyphoonData[0].typhoonNumber
                     }
                     TyphoonData.forEach((t, i) => {
                         if (i > 0) {
-                            console.log(t)
                             const lon = t.center[1]
                             const lat = t.center[0]
                             const jstDate = new Date(t.validtime.JST)
@@ -2591,7 +2591,6 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                                 '経度、緯度': lon + ',' + lat,
                                 '日': jstDate.toLocaleDateString().slice(5),
                                 '時': jstDate.toLocaleTimeString().slice(0, -3),
-
                             })
                             LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
                             LayersMvt.typhoonObj.map02.getSource().addFeature(newFeature)

@@ -91,13 +91,8 @@
           return this.$store.state.base.centerFlg
         },
         set(value) {
-          console.log(value)
-          // if (!value) value = true
           // this.$store.state.base.centerFlg = value
           this.$store.commit('base/changeCenterFlg',value)
-          console.log(this.$store.state.base.centerFlg)
-
-
           const target = document.querySelectorAll(".center-target")[0]
           const target2 = document.querySelectorAll(".center-target")[1]
           if (value) {
