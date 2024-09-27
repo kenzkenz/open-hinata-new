@@ -2578,6 +2578,7 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                         Typhoon_No = '熱帯低気圧 ' + TyphoonData[0].typhoonNumber
                     }
                     TyphoonData.forEach((t, i) => {
+                        // console.log(t)
                         if (i > 0) {
                             const lon = t.center[1]
                             const lat = t.center[0]
@@ -2612,7 +2613,7 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                                 const polygon = new Polygon(circleCoordinates)
                                 const newFeaturePolygon = new Feature(polygon)
                                 newFeaturePolygon.setProperties({
-                                    // '予想円半径': t.probabilityCircle.radius / 1000 + 'km',
+                                    '予想円半径': radius + 'km',
                                 })
                                 LayersMvt.typhoonObj.map01.getSource().addFeature(newFeaturePolygon)
                                 LayersMvt.typhoonObj.map02.getSource().addFeature(newFeaturePolygon)
