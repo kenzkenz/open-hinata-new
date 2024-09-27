@@ -182,10 +182,16 @@ function typhoonStyleFunction() {
         })
       }),
     })
+    let text
+    if (prop._i === 1) {
+      text = prop.号 + '\n' + prop.日 + '' + prop.時
+    } else {
+      text = prop.日 + ' ' + prop.時
+    }
     const textStyle = new Style({
       text: new Text({
         font: "18px sans-serif",
-        text: prop.号 + ' ' + prop.日 + ' ' + prop.時,
+        text: text,
         fill:  new Fill({
           color:"black"
         }),
@@ -202,6 +208,12 @@ function typhoonStyleFunction() {
         width:6
       })
     })
+    const tangentLineStyle = new Style({
+      stroke: new Stroke({
+        color:"white",
+        width:3
+      })
+    })
     const polygonStyle = new Style({
       fill: new Fill({
         color: 'rgba(255,255,255,0.3)'
@@ -214,7 +226,8 @@ function typhoonStyleFunction() {
     styles.push(polygonStyle)
     styles.push(pointStyle)
     if (geoType === 'Point')styles.push(textStyle)
-    if (geoType === 'LineString') styles.push(lineStyle)
+    // if (geoType === 'LineString' && !prop._tangent) styles.push(lineStyle)
+    if (geoType === 'LineString' && prop._tangent) styles.push(tangentLineStyle)
     return styles
   }
 }

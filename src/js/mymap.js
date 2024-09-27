@@ -2589,8 +2589,9 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                                 '号': Typhoon_No,
                                 '名前': Typhoon_Name,
                                 '経度、緯度': lon + ',' + lat,
-                                '日': jstDate.toLocaleDateString().slice(5),
+                                '日': jstDate.toLocaleDateString().slice(5).split('/')[1] + '日',
                                 '時': jstDate.toLocaleTimeString().slice(0, -3),
+                                '_i':i
                             })
                             LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
                             LayersMvt.typhoonObj.map02.getSource().addFeature(newFeature)
@@ -2615,6 +2616,26 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                                 })
                                 LayersMvt.typhoonObj.map01.getSource().addFeature(newFeaturePolygon)
                                 LayersMvt.typhoonObj.map02.getSource().addFeature(newFeaturePolygon)
+                                // -----------------------------------------------------------
+                            }
+                            if (i > 1) {
+                                const tangent = t.probabilityCircle.tangent
+                                let coordinates = turf.toMercator(turf.lineString([[tangent[0][1][1], tangent[0][1][0]], [tangent[0][0][1], tangent[0][0][0]]])).geometry.coordinates
+                                let line = new LineString(coordinates)
+                                let newFeature = new Feature(line)
+                                newFeature.setProperties({
+                                    '_tangent': true,
+                                })
+                                LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
+                                LayersMvt.typhoonObj.map02.getSource().addFeature(newFeature)
+                                coordinates = turf.toMercator(turf.lineString([[tangent[1][1][1], tangent[1][1][0]], [tangent[1][0][1], tangent[1][0][0]]])).geometry.coordinates
+                                line = new LineString(coordinates)
+                                newFeature = new Feature(line)
+                                newFeature.setProperties({
+                                    '_tangent': true,
+                                })
+                                LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
+                                LayersMvt.typhoonObj.map02.getSource().addFeature(newFeature)
                             }
                         }
                     })

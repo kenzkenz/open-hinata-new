@@ -211,7 +211,6 @@ const moduleBase = {
   },
   mutations: {
     changeCenterFlg (state,payload) {
-      console.log(payload)
       state.centerFlg = payload
     },
     updateHight (state,payload) {

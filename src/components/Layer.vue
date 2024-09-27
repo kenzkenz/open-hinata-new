@@ -1,6 +1,6 @@
 選択されたリストを表示するvueファイル。
 <template>
-  <v-draggable element="ul" :options="{handle:'.handle-div, .item-div',animation: 200}" v-model="s_layerList">
+  <v-draggable tag="ul" :options="{handle:'.handle-div, .item-div',animation: 200}" v-model="s_layerList">
 <!--  <v-draggable element="ul" :options="{handle:'.handle-div',animation: 200}" v-model="s_layerList">-->
         <li v-for="item in s_layerList" :key="item.id">
             <div class="list-div">
