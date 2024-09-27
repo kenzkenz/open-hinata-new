@@ -109,22 +109,17 @@
     },
     methods: {
       close (item) {
-        // const result = this.$store.state.base.dialogsInfo[this.mapName] .find(el => el.id === item.id);
-        // result.style.display = 'none'
-        document.querySelector('.v-dialog-info-div-' + item.id).style.display = 'none'
-
+        const result = this.$store.state.base.dialogsInfo[this.mapName] .find(el => el.id === item.id);
+        result.style.display = 'none'
+        // document.querySelector('.v-dialog-info-div-' + item.id).style.display = 'none'
       },
       dialogMouseDown (item) {
         const result = this.$store.state.base.dialogsInfo[this.mapName] .find(el => el.id === item.id);
-        this.$store.commit('base/incrDialogMaxZindex')
-        // document.querySelector('.v-dialog-info-div-' + item.id).style["z-index"] = this.$store.state.base.dialogMaxZindex
         document.querySelector('.v-dialog-info-div-' + item.id).style["z-index"] = this.$store.state.base.dialogMaxZindex
+        result.style["z-index"] = this.$store.state.base.dialogMaxZindex
         result.style.top = document.querySelector('.v-dialog-info-div-' + item.id).style.top
         result.style.left = document.querySelector('.v-dialog-info-div-' + item.id).style.left
-        // result.style["z-index"] = this.$store.state.base.dialogMaxZindex
-
-        // this.$refs.div.style["z-index"] = this.$store.state.base.dialogMaxZindex
-
+        result.style.display = 'block'
       }
     }
   }
