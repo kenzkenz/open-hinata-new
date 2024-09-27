@@ -1478,9 +1478,11 @@ export function initMap (vm) {
             dragAndDropInteraction.on('addfeatures', function (event) {
                 document.querySelector('#map01 .loadingImg').style.display = 'block'
                 undoInteraction.blockStart()
-                event.features.forEach((feature) => {
-                    drawLayer.getSource().addFeature(feature)
-                })
+                // event.features.forEach((feature) => {
+                //     drawLayer.getSource().addFeature(feature)
+                // })
+                drawLayer.getSource().addFeatures(event.features)
+
                 drawLayer.getSource().getFeatures().forEach((feature) =>{
                     if (feature.getGeometry().getType() === 'GeometryCollection') {
                         drawLayer.getSource().removeFeature(feature)
