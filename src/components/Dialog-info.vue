@@ -109,12 +109,12 @@
     },
     methods: {
       close (item) {
-        const result = this.$store.state.base.dialogsInfo[this.mapName] .find(el => el.id === item.id);
+        const result = this.$store.state.base.dialogsInfo[this.mapName] .find(el => el.id === item.id)
         result.style.display = 'none'
         // document.querySelector('.v-dialog-info-div-' + item.id).style.display = 'none'
       },
       dialogMouseDown (item) {
-        const result = this.$store.state.base.dialogsInfo[this.mapName] .find(el => el.id === item.id);
+        const result = this.$store.state.base.dialogsInfo[this.mapName] .find(el => el.id === item.id)
         document.querySelector('.v-dialog-info-div-' + item.id).style["z-index"] = this.$store.state.base.dialogMaxZindex
         result.style["z-index"] = this.$store.state.base.dialogMaxZindex
         result.style.top = document.querySelector('.v-dialog-info-div-' + item.id).style.top
