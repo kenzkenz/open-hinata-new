@@ -2578,7 +2578,7 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                         Typhoon_No = '熱帯低気圧 ' + TyphoonData[0].typhoonNumber
                     }
                     TyphoonData.forEach((t, i) => {
-                        // console.log(t)
+                        // console.log(i,t)
                         if (i > 0) {
                             const lon = t.center[1]
                             const lat = t.center[0]
@@ -2620,23 +2620,70 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                                 // -----------------------------------------------------------
                             }
                             if (i > 1) {
-                                const tangent = t.probabilityCircle.tangent
-                                let coordinates = turf.toMercator(turf.lineString([[tangent[0][1][1], tangent[0][1][0]], [tangent[0][0][1], tangent[0][0][0]]])).geometry.coordinates
-                                let line = new LineString(coordinates)
-                                let newFeature = new Feature(line)
-                                newFeature.setProperties({
-                                    '_tangent': true,
-                                })
-                                LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
-                                LayersMvt.typhoonObj.map02.getSource().addFeature(newFeature)
-                                coordinates = turf.toMercator(turf.lineString([[tangent[1][1][1], tangent[1][1][0]], [tangent[1][0][1], tangent[1][0][0]]])).geometry.coordinates
-                                line = new LineString(coordinates)
-                                newFeature = new Feature(line)
-                                newFeature.setProperties({
-                                    '_tangent': true,
-                                })
-                                LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
-                                LayersMvt.typhoonObj.map02.getSource().addFeature(newFeature)
+                                if (t.probabilityCircle.tangent) {
+                                    const tangent = t.probabilityCircle.tangent
+                                    let coordinates = turf.toMercator(turf.lineString([[tangent[0][1][1], tangent[0][1][0]], [tangent[0][0][1], tangent[0][0][0]]])).geometry.coordinates
+                                    let line = new LineString(coordinates)
+                                    let newFeature = new Feature(line)
+                                    newFeature.setProperties({
+                                        '_tangent': true,
+                                    })
+                                    LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
+                                    LayersMvt.typhoonObj.map02.getSource().addFeature(newFeature)
+                                    coordinates = turf.toMercator(turf.lineString([[tangent[1][1][1], tangent[1][1][0]], [tangent[1][0][1], tangent[1][0][0]]])).geometry.coordinates
+                                    line = new LineString(coordinates)
+                                    newFeature = new Feature(line)
+                                    newFeature.setProperties({
+                                        '_tangent': true,
+                                    })
+                                    LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
+                                    LayersMvt.typhoonObj.map02.getSource().addFeature(newFeature)
+                                }
+                            }
+                            if (i === 1) {
+                                if(t.galeWarningArea) {
+                                    const radius = t.galeWarningArea.radius / 1000
+                                    const options = {steps: 60}
+                                    const circleCoordinates = turf.toMercator(turf.circle([t.galeWarningArea.center[1], t.galeWarningArea.center[0]], radius, options)).geometry.coordinates
+                                    const polygon = new Polygon(circleCoordinates)
+                                    const newFeaturePolygon = new Feature(polygon)
+                                    newFeaturePolygon.setProperties({
+                                        '強風警報エリア': '半径' + radius + 'km',
+                                    })
+                                    LayersMvt.typhoonObj.map01.getSource().addFeature(newFeaturePolygon)
+                                    LayersMvt.typhoonObj.map02.getSource().addFeature(newFeaturePolygon)
+                                }
+                            }
+                            if (i === 1) {
+                                if(t.track) {
+                                    // console.log(t.track.preTyphoon)
+                                    if (t.track.preTyphoon.length > 0) {
+                                        const coord = t.track.preTyphoon.map((p) => {
+                                            return [p[1],p[0]]
+                                        })
+                                        const coordinates = turf.toMercator(turf.lineString(coord)).geometry.coordinates
+                                        const line = new LineString(coordinates)
+                                        const newFeature = new Feature(line)
+                                        newFeature.setProperties({
+                                            '_preTyphoon': true,
+                                        })
+                                        LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
+                                        LayersMvt.typhoonObj.map02.getSource().addFeature(newFeature)
+                                    }
+                                    if (t.track.typhoon.length > 0) {
+                                        const coord = t.track.typhoon.map((p) => {
+                                            return [p[1],p[0]]
+                                        })
+                                        const coordinates = turf.toMercator(turf.lineString(coord)).geometry.coordinates
+                                        const line = new LineString(coordinates)
+                                        const newFeature = new Feature(line)
+                                        newFeature.setProperties({
+                                            '_typhoon': true,
+                                        })
+                                        LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
+                                        LayersMvt.typhoonObj.map02.getSource().addFeature(newFeature)
+                                    }
+                                }
                             }
                         }
                     })

@@ -172,7 +172,7 @@ function typhoonStyleFunction() {
     const styles = []
     const pointStyle = new Style({
       image: new Circle0({
-        radius: 20,
+        radius: 16,
         fill: new Fill({
           color: 'blue'
         }),
@@ -214,20 +214,42 @@ function typhoonStyleFunction() {
         width:3
       })
     })
+    const preTyphoonLineStyle = new Style({
+      stroke: new Stroke({
+        color:"darkgray",
+        width:2,
+        // lineCap: 'square',
+        // lineDash: [15, 10]
+      })
+    })
+    const typhoonLineStyle = new Style({
+      stroke: new Stroke({
+        color:"black",
+        width:2
+      })
+    })
     const polygonStyle = new Style({
       fill: new Fill({
         color: 'rgba(255,255,255,0.3)'
+      }),
+    })
+    const galeWarningAreaPolygonStyle = new Style({
+      fill: new Fill({
+        color: 'rgba(255,255,0,0.3)'
       }),
       // stroke: new Stroke({
       //   color: "gray",
       //   width: 1
       // }),
     })
-    styles.push(polygonStyle)
     styles.push(pointStyle)
+    if (geoType === 'Polygon' && !prop.強風警報エリア)styles.push(polygonStyle)
+    if (geoType === 'Polygon' && prop.強風警報エリア)styles.push(galeWarningAreaPolygonStyle)
     if (geoType === 'Point')styles.push(textStyle)
     // if (geoType === 'LineString' && !prop._tangent) styles.push(lineStyle)
     if (geoType === 'LineString' && prop._tangent) styles.push(tangentLineStyle)
+    if (geoType === 'LineString' && prop._preTyphoon) styles.push(preTyphoonLineStyle)
+    if (geoType === 'LineString' && prop._typhoon) styles.push(typhoonLineStyle)
     return styles
   }
 }
