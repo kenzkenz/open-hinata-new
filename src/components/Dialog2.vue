@@ -24,6 +24,7 @@ import DialogJinkosuii from "@/components/Dialog-jinkosuii"
 import Dialogpie from "@/components/Dialog-jinkopie"
 import DialogSsdsBer from "@/components/Daialog-ssds-bar"
 import DialogErev from "@/components/Daialog-erev"
+import store from "@/js/store";
 
 export default {
   name: "v-dialog2",
@@ -48,9 +49,11 @@ export default {
       this.$store.state.base.dialogs2[this.mapName] = this.$store.state.base.dialogs2[this.mapName].filter(v => v.id !== item.id);
     },
     dialogMouseDown (item) {
-      const result = this.$store.state.base.dialogs2[this.mapName] .find(el => el.id === item.id);
-      this.$store.commit('base/incrDialogMaxZindex');
+      store.commit('base/incrDialogMaxZindex')
+      const result = this.$store.state.base.dialogs2[this.mapName] .find(el => el.id === item.id)
       result.style["z-index"] = this.$store.state.base.dialogMaxZindex
+      result.style.top = document.querySelector( '#dialog2-' + item.id).style.top
+      result.style.left = document.querySelector('#dialog2-' + item.id).style.left
     }
   }
 }

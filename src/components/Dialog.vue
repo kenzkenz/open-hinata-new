@@ -126,9 +126,7 @@
         // this.$refs.div.style.display = 'none'
       },
       dialogMouseDown () {
-        console.log(this.dialog)
         store.commit('base/incrDialogMaxZindex')
-
         this.dialog.style.top = this.$refs.div.style.top
         this.dialog.style.left = this.$refs.div.style.left
         this.dialog.style["z-index"] = store.state.base.dialogMaxZindex

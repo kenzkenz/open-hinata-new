@@ -2571,7 +2571,7 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                     const response = await fetch(Typhoon_Data_URL)
                     TyphoonData = await response.json()
                     console.log(TyphoonData)
-                    const Typhoon_No = "台風" + TyphoonData[0].typhoonNumber.slice(-2) + "号"
+                    let Typhoon_No = "台風" + TyphoonData[0].typhoonNumber.slice(-2) + "号"
                     let Typhoon_Name = ''
                     if (TyphoonData[0].name) {
                         Typhoon_Name = TyphoonData[0].name.jp
