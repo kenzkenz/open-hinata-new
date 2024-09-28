@@ -1,9 +1,7 @@
 
 <template>
   <div :id="id">
-<!--    <img class='loadingImg' src="https://kenzkenz.xsrv.jp/open-hinata/img/loading.gif" style="position: absolute;top:50%;left:50%;z-index:1;">-->
     <div class="d3-pyramid"></div>
-    <!--      <svg id="d3-pyramid" width="350" :height="350" style="border: 1px dotted"></svg>-->
   </div>
 </template>
 
@@ -43,6 +41,9 @@ export default {
         elements[len-1].style.top = Number(elements[len-2].style.top.replace('px','')) + 40 + 'px'
         if (window.innerWidth > 600) {
           elements[len-1].style.left = Number(elements[len-2].style.left.replace('px','')) - 40 + 'px'
+          const result = vm.$store.state.base.dialogs2[vm.mapName] .find(el => el.id === vm.item.id)
+          result.style.top = document.querySelector( '#dialog2-' + vm.item.id).style.top
+          result.style.left = document.querySelector('#dialog2-' + vm.item.id).style.left
         }
         // if (elements[len-2].style.top === '60px') {
         //   elements[len-1].style.top = '100px'
@@ -244,10 +245,6 @@ export default {
         svg.append("g")
             .attr("transform", "translate(" + womanMargin + "," + 0 + ")")
             .call(d3.axisLeft(y))
-        // svg.append("g")
-        //     .attr("transform", "translate(" + womanMargin -40 + "," + 0 + ")")
-        //     .call(d3.axisRight(y).tickValues([]))
-
       }
     }
 

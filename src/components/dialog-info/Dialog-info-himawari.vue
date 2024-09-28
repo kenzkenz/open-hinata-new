@@ -45,30 +45,32 @@ export default {
         return this.$store.state.info.himawariTime[this.mapName]
       },
       set(value) {
-        const basetime = this.$store.state.info.himawariTimes[value].basetime
-        const validtime = this.$store.state.info.himawariTimes[value].validtime
-        this.$store.state.info.himawariTime[this.mapName] = value
-        // const url = 'https://www.jma.go.jp/bosai/himawari/data/satimg/' + basetime + '/jp/' + basetime + '/REP/ETC/{z}/{x}/{y}.jpg'
-        const url = 'https://www.jma.go.jp/bosai/himawari/data/satimg/' + basetime + '/jp/' + basetime + '/' + this.type + '/{z}/{x}/{y}.jpg'
+        if (this.$store.state.info.himawariTimes[value]) {
+          const basetime = this.$store.state.info.himawariTimes[value].basetime
+          const validtime = this.$store.state.info.himawariTimes[value].validtime
+          this.$store.state.info.himawariTime[this.mapName] = value
+          // const url = 'https://www.jma.go.jp/bosai/himawari/data/satimg/' + basetime + '/jp/' + basetime + '/REP/ETC/{z}/{x}/{y}.jpg'
+          const url = 'https://www.jma.go.jp/bosai/himawari/data/satimg/' + basetime + '/jp/' + basetime + '/' + this.type + '/{z}/{x}/{y}.jpg'
 
-        Layers.himawariObj[this.mapName].getSource().setUrl(url)
-        // -----------------------------------------------------------
-        const t = validtime
-        const nen = t.slice(0,4)
-        const tuki = t.slice(4,6) - 1
-        const hi = t.slice(6,8)
-        let ji = Number(t.slice(8,10))
-        const fun = t.slice(10,12)
-        const date = new Date(nen,tuki,hi,ji,fun,0)
-        date.setHours(date.getHours() + 9)
-        const tukihi = date.toLocaleDateString()
-        const time = date.toLocaleTimeString()
-        const nen2 = tukihi.split('/')[0] + '年'
-        const tuki2 = tukihi.split('/')[1] + '月'
-        const hi2 = tukihi.split('/')[2] + '日'
-        const ji2 = time.split(':')[0] + '時'
-        const fun2 = time.split(':')[1] + '分'
-        this.$store.state.info.timeH[this.mapName] =  nen2 + tuki2 + hi2 + ' ' + ji2 + fun2
+          Layers.himawariObj[this.mapName].getSource().setUrl(url)
+          // -----------------------------------------------------------
+          const t = validtime
+          const nen = t.slice(0,4)
+          const tuki = t.slice(4,6) - 1
+          const hi = t.slice(6,8)
+          let ji = Number(t.slice(8,10))
+          const fun = t.slice(10,12)
+          const date = new Date(nen,tuki,hi,ji,fun,0)
+          date.setHours(date.getHours() + 9)
+          const tukihi = date.toLocaleDateString()
+          const time = date.toLocaleTimeString()
+          const nen2 = tukihi.split('/')[0] + '年'
+          const tuki2 = tukihi.split('/')[1] + '月'
+          const hi2 = tukihi.split('/')[2] + '日'
+          const ji2 = time.split(':')[0] + '時'
+          const fun2 = time.split(':')[1] + '分'
+          this.$store.state.info.timeH[this.mapName] =  nen2 + tuki2 + hi2 + ' ' + ji2 + fun2
+        }
       }
     },
   },
@@ -76,7 +78,7 @@ export default {
     renzokuChange () {
       const vm = this
       if (this.renzoku) {
-        let count = 0;
+        let count = vm.s_himawariTime
         interval = setInterval(function() {
           vm.s_himawariTime = count
           count++

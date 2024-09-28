@@ -500,7 +500,7 @@ const osmObj = {}
 for (let i of mapsStr) {
   osmObj[i] = new TileLayer(new Osm())
 }
-const osmSumm = 'OpenStreetMapは、道路地図などの地理情報データを誰でも利用できるよう、フリーの地理情報データを作成することを目的としたプロジェクトです。<a href=\'https://openstreetmap.jp\' target=\'_blank\'>OpenStreetMap</a>';
+const osmSumm = '<div style="width: 200px;">OpenStreetMapは、道路地図などの地理情報データを誰でも利用できるよう、フリーの地理情報データを作成することを目的としたプロジェクトです。<a href=\'https://openstreetmap.jp\' target=\'_blank\'>OpenStreetMap</a></div>';
 // 人工改変地形（白黒）------------------------------------------------------------------------------------
 function JinkoShirokuro () {
   this.preload = Infinity
@@ -579,9 +579,6 @@ for (let i of mapsStr) {
   kosyoObj[i] = new TileLayer(new Kosyo())
 }
 const kosyoSumm = '国土地理院作成のタイルです。<br><a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">リンク</a>'
-
-
-
 
 // アナグリフ------------------------------------------------------------------------------------
 function Anaglyph () {

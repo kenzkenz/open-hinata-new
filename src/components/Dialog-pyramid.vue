@@ -61,6 +61,9 @@ export default {
         elements[len-1].style.top = Number(elements[len-2].style.top.replace('px','')) + 40 + 'px'
         if (window.innerWidth > 600) {
           elements[len-1].style.left = Number(elements[len-2].style.left.replace('px','')) - 40 + 'px'
+          const result = vm.$store.state.base.dialogs2[vm.mapName] .find(el => el.id === vm.item.id)
+          result.style.top = document.querySelector( '#dialog2-' + vm.item.id).style.top
+          result.style.left = document.querySelector('#dialog2-' + vm.item.id).style.left
         }
       }
       // elements[len-1].style.width = '550px'

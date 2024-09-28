@@ -42,34 +42,36 @@ export default {
         return this.$store.state.info.amagumoTime[this.mapName]
       },
       set(value) {
-        const basetime = this.$store.state.info.amagumoTimes[value].basetime
-        const validtime = this.$store.state.info.amagumoTimes[value].validtime
-        this.$store.state.info.amagumoTime[this.mapName] = value
-        let url
-        if (Number(validtime) < Number(basetime)) {
-          url = 'https://www.jma.go.jp/bosai/jmatile/data/nowc/' + validtime + '/none/' + validtime + '/surf/hrpns/{z}/{x}/{y}.png'
-        } else {
-          url = 'https://www.jma.go.jp/bosai/jmatile/data/nowc/' + basetime + '/none/' + validtime + '/surf/hrpns/{z}/{x}/{y}.png'
+        if (this.$store.state.info.amagumoTimes[value]) {
+          const basetime = this.$store.state.info.amagumoTimes[value].basetime
+          const validtime = this.$store.state.info.amagumoTimes[value].validtime
+          this.$store.state.info.amagumoTime[this.mapName] = value
+          let url
+          if (Number(validtime) < Number(basetime)) {
+            url = 'https://www.jma.go.jp/bosai/jmatile/data/nowc/' + validtime + '/none/' + validtime + '/surf/hrpns/{z}/{x}/{y}.png'
+          } else {
+            url = 'https://www.jma.go.jp/bosai/jmatile/data/nowc/' + basetime + '/none/' + validtime + '/surf/hrpns/{z}/{x}/{y}.png'
+          }
+          Layers.nowCastObj[this.mapName].getSource().setUrl(url)
+          Layers.nowCastMonoObj[this.mapName].getSource().setUrl(url)
+          // -----------------------------------------------------------
+          const t = validtime
+          const nen = t.slice(0,4)
+          const tuki = t.slice(4,6) - 1
+          const hi = t.slice(6,8)
+          let ji = Number(t.slice(8,10))
+          const fun = t.slice(10,12)
+          const date = new Date(nen,tuki,hi,ji,fun,0)
+          date.setHours(date.getHours() + 9)
+          const tukihi = date.toLocaleDateString()
+          const time = date.toLocaleTimeString()
+          const nen2 = tukihi.split('/')[0] + '年'
+          const tuki2 = tukihi.split('/')[1] + '月'
+          const hi2 = tukihi.split('/')[2] + '日'
+          const ji2 = time.split(':')[0] + '時'
+          const fun2 = time.split(':')[1] + '分'
+          this.$store.state.info.time[this.mapName] =  nen2 + tuki2 + hi2 + ' ' + ji2 + fun2
         }
-        Layers.nowCastObj[this.mapName].getSource().setUrl(url)
-        Layers.nowCastMonoObj[this.mapName].getSource().setUrl(url)
-        // -----------------------------------------------------------
-        const t = validtime
-        const nen = t.slice(0,4)
-        const tuki = t.slice(4,6) - 1
-        const hi = t.slice(6,8)
-        let ji = Number(t.slice(8,10))
-        const fun = t.slice(10,12)
-        const date = new Date(nen,tuki,hi,ji,fun,0)
-        date.setHours(date.getHours() + 9)
-        const tukihi = date.toLocaleDateString()
-        const time = date.toLocaleTimeString()
-        const nen2 = tukihi.split('/')[0] + '年'
-        const tuki2 = tukihi.split('/')[1] + '月'
-        const hi2 = tukihi.split('/')[2] + '日'
-        const ji2 = time.split(':')[0] + '時'
-        const fun2 = time.split(':')[1] + '分'
-        this.$store.state.info.time[this.mapName] =  nen2 + tuki2 + hi2 + ' ' + ji2 + fun2
       }
     },
   },
@@ -77,14 +79,14 @@ export default {
     renzokuChange () {
       const vm = this
       if (this.renzoku) {
-        let count = 0;
+        let count = vm.s_amagumoTime
         interval = setInterval(function() {
           vm.s_amagumoTime = count
           count++
           if (count >= vm.$store.state.info.amagumoTimes.length) {
             count = 0
           }
-        }, 100);
+        }, 100)
       } else {
         clearInterval(interval)
       }

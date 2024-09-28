@@ -159,7 +159,7 @@ function Typhoon(){
   this.source = new VectorSource({wrapX: false})
   this.style = typhoonStyleFunction()
 }
-export const typhoonSumm = "<a href='' target='_blank'></a>"
+export const typhoonSumm = "<a href='https://www.jma.go.jp/bosai/map.html#5/32.547/136.758/&elem=root&typhoon=all&contents=typhoon' target='_blank'>気象庁</a>"
 export  const typhoonObj = {}
 for (let i of mapsStr) {
   typhoonObj[i] = new VectorLayer(new Typhoon())
@@ -211,7 +211,7 @@ function typhoonStyleFunction() {
     const tangentLineStyle = new Style({
       stroke: new Stroke({
         color:"white",
-        width:3
+        width:1
       })
     })
     const preTyphoonLineStyle = new Style({
@@ -242,7 +242,7 @@ function typhoonStyleFunction() {
       //   width: 1
       // }),
     })
-    styles.push(pointStyle)
+    if (geoType === 'Point' && prop._i === 1)styles.push(pointStyle)
     if (geoType === 'Polygon' && !prop.強風警報エリア)styles.push(polygonStyle)
     if (geoType === 'Polygon' && prop.強風警報エリア)styles.push(galeWarningAreaPolygonStyle)
     if (geoType === 'Point')styles.push(textStyle)
