@@ -2560,6 +2560,8 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
         return layer.title === '台風'
     })
     if(resultT) {
+        LayersMvt.typhoonObj.map01.getSource().clear()
+        LayersMvt.typhoonObj.map02.getSource().clear()
         async function tCreated() {
             // 台風-----------------------------------------------------------------------
             const Typhoon_List_URL = "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json"

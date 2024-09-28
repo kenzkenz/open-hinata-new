@@ -183,8 +183,11 @@ function typhoonStyleFunction() {
       }),
     })
     let text
+    let offsetY = 0
     if (prop._i === 1) {
-      text = prop.号 + '\n' + prop.日 + '' + prop.時
+      // text = prop.号 + '\n' + prop.日 + '' + prop.時
+      text = prop.号 + '' + prop.日 + '' + prop.時
+      offsetY = 20
     } else {
       text = prop.日 + '' + prop.時
     }
@@ -195,11 +198,20 @@ function typhoonStyleFunction() {
         fill:  new Fill({
           color:"black"
         }),
+        offsetY: offsetY,
         stroke: new Stroke({
           color: "white",
           width: 3
         }),
         overflow: true,
+      })
+    })
+    const textStyle2 = new Style({
+      text: new Text ({
+        text:'\uf00d',
+        font:"20px Fontawesome",
+        fill: new Fill({ color:[0,0,0,1] }),
+        stroke: new Stroke({ width:1, color:'white' })
       })
     })
     const lineStyle = new Style({
@@ -211,7 +223,7 @@ function typhoonStyleFunction() {
     const tangentLineStyle = new Style({
       stroke: new Stroke({
         color:"white",
-        width:1
+        width:2
       })
     })
     const preTyphoonLineStyle = new Style({
@@ -224,28 +236,35 @@ function typhoonStyleFunction() {
     })
     const typhoonLineStyle = new Style({
       stroke: new Stroke({
-        color:"black",
+        color:"blue",
         width:2
       })
     })
     const polygonStyle = new Style({
       fill: new Fill({
-        color: 'rgba(255,255,255,0.3)'
+        color: 'rgba(255,255,255,0.0)'
+      }),
+      stroke: new Stroke({
+        color: "white",
+        width: 2,
+        lineCap: 'square',
+        lineDash: [5, 3]
       }),
     })
     const galeWarningAreaPolygonStyle = new Style({
       fill: new Fill({
-        color: 'rgba(255,255,0,0.3)'
+        color: 'rgba(255,255,0,0.0)'
       }),
-      // stroke: new Stroke({
-      //   color: "gray",
-      //   width: 1
-      // }),
+      stroke: new Stroke({
+        color: "yellow",
+        width: 3
+      }),
     })
-    if (geoType === 'Point' && prop._i === 1)styles.push(pointStyle)
+    // if (geoType === 'Point' && prop._i === 1)styles.push(pointStyle)
     if (geoType === 'Polygon' && !prop.強風警報エリア)styles.push(polygonStyle)
     if (geoType === 'Polygon' && prop.強風警報エリア)styles.push(galeWarningAreaPolygonStyle)
     if (geoType === 'Point')styles.push(textStyle)
+    if (geoType === 'Point'&& prop._i === 1)styles.push(textStyle2)
     // if (geoType === 'LineString' && !prop._tangent) styles.push(lineStyle)
     if (geoType === 'LineString' && prop._tangent) styles.push(tangentLineStyle)
     if (geoType === 'LineString' && prop._preTyphoon) styles.push(preTyphoonLineStyle)
