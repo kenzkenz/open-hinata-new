@@ -612,6 +612,7 @@ drawLayer.getSource().on("change", function(e) {
         featureProjection: "EPSG:3857"
     })
     store.state.base.tGeojson = JSON.stringify(JSON.parse(tGeojson),null,2)
+
     // const tKml = new KML().writeFeatures(drawLayer.getSource().getFeatures(), {
     //     featureProjection: "EPSG:3857"
     // })
@@ -2593,7 +2594,7 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                                 '名前': Typhoon_Name,
                                 '経度、緯度': lon + ',' + lat,
                                 '日': jstDate.toLocaleDateString().slice(5).split('/')[1] + '日',
-                                '時': jstDate.toLocaleTimeString().slice(0, -3),
+                                '時': jstDate.toLocaleTimeString().slice(0, -3).split(':')[0] + '時',
                                 '_i':i
                             })
                             LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)

@@ -186,7 +186,7 @@ function typhoonStyleFunction() {
     if (prop._i === 1) {
       text = prop.号 + '\n' + prop.日 + '' + prop.時
     } else {
-      text = prop.日 + ' ' + prop.時
+      text = prop.日 + '' + prop.時
     }
     const textStyle = new Style({
       text: new Text({
