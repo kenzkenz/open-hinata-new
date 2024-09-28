@@ -2659,8 +2659,8 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                             }
                             if (i === 1) {
                                 if(t.track) {
-                                    // console.log(t.track.preTyphoon)
-                                    if (t.track.preTyphoon.length > 0) {
+                                    // console.log(t.track)
+                                    if (t.track.preTyphoon.length > 1) {
                                         const coord = t.track.preTyphoon.map((p) => {
                                             return [p[1],p[0]]
                                         })
@@ -2673,7 +2673,7 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
                                         LayersMvt.typhoonObj.map01.getSource().addFeature(newFeature)
                                         LayersMvt.typhoonObj.map02.getSource().addFeature(newFeature)
                                     }
-                                    if (t.track.typhoon.length > 0) {
+                                    if (t.track.typhoon.length > 1) {
                                         const coord = t.track.typhoon.map((p) => {
                                             return [p[1],p[0]]
                                         })

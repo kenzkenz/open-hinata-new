@@ -1458,31 +1458,31 @@ import {drawLayer} from "../js/mymap";
           Inobounce();
           // vm.$modal.show('modal0')
           // ⑥ダイアログ----------------------
-          store.state.base.maps['map01'].addControl(MyMap.dialog);
-          MyMap.dialog.show({
-            content:
-                   '<ul>' +
-                   '<li>「' +
-                   '<a href="https://kenzkenz.xsrv.jp/open-hinata/#sUmkJwq" target="_blank">ひまわり画像</a>' +
-                   '」' +
-                   '</li>' +
-                   '<li>「' +
-                   '<a href="https://kenzkenz.xsrv.jp/open-hinata/#sbSGoSm" target="_blank">雨雲の動き</a>' +
-                   '」' +
-                   '</li>' +
-                   '<li>「' +
-                   '<a href="https://kenzkenz.xsrv.jp/open-hinata/#s3PHDc" target="_blank">R2国勢調査小地域人口ピラミッド</a>' +
-                   '」' +
-                   '</li>' +
-                   '<li>「' +
-                   '<a href="https://kenzkenz.xsrv.jp/open-hinata/#sD4JxER" target="_blank">幕末期近世の村</a>' +
-                   '」幕末の村とその石高が見られます。</li>' +
-                   '</ul>' +
-                   // '<p><a href="https://www.facebook.com/profile.php?id=61560911254669" target="_blank">フェイスブック</a>始めました。</p>' +
-                   '<p>是非ご覧ください。</p>',
-            title: 'おすすめ',
-          //   buttons:{ ok:'hello', cancel:'nope' }
-          })
+          // store.state.base.maps['map01'].addControl(MyMap.dialog);
+          // MyMap.dialog.show({
+          //   content:
+          //          '<ul>' +
+          //          '<li>「' +
+          //          '<a href="https://kenzkenz.xsrv.jp/open-hinata/#sUmkJwq" target="_blank">ひまわり画像</a>' +
+          //          '」' +
+          //          '</li>' +
+          //          '<li>「' +
+          //          '<a href="https://kenzkenz.xsrv.jp/open-hinata/#sbSGoSm" target="_blank">雨雲の動き</a>' +
+          //          '」' +
+          //          '</li>' +
+          //          '<li>「' +
+          //          '<a href="https://kenzkenz.xsrv.jp/open-hinata/#s3PHDc" target="_blank">R2国勢調査小地域人口ピラミッド</a>' +
+          //          '」' +
+          //          '</li>' +
+          //          '<li>「' +
+          //          '<a href="https://kenzkenz.xsrv.jp/open-hinata/#sD4JxER" target="_blank">幕末期近世の村</a>' +
+          //          '」幕末の村とその石高が見られます。</li>' +
+          //          '</ul>' +
+          //          // '<p><a href="https://www.facebook.com/profile.php?id=61560911254669" target="_blank">フェイスブック</a>始めました。</p>' +
+          //          '<p>是非ご覧ください。</p>',
+          //   title: 'おすすめ',
+          // //   buttons:{ ok:'hello', cancel:'nope' }
+          // })
           //-------------------------------
         }
       })

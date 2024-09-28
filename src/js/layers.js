@@ -816,7 +816,7 @@ function MiyazakiOrt () {
   this.extent = transformE([130.66371,31.34280,131.88045,32.87815])
   this.source = new XYZ({
     url: 'https://mtile.pref.miyazaki.lg.jp/tile/ort/{z}/{x}/{-y}.png',
-    crossOrigin: 'Anonymous',
+    crossOrigin: 'anonymous',
     minZoom: 1,
     maxZoom: 19
   });
