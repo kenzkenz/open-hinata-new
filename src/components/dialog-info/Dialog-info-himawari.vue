@@ -5,6 +5,9 @@
       <span v-html="s_timeH"></span>
       <input type="range" min="0" max="212" step="1" class="himawari-range" v-model.number="s_himawariTime" />
       <b-form-select v-model="type" :options="options" @change="selectChange"></b-form-select>
+      <b-form-checkbox v-model="renzoku" @change="renzokuChange" switch>
+        連続
+      </b-form-checkbox>
     </div>
     <hr>
     気象庁
@@ -12,6 +15,7 @@
 </template>
 
 <script>
+let interval
 import * as Layers from '@/js/layers'
 import * as permalink from '@/js/permalink'
 export default {
@@ -69,6 +73,21 @@ export default {
     },
   },
   methods: {
+    renzokuChange () {
+      const vm = this
+      if (this.renzoku) {
+        let count = 0;
+        interval = setInterval(function() {
+          vm.s_himawariTime = count
+          count++
+          if (count >= vm.$store.state.info.himawariTimes.length) {
+            count = 0
+          }
+        }, 100);
+      } else {
+        clearInterval(interval)
+      }
+    },
     selectChange (value) {
       const basetime = this.$store.state.info.himawariTimes[this.s_himawariTime].basetime
       const url = 'https://www.jma.go.jp/bosai/himawari/data/satimg/' + basetime + '/jp/' + basetime + '/' + value + '/{z}/{x}/{y}.jpg'

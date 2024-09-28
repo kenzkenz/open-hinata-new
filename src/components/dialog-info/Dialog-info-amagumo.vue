@@ -4,6 +4,9 @@
     <div style="">
       <span v-html="s_time"></span>
       <input type="range" min="0" max="48" step="1" class="amagumo-range" v-model.number="s_amagumoTime" />
+      <b-form-checkbox v-model="renzoku" @change="renzokuChange" switch>
+        連続
+      </b-form-checkbox>
     </div>
     <hr>
     <a href="https://www.jma.go.jp/bosai/nowc/" target="_blank">気象庁ナウキャスト</a>
@@ -11,6 +14,7 @@
 </template>
 
 <script>
+let interval
 import * as Layers from '@/js/layers'
 import * as permalink from '@/js/permalink'
 
@@ -21,6 +25,7 @@ export default {
   },
   data () {
     return {
+      renzoku: false
     }
   },
   computed: {
@@ -69,8 +74,22 @@ export default {
     },
   },
   methods: {
+    renzokuChange () {
+      const vm = this
+      if (this.renzoku) {
+        let count = 0;
+        interval = setInterval(function() {
+          vm.s_amagumoTime = count
+          count++
+          if (count >= vm.$store.state.info.amagumoTimes.length) {
+            count = 0
+          }
+        }, 100);
+      } else {
+        clearInterval(interval)
+      }
+    },
     selectChange (value) {
-
       this.storeUpdate()
     },
     storeUpdate () {
