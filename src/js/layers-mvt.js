@@ -159,7 +159,7 @@ function Typhoon(){
   this.source = new VectorSource({wrapX: false})
   this.style = typhoonStyleFunction()
 }
-export const typhoonSumm = "<a href='https://www.jma.go.jp/bosai/map.html#5/32.547/136.758/&elem=root&typhoon=all&contents=typhoon' target='_blank'>気象庁</a>"
+export const typhoonSumm = "<a href='https://www.jma.go.jp/bosai/map.html#5/32.547/136.758/&elem=root&typhoon=all&contents=typhoon' target='_blank'>気象庁ナウキャスト</a>"
 export  const typhoonObj = {}
 for (let i of mapsStr) {
   typhoonObj[i] = new VectorLayer(new Typhoon())
