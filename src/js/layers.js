@@ -104,6 +104,22 @@ for (let i of mapsStr) {
     ]
   })
 }
+// 土砂キキクル----------------------------------------------------------
+function Kikikuru () {
+  this.name = 'kikikuru'
+  this.multiply = true
+  this.preload = Infinity
+  this.source = new XYZ({
+    // url: 'https://www.jma.go.jp/bosai/jmatile/data/risk/20240929100000/immed0/20240929100000/surf/land/{z}/{x}/{y}.png',
+    crossOrigin: 'anonymous',
+    minZoom: 1,
+    maxZoom: 10
+  })
+}
+export const kikikuruObj = {}
+for (let i of mapsStr) {
+  kikikuruObj[i] = new TileLayer(new Kikikuru())
+}
 // -----------------------------------------------------------
 const floodColor = d3.scaleLinear()
     .domain([0, 100, 1000, 2500,9000, 20000])
@@ -13602,7 +13618,7 @@ export const Layers =
         { text: '雨雲の動きモノクロ', data: { id: 'nowcastmono', layer: nowCastMonoObj, opacity: 1, summary: nowCastSumm, component: {name: 'amagumo', values:[]}} },
         { text: 'ひまわり', data: { id: 'himawari', layer: himawariObj, opacity: 1, summary: himawariSumm, component: {name: 'himawari', values:[]}} },
         { text: '台風', data: { id: 'typhoon', layer: LayersMvt.typhoonObj, opacity: 1, summary: LayersMvt.typhoonSumm} },
-
+        { text: '土砂キキクル', data: { id: 'dosyakikikuru', layer: kikikuruObj, opacity: 1, summary: himawariSumm } },
       ]},
     { text:'統計',
       children: [

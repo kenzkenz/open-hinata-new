@@ -2555,6 +2555,10 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
     oldLayerList[0].forEach(value => {
         map.removeLayer(value.layer);
     })
+
+
+
+
     // 台風作成-----------------------------------------------------------------
     const resultT = newLayerList[0].find((layer) => {
         return layer.title === '台風'
