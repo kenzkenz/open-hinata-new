@@ -5,8 +5,11 @@
       <span v-html="s_timeH"></span>
       <input type="range" min="0" max="212" step="1" class="himawari-range" v-model.number="s_himawariTime" />
       <b-form-select v-model="type" :options="options" @change="selectChange"></b-form-select>
-      <b-form-checkbox v-model="renzoku" @change="renzokuChange" switch>
+      <b-form-checkbox style="margin-top: 10px;" v-model="renzoku" @change="renzokuChange" switch>
         連続
+      </b-form-checkbox>
+      <b-form-checkbox style="margin-top: 10px;" v-model="kyokai" @change="kyokaiChange" switch>
+        境界
       </b-form-checkbox>
     </div>
     <hr>
@@ -25,6 +28,8 @@ export default {
   },
   data () {
     return {
+      kyokai: true,
+      renzoku: false,
       type:'B13/TBB',
       options: [
         { value: 'B13/TBB', text: '赤外画像' },
@@ -46,13 +51,14 @@ export default {
       },
       set(value) {
         if (this.$store.state.info.himawariTimes[value]) {
+          const tiiki = 'fd' // jpにすると日本
           const basetime = this.$store.state.info.himawariTimes[value].basetime
           const validtime = this.$store.state.info.himawariTimes[value].validtime
           this.$store.state.info.himawariTime[this.mapName] = value
           // const url = 'https://www.jma.go.jp/bosai/himawari/data/satimg/' + basetime + '/jp/' + basetime + '/REP/ETC/{z}/{x}/{y}.jpg'
-          const url = 'https://www.jma.go.jp/bosai/himawari/data/satimg/' + basetime + '/jp/' + basetime + '/' + this.type + '/{z}/{x}/{y}.jpg'
+          const url = 'https://www.jma.go.jp/bosai/himawari/data/satimg/' + basetime + '/' + tiiki + '/' + basetime + '/' + this.type + '/{z}/{x}/{y}.jpg'
 
-          Layers.himawariObj[this.mapName].getSource().setUrl(url)
+          Layers.himawari0Obj[this.mapName].getSource().setUrl(url)
           // -----------------------------------------------------------
           const t = validtime
           const nen = t.slice(0,4)
@@ -75,6 +81,13 @@ export default {
     },
   },
   methods: {
+    kyokaiChange () {
+      if (this.kyokai) {
+        Layers.himawariSatObj[this.mapName].setVisible(true)
+      } else {
+        Layers.himawariSatObj[this.mapName].setVisible(false)
+      }
+    },
     renzokuChange () {
       const vm = this
       if (this.renzoku) {
@@ -91,9 +104,10 @@ export default {
       }
     },
     selectChange (value) {
+      const tiiki = 'fd' // jpにすると日本
       const basetime = this.$store.state.info.himawariTimes[this.s_himawariTime].basetime
-      const url = 'https://www.jma.go.jp/bosai/himawari/data/satimg/' + basetime + '/jp/' + basetime + '/' + value + '/{z}/{x}/{y}.jpg'
-      Layers.himawariObj[this.mapName].getSource().setUrl(url)
+      const url = 'https://www.jma.go.jp/bosai/himawari/data/satimg/' + basetime + '/' + tiiki + '/' + basetime + '/' + value + '/{z}/{x}/{y}.jpg'
+      Layers.himawari0Obj[this.mapName].getSource().setUrl(url)
 
     },
     storeUpdate () {

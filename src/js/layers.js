@@ -63,10 +63,10 @@ export const nowCastMonoObj = {}
 for (let i of mapsStr) {
   nowCastMonoObj[i] = new TileLayer(new NowcastMono())
 }
-
+// ----------------------------------------------------------------------------------------------------------
 function Himawari () {
   this.name = 'himawari'
-  this.multiply = true
+  // this.multiply = true
   this.preload = Infinity
   this.source = new XYZ({
     // url: 'https://www.jma.go.jp/bosai/himawari/data/satimg/20240915084000/jp/20240915084000/REP/ETC/{z}/{x}/{y}.jpg',
@@ -75,11 +75,35 @@ function Himawari () {
     maxZoom: 5
   })
 }
-export const himawariObj = {}
+export const himawari0Obj = {}
 for (let i of mapsStr) {
-  himawariObj[i] = new TileLayer(new Himawari())
+  himawari0Obj[i] = new TileLayer(new Himawari())
 }
 export const himawariSumm = ''
+
+function HimawariSat () {
+  this.name = 'himawariSat'
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://www.jma.go.jp/tile/jma/sat/{z}/{x}/{y}.png',
+    crossOrigin: 'anonymous',
+    // minZoom: 1,
+    maxZoom: 6
+  })
+}
+export const himawariSatObj = {}
+for (let i of mapsStr) {
+  himawariSatObj[i] = new TileLayer(new HimawariSat())
+}
+export const himawariObj = {};
+for (let i of mapsStr) {
+  himawariObj[i] = new LayerGroup({
+    layers: [
+      himawariSatObj[i],
+      himawari0Obj[i],
+    ]
+  })
+}
 // -----------------------------------------------------------
 const floodColor = d3.scaleLinear()
     .domain([0, 100, 1000, 2500,9000, 20000])

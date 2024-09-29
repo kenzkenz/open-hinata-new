@@ -2792,9 +2792,13 @@ export function watchLayer (map, thisName, newLayerList,oldLayerList) {
             }
             // ---------------------------------------------------------------------------------------------------------
             if (title === 'ひまわり') {
-                const url = 'https://www.jma.go.jp/bosai/himawari/data/satimg/' + basetimeHimawari + '/jp/' + basetimeHimawari + '/B13/TBB/{z}/{x}/{y}.jpg'
-                Layers.himawariObj.map01.getSource().setUrl(url)
-                Layers.himawariObj.map02.getSource().setUrl(url)
+                const tiiki = 'fd' // jpにすると日本
+                const url = 'https://www.jma.go.jp/bosai/himawari/data/satimg/' + basetimeHimawari + '/' + tiiki + '/' + basetimeHimawari + '/B13/TBB/{z}/{x}/{y}.jpg'
+                // https://www.jma.go.jp/bosai/himawari/data/satimg/20240929043000/fd/20240929043000/B03/ALBD/5/27/12.jpg
+                Layers.himawari0Obj.map01.getSource().setUrl(url)
+                Layers.himawari0Obj.map02.getSource().setUrl(url)
+                Layers.himawariSatObj.map01.setZIndex(9999999)
+                Layers.himawariSatObj.map02.setZIndex(9999999)
             }
             // ---------------------------------------------------------------------------------------------------------
             // グループレイヤーのときzindexは効かないようだ。しかしz順が必要になるときがあるので項目を作っている。
