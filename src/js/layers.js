@@ -6,7 +6,7 @@ import VectorSource from 'ol/source/Vector'
 import OSM from 'ol/source/OSM'
 import XYZ from 'ol/source/XYZ.js'
 import GeoJSON from 'ol/format/GeoJSON'
-import {Fill, Stroke, Style, Text} from 'ol/style'
+import {Circle as Circle0, Fill, Stroke, Style, Text} from 'ol/style'
 import RasterSource from 'ol/source/Raster'
 import { transformExtent, fromLonLat } from 'ol/proj.js'
 import LayerGroup from 'ol/layer/Group'
@@ -20,6 +20,9 @@ import  * as MaskDep from './mask-dep'
 import  * as LayersMvt from './layers-mvt'
 // import BingMaps from 'ol/source/BingMaps'
 import * as d3 from "d3"
+import VectorTileSource from "ol/source/VectorTile";
+import MVT from "ol/format/MVT";
+import VectorTileLayer from "ol/layer/VectorTile";
 
 const mapsStr = ['map01','map02']
 const transformE = extent => {
@@ -105,8 +108,8 @@ for (let i of mapsStr) {
   })
 }
 // 土砂キキクル----------------------------------------------------------
-function Kikikuru () {
-  this.name = 'kikikuru'
+function DosyaKikikuru () {
+  this.name = 'dosyakikikuru'
   this.multiply = true
   this.preload = Infinity
   this.source = new XYZ({
@@ -116,9 +119,79 @@ function Kikikuru () {
     maxZoom: 10
   })
 }
-export const kikikuruObj = {}
+export const dosyakikikuruObj = {}
 for (let i of mapsStr) {
-  kikikuruObj[i] = new TileLayer(new Kikikuru())
+  dosyakikikuruObj[i] = new TileLayer(new DosyaKikikuru())
+}
+// 浸水キキクル----------------------------------------------------------
+function ShinsuiKikikuru () {
+  this.name = 'shinsuikikikuru'
+  this.multiply = true
+  this.preload = Infinity
+  this.source = new XYZ({
+    crossOrigin: 'anonymous',
+    minZoom: 1,
+    maxZoom: 10
+  })
+}
+export const shinsuikikikuruObj = {}
+for (let i of mapsStr) {
+  shinsuikikikuruObj[i] = new TileLayer(new ShinsuiKikikuru())
+}
+// 洪水キキクル----------------------------------------------------------
+// function kozuikikuru () {
+//   this.name = 'kozuikikikuru'
+//   this.multiply = true
+//   this.preload = Infinity
+//   this.source = new XYZ({
+//     crossOrigin: 'anonymous',
+//     minZoom: 1,
+//     maxZoom: 10
+//   })
+// }
+// export const kozuikikikuruObj = {}
+// for (let i of mapsStr) {
+//   kozuikikikuruObj[i] = new TileLayer(new kozuikikuru())
+// }
+
+
+function kozuikikuru(){
+  // this.name = 'kozuikikikuru'
+  this.name = 'default'
+  this.source = new VectorTileSource({
+    format: new MVT(),
+    url: 'https://www.jma.go.jp/bosai/jmatile/data/risk/20240929122000/immed0/20240929122000/surf/flood/{z}/{x}/{y}.pbf'
+  })
+  // this.maxResolution = '152.874057' //zoom10
+  this.style = kozuiStyleFunction()
+}
+export  const kozuikikikuruObj = {};
+for (let i of mapsStr) {
+  kozuikikikuruObj[i] = new VectorTileLayer(new kozuikikuru())
+}
+function kozuiStyleFunction() {
+  return function (feature, resolution) {
+    // const zoom = getZoom(resolution)
+    const prop = feature.getProperties()
+    const styles = []
+    let color = 'black'
+    switch (prop.level) {
+      case 1:
+        color = 'yellow'
+        break
+      case 2:
+        color = 'red'
+        break
+    }
+    const lineStyle = new Style({
+      stroke: new Stroke({
+        color: color,
+        width:6
+      })
+    })
+    styles.push(lineStyle)
+    return styles
+  }
 }
 // -----------------------------------------------------------
 const floodColor = d3.scaleLinear()
@@ -13618,7 +13691,10 @@ export const Layers =
         { text: '雨雲の動きモノクロ', data: { id: 'nowcastmono', layer: nowCastMonoObj, opacity: 1, summary: nowCastSumm, component: {name: 'amagumo', values:[]}} },
         { text: 'ひまわり', data: { id: 'himawari', layer: himawariObj, opacity: 1, summary: himawariSumm, component: {name: 'himawari', values:[]}} },
         { text: '台風', data: { id: 'typhoon', layer: LayersMvt.typhoonObj, opacity: 1, summary: LayersMvt.typhoonSumm} },
-        { text: '土砂キキクル', data: { id: 'dosyakikikuru', layer: kikikuruObj, opacity: 1, summary: himawariSumm } },
+        { text: '土砂キキクル', data: { id: 'dosyakikikuru', layer: dosyakikikuruObj, opacity: 1, summary: himawariSumm, component: {name: 'dosyakikikuru', values:[]}} },
+        { text: '洪水キキクル', data: { id: 'kozuikikikuru', layer: kozuikikikuruObj, opacity: 1, summary: himawariSumm, component: {name: 'kozuikikikuru', values:[]}} },
+        { text: '浸水キキクル', data: { id: 'shinsuikikikuru', layer: shinsuikikikuruObj, opacity: 1, summary: himawariSumm, component: {name: 'shinsuikikikuru', values:[]}} },
+
       ]},
     { text:'統計',
       children: [

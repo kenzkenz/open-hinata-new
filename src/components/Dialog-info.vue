@@ -39,6 +39,9 @@
             <v-op :item="item" :mapName="mapName" v-else-if="item.component.name === 'op'"/>
             <v-amagumo :item="item" :mapName="mapName" v-else-if="item.component.name === 'amagumo'"/>
             <v-himawari :item="item" :mapName="mapName" v-else-if="item.component.name === 'himawari'"/>
+            <v-dosyakikikuru :item="item" :mapName="mapName" v-else-if="item.component.name === 'dosyakikikuru'"/>
+            <v-kozuikikikuru :item="item" :mapName="mapName" v-else-if="item.component.name === 'kozuikikikuru'"/>
+            <v-shinsuikikikuru :item="item" :mapName="mapName" v-else-if="item.component.name === 'shinsuikikikuru'"/>
         </div>
     </div>
 </template>
@@ -70,6 +73,10 @@
   import DialogInfoOp from '@/components/dialog-info/Dialog-info-op'
   import DialogInfoAmagumo from '@/components/dialog-info/Dialog-info-amagumo'
   import DialogInfoHimawari from '@/components/dialog-info/Dialog-info-himawari'
+  import DialogInfoDosyakikikuru from '@/components/dialog-info/Dialog-info-dosyakikikuru'
+  import DialogInfoKozuikikikuru from '@/components/dialog-info/Dialog-info-kozuikikikuru'
+  import DialogInfoShinsuikikikuru from '@/components/dialog-info/Dialog-info-shinsuikikikuru'
+
   import store from "@/js/store";
 
   export default {
@@ -101,6 +108,9 @@
       'v-op':DialogInfoOp,
       'v-amagumo':DialogInfoAmagumo,
       'v-himawari':DialogInfoHimawari,
+      'v-dosyakikikuru':DialogInfoDosyakikikuru,
+      'v-kozuikikikuru':DialogInfoKozuikikikuru,
+      'v-shinsuikikikuru':DialogInfoShinsuikikikuru,
     },
     props: ['mapName'],
     computed: {

@@ -540,6 +540,33 @@ const moduleInfo = {
       map01: 37,
       map02: 37,
     },
+    dosyakikikuruTimes: [],
+    dosyakikikuruTime: {
+      map01: 37,
+      map02: 37,
+    },
+    timeD:  {
+      map01: '',
+      map02: '',
+    },
+    kozuikikikuruTimes: [],
+    kozuikikikuruTime: {
+      map01: 37,
+      map02: 37,
+    },
+    timeK:  {
+      map01: '',
+      map02: '',
+    },
+    shinsuikikikuruTimes: [],
+    shinsuikikikuruTime: {
+      map01: 37,
+      map02: 37,
+    },
+    timeS:  {
+      map01: '',
+      map02: '',
+    },
     tansyashin: {
       map01: 'all',
       map02: 'all',
