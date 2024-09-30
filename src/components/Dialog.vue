@@ -4,7 +4,7 @@
         <div class="drag-handle" v-my-drag-handle>
         </div>
             <div>
-              <div id="bookmark-btn" v-if="reset === 1" class="bookmark-btn-div" @click="bookmarkBtn"><i class="fa-sharp fa-solid fa-bookmark hover"></i></div>
+<!--              <div id="bookmark-btn" v-if="reset === 1" class="bookmark-btn-div" @click="bookmarkBtn"><i class="fa-sharp fa-solid fa-bookmark hover"></i></div>-->
               <div id="reset-btn" v-if="reset === 1" class="reset-btn-div" @click="resetBtn"><i class="fa-sharp fa-solid fa-trash-arrow-up hover"></i></div>
               <div class="close-btn-div" @click="closeBtn"><i class="fa-solid fa-xmark hover close-btn"></i></div>
                 <slot></slot>

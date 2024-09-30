@@ -6,14 +6,6 @@
             <div class="list-div">
 
               <div class="handle-div" ><i class="fa-solid fa-up-down fa-lg handle-icon"></i></div>
-
-<!--              <label class="check-box" :for='mapName + "checkbox" + item.id'>-->
-<!--                <div class="check-div" >-->
-<!--                    <input :id='mapName + "checkbox" + item.id' type="checkbox" checked v-model="item.check" @change="checkLayer(item)">-->
-<!--                    <span class="check-text"></span>-->
-<!--                </div>-->
-<!--              </label>-->
-
               <label class="eye-label">
                 <input type="checkbox" class='checkbox' checked v-model="item.check" @change="checkLayer(item)">
                 <span class="checkbox-eye"></span>
@@ -40,10 +32,10 @@
 <!--              <div class="bookmark-div" @click="bookmark(item)"><span :style="bookmarkStyle"><i class="fa-sharp fa-solid fa-bookmark hover"></i></span></div>-->
 
 <!--              <div class="bookmark-div" @click="bookmark(item)"><span :style="bookmarkStyle"><i class="fa-sharp fa-solid fa-bookmark hover"></i></span></div>-->
-              <label class="bookmark-label">
-                <input type="checkbox" class='bookmark-div checkbox' v-model="item.bookmark" @change="bookmark(item)">
-                <span :id='"label" + item.id' class="checkbox-fontas"></span>
-              </label>
+<!--              <label class="bookmark-label">-->
+<!--                <input type="checkbox" class='bookmark-div checkbox' v-model="item.bookmark" @change="bookmark(item)">-->
+<!--                <span :id='"label" + item.id' class="checkbox-fontas"></span>-->
+<!--              </label>-->
 
               <b-popover  v-if="innerWidth"
                            content="ブックマーク"
@@ -367,7 +359,7 @@
     }
     .item-div{
         position: absolute;
-        left: 90px;
+        left: 100px;
         top: 3px;
         white-space: nowrap;
         overflow: hidden;
@@ -378,14 +370,14 @@
     .range-div{
         position: absolute;
         top:16px;
-        left:86px;
+        left: 100px;
         /*width:calc(100% - 104px);*/
         width:calc(100% - 127px);
     }
     .info-div{
       position: absolute;
       top:5px;
-      left:70px;
+      left:80px;
       width:15px;
       cursor: pointer;
       color:rgba(0,60,136,0.5);
@@ -404,7 +396,7 @@
       position: absolute;
       margin-top: -2px;
       padding-left: 5px;
-      left: 47px;
+      left: 51px;
       top:8px;
       width: 20px;
       height: 20px;
@@ -412,7 +404,7 @@
     }
     @media screen and (max-width:500px) {
       .range-div{
-        width:calc(100% - 180px);
+        width:calc(100% - 160px);
         left:125px;
       }
       .item-div{
