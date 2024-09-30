@@ -62,7 +62,7 @@
                 </div>
                 <div class="top-right-div">
                   <b-button style="margin-right: 5px;" v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="openDialog(s_dialogs['dialogTrack'])"><i class="fa-solid fa-person-walking"></i></b-button>
-                  <b-button style="margin-right: 5px;" v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="openDialog(s_dialogs['dialogShare'])">共有</b-button>
+                  <b-button style="margin-right: 5px;" v-if="mapName === 'map01'" class='olbtn' id="share-btn" :size="btnSize" @click="openDialog(s_dialogs['dialogShare'])"></b-button>
                   <b-button i v-if="mapName === 'map01'" class='olbtn' :size="btnSize" @click="openDialog(s_dialogs['measureDialog'])"><i class="fa-solid fa-pen"></i></b-button>
                 </div>
 
@@ -2113,12 +2113,18 @@ import {drawLayer} from "../js/mymap";
     /*  top:0px;*/
     /*  left:0px;*/
     /*}*/
+    #share-btn:after {
+      content: "共有";
+    }
     #swipe-map-btn:after {
       content: "swipe";
     }
     @media screen and (max-width:500px) {
       #swipe-map-btn:after {
         content: "s";
+      }
+      #share-btn:after {
+        content: "共";
       }
     }
 </style>

@@ -33,6 +33,25 @@ const transformE = extent => {
   extent = [extent[2],extent[0],extent[3],extent[1]]
   return transformExtent(extent,'EPSG:4326','EPSG:3857')
 }
+
+// ----------------------------------------------------------
+function Dronebird () {
+  this.name = 'dronebird'
+  this.multiply = true
+  this.preload = Infinity
+  this.source = new XYZ({
+    url: 'https://apps.kontur.io/raster-tiler/oam/mosaic/{z}/{x}/{y}.png',
+    crossOrigin: 'anonymous',
+    minZoom: 1,
+    // maxZoom: 10
+  })
+}
+const dronebirdSumm = ''
+export const dronebirdObj = {}
+for (let i of mapsStr) {
+  dronebirdObj[i] = new TileLayer(new Dronebird())
+}
+
 // 気象庁ナウキャスト----------------------------------------------------------
 function Nowcast () {
   this.name = 'nowCast'
@@ -13726,6 +13745,7 @@ export const Layers =
         { text: '長岡市航空写真', data: { id: 'nagaokaOrt', layer: nagaokaOrthoObj, opacity: 1, summary: nagaokaOrthoSumm } },
         { text: '朝来市航空写真', data: { id: 'asagoOrt', layer: asagoOrthoObj, opacity: 1, summary: asagoOrthoSumm } },
         { text: '半田市航空写真', data: { id: 'handaOrt', layer: handaOrthoObj, opacity: 1, summary: handaOrthoSumm } },
+        { text: 'DRONEBIRD', data: { id: 'dronebird', layer: dronebirdObj, opacity: 1, summary: dronebirdSumm } },
         { text: '令和6年能登半島地震',
           children: [
             { text: '能登地区（2024年4月5日～26日撮影）', data: { id: 'noto20240405Ort', layer: noto20240405Obj, opacity: 1, summary: noto20240405Summ } },
