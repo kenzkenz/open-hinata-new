@@ -13598,92 +13598,32 @@ const handaOrthoSumm = '<a href="https://wiki.openstreetmap.org/wiki/OSMFJ/ortho
 // ここにレイヤーを全部書く。クリックするとストアのlayerListに追加されていく-------------------------
 export const Layers =
   [
-    { text: '<span style="color: red;">宮崎県ハザードマップ</span>',
-      children: [
-        { text: '宮崎県南海トラフ地震津波浸水想定', data: { id: 'miyazakinantora', layer: LayersMvt.nantoraObj, opacity: 1, summary: LayersMvt.nantoraSumm } },
-        { text: '宮崎県南海トラフ地震震度分布', data: { id: 'miyazakinantorashindo', layer: LayersMvt.nantoraShindoObj, opacity: 1, summary: LayersMvt.nantoraShindoSumm } },
-        { text: '宮崎県南海トラフ地震液状化可能性', data: { id: 'miyazakinantoraekijyoka', layer: LayersMvt.nantoraEkijyokaObj, opacity: 1, summary: LayersMvt.nantoraShindoSumm } },
-        { text: '宮崎県日向灘地震津波浸水想定', data: { id: 'hyugatsunami', layer: LayersMvt.hyugaTsunamiObj, opacity: 1, summary: LayersMvt.hyugaTsunamiSumm } },
-        { text: '宮崎県日向灘地震震度分布', data: { id: 'hyugashindo', layer: LayersMvt.hyuganadaShindoObj, opacity: 1, summary: LayersMvt.hyuganadaShindoSumm } },
-        { text: '宮崎県日向灘地震津波到達時間', data: { id: 'hyugatotatsu', layer: LayersMvt. hyuganadaTsunamiTotatsu, opacity: 1, summary: LayersMvt.hyuganadaTsunamiTotatsuSumm } },
-        { text: '宮崎市洪水ハザードマップﾟ', data: { id: 'miyazakisiHm', layer: miyazakisiHmObj, opacity: 1, zoom: 13, center: [131.42054548436312, 31.907339493919977], summary: miyazakisiHmSumm } },
-        // { text: '都城市洪水ハザードマップﾟ', data: { id: 'miyakonozyousiHm', layer: miyakonozyousiHmObj, opacity: 1, zoom: 13, center: [131.07797970576192, 31.78882205640913], summary: miyakonozyousiHmSumm } },
-        // { text: '日向市防災ハザードマップﾟ', data: { id: 'hyuugasiHm', layer: hyuugasiHmObj, opacity: 1, zoom: 13, center: [131.6400086045909, 32.395198966795306], summary: hyuugasiHmSumm } },
-      ]},
-    { text: '令和6年能登半島まとめ',
-      children: [
-        { text: '<span style="color: red;">輪島東部地区（9/24撮影）</span>', data: { id: 'wajima0924tobu', layer: wajima20240924tobuObj, opacity: 1, summary: wajima20240923Summ } },
-        { text: '<span style="color: red;">輪島西武地区（9/24撮影）</span>', data: { id: 'wajima0924seibu', layer: wajima20240924seibuObj, opacity: 1, summary: wajima20240923Summ } },
-
-        { text: '<span style="color: red;">輪島地区（9/23撮影）</span>', data: { id: 'wajima0923', layer: wajima20240923Obj, opacity: 1, summary: wajima20240923Summ } },
-        { text: '<span style="color: red;">斜面崩壊・土石流・堆積分布データ（9/23撮影）</span>', data: { id: 'notoHoka', layer: LayersMvt.notoHokaiObj, opacity: 1, summary: wajima20240923Summ } },
-
-
-        { text: '能登CS立体図（発災前:森林総合研究所）', data: { id: 'notocs', layer: notoCsObj, opacity: 1, summary: notoCsSumm } },
-        { text: '能登CS立体図（発災後:林野庁）', data: { id: 'notocsrinya', layer: notocsrinyaObj, opacity: 1, summary: notocsrinyaSumm } },
-        { text: '新潟県長岡CS立体図（発災後:林野庁）', data: { id: 'nagaokacsrinya', layer: nagaokaCsObj, opacity: 1, summary: nagaokaCsSumm } },
-        { text: '新潟県長岡傾斜区分図（発災後:林野庁）', data: { id: 'nagaokakaieys', layer: nagaokaKeisyaObj, opacity: 1, summary: nagaokaKeisyaSumm } },
-        { text: '能登傾斜区分図（発災後:林野庁）', data: { id: 'notokeisyarinya', layer: notokeisyarinyaObj, opacity: 1, summary: notokeisyarinyaSumm } },
-        { text: '能登斜面崩壊', data: { id: 'notosyamenhokai', layer: LayersMvt.notosyamenhokaiObj, opacity: 1, summary: LayersMvt.notosyamenhokaiSumm } },
-        { text: '陸化したと思われる港', data: { id: 'notominato', layer: LayersMvt.notominatoObj, opacity: 1, summary: LayersMvt.notominatoSumm } },
-        { text: '能登西部赤色立体地図', data: { id: 'notoseibu', layer: notoSeibuObj, opacity: 1, summary: notoSeubuSumm } },
-        { text: '液状化危険度分布図（石川県）', data: { id: 'ekizyouka17', layer: ekizyouka17Obj, opacity: 1, summary: ekizyoukaSumm } },
-        { text: '富山県埋蔵文化財（2021.4.1）', data: { id: "toyamamaibun", layer: LayersMvt.toyamamaibunObj, opacity: 1, summary: LayersMvt.toyamamaibunSumm } },
-        { text: '17石川県農地', data: { id: 'hude17', layer: LayersMvt.hude17Obj, opacity: 1, summary: LayersMvt.hude17Summ } },
-        { text: '戦前地形図5万分の１', data: { id: 'mw5', layer: mw5Obj, opacity: 1, summary: mw5Summ } },
-        { text: '17石川県古地図(大正14年)', data: { id: 'kotizu17isikawa', layer: kotizu17isikawaObj, opacity: 1, summary: kotizu17isikawaSumm } },
-        { text: '能登地区（2024年4月5日～26日撮影）', data: { id: 'noto20240405Ort', layer: noto20240405Obj, opacity: 1, summary: noto20240405Summ } },
-        { text: '輪島西地区（2024年1月17日撮影）', data: { id: 'wajimanishi20240117Ort', layer: wajimanishi20240117Obj, opacity: 1, summary: wajimanishi20240117Summ } },
-        { text: '穴水地区（2024年1月17日撮影）', data: { id: 'anami20240117Ort', layer: anami20240117Obj, opacity: 1, summary: anami20240117Summ } },
-        { text: '七尾地区（2024年1月17日撮影）', data: { id: 'nanao20240117Ort', layer: nanao20240117Obj, opacity: 1, summary: nanao20240117Summ } },
-        { text: '珠洲地区（2024年1月14日撮影）', data: { id: 'suzu20240114Ort', layer: suzu20240114Obj, opacity: 1, summary: suzu20240114Summ } },
-        { text: '輪島東地区（2024年1月14日撮影）', data: { id: 'wajimahigashi20240114Ort', layer: wajimahigashi20240114Obj, opacity: 1, summary: wajimahigashi20240114Summ } },
-        { text: '穴水地区（2024年1月14日撮影）', data: { id: 'anamizu20240114Ort', layer: anamizu20240114Obj, opacity: 1, summary: anamizu20240114Summ } },
-        { text: '輪島中地区（2024年1月11日撮影）', data: { id: 'wajimanaka20240111Ort', layer: wajimanaka20240111Obj, opacity: 1, summary: wajimanaka20240111Summ } },
-        { text: '輪島西地区（2024年1月11日撮影）', data: { id: 'wajimanishi20240111Ort', layer: wajimanishi20240111Obj, opacity: 1, summary: wajimanishi20240111Summ } },
-        { text: '穴水地区（2024年1月11日撮影）', data: { id: 'anamizu20240111Ort', layer: anamizu20240111Obj, opacity: 1, summary: anamizu20240111Summ } },
-        { text: '珠洲地区（2024年1月5日撮影）', data: { id: 'suzu20240105rt', layer: suzu20240105Obj, opacity: 1, summary: suzu20240105Summ } },
-        { text: '輪島中地区（2024年1月5日撮影）', data: { id: 'wajimanaka20240105rt', layer: wajimanaka20240105Obj, opacity: 1, summary: wajimanaka20240105Summ } },
-        { text: '穴水地区（2024年1月5日撮影）', data: { id: 'anamizu20240105rt', layer: anamizu20240105Obj, opacity: 1, summary: anamizu20240105Summ } },
-        { text: '七尾地区（2024年1月5日撮影）', data: { id: 'nanao20240105rt', layer: nanao20240105Obj, opacity: 1, summary: nanao20240105Summ } },
-        { text: '珠洲地区（2024年1月2日撮影）', data: { id: 'suzu20240102rt', layer: suzu20240102Obj, opacity: 1, summary: suzu20240102Summ } },
-        { text: '輪島中地区（2024年1月2日撮影）', data: { id: 'wajimanaka20240102rt', layer: wajimanaka20240102Obj, opacity: 1, summary: wajimanaka20240102Summ } },
-        { text: '輪島東地区（2024年1月2日撮影）', data: { id: 'wajimahigashi20240102rt', layer: wajimahigashi20240102Obj, opacity: 1, summary: wajimahigashi20240102Summ } },
-      ]},
-    { text: 'OpenStreetMap', data: { id: 0, layer: osmObj, opacity: 1, summary: osmSumm } },
-    { text: '国土地理院',
+    { text: '基本地図',
       children: [
         { text: '標準地図', data: { id: 1, layer: stdObj, opacity: 1, summary: stdSumm } },
         { text: '淡色地図', data: { id: 2, layer: paleObj, opacity: 1, summary: paleSumm } },
         { text: '白地図', data: { id: 3, layer: blankObj, opacity: 1, summary: blankSumm } },
-        { text: '色別標高図', data: { id: 4, layer: reliefObj, opacity: 1, summary: reliefSumm } },
-        { text: '陰影起伏図', data: { id: 'inei', layer: ineiObj, opacity: 1, summary: stdSumm } },
-        { text: '傾斜量図', data: { id: 'keisya', layer: keisyaObj, opacity: 1, summary: stdSumm } },
-        { text: '明治期の低湿地', data: { id: 'sitti', layer: sittiObj, opacity: 1, summary: stdSumm } },
-        { text: '治水地形分類図 更新版（2007年以降）', data: { id: 'tisui2007', layer: tisui2007Obj, opacity: 1, summary: tisui2007Summ } },
-        { text: '地形分類（自然地形）', data: { id: 'sizen', layer: LayersMvt.sizentikei0Obj, opacity: 1, summary: LayersMvt.sizentikeiSumm} },
-        { text: '自然地形（白黒）', data: { id: 'sizenshirokuro', layer: shizenShirokuroObj, opacity: 1, summary: shizenShirokuroSumm} },
-        { text: '人工改変地形（白黒）', data: { id: 'jinkoshirokuro', layer: jinkoShirokuroObj, opacity: 1, summary: jinkoShirokuroSumm} },
-        // { text: '地形分類（自然地形『詳細版』）', data: { id: 'sizen', layer: LayersMvt.sizentikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm} },
-        { text: '地形分類（人工地形）', data: { id: "zinkoutikei", layer: LayersMvt.zinkoutikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm } },
-        { text: '土地利用図（1982～1983年）', data: { id: "totiriyouzu", layer: totiriyouzuObj, opacity: 1, summary: totiriyouzuSumm } },
-        { text: '数値地図25000（土地条件）', data: { id: "suuti25000", layer: suuti25000Obj, opacity: 1, summary: suuti25000Summ } },
-        { text: '空港等の周辺空域', data: { id: "kuiki", layer: LayersMvt.kuiki0Obj, opacity: 1, summary: LayersMvt.kuikiSumm} },
-        { text: '湖沼', data: { id: "kosyo", layer: kosyoObj, opacity: 1, summary: kosyoSumm } },
-        { text: 'アナグリフ', data: { id: "anaglyph", layer: anaglyphObj, opacity: 1, summary: anaglyphSumm} },
+        { text: 'OpenStreetMap', data: { id: 0, layer: osmObj, opacity: 1, summary: osmSumm } },
         { text: '最適化ベクトルタイル', data: { id: "saitekika", layer: LayersMvt.saitekikaObj, opacity: 1, summary: LayersMvt.saitekikaSumm} },
         { text: 'ベクトルタイル', data: { id: "saitekika0", layer: LayersMvt.saitekika0Obj, opacity: 1, summary: LayersMvt.saitekika0Summ} },
-      ]},
-    { text:'カラー地図',
-      children: [
-        { text: '白地図', data: { id: 3, layer: blankObj, opacity: 1, summary: blankSumm } },
-        { text: 'モノクロ地図', data: { id: 'monochrome', layer: paleGrayObj, opacity: 1, summary: paleSumm } },
-        { text: 'ダーク地図', data: { id: 'paleDark', layer: paleDarkObj, opacity: 1, summary: paleSumm } },
-        { text: 'セピア地図', data: { id: 'paleSepia', layer: paleSepiaObj, opacity: 1, summary: paleSumm } },
-        { text: '反転地図', data: { id: 'paleHanten', layer: paleHantenObj, opacity: 1, summary: paleSumm } },
-        { text: 'MIERUNE', data: { id: 'mierune', layer: mieruneObj, opacity: 1, summary: mieruneSumm } },
-        { text: 'MIERUNE mono', data: { id: 'mierunemono', layer: mieruneGrayObj, opacity: 1, summary: mieruneSumm } },
-      ]},
+        { text: '過去の地理院地図（全国Q地図）',
+          children: [
+            { text: '2020年9月27日～10月7日時点', data: { id: 'q2020', layer: q2020Obj, opacity: 1, summary: qSumm } },
+            { text: '2021年9月29日～10月7日時点', data: { id: 'q2021', layer: q2021Obj, opacity: 1, summary: qSumm } },
+            { text: '2022年9月30日時点', data: { id: 'q2022', layer: q2022Obj, opacity: 1, summary: qSumm } },
+            { text: '2023年9月30日時点', data: { id: 'q2023', layer: q2023Obj, opacity: 1, summary: qSumm } },
+          ]},
+        { text:'カラー地図',
+          children: [
+            { text: '白地図', data: { id: 3, layer: blankObj, opacity: 1, summary: blankSumm } },
+            { text: 'モノクロ地図', data: { id: 'monochrome', layer: paleGrayObj, opacity: 1, summary: paleSumm } },
+            { text: 'ダーク地図', data: { id: 'paleDark', layer: paleDarkObj, opacity: 1, summary: paleSumm } },
+            { text: 'セピア地図', data: { id: 'paleSepia', layer: paleSepiaObj, opacity: 1, summary: paleSumm } },
+            { text: '反転地図', data: { id: 'paleHanten', layer: paleHantenObj, opacity: 1, summary: paleSumm } },
+            { text: 'MIERUNE', data: { id: 'mierune', layer: mieruneObj, opacity: 1, summary: mieruneSumm } },
+            { text: 'MIERUNE mono', data: { id: 'mierunemono', layer: mieruneGrayObj, opacity: 1, summary: mieruneSumm } },
+          ]},
+          ]},
     {
       text: '天気',
       children: [
@@ -13745,22 +13685,21 @@ export const Layers =
             { text: 'R02医療機関', data: { id: "iryo", layer: LayersMvt.iryoObj, opacity: 1, summary: LayersMvt.iryoSumm,component: {name: 'iryou', values:[]} } },
           ]},
       ]},
-    { text: '全国Q地図',
+    { text: '全国構造物マップ',
       children: [
-        { text: '過去の地理院地図（全国Q地図）',
-          children: [
-            { text: '2020年9月27日～10月7日時点', data: { id: 'q2020', layer: q2020Obj, opacity: 1, summary: qSumm } },
-            { text: '2021年9月29日～10月7日時点', data: { id: 'q2021', layer: q2021Obj, opacity: 1, summary: qSumm } },
-            { text: '2022年9月30日時点', data: { id: 'q2022', layer: q2022Obj, opacity: 1, summary: qSumm } },
-            { text: '2023年9月30日時点', data: { id: 'q2023', layer: q2023Obj, opacity: 1, summary: qSumm } },
-          ]},
+        // { text: '過去の地理院地図（全国Q地図）',
+        //   children: [
+        //     { text: '2020年9月27日～10月7日時点', data: { id: 'q2020', layer: q2020Obj, opacity: 1, summary: qSumm } },
+        //     { text: '2021年9月29日～10月7日時点', data: { id: 'q2021', layer: q2021Obj, opacity: 1, summary: qSumm } },
+        //     { text: '2022年9月30日時点', data: { id: 'q2022', layer: q2022Obj, opacity: 1, summary: qSumm } },
+        //     { text: '2023年9月30日時点', data: { id: 'q2023', layer: q2023Obj, opacity: 1, summary: qSumm } },
+        //   ]},
         { text: ' 全国橋梁マップ', data: { id: "qbridge", layer: LayersMvt.qBridge0Obj, opacity: 1, summary: LayersMvt.qSumm2} },
         { text: ' 全国トンネルマップ', data: { id: "qtunnel", layer: LayersMvt.qTunnel0Obj, opacity: 1, summary: LayersMvt.qSumm2} },
         { text: ' 全国シェッドマップ', data: { id: "qshed", layer: LayersMvt.qShed0Obj, opacity: 1, summary: LayersMvt.qSumm2} },
         { text: ' 全国大型カルバートマップ', data: { id: "qculvert", layer: LayersMvt.qzCulvert0Obj, opacity: 1, summary: LayersMvt.qSumm2} },
         { text: ' 全国横断歩道橋マップ', data: { id: "qfootbridge", layer: LayersMvt.qFootbridge0Obj, opacity: 1, summary: LayersMvt.qSumm2} },
         { text: ' 全国門型標識等マップ', data: { id: "qsign", layer: LayersMvt.qSign0Obj, opacity: 1, summary: LayersMvt.qSumm2} },
-        { text: ' 全国ため池マップ', data: { id: "qtameike", layer: LayersMvt.qTameike0Obj, opacity: 1, summary: LayersMvt.qSumm2} },
       ]},
     { text: '航空写真',
       children: [
@@ -13821,9 +13760,24 @@ export const Layers =
         { text: '1928年航空写真(大阪府)', data: { id: 'sp28', layer: sp28Obj, opacity: 1, summary: sp28Summ } },
         { text: '単写真', data: { id: "tansyashin", layer: LayersMvt.tansyashinObj, opacity: 1, summary: LayersMvt.tansyashinSumm, component: {name: 'tansyashin', values:[]} } },
       ]},
-    { text: '立体図、地質図等',
+    { text: '自然、立体図、地質図、標高図等',
       children: [
+        { text: '色別標高図', data: { id: 4, layer: reliefObj, opacity: 1, summary: reliefSumm } },
+        { text: '傾斜量図', data: { id: 'keisya', layer: keisyaObj, opacity: 1, summary: stdSumm } },
+        { text: '陰影起伏図', data: { id: 'inei', layer: ineiObj, opacity: 1, summary: stdSumm } },
         { text: '自分で作る色別標高図', data: { id: "myhokozu", layer: hyokozuObj, opacity: 1, summary: '', component: {name: 'hyokozu', values:[]} } },
+        { text: '明治期の低湿地', data: { id: 'sitti', layer: sittiObj, opacity: 1, summary: stdSumm } },
+        { text: '治水地形分類図 更新版（2007年以降）', data: { id: 'tisui2007', layer: tisui2007Obj, opacity: 1, summary: tisui2007Summ } },
+        { text: '地形分類（自然地形）', data: { id: 'sizen', layer: LayersMvt.sizentikei0Obj, opacity: 1, summary: LayersMvt.sizentikeiSumm} },
+        { text: '自然地形（白黒）', data: { id: 'sizenshirokuro', layer: shizenShirokuroObj, opacity: 1, summary: shizenShirokuroSumm} },
+        { text: '人工改変地形（白黒）', data: { id: 'jinkoshirokuro', layer: jinkoShirokuroObj, opacity: 1, summary: jinkoShirokuroSumm} },
+        // { text: '地形分類（自然地形『詳細版』）', data: { id: 'sizen', layer: LayersMvt.sizentikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm} },
+        { text: '地形分類（人工地形）', data: { id: "zinkoutikei", layer: LayersMvt.zinkoutikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm } },
+        { text: '土地利用図（1982～1983年）', data: { id: "totiriyouzu", layer: totiriyouzuObj, opacity: 1, summary: totiriyouzuSumm } },
+        { text: '数値地図25000（土地条件）', data: { id: "suuti25000", layer: suuti25000Obj, opacity: 1, summary: suuti25000Summ } },
+        { text: '湖沼', data: { id: "kosyo", layer: kosyoObj, opacity: 1, summary: kosyoSumm } },
+        { text: ' 全国ため池マップ', data: { id: "qtameike", layer: LayersMvt.qTameike0Obj, opacity: 1, summary: LayersMvt.qSumm2} },
+
         { text: '熊本県森林計画図', data: { id: "kumamotoshinrin", layer: LayersMvt.kumamotoShinrinObj, opacity: 1, summary: LayersMvt.kumamotoShinrinSumm } },
 
         // { text: 'シームレス地質図', data: { id: 'seamless', layer: seamlessObj, opacity: 1, summary: seamlessSumm,component: {name: 'seamless', values:[]} } },
@@ -15009,14 +14963,38 @@ export const Layers =
         { text: '道の駅', data: { id: "mitinoekiH30", layer: LayersMvt.mitinoekiH30Obj, opacity: 1, summary: LayersMvt.mitinoekiH30Summ } },
         { text: 'バスルートと停留所', data: { id: "bus", layer: LayersMvt.bus0Obj, opacity: 1, summary: LayersMvt.busSumm} },
       ]},
-    { text: '鳥取県',
+    { text: '国土地理院',
       children: [
-        { text: '鳥取砂丘', data: { id: 'tottorisakyu', layer: tottorisakyuiObj, opacity: 1, zoom: 16, center: [134.22808189352367,35.541544325172794], summary: tottorisakyuSumm } },
-        { text: '鳥取県無線LAN', data: { id: 'tottorimusenlan', layer: LayersMvt.tottorimusenLanObj, opacity: 1, zoom: 13, summary: LayersMvt.tottorimusenLanSumm } },
-
+        { text: '標準地図', data: { id: 1, layer: stdObj, opacity: 1, summary: stdSumm } }, //
+        { text: '淡色地図', data: { id: 2, layer: paleObj, opacity: 1, summary: paleSumm } },//
+        { text: '白地図', data: { id: 3, layer: blankObj, opacity: 1, summary: blankSumm } },//
+        { text: '色別標高図', data: { id: 4, layer: reliefObj, opacity: 1, summary: reliefSumm } },//
+        { text: '陰影起伏図', data: { id: 'inei', layer: ineiObj, opacity: 1, summary: stdSumm } },//
+        { text: '傾斜量図', data: { id: 'keisya', layer: keisyaObj, opacity: 1, summary: stdSumm } },//
+        { text: '明治期の低湿地', data: { id: 'sitti', layer: sittiObj, opacity: 1, summary: stdSumm } },//
+        { text: '治水地形分類図 更新版（2007年以降）', data: { id: 'tisui2007', layer: tisui2007Obj, opacity: 1, summary: tisui2007Summ } },//
+        { text: '地形分類（自然地形）', data: { id: 'sizen', layer: LayersMvt.sizentikei0Obj, opacity: 1, summary: LayersMvt.sizentikeiSumm} },//
+        { text: '自然地形（白黒）', data: { id: 'sizenshirokuro', layer: shizenShirokuroObj, opacity: 1, summary: shizenShirokuroSumm} },//
+        { text: '人工改変地形（白黒）', data: { id: 'jinkoshirokuro', layer: jinkoShirokuroObj, opacity: 1, summary: jinkoShirokuroSumm} },//
+        // { text: '地形分類（自然地形『詳細版』）', data: { id: 'sizen', layer: LayersMvt.sizentikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm} },
+        { text: '地形分類（人工地形）', data: { id: "zinkoutikei", layer: LayersMvt.zinkoutikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm } },//
+        { text: '土地利用図（1982～1983年）', data: { id: "totiriyouzu", layer: totiriyouzuObj, opacity: 1, summary: totiriyouzuSumm } },//
+        { text: '数値地図25000（土地条件）', data: { id: "suuti25000", layer: suuti25000Obj, opacity: 1, summary: suuti25000Summ } },//
+        { text: '空港等の周辺空域', data: { id: "kuiki", layer: LayersMvt.kuiki0Obj, opacity: 1, summary: LayersMvt.kuikiSumm} },//
+        { text: '湖沼', data: { id: "kosyo", layer: kosyoObj, opacity: 1, summary: kosyoSumm } },//
+        { text: 'アナグリフ', data: { id: "anaglyph", layer: anaglyphObj, opacity: 1, summary: anaglyphSumm} },//
+        { text: '最適化ベクトルタイル', data: { id: "saitekika", layer: LayersMvt.saitekikaObj, opacity: 1, summary: LayersMvt.saitekikaSumm} },//
+        { text: 'ベクトルタイル', data: { id: "saitekika0", layer: LayersMvt.saitekika0Obj, opacity: 1, summary: LayersMvt.saitekika0Summ} },//
       ]},
+    // { text: '鳥取県',
+    //   children: [
+    //     { text: '鳥取砂丘', data: { id: 'tottorisakyu', layer: tottorisakyuiObj, opacity: 1, zoom: 16, center: [134.22808189352367,35.541544325172794], summary: tottorisakyuSumm } },
+    //     { text: '鳥取県無線LAN', data: { id: 'tottorimusenlan', layer: LayersMvt.tottorimusenLanObj, opacity: 1, zoom: 13, summary: LayersMvt.tottorimusenLanSumm } },
+    //   ]},
     { text: 'その他',
       children: [
+        { text: '空港等の周辺空域', data: { id: "kuiki", layer: LayersMvt.kuiki0Obj, opacity: 1, summary: LayersMvt.kuikiSumm} },
+        { text: 'アナグリフ', data: { id: "anaglyph", layer: anaglyphObj, opacity: 1, summary: anaglyphSumm} },
         { text: 'OpenStreetMap features', data: { id: "op", layer: LayersMvt.opObj, opacity: 1, summary: LayersMvt.homusyomiyazaki2024Summ, component: {name: 'op', values:[]} } },
         { text: '登記所備付地図データ(宮崎市)', data: { id: "homusyomiyazakishi", layer: LayersMvt.homusyomiyazaki2024Obj, opacity: 1, summary: LayersMvt.homusyomiyazaki2024Summ } },
         { text: '2021土地利用細分メッシュ(100m)', data: { id: "tochiriyosaibun", layer: LayersMvt.mesh100mTochiriyoObj, opacity: 1, summary: LayersMvt.mesh1kmObjSumm } },
@@ -15034,6 +15012,58 @@ export const Layers =
         // { text: '法務省地図', data: { id: "houmusyou", layer: houmusyouObj, opacity: 1, summary: houmusyouSumm } },
         { text: 'OpenTopoMap', data: { id: "otm", layer: otmObj, opacity: 1, summary: otmSumm } },
         // { text: 'ラスタータイルtest', data: { id: "dokuji", layer: dokujiObjAr[99], opacity: 1, summary: LayersMvt.busSumm, component: {name: 'dokuji', values:[]}} },
+      ]},
+    { text: '<span style="color: red;">宮崎県ハザードマップ</span>',
+      children: [
+        { text: '宮崎県南海トラフ地震津波浸水想定', data: { id: 'miyazakinantora', layer: LayersMvt.nantoraObj, opacity: 1, summary: LayersMvt.nantoraSumm } },
+        { text: '宮崎県南海トラフ地震震度分布', data: { id: 'miyazakinantorashindo', layer: LayersMvt.nantoraShindoObj, opacity: 1, summary: LayersMvt.nantoraShindoSumm } },
+        { text: '宮崎県南海トラフ地震液状化可能性', data: { id: 'miyazakinantoraekijyoka', layer: LayersMvt.nantoraEkijyokaObj, opacity: 1, summary: LayersMvt.nantoraShindoSumm } },
+        { text: '宮崎県日向灘地震津波浸水想定', data: { id: 'hyugatsunami', layer: LayersMvt.hyugaTsunamiObj, opacity: 1, summary: LayersMvt.hyugaTsunamiSumm } },
+        { text: '宮崎県日向灘地震震度分布', data: { id: 'hyugashindo', layer: LayersMvt.hyuganadaShindoObj, opacity: 1, summary: LayersMvt.hyuganadaShindoSumm } },
+        { text: '宮崎県日向灘地震津波到達時間', data: { id: 'hyugatotatsu', layer: LayersMvt. hyuganadaTsunamiTotatsu, opacity: 1, summary: LayersMvt.hyuganadaTsunamiTotatsuSumm } },
+        { text: '宮崎市洪水ハザードマップﾟ', data: { id: 'miyazakisiHm', layer: miyazakisiHmObj, opacity: 1, zoom: 13, center: [131.42054548436312, 31.907339493919977], summary: miyazakisiHmSumm } },
+        // { text: '都城市洪水ハザードマップﾟ', data: { id: 'miyakonozyousiHm', layer: miyakonozyousiHmObj, opacity: 1, zoom: 13, center: [131.07797970576192, 31.78882205640913], summary: miyakonozyousiHmSumm } },
+        // { text: '日向市防災ハザードマップﾟ', data: { id: 'hyuugasiHm', layer: hyuugasiHmObj, opacity: 1, zoom: 13, center: [131.6400086045909, 32.395198966795306], summary: hyuugasiHmSumm } },
+      ]},
+    { text: '令和6年能登半島まとめ',
+      children: [
+        { text: '<span style="color: red;">輪島東部地区（9/24撮影）</span>', data: { id: 'wajima0924tobu', layer: wajima20240924tobuObj, opacity: 1, summary: wajima20240923Summ } },
+        { text: '<span style="color: red;">輪島西武地区（9/24撮影）</span>', data: { id: 'wajima0924seibu', layer: wajima20240924seibuObj, opacity: 1, summary: wajima20240923Summ } },
+
+        { text: '<span style="color: red;">輪島地区（9/23撮影）</span>', data: { id: 'wajima0923', layer: wajima20240923Obj, opacity: 1, summary: wajima20240923Summ } },
+        { text: '<span style="color: red;">斜面崩壊・土石流・堆積分布データ（9/23撮影）</span>', data: { id: 'notoHoka', layer: LayersMvt.notoHokaiObj, opacity: 1, summary: wajima20240923Summ } },
+
+
+        { text: '能登CS立体図（発災前:森林総合研究所）', data: { id: 'notocs', layer: notoCsObj, opacity: 1, summary: notoCsSumm } },
+        { text: '能登CS立体図（発災後:林野庁）', data: { id: 'notocsrinya', layer: notocsrinyaObj, opacity: 1, summary: notocsrinyaSumm } },
+        { text: '新潟県長岡CS立体図（発災後:林野庁）', data: { id: 'nagaokacsrinya', layer: nagaokaCsObj, opacity: 1, summary: nagaokaCsSumm } },
+        { text: '新潟県長岡傾斜区分図（発災後:林野庁）', data: { id: 'nagaokakaieys', layer: nagaokaKeisyaObj, opacity: 1, summary: nagaokaKeisyaSumm } },
+        { text: '能登傾斜区分図（発災後:林野庁）', data: { id: 'notokeisyarinya', layer: notokeisyarinyaObj, opacity: 1, summary: notokeisyarinyaSumm } },
+        { text: '能登斜面崩壊', data: { id: 'notosyamenhokai', layer: LayersMvt.notosyamenhokaiObj, opacity: 1, summary: LayersMvt.notosyamenhokaiSumm } },
+        { text: '陸化したと思われる港', data: { id: 'notominato', layer: LayersMvt.notominatoObj, opacity: 1, summary: LayersMvt.notominatoSumm } },
+        { text: '能登西部赤色立体地図', data: { id: 'notoseibu', layer: notoSeibuObj, opacity: 1, summary: notoSeubuSumm } },
+        { text: '液状化危険度分布図（石川県）', data: { id: 'ekizyouka17', layer: ekizyouka17Obj, opacity: 1, summary: ekizyoukaSumm } },
+        { text: '富山県埋蔵文化財（2021.4.1）', data: { id: "toyamamaibun", layer: LayersMvt.toyamamaibunObj, opacity: 1, summary: LayersMvt.toyamamaibunSumm } },
+        { text: '17石川県農地', data: { id: 'hude17', layer: LayersMvt.hude17Obj, opacity: 1, summary: LayersMvt.hude17Summ } },
+        { text: '戦前地形図5万分の１', data: { id: 'mw5', layer: mw5Obj, opacity: 1, summary: mw5Summ } },
+        { text: '17石川県古地図(大正14年)', data: { id: 'kotizu17isikawa', layer: kotizu17isikawaObj, opacity: 1, summary: kotizu17isikawaSumm } },
+        { text: '能登地区（2024年4月5日～26日撮影）', data: { id: 'noto20240405Ort', layer: noto20240405Obj, opacity: 1, summary: noto20240405Summ } },
+        { text: '輪島西地区（2024年1月17日撮影）', data: { id: 'wajimanishi20240117Ort', layer: wajimanishi20240117Obj, opacity: 1, summary: wajimanishi20240117Summ } },
+        { text: '穴水地区（2024年1月17日撮影）', data: { id: 'anami20240117Ort', layer: anami20240117Obj, opacity: 1, summary: anami20240117Summ } },
+        { text: '七尾地区（2024年1月17日撮影）', data: { id: 'nanao20240117Ort', layer: nanao20240117Obj, opacity: 1, summary: nanao20240117Summ } },
+        { text: '珠洲地区（2024年1月14日撮影）', data: { id: 'suzu20240114Ort', layer: suzu20240114Obj, opacity: 1, summary: suzu20240114Summ } },
+        { text: '輪島東地区（2024年1月14日撮影）', data: { id: 'wajimahigashi20240114Ort', layer: wajimahigashi20240114Obj, opacity: 1, summary: wajimahigashi20240114Summ } },
+        { text: '穴水地区（2024年1月14日撮影）', data: { id: 'anamizu20240114Ort', layer: anamizu20240114Obj, opacity: 1, summary: anamizu20240114Summ } },
+        { text: '輪島中地区（2024年1月11日撮影）', data: { id: 'wajimanaka20240111Ort', layer: wajimanaka20240111Obj, opacity: 1, summary: wajimanaka20240111Summ } },
+        { text: '輪島西地区（2024年1月11日撮影）', data: { id: 'wajimanishi20240111Ort', layer: wajimanishi20240111Obj, opacity: 1, summary: wajimanishi20240111Summ } },
+        { text: '穴水地区（2024年1月11日撮影）', data: { id: 'anamizu20240111Ort', layer: anamizu20240111Obj, opacity: 1, summary: anamizu20240111Summ } },
+        { text: '珠洲地区（2024年1月5日撮影）', data: { id: 'suzu20240105rt', layer: suzu20240105Obj, opacity: 1, summary: suzu20240105Summ } },
+        { text: '輪島中地区（2024年1月5日撮影）', data: { id: 'wajimanaka20240105rt', layer: wajimanaka20240105Obj, opacity: 1, summary: wajimanaka20240105Summ } },
+        { text: '穴水地区（2024年1月5日撮影）', data: { id: 'anamizu20240105rt', layer: anamizu20240105Obj, opacity: 1, summary: anamizu20240105Summ } },
+        { text: '七尾地区（2024年1月5日撮影）', data: { id: 'nanao20240105rt', layer: nanao20240105Obj, opacity: 1, summary: nanao20240105Summ } },
+        { text: '珠洲地区（2024年1月2日撮影）', data: { id: 'suzu20240102rt', layer: suzu20240102Obj, opacity: 1, summary: suzu20240102Summ } },
+        { text: '輪島中地区（2024年1月2日撮影）', data: { id: 'wajimanaka20240102rt', layer: wajimanaka20240102Obj, opacity: 1, summary: wajimanaka20240102Summ } },
+        { text: '輪島東地区（2024年1月2日撮影）', data: { id: 'wajimahigashi20240102rt', layer: wajimahigashi20240102Obj, opacity: 1, summary: wajimahigashi20240102Summ } },
       ]},
   ];
 let cnt = 0
