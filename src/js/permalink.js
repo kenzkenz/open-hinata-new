@@ -580,7 +580,7 @@ export function moveEnd () {
 
   // console.log(geojsonT)
 
-  // geojsonT = encodeURIComponent(geojsonT)
+  geojsonT = encodeURIComponent(geojsonT)
 
   // ----------------------------------------------------------------------------------
   const map = store.state.base.maps.map01

@@ -13634,7 +13634,7 @@ export const Layers =
           ]},
         { text:'カラー地図',
           children: [
-            { text: '白地図', data: { id: 3, layer: blankObj, opacity: 1, summary: blankSumm } },
+            // { text: '白地図', data: { id: 3, layer: blankObj, opacity: 1, summary: blankSumm } },
             { text: 'モノクロ地図', data: { id: 'monochrome', layer: paleGrayObj, opacity: 1, summary: paleSumm } },
             { text: 'ダーク地図', data: { id: 'paleDark', layer: paleDarkObj, opacity: 1, summary: paleSumm } },
             { text: 'セピア地図', data: { id: 'paleSepia', layer: paleSepiaObj, opacity: 1, summary: paleSumm } },
@@ -14983,29 +14983,29 @@ export const Layers =
         { text: '道の駅', data: { id: "mitinoekiH30", layer: LayersMvt.mitinoekiH30Obj, opacity: 1, summary: LayersMvt.mitinoekiH30Summ } },
         { text: 'バスルートと停留所', data: { id: "bus", layer: LayersMvt.bus0Obj, opacity: 1, summary: LayersMvt.busSumm} },
       ]},
-    { text: '国土地理院',
-      children: [
-        { text: '標準地図', data: { id: 1, layer: stdObj, opacity: 1, summary: stdSumm } }, //
-        { text: '淡色地図', data: { id: 2, layer: paleObj, opacity: 1, summary: paleSumm } },//
-        { text: '白地図', data: { id: 3, layer: blankObj, opacity: 1, summary: blankSumm } },//
-        { text: '色別標高図', data: { id: 4, layer: reliefObj, opacity: 1, summary: reliefSumm } },//
-        { text: '陰影起伏図', data: { id: 'inei', layer: ineiObj, opacity: 1, summary: stdSumm } },//
-        { text: '傾斜量図', data: { id: 'keisya', layer: keisyaObj, opacity: 1, summary: stdSumm } },//
-        { text: '明治期の低湿地', data: { id: 'sitti', layer: sittiObj, opacity: 1, summary: stdSumm } },//
-        { text: '治水地形分類図 更新版（2007年以降）', data: { id: 'tisui2007', layer: tisui2007Obj, opacity: 1, summary: tisui2007Summ } },//
-        { text: '地形分類（自然地形）', data: { id: 'sizen', layer: LayersMvt.sizentikei0Obj, opacity: 1, summary: LayersMvt.sizentikeiSumm} },//
-        { text: '自然地形（白黒）', data: { id: 'sizenshirokuro', layer: shizenShirokuroObj, opacity: 1, summary: shizenShirokuroSumm} },//
-        { text: '人工改変地形（白黒）', data: { id: 'jinkoshirokuro', layer: jinkoShirokuroObj, opacity: 1, summary: jinkoShirokuroSumm} },//
-        // { text: '地形分類（自然地形『詳細版』）', data: { id: 'sizen', layer: LayersMvt.sizentikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm} },
-        { text: '地形分類（人工地形）', data: { id: "zinkoutikei", layer: LayersMvt.zinkoutikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm } },//
-        { text: '土地利用図（1982～1983年）', data: { id: "totiriyouzu", layer: totiriyouzuObj, opacity: 1, summary: totiriyouzuSumm } },//
-        { text: '数値地図25000（土地条件）', data: { id: "suuti25000", layer: suuti25000Obj, opacity: 1, summary: suuti25000Summ } },//
-        { text: '空港等の周辺空域', data: { id: "kuiki", layer: LayersMvt.kuiki0Obj, opacity: 1, summary: LayersMvt.kuikiSumm} },//
-        { text: '湖沼', data: { id: "kosyo", layer: kosyoObj, opacity: 1, summary: kosyoSumm } },//
-        { text: 'アナグリフ', data: { id: "anaglyph", layer: anaglyphObj, opacity: 1, summary: anaglyphSumm} },//
-        { text: '最適化ベクトルタイル', data: { id: "saitekika", layer: LayersMvt.saitekikaObj, opacity: 1, summary: LayersMvt.saitekikaSumm} },//
-        { text: 'ベクトルタイル', data: { id: "saitekika0", layer: LayersMvt.saitekika0Obj, opacity: 1, summary: LayersMvt.saitekika0Summ} },//
-      ]},
+    // { text: '国土地理院',
+    //   children: [
+    //     { text: '標準地図', data: { id: 1, layer: stdObj, opacity: 1, summary: stdSumm } }, //
+    //     { text: '淡色地図', data: { id: 2, layer: paleObj, opacity: 1, summary: paleSumm } },//
+    //     { text: '白地図', data: { id: 3, layer: blankObj, opacity: 1, summary: blankSumm } },//
+    //     { text: '色別標高図', data: { id: 4, layer: reliefObj, opacity: 1, summary: reliefSumm } },//
+    //     { text: '陰影起伏図', data: { id: 'inei', layer: ineiObj, opacity: 1, summary: stdSumm } },//
+    //     { text: '傾斜量図', data: { id: 'keisya', layer: keisyaObj, opacity: 1, summary: stdSumm } },//
+    //     { text: '明治期の低湿地', data: { id: 'sitti', layer: sittiObj, opacity: 1, summary: stdSumm } },//
+    //     { text: '治水地形分類図 更新版（2007年以降）', data: { id: 'tisui2007', layer: tisui2007Obj, opacity: 1, summary: tisui2007Summ } },//
+    //     { text: '地形分類（自然地形）', data: { id: 'sizen', layer: LayersMvt.sizentikei0Obj, opacity: 1, summary: LayersMvt.sizentikeiSumm} },//
+    //     { text: '自然地形（白黒）', data: { id: 'sizenshirokuro', layer: shizenShirokuroObj, opacity: 1, summary: shizenShirokuroSumm} },//
+    //     { text: '人工改変地形（白黒）', data: { id: 'jinkoshirokuro', layer: jinkoShirokuroObj, opacity: 1, summary: jinkoShirokuroSumm} },//
+    //     // { text: '地形分類（自然地形『詳細版』）', data: { id: 'sizen', layer: LayersMvt.sizentikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm} },
+    //     { text: '地形分類（人工地形）', data: { id: "zinkoutikei", layer: LayersMvt.zinkoutikeiObj, opacity: 1, summary: LayersMvt.sizentikeiSumm } },//
+    //     { text: '土地利用図（1982～1983年）', data: { id: "totiriyouzu", layer: totiriyouzuObj, opacity: 1, summary: totiriyouzuSumm } },//
+    //     { text: '数値地図25000（土地条件）', data: { id: "suuti25000", layer: suuti25000Obj, opacity: 1, summary: suuti25000Summ } },//
+    //     { text: '空港等の周辺空域', data: { id: "kuiki", layer: LayersMvt.kuiki0Obj, opacity: 1, summary: LayersMvt.kuikiSumm} },//
+    //     { text: '湖沼', data: { id: "kosyo", layer: kosyoObj, opacity: 1, summary: kosyoSumm } },//
+    //     { text: 'アナグリフ', data: { id: "anaglyph", layer: anaglyphObj, opacity: 1, summary: anaglyphSumm} },//
+    //     { text: '最適化ベクトルタイル', data: { id: "saitekika", layer: LayersMvt.saitekikaObj, opacity: 1, summary: LayersMvt.saitekikaSumm} },//
+    //     { text: 'ベクトルタイル', data: { id: "saitekika0", layer: LayersMvt.saitekika0Obj, opacity: 1, summary: LayersMvt.saitekika0Summ} },//
+    //   ]},
     // { text: '鳥取県',
     //   children: [
     //     { text: '鳥取砂丘', data: { id: 'tottorisakyu', layer: tottorisakyuiObj, opacity: 1, zoom: 16, center: [134.22808189352367,35.541544325172794], summary: tottorisakyuSumm } },
