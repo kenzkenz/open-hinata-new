@@ -55,7 +55,7 @@ import GeolocationDraw from 'ol-ext/interaction/GeolocationDraw'
 import VectorImage from 'ol/layer/VectorImage'
 import FlowLine from 'ol-ext/style/FlowLine'
 import Profile from 'ol-ext/control/Profile'
-import {dosyakikikuruObj, kozuikikikuruObj} from "./layers";
+import CanvasTitle from 'ol-ext/control/CanvasTitle'
 
 // ドロー関係-------------------------------------------------------------------------------
 function  getZoom(resolution)  {
@@ -843,6 +843,12 @@ export const geolocationDrawInteraction = new GeolocationDraw({
     minAccuracy:10000
 })
 
+export const canvasTitleControl = new CanvasTitle({
+    title: '利用は出典元の規約に従ってください。',
+    visible: true,
+    style: new Style({ text: new Text({ font: '20px "Lucida Grande",Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif'}) })
+})
+
 // ダイアログ
 export const dialog = new Dialog({ fullscreen: true, zoom: true, closeBox: true });
 
@@ -1316,6 +1322,8 @@ export function initMap (vm) {
 
         // コントロール追加---------------------------------------------------------------------------
 
+        // Dialog.menuに移動！
+        // map.addControl(canvasTitleControl)
 
         // Print control
         var printControl = new PrintDialog({
@@ -1326,8 +1334,8 @@ export function initMap (vm) {
             // pdf: false
         });
         printControl.setSize('A4');
-        map.addControl(printControl);
         printControl.setOrientation('landscape')
+        map.addControl(printControl);
         /* On print > save image file */
         printControl.on(['print', 'error'], function(e) {
             // Print success
@@ -1352,20 +1360,25 @@ export function initMap (vm) {
                 console.warn('No canvas to export');
             }
         });
-
+        document.querySelectorAll('.ol-closebox .ol-closebox').forEach((element) => {
+            element.addEventListener('click', function(event) {
+                map.removeControl(canvasTitleControl)
+            })
+        })
+        // ---------------------------------------------------------------------------------------------
         // const scaleLine = new ScaleLine()
         // console.log(localStorage.getItem('scaleFlg'))
         if (localStorage.getItem('scaleFlg') === 'true') {
             if (i==='0') map.addControl(scaleLine)
             if (i==='1') map.addControl(scaleLine2)
         }
-
-            const notification = new Notification();
+        // ---------------------------------------------------------------------------------------------
+        const notification = new Notification();
         map.addControl(notification);
         store.commit('base/setNotifications',{mapName:mapName, control: notification});
 
 
-
+        // ----------------------------------------------------------------------------------------------
         // map.getViewport().addEventListener('drop', function(event) {
         //     event.preventDefault();
         //     const files = event.dataTransfer.files;
@@ -2407,6 +2420,10 @@ export function initMap (vm) {
         }
     }
 }
+// -------------------------------------------------------------------------------------
+
+
+
 // -------------------------------------------------------------------------------------
 let rgbaArr = []
 let funcArr = []

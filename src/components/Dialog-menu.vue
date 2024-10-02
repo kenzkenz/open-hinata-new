@@ -181,11 +181,13 @@
         console.log(this.$store.state.base.splitFlg)
         MyMap.history ('印刷画面へ')
         const printBtn = document.querySelector('#map01 .ol-print button')
+        this.$store.state.base.maps.map01.addControl(MyMap.canvasTitleControl)
         printBtn.click()
       },
       printRight () {
         MyMap.history ('印刷画面へ')
         const printBtn = document.querySelector('#map02 .ol-print button')
+        this.$store.state.base.maps.map02.addControl(MyMap.canvasTitleControl)
         printBtn.click()
       },
       // ------------------------------------------------------------------------------------------
