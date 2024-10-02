@@ -1158,6 +1158,7 @@ import {drawLayer} from "../js/mymap";
         const olPopup = document.querySelector('#' + mapName + ' .ol-popup0')
         olPopup.addEventListener('click', (e) => {
           if (e.target && e.target.classList.contains("jinkopie1km") ) {
+            e.stopPropagation()
             vm.$store.commit('base/incrDialog2Id');
             vm.$store.commit('base/incrDialogMaxZindex');
             let width
@@ -1198,6 +1199,7 @@ import {drawLayer} from "../js/mymap";
         const olPopup = document.querySelector('#' + mapName + ' .ol-popup0')
         olPopup.addEventListener('click', (e) => {
           if (e.target && e.target.classList.contains("jinkopie100m") ) {
+            e.stopPropagation()
             vm.$store.commit('base/incrDialog2Id');
             vm.$store.commit('base/incrDialogMaxZindex');
             let width

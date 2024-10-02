@@ -51,9 +51,7 @@ export default {
         const point = new Point(center)
         const newFeature = new Feature(point)
         let date = new Date()
-        console.log(date); // Thu Mar 11 2010 11:24:30 GMT+0900 (日本標準時)
         var d1 = date.getFullYear() + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' +('0' + date.getDate()).slice(-2) + ' ' +  ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2);
-        console.log(d1); // 2010/03/11 11:24:30.776
         newFeature.setProperties({name:d1})
         MyMap.drawLayer.getSource().addFeature(newFeature)
         MyMap.history('トラッキング現在地取得')
