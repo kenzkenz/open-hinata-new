@@ -14,9 +14,8 @@
 
 <script>
   import store from "@/js/store";
-  import * as Layers from '../js/layers'
-  import * as MyMap from '../js/mymap'
-  import * as layers from "@/js/layers";
+  import * as Layers from '@/js/layers'
+  import * as MyMap from '@/js/mymap'
   export default {
     name: 'Dialog',
     props: ['dialog','reset','mapName'],
