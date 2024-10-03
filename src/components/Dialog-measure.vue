@@ -322,16 +322,16 @@ export default {
             dataProjection: "EPSG:4326",
             featureProjection: "EPSG:3857",
           })
-          const geojson = new GeoJSON().writeFeatures(features, {
-            featureProjection: "EPSG:3857"
-          })
-          const geojsonFeatures = new GeoJSON({
-            dataProjection: "EPSG:4326",
-            featureProjection: "EPSG:3857",
-          }).readFeatures(geojson)
+          // const geojson = new GeoJSON().writeFeatures(features, {
+          //   featureProjection: "EPSG:3857"
+          // })
+          // const geojsonFeatures = new GeoJSON({
+          //   dataProjection: "EPSG:4326",
+          //   featureProjection: "EPSG:3857",
+          // }).readFeatures(geojson)
           MyMap.undoInteraction.blockStart()
           MyMap.drawLayer.getSource().clear()
-          MyMap.drawLayer.getSource().addFeatures(geojsonFeatures)
+          MyMap.drawLayer.getSource().addFeatures(features)
         } else if (extension === 'gpx') {
           features = new GPX({
           }).readFeatures(text,{
@@ -398,34 +398,36 @@ export default {
           })
         }
         features.forEach((feature) =>{
-          if (feature.getGeometry().getType() === 'GeometryCollection') {
-            drawLayer.getSource().removeFeature(feature)
-            const circle = new Circle(feature.get('center'), feature.get('radius'));
-            const newFeature = new Feature(circle);
-            newFeature.setProperties({
-              name: feature.getProperties().name,
-              setumei: feature.getProperties().setumei,
-              _fillColor: feature.getProperties()._fillColor,
-              _distance: feature.getProperties()._distance,
-              _area: feature.getProperties()._area
-            })
-            drawLayer.getSource().addFeature(newFeature)
+          if (feature.getGeometry()) {
+            if (feature.getGeometry().getType() === 'GeometryCollection') {
+              drawLayer.getSource().removeFeature(feature)
+              const circle = new Circle(feature.get('center'), feature.get('radius'));
+              const newFeature = new Feature(circle);
+              newFeature.setProperties({
+                name: feature.getProperties().name,
+                setumei: feature.getProperties().setumei,
+                _fillColor: feature.getProperties()._fillColor,
+                _distance: feature.getProperties()._distance,
+                _area: feature.getProperties()._area
+              })
+              drawLayer.getSource().addFeature(newFeature)
+            }
+            // -----------------------------------------------------
+            const coordAr = feature.getGeometry().getCoordinates()
+            const geoType = feature.getGeometry().getType()
+            measure (geoType,feature,coordAr)
+            // //------------------------------------------------------
+            if (geoType === 'LineString' || geoType === 'MultiLineString') {
+              const sliceCoord = sliceCoodAr(coordAr)
+              sliceCoord.forEach((coord,i) => {
+                setTimeout(function() {
+                  hyoko(feature, coord, coordAr)
+                },1000 * i)
+              })
+            }
           }
-          // -----------------------------------------------------
-          const coordAr = feature.getGeometry().getCoordinates()
-          const geoType = feature.getGeometry().getType()
-          measure (geoType,feature,coordAr)
-          //------------------------------------------------------
-          if (geoType === 'LineString' || geoType === 'MultiLineString') {
-            const sliceCoord = sliceCoodAr(coordAr)
-            sliceCoord.forEach((coord,i) => {
-              setTimeout(function() {
-                hyoko(feature, coord, coordAr)
-              },1000 * i)
-            })
-          }
-          moveEnd()
         })
+        moveEnd()
         MyMap.undoInteraction.blockEnd()
         vm.$store.state.base.maps['map01'].getView().fit(drawLayer.getSource().getExtent(),{padding: [100, 100, 100, 100]})
         document.querySelector('#map01 .loadingImg').style.display = 'none'
@@ -450,6 +452,11 @@ export default {
       this.s_toggleIdo = false
     },
     openDialog2 () {
+      console.log(MyMap.drawLayer.getSource().getFeatures().length)
+      if (MyMap.drawLayer.getSource().getFeatures().length > 100) {
+        // document.querySelector('#map01 .loadingImg').style.display = 'block'
+        alert('featureが100件を越えています。時間がかかります。お待ちください。')
+      }
       const tGeojson = new GeoJSON().writeFeatures(MyMap.drawLayer.getSource().getFeatures(), {
         featureProjection: "EPSG:3857"
       })
