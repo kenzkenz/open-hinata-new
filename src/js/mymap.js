@@ -609,10 +609,17 @@ modifyTouchInteraction.on('modifyend', function (event) {
 })
 
 drawLayer.getSource().on("change", function(e) {
-    const tGeojson = new GeoJSON().writeFeatures(drawLayer.getSource().getFeatures(), {
-        featureProjection: "EPSG:3857"
-    })
-    store.state.base.tGeojson = JSON.stringify(JSON.parse(tGeojson),null,2)
+    const elm = document.querySelector('#dialog-geojson')
+    if (elm.style.display === 'block') {
+        const tGeojson = new GeoJSON().writeFeatures(drawLayer.getSource().getFeatures(), {
+            featureProjection: "EPSG:3857"
+        })
+        store.state.base.tGeojson = JSON.stringify(JSON.parse(tGeojson),null,2)
+    }
+    // const tGeojson = new GeoJSON().writeFeatures(drawLayer.getSource().getFeatures(), {
+    //     featureProjection: "EPSG:3857"
+    // })
+    // store.state.base.tGeojson = JSON.stringify(JSON.parse(tGeojson),null,2)
 
     // const tKml = new KML().writeFeatures(drawLayer.getSource().getFeatures(), {
     //     featureProjection: "EPSG:3857"
@@ -1499,33 +1506,35 @@ export function initMap (vm) {
                 drawLayer.getSource().addFeatures(event.features)
 
                 drawLayer.getSource().getFeatures().forEach((feature) =>{
-                    if (feature.getGeometry().getType() === 'GeometryCollection') {
-                        drawLayer.getSource().removeFeature(feature)
-                        const circle = new Circle(feature.get('center'), feature.get('radius'));
-                        const newFeature = new Feature(circle);
-                        newFeature.setProperties({
-                            name: feature.getProperties().name,
-                            description: feature.getProperties().description,
-                            _fillColor: feature.getProperties()._fillColor,
-                            _distance: feature.getProperties()._distance,
-                            _area: feature.getProperties()._area
-                        })
-                        drawLayer.getSource().addFeature(newFeature)
-                        moveEnd()
+                    if (feature.getGeometry()) {
+                        if (feature.getGeometry().getType() === 'GeometryCollection') {
+                            drawLayer.getSource().removeFeature(feature)
+                            const circle = new Circle(feature.get('center'), feature.get('radius'));
+                            const newFeature = new Feature(circle);
+                            newFeature.setProperties({
+                                name: feature.getProperties().name,
+                                description: feature.getProperties().description,
+                                _fillColor: feature.getProperties()._fillColor,
+                                _distance: feature.getProperties()._distance,
+                                _area: feature.getProperties()._area
+                            })
+                            drawLayer.getSource().addFeature(newFeature)
+                            moveEnd()
+                        }
+                        const coordAr = feature.getGeometry().getCoordinates()
+                        const geoType = feature.getGeometry().getType()
+                        measure (geoType,feature,coordAr)
+                        //------------------------------------------------------
+                        if (geoType === 'LineString' || geoType === 'MultiLineString') {
+                            const sliceCoord = sliceCoodAr(coordAr)
+                            sliceCoord.forEach((coord,i) => {
+                                setTimeout(function() {
+                                    hyoko(feature, coord, coordAr)
+                                },1000 * i)
+                            })
+                        }
                     }
                     // -----------------------------------------------------
-                    const coordAr = feature.getGeometry().getCoordinates()
-                    const geoType = feature.getGeometry().getType()
-                    measure (geoType,feature,coordAr)
-                    //------------------------------------------------------
-                    if (geoType === 'LineString' || geoType === 'MultiLineString') {
-                        const sliceCoord = sliceCoodAr(coordAr)
-                        sliceCoord.forEach((coord,i) => {
-                            setTimeout(function() {
-                                hyoko(feature, coord, coordAr)
-                            },1000 * i)
-                        })
-                    }
                 })
                 map.getView().fit(drawLayer.getSource().getExtent(),{padding: [100, 100, 100, 100]})
 

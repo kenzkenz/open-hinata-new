@@ -752,11 +752,13 @@ export default {
     saveGeojson () {
       const features = drawLayer.getSource().getFeatures()
       features.forEach(function(feature){
-        if (feature.getGeometry().getType() === 'Circle') {
-          const radius = feature.getGeometry().getRadius();
-          const center = feature.getGeometry().getCenter();
-          feature.set('radius', radius);
-          feature.set('center', center);
+        if (feature.getGeometry()) {
+          if (feature.getGeometry().getType() === 'Circle') {
+            const radius = feature.getGeometry().getRadius();
+            const center = feature.getGeometry().getCenter();
+            feature.set('radius', radius);
+            feature.set('center', center);
+          }
         }
       })
       const tGeojson = new GeoJSON().writeFeatures(features, {

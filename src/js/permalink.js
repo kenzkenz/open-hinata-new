@@ -208,23 +208,22 @@ export function permalinkEventSet (response,urlid) {
         MyMap.drawLayer.getSource().addFeatures(features)
 
         MyMap.drawLayer.getSource().getFeatures().forEach((feature) =>{
-          if (feature.getGeometry().getType() === 'GeometryCollection') {
-            drawLayer.getSource().removeFeature(feature)
-            const circle = new Circle(feature.get('center'), feature.get('radius'));
-            const newFeature = new Feature(circle);
-            newFeature.setProperties({
-              name: feature.getProperties().name,
-              description: feature.getProperties().description,
-              _distance: feature.getProperties()._distance,
-              _fillColor: feature.getProperties()._fillColor,
-            })
-            drawLayer.getSource().addFeature(newFeature)
-            moveEnd()
+          if (feature.getGeometry()) {
+            if (feature.getGeometry().getType() === 'GeometryCollection') {
+              drawLayer.getSource().removeFeature(feature)
+              const circle = new Circle(feature.get('center'), feature.get('radius'));
+              const newFeature = new Feature(circle);
+              newFeature.setProperties({
+                name: feature.getProperties().name,
+                description: feature.getProperties().description,
+                _distance: feature.getProperties()._distance,
+                _fillColor: feature.getProperties()._fillColor,
+              })
+              drawLayer.getSource().addFeature(newFeature)
+              moveEnd()
+            }
           }
         })
-
-
-
         MyMap.undoInteraction.blockEnd()
 
         // const geojson = JSON.parse(decodeURIComponent(obj[key]))
