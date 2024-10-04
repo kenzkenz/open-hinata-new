@@ -49,7 +49,7 @@
                   <div class="modal-body">
                     <div class="dialog-close-btn-div" @click="closeBtn1"><i class="fa-solid fa-xmark hover close-btn"></i>
                     </div>
-                    色を塗る列を選択してください。数値の列の場合、白→赤のグラデーションになります。
+                    色を塗る列を選択してください。数値の列の場合、白→赤のグラデーションになります。選択しなくても構いません。
                     <b-form-select style="margin-top: 10px" v-model="s_ddColumn" :options="ddPropNames" ></b-form-select>
                     <b-button style="margin-top:10px;margin-left: 0px;" class='olbtn' v-on:click="ddRead">読み込み</b-button>
                     <b-button style="margin-top:10px;margin-left: 10px;" class='olbtn' v-on:click="ddCancel">キャンセル</b-button>
@@ -465,7 +465,7 @@ import Feature from 'ol/Feature'
         this.tiltFlg = false
       },
       ddCancel () {
-
+        this.$modal.hide('modaldd')
       },
       ddRead () {
         this.$modal.hide('modaldd')
@@ -1592,7 +1592,7 @@ import Feature from 'ol/Feature'
               event.features.forEach((feature) => {
                 const prop = feature.getProperties()
                 Object.keys(prop).forEach(function(key) {
-                  if (key !== 'geometry') {
+                  if (key !== 'geometry' && key.slice(0,1) !== '_') {
                     keys.push(key)
                   }
                 })
