@@ -67,15 +67,15 @@
       </div>
 
       <hr>
-      <b-button style="margin-top: 5px;" class='olbtn' :size="btnSize" @click="saveGeojson">geojson</b-button>
-      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveGpx">GPX</b-button>
-      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveKml">kml</b-button>
-      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveCsv">csv</b-button>
+      <b-button style="margin-top: 5px;" class='olbtn' :size="btnSize" @click="saveGeojson">geojson保存</b-button>
+      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveGpx">GPX保存</b-button>
+      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveKml">kml保存</b-button>
+      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' :size="btnSize" @click="saveCsv">csv保存</b-button>
 
       <form id="load_form" style="display: none">
         <input id="load_form_input" type="file" name="file_" accept=".geojson,.kml,.gpx,.csv" @change="file_upload()">
       </form>
-      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' size="sm" @click="upLoad">読み込み</b-button>
+<!--      <b-button style="margin-top: 5px;margin-left: 5px;" class='olbtn' size="sm" @click="upLoad">読み込み</b-button>-->
 
       <a id="download" download="draw.geojson"></a>
       <a id="download-gpx" download="draw.gpx"></a>
@@ -99,10 +99,8 @@ import * as turf from '@turf/turf';
 import {transform} from "ol/proj";
 import {Circle, LineString, MultiLineString, MultiPolygon, Point, Polygon} from "ol/geom";
 import Feature from "ol/Feature";
-import {hyoko, measure, sliceCoodAr} from "../js/mymap";
 import * as d3 from "d3";
 import {parse} from 'csv-parse/lib/sync'
-
 
 export default {
   name: "dialog-measure",
@@ -152,7 +150,7 @@ export default {
             const coordAr = feature.getGeometry().getCoordinates()
             const geoType = feature.getGeometry().getType()
             console.log(geoType)
-            measure (geoType,feature,coordAr)
+            MyMap.measure (geoType,feature,coordAr)
             // ---------------------------------------------------------------------------
             if (geoType === 'LineString' || geoType === 'MultiLineString') {
               const sliceCoord = MyMap.sliceCoodAr(coordAr)
@@ -415,13 +413,13 @@ export default {
             // -----------------------------------------------------
             const coordAr = feature.getGeometry().getCoordinates()
             const geoType = feature.getGeometry().getType()
-            measure (geoType,feature,coordAr)
+            MyMap.measure (geoType,feature,coordAr)
             // //------------------------------------------------------
             if (geoType === 'LineString' || geoType === 'MultiLineString') {
-              const sliceCoord = sliceCoodAr(coordAr)
+              const sliceCoord = MyMap.sliceCoodAr(coordAr)
               sliceCoord.forEach((coord,i) => {
                 setTimeout(function() {
-                  hyoko(feature, coord, coordAr)
+                  MyMap.hyoko(feature, coord, coordAr)
                 },1000 * i)
               })
             }
@@ -603,7 +601,7 @@ export default {
 
       const coordAr = newFeature.getGeometry().getCoordinates()
       const geoType = newFeature.getGeometry().getType()
-      measure (geoType,newFeature,coordAr)
+      MyMap.measure (geoType,newFeature,coordAr)
     },
     drawPolygonSmooth () {
       const targetFeature = this.$store.state.base.editFeature
@@ -634,7 +632,7 @@ export default {
 
       const coordAr = newFeature.getGeometry().getCoordinates()
       const geoType = newFeature.getGeometry().getType()
-      measure (geoType,newFeature,coordAr)
+      MyMap.measure (geoType,newFeature,coordAr)
 
       this.$store.state.base.editFeature = newFeature
 
@@ -669,7 +667,7 @@ export default {
 
       const coordAr = newFeature.getGeometry().getCoordinates()
       const geoType = newFeature.getGeometry().getType()
-      measure (geoType,newFeature,coordAr)
+      MyMap.measure (geoType,newFeature,coordAr)
 
       this.$store.state.base.editFeature = newFeature
     },
@@ -713,7 +711,7 @@ export default {
 
       const coordAr = newFeature.getGeometry().getCoordinates()
       const geoType = newFeature.getGeometry().getType()
-      measure (geoType,newFeature,coordAr)
+      MyMap.measure (geoType,newFeature,coordAr)
 
       this.$store.state.base.editFeature = newFeature
 
@@ -997,151 +995,60 @@ export default {
     }
   },
   mounted () {
+    // const map01 = this.$store.state.base.maps['map01']
+    // MyMap.dragAndDropInteraction = new DragAndDrop({
+    //   formatConstructors: [
+    //     GPX,
+    //     GeoJSON,
+    //     IGC,
+    //     // use constructed format to set options
+    //     new KML({extractStyles: false}),
+    //     TopoJSON,
+    //   ],
+    // })
+    // MyMap.dragAndDropInteraction.on('addfeatures', function (event) {
+    //     document.querySelector('#map01 .loadingImg').style.display = 'block'
+    //     undoInteraction.blockStart()
+    //
+    //     drawLayer.getSource().addFeatures(event.features)
+    //     drawLayer.getSource().getFeatures().forEach((feature) =>{
+    //       if (feature.getGeometry()) {
+    //         if (feature.getGeometry().getType() === 'GeometryCollection') {
+    //           drawLayer.getSource().removeFeature(feature)
+    //           const circle = new Circle(feature.get('center'), feature.get('radius'));
+    //           const newFeature = new Feature(circle);
+    //           newFeature.setProperties({
+    //             name: feature.getProperties().name,
+    //             description: feature.getProperties().description,
+    //             _fillColor: feature.getProperties()._fillColor,
+    //             _distance: feature.getProperties()._distance,
+    //             _area: feature.getProperties()._area
+    //           })
+    //           drawLayer.getSource().addFeature(newFeature)
+    //           const coordAr = feature.getGeometry().getCoordinates()
+    //           const geoType = feature.getGeometry().getType()
+    //           measure (geoType,feature,coordAr)
+    //           //------------------------------------------------------
+    //           if (geoType === 'LineString' || geoType === 'MultiLineString') {
+    //             const sliceCoord = sliceCoodAr(coordAr)
+    //             sliceCoord.forEach((coord,i) => {
+    //               setTimeout(function() {
+    //                 hyoko(feature, coord, coordAr)
+    //               },1000 * i)
+    //             })
+    //           }
+    //         }
+    //       }
+    //       moveEnd()
+    //       // -----------------------------------------------------
+    //     })
+    //     map01.getView().fit(drawLayer.getSource().getExtent(),{padding: [100, 100, 100, 100]})
+    //     undoInteraction.blockEnd()
+    //     document.querySelector('#map01 .loadingImg').style.display = 'none'
+    //   })
+    //------------------------------------------------------------------------------
     const dragHandle = document.querySelector('#dialog-measure .drag-handle');
     dragHandle.innerHTML = '<span style="color: blue;">選択モード中</span>'
-    // this.$watch(function () {
-    //   return [this.s_toggleIdo]
-    // }, function () {
-    //   if (this.s_toggleIdo) {
-    //     console.log('on')
-    //     this.s_togglePoint0 = false
-    //     this.s_toggleLine = false
-    //     this.s_toggleFreeHand = false
-    //     this.s_togglePoint = false
-    //     this.s_toggleMenseki = false
-    //     this.s_toggleCircle = false
-    //     this.s_toggleDaen = false
-    //     this.s_toggleShikaku = false
-    //     this.toggleDelete = false
-    //     this.toggleDanmen = false
-    //     this.s_toggleHole = false
-    //     this.s_toggleIdo2 = false
-    //     this.s_toggleText = false
-    //     this.s_toggleHole = false
-    //     this.s_toggleSplit = false
-    //
-    //     MyMap.modifyInteraction.setActive(true)
-    //     MyMap.modifyTouchInteraction.setActive(true)
-    //     MyMap.transformInteraction.setActive(false)
-    //
-    //     dragHandle.innerHTML = '<span style="color: yellow;">変形モード中</span>'
-    //     // MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
-    //     // this.$store.state.base.editFeature = null
-    //     // MyMap.drawLayer.getSource().changed()
-    //
-    //     MyMap.overlay['0'].setPosition(undefined)
-    //     // store.state.base.editFeature = null
-    //     MyMap.drawLayer.getSource().changed()
-    //   } else {
-    //     console.log('off')
-    //     console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
-    //     MyMap.modifyInteraction.setActive(false)
-    //     MyMap.modifyTouchInteraction.setActive(false)
-    //     // MyMap.transformInteraction.setActive(false)
-    //
-    //     // dragHandle.innerHTML = ''
-    //
-    //     this.$store.state.base.drawEndFlg = false
-    //
-    //     console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
-    //     MyMap.drawLayer.getSource().changed()
-    //   }
-    // })
-    // this.$watch(function () {
-    //   return [this.s_toggleIdo2]
-    // }, function () {
-    //   if (this.s_toggleIdo2) {
-    //     console.log('on')
-    //     this.s_togglePoint0 = false
-    //     this.s_toggleLine = false
-    //     this.s_toggleFreeHand = false
-    //     this.s_togglePoint = false
-    //     this.s_toggleMenseki = false
-    //     this.s_toggleCircle = false
-    //     this.s_toggleDaen = false
-    //     this.s_toggleShikaku = false
-    //     this.toggleDelete = false
-    //     this.toggleDanmen = false
-    //     this.s_toggleHole = false
-    //     this.s_toggleIdo = false
-    //     this.s_toggleText = false
-    //     this.s_toggleHole = false
-    //     this.s_toggleSplit = false
-    //
-    //
-    //     MyMap.modifyInteraction.setActive(false)
-    //     MyMap.modifyTouchInteraction.setActive(false)
-    //     MyMap.transformInteraction.setActive(true)
-    //
-    //     dragHandle.innerHTML = '<span style="color: red;">移動,拡大モード中</span>'
-    //     MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
-    //     // this.$store.state.base.editFeature = null
-    //     MyMap.drawLayer.getSource().changed()
-    //
-    //     MyMap.overlay['0'].setPosition(undefined)
-    //     MyMap.overlay['0'].setPosition(undefined)
-    //     // store.state.base.editFeature = null
-    //     MyMap.drawLayer.getSource().changed()
-    //   } else {
-    //     console.log('off')
-    //     console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
-    //     // MyMap.modifyInteraction.setActive(false)
-    //     // MyMap.modifyTouchInteraction.setActive(false)
-    //     // MyMap.transformInteraction.setActive(false)
-    //
-    //     // dragHandle.innerHTML = ''
-    //
-    //     this.$store.state.base.drawEndFlg = false
-    //
-    //     console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
-    //     MyMap.drawLayer.getSource().changed()
-    //   }
-    // })
-    // this.$watch(function () {
-    //   return [this.s_toggleText]
-    // }, function () {
-    //   if (this.s_toggleText) {
-    //     console.log('on')
-    //     // this.s_togglePoint0 = false
-    //     // this.s_toggleLine = false
-    //     // this.s_toggleFreeHand = false
-    //     // this.s_togglePoint = false
-    //     // this.s_toggleMenseki = false
-    //     // this.s_toggleCircle = false
-    //     // this.s_toggleDaen = false
-    //     // this.s_toggleShikaku = false
-    //     // this.toggleDelete = false
-    //     // this.toggleDanmen = false
-    //     // this.s_toggleHole = false
-    //     this.s_toggleIdo = false
-    //     this.s_toggleIdo2 = false
-    //     this.s_toggleSplit = false
-    //
-    //
-    //     MyMap.modifyInteraction.setActive(false)
-    //     MyMap.modifyTouchInteraction.setActive(false)
-    //     MyMap.transformInteraction.setActive(false)
-    //
-    //     dragHandle.innerHTML = '<span style="color: blue;">選択モード中</span>'
-    //     MyMap.transformInteraction.select(this.$store.state.base.editFeature, true)
-    //     // this.$store.state.base.editFeature = null
-    //     MyMap.drawLayer.getSource().changed()
-    //
-    //     MyMap.overlay['0'].setPosition(undefined)
-    //   } else {
-    //     console.log('off')
-    //     console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
-    //     // MyMap.modifyInteraction.setActive(false)
-    //     // MyMap.modifyTouchInteraction.setActive(false)
-    //     // MyMap.transformInteraction.setActive(false)
-    //
-    //     // dragHandle.innerHTML = ''
-    //
-    //     this.$store.state.base.drawEndFlg = false
-    //
-    //     console.log(this.$store.state.base.togglePoint0,this.$store.state.base.drawEndFlg)
-    //   }
-    // })
     this.$watch(function () {
       return [this.s_toggleCircle]
     }, function () {

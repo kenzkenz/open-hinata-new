@@ -856,6 +856,8 @@ export const canvasTitleControl = new CanvasTitle({
     style: new Style({ text: new Text({ font: '20px "Lucida Grande",Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif'}) })
 })
 
+export let dragAndDropInteraction
+
 // ダイアログ
 export const dialog = new Dialog({ fullscreen: true, zoom: true, closeBox: true });
 
@@ -1481,75 +1483,76 @@ export function initMap (vm) {
             store.state.base.maps.map01.addInteraction(synchronizeInteraction);
             store.state.base.maps.map02.addInteraction(synchronizeInteraction2);
         }
-        let dragAndDropInteraction;
-        function setInteraction() {
-            // const map = store.state.base.maps.map01;
-            if (dragAndDropInteraction) {
-                map.removeInteraction(dragAndDropInteraction);
-            }
-            dragAndDropInteraction = new DragAndDrop({
-                formatConstructors: [
-                    GPX,
-                    GeoJSON,
-                    IGC,
-                    // use constructed format to set options
-                    new KML({extractStyles: false}),
-                    TopoJSON,
-                ],
-            })
-            dragAndDropInteraction.on('addfeatures', function (event) {
-                document.querySelector('#map01 .loadingImg').style.display = 'block'
-                undoInteraction.blockStart()
-                // event.features.forEach((feature) => {
-                //     drawLayer.getSource().addFeature(feature)
-                // })
 
-
-                
-
-
-
-
-                drawLayer.getSource().addFeatures(event.features)
-                drawLayer.getSource().getFeatures().forEach((feature) =>{
-                    if (feature.getGeometry()) {
-                        if (feature.getGeometry().getType() === 'GeometryCollection') {
-                            drawLayer.getSource().removeFeature(feature)
-                            const circle = new Circle(feature.get('center'), feature.get('radius'));
-                            const newFeature = new Feature(circle);
-                            newFeature.setProperties({
-                                name: feature.getProperties().name,
-                                description: feature.getProperties().description,
-                                _fillColor: feature.getProperties()._fillColor,
-                                _distance: feature.getProperties()._distance,
-                                _area: feature.getProperties()._area
-                            })
-                            drawLayer.getSource().addFeature(newFeature)
-                            const coordAr = feature.getGeometry().getCoordinates()
-                            const geoType = feature.getGeometry().getType()
-                            measure (geoType,feature,coordAr)
-                            //------------------------------------------------------
-                            if (geoType === 'LineString' || geoType === 'MultiLineString') {
-                                const sliceCoord = sliceCoodAr(coordAr)
-                                sliceCoord.forEach((coord,i) => {
-                                    setTimeout(function() {
-                                        hyoko(feature, coord, coordAr)
-                                    },1000 * i)
-                                })
-                            }
-                        }
-                    }
-                    moveEnd()
-                    // -----------------------------------------------------
-                })
-                map.getView().fit(drawLayer.getSource().getExtent(),{padding: [100, 100, 100, 100]})
-
-                undoInteraction.blockEnd()
-                document.querySelector('#map01 .loadingImg').style.display = 'none'
-            })
-            map.addInteraction(dragAndDropInteraction)
-        }
-        setInteraction()
+        // let dragAndDropInteraction;
+        // function setInteraction() {
+        //     // const map = store.state.base.maps.map01;
+        //     if (dragAndDropInteraction) {
+        //         map.removeInteraction(dragAndDropInteraction);
+        //     }
+        //     dragAndDropInteraction = new DragAndDrop({
+        //         formatConstructors: [
+        //             GPX,
+        //             GeoJSON,
+        //             IGC,
+        //             // use constructed format to set options
+        //             new KML({extractStyles: false}),
+        //             TopoJSON,
+        //         ],
+        //     })
+        //     dragAndDropInteraction.on('addfeatures', function (event) {
+        //         document.querySelector('#map01 .loadingImg').style.display = 'block'
+        //         undoInteraction.blockStart()
+        //         // event.features.forEach((feature) => {
+        //         //     drawLayer.getSource().addFeature(feature)
+        //         // })
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //         drawLayer.getSource().addFeatures(event.features)
+        //         drawLayer.getSource().getFeatures().forEach((feature) =>{
+        //             if (feature.getGeometry()) {
+        //                 if (feature.getGeometry().getType() === 'GeometryCollection') {
+        //                     drawLayer.getSource().removeFeature(feature)
+        //                     const circle = new Circle(feature.get('center'), feature.get('radius'));
+        //                     const newFeature = new Feature(circle);
+        //                     newFeature.setProperties({
+        //                         name: feature.getProperties().name,
+        //                         description: feature.getProperties().description,
+        //                         _fillColor: feature.getProperties()._fillColor,
+        //                         _distance: feature.getProperties()._distance,
+        //                         _area: feature.getProperties()._area
+        //                     })
+        //                     drawLayer.getSource().addFeature(newFeature)
+        //                     const coordAr = feature.getGeometry().getCoordinates()
+        //                     const geoType = feature.getGeometry().getType()
+        //                     measure (geoType,feature,coordAr)
+        //                     //------------------------------------------------------
+        //                     if (geoType === 'LineString' || geoType === 'MultiLineString') {
+        //                         const sliceCoord = sliceCoodAr(coordAr)
+        //                         sliceCoord.forEach((coord,i) => {
+        //                             setTimeout(function() {
+        //                                 hyoko(feature, coord, coordAr)
+        //                             },1000 * i)
+        //                         })
+        //                     }
+        //                 }
+        //             }
+        //             moveEnd()
+        //             // -----------------------------------------------------
+        //         })
+        //         map.getView().fit(drawLayer.getSource().getExtent(),{padding: [100, 100, 100, 100]})
+        //
+        //         undoInteraction.blockEnd()
+        //         document.querySelector('#map01 .loadingImg').style.display = 'none'
+        //     })
+        //     map.addInteraction(dragAndDropInteraction)
+        // }
+        // setInteraction()
 
         //現在地取得
         // const success = (pos) =>{

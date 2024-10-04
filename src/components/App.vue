@@ -44,6 +44,18 @@
                   </div>
                 </modal>
               </div>
+              <div id="modal-dd">
+                <modal name="modaldd" :width="300" :clickToClose="false">
+                  <div class="modal-body">
+                    <div class="dialog-close-btn-div" @click="closeBtn1"><i class="fa-solid fa-xmark hover close-btn"></i>
+                    </div>
+                    色を塗る列を選択してください。数値の列の場合、白→赤のグラデーションになります。
+                    <b-form-select style="margin-top: 10px" v-model="s_ddColumn" :options="ddPropNames" ></b-form-select>
+                    <b-button style="margin-top:10px;margin-left: 0px;" class='olbtn' v-on:click="ddRead">読み込み</b-button>
+                    <b-button style="margin-top:10px;margin-left: 10px;" class='olbtn' v-on:click="ddCancel">キャンセル</b-button>
+                  </div>
+                </modal>
+              </div>
               <div :id="popup[mapName]" class="ol-popup0">
                 <a href="#" :id="popupCloser[mapName]" class="ol-popup-closer"></a>
                 <div :id="popupContent[mapName]"></div>
@@ -129,7 +141,11 @@ import DialogGeojson from './Daialog-gepjson'
 import DialogShare from './Dialog-share'
 import DialogTrack from './Dialog-track'
 import DialogProfile from './Dialog-profile'
-import {drawLayer} from "../js/mymap";
+import {drawLayer} from "../js/mymap"
+import DragAndDrop from 'ol/interaction/DragAndDrop.js'
+import {GPX, GeoJSON, IGC, KML, TopoJSON} from 'ol/format.js'
+import {Circle, LineString, Point, Polygon, MultiPolygon, MultiPoint} from "ol/geom"
+import Feature from 'ol/Feature'
 
   let heading
   let tilt
@@ -138,7 +154,6 @@ import {drawLayer} from "../js/mymap";
   export default {
     name: 'App',
     components: {
-
       'v-dialog-layer': DialogLayer,
       'v-dialog-menu': DialogMenu,
       'v-dialog-measure': DialogMeasure,
@@ -184,10 +199,35 @@ import {drawLayer} from "../js/mymap";
           { value: '30', text: '30' },
           { value: '50', text: '50' }
         ],
-        swipe: false
+        swipe: false,
+        ddFeatures: null,
+        ddPropNames: [],
       }
     },
     computed: {
+      s_ddColumn: {
+        get() {
+          return this.$store.state.base.ddColumn
+        },
+        set(value) {
+          this.$store.state.base.ddColumn = value
+          const values = []
+          this.ddFeatures.forEach((feature) => {
+            if (feature.getProperties()[value]) values.push(feature.getProperties()[value])
+          })
+          const ddColor = d3.scaleLinear()
+              .domain([d3.min(values),d3.max(values)])
+              .range(["white", "red"]);
+          this.ddFeatures.forEach((feature) => {
+            if (feature.getProperties()[value]) {
+              feature.setProperties({
+                '_fillColor':ddColor(feature.getProperties()[value]),
+                '_color':ddColor(feature.getProperties()[value])
+              })
+            }
+          })
+        }
+      },
       s_hight: {
         get() {
           return this.$store.state.base.hight['map01']
@@ -238,6 +278,7 @@ import {drawLayer} from "../js/mymap";
       },
       closeBtn1: function () {
         this.$modal.hide('modal1')
+        this.$modal.hide('modaldd')
       },
       stanford: function () {
         MyMap.history ('スタンフォード大学へ')
@@ -423,6 +464,50 @@ import {drawLayer} from "../js/mymap";
       rightMouseup() {
         this.tiltFlg = false
       },
+      ddCancel () {
+
+      },
+      ddRead () {
+        this.$modal.hide('modaldd')
+        document.querySelector('#map01 .loadingImg').style.display = 'block'
+        const map01 = this.$store.state.base.maps['map01']
+        MyMap.undoInteraction.blockStart()
+        drawLayer.getSource().addFeatures(this.ddFeatures)
+        drawLayer.getSource().getFeatures().forEach((feature) =>{
+          if (feature.getGeometry()) {
+            if (feature.getGeometry().getType() === 'GeometryCollection') {
+              drawLayer.getSource().removeFeature(feature)
+              const circle = new Circle(feature.get('center'), feature.get('radius'));
+              const newFeature = new Feature(circle);
+              newFeature.setProperties({
+                name: feature.getProperties().name,
+                description: feature.getProperties().description,
+                _fillColor: feature.getProperties()._fillColor,
+                _distance: feature.getProperties()._distance,
+                _area: feature.getProperties()._area
+              })
+              drawLayer.getSource().addFeature(newFeature)
+              const coordAr = feature.getGeometry().getCoordinates()
+              const geoType = feature.getGeometry().getType()
+              MyMap.measure (geoType,feature,coordAr)
+              //------------------------------------------------------
+              if (geoType === 'LineString' || geoType === 'MultiLineString') {
+                const sliceCoord = MyMap.sliceCoodAr(coordAr)
+                sliceCoord.forEach((coord,i) => {
+                  setTimeout(function() {
+                    MyMap.hyoko(feature, coord, coordAr)
+                  },1000 * i)
+                })
+              }
+            }
+          }
+          // -----------------------------------------------------
+        })
+        moveEnd()
+        map01.getView().fit(drawLayer.getSource().getExtent(),{padding: [100, 100, 100, 100]})
+        MyMap.undoInteraction.blockEnd()
+        document.querySelector('#map01 .loadingImg').style.display = 'none'
+      }
     },
     mounted () {
 
@@ -1419,6 +1504,10 @@ import {drawLayer} from "../js/mymap";
         }).then(function (response) {
           init(response,urlid)
           // vm.$modal.hide('modal0')
+
+
+
+
         }).finally(function () {
 
         });
@@ -1486,6 +1575,38 @@ import {drawLayer} from "../js/mymap";
           // //   buttons:{ ok:'hello', cancel:'nope' }
           // })
           //-------------------------------
+          const map01 = vm.$store.state.base.maps['map01']
+          function setInteraction() {
+            const dragAndDropInteraction = new DragAndDrop({
+              formatConstructors: [
+                GPX,
+                GeoJSON,
+                IGC,
+                // use constructed format to set options
+                new KML({extractStyles: false}),
+                TopoJSON,
+              ],
+            })
+            dragAndDropInteraction.on('addfeatures', function (event) {
+              let keys = []
+              event.features.forEach((feature) => {
+                const prop = feature.getProperties()
+                Object.keys(prop).forEach(function(key) {
+                  if (key !== 'geometry') {
+                    keys.push(key)
+                  }
+                })
+              })
+              keys = Array.from(new Set(keys))
+              vm.ddPropNames = keys.map((key) => {
+                return {value:key,text:key}
+              })
+              vm.ddFeatures = event.features
+              vm.$modal.show('modaldd');
+            })
+            map01.addInteraction(dragAndDropInteraction)
+          }
+          setInteraction()
         }
       })
     }
