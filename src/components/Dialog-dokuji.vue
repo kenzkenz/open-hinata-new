@@ -5,6 +5,9 @@
       <input type='text' v-model="s_dokujiName" style="width: 290px;"><br>
       タイルURL<br>
       <input type='text' v-model="s_dokujiUrl" style="width: 290px;"><br>
+<!--      min<br>-->
+<!--      <input type='text' v-model="s_dokujiMin" style="width: 50px;"><br>-->
+
       <b-button style="margin-top: 5px;" class="olbtn" size="sm" @click="toroku">追加</b-button>
       <br>
       <br>
@@ -15,7 +18,6 @@
 
 <script>
 import * as MyMap from '../js/mymap'
-import {moveEnd} from "@/js/permalink"
 import store from "@/js/store";
 import * as permalink from "@/js/permalink";
 import * as layers from '@/js/layers'
@@ -56,10 +58,19 @@ export default {
         permalink.moveEnd()
       }
     },
+    s_dokujiMin:{
+      get() {
+        return this.$store.state.info.dokujiMin['map01']
+      },
+      set(value) {
+        // console.log(this.$store.state.info.dokujiMin['map01'])
+        this.$store.state.info.dokujiMin['map01'] = value
+        permalink.moveEnd()
+      }
+    },
   },
   methods: {
     toroku: function() {
-
       this.$store.state.base.layerLists['map01'] = this.$store.state.base.layerLists['map01'].filter((layer) => {
         try {
           return layer.layer.values_.source.urls[0] !== this.s_dokujiUrl
@@ -67,23 +78,21 @@ export default {
           return layer
         }
       })
-
       const i = this.$store.state.info.dokujiLayers.length
-      // alert(i)
-      // console.log(this.$store.state.base.layerLists['map01'])
-      // this.$store.state.base.layerLists['map01'] = this.$store.state.base.layerLists['map01'].filter((layer) => {
-      //   console.log(layer.id,'dokuji' + (i-1))
-      //   return layer.id !== 'dokuji' + (i-1)
-      // })
-
       this.$store.state.info.dokujiLayers.push({
         id: 'dokuji' + i,
         url:this.s_dokujiUrl,
         name:this.s_dokujiName,
       })
+      console.log(this.s_dokujiMin)
+      // layers.dokujiLayerTsuika(i,this.s_dokujiMin)
       layers.dokujiLayerTsuika(i)
       layers.dokujiObjAr[i].map01.getSource().setUrl(this.s_dokujiUrl)
       layers.dokujiObjAr[i].map02.getSource().setUrl(this.s_dokujiUrl)
+      // layers.dokujiObjAr[i].map01.getSource().setMinZoom(16)
+      // layers.dokujiObjAr[i].map02.getSource().setMinZoom(16)
+
+
       console.log(layers.dokujiObjAr[i])
       this.$store.commit('base/unshiftLayerList', {
         value: {

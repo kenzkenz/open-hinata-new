@@ -10490,7 +10490,7 @@ for (let i of mapsStr) {
 }
 const jisinSumm = '<a href="https://www.j-shis.bosai.go.jp/shm" target="_blank">地震ハザードステーション</a>'
 
-function Dokuji () {
+function Dokuji (minZoom) {
   this.preload = Infinity
   this.name = 'dokuji'
   this.source = new XYZ({
@@ -10501,10 +10501,10 @@ function Dokuji () {
   })
 }
 export const dokujiObjAr = []
-export function dokujiLayerTsuika (i) {
+export function dokujiLayerTsuika (i,minZoom) {
   dokujiObjAr[i] = {};
   for (let ii of mapsStr) {
-    dokujiObjAr[i][ii] = new TileLayer(new Dokuji())
+    dokujiObjAr[i][ii] = new TileLayer(new Dokuji(minZoom))
   }
 }
 
