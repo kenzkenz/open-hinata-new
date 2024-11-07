@@ -2020,6 +2020,40 @@ for (let i of mapsStr) {
 }
 const wakayamaCsSumm = '<a href="https://github.com/shi-works/aist-dem-with-cs-on-maplibre-gl-js" target="_blank">aist-dem-with-cs-on-maplibre-gl-jsaist-dem-with-cs-on-maplibre-gl-js</a>';
 
+// 神奈川県CS立体図--------------------------------------------------------
+function KanagawaCS () {
+  this.preload = Infinity
+  // this.extent = transformE([134.95532947982784,34.40572624226317, 136.0375257154846,33.41823638210427])
+  this.source = new XYZ({
+    url: 'https://shiworks.xsrv.jp/raster-tiles/pref-kanagawa/kanagawapc-cs-tiles/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    minZoom: 4,
+    maxZoom: 18
+  });
+}
+const kanagawaCsObj = {};
+for (let i of mapsStr) {
+  kanagawaCsObj[i] = new TileLayer(new KanagawaCS())
+}
+const kanagawaCsSumm = '<a href="" target="_blank"></a>';
+// 愛知県赤色立体地図--------------------------------------------------------
+function AichiRed () {
+  this.preload = Infinity
+  // this.extent = transformE([134.95532947982784,34.40572624226317, 136.0375257154846,33.41823638210427])
+  this.source = new XYZ({
+    url: 'https://kenzkenz.xsrv.jp/open-hinata3/php/proxy.php?url=https://bg.maps.pref.aichi.jp/tiles/w213665/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    minZoom: 4,
+    maxZoom: 18
+  });
+}
+const aichiRedObj = {};
+for (let i of mapsStr) {
+  aichiRedObj[i] = new TileLayer(new AichiRed())
+}
+const aichiRedSumm = '<a href="" target="_blank"></a>';
+
+
 // 東京都多摩地域陰陽図 ----------------------------------------------------------------------------
 function Tamainyou () {
   this.preload = Infinity
@@ -2141,6 +2175,22 @@ for (let i of mapsStr) {
     ]
   })
 }
+// 東京都23区赤色立体地図 ----------------------------------------------------------------------------
+function Tokyo23red () {
+  this.preload = Infinity
+  // this.extent = transformE([138.9259, 35.90926,139.6112, 35.46722])
+  this.source = new XYZ({
+    url: 'https://kenzkenz3.xsrv.jp/sekisyoku/tokyo/{z}/{x}/{y}.png',
+    crossOrigin: 'Anonymous',
+    minZoom: 1,
+    maxZoom: 19
+  })
+}
+const tokyo23redObj = {};
+for (let i of mapsStr) {
+  tokyo23redObj[i] = new TileLayer(new Tokyo23red())
+}
+// const tokyo23redSumm = '<a href="" target="_blank"></a>';
 
 // 東京都多摩地域赤色立体地図 ----------------------------------------------------------------------------
 function Tamared () {
@@ -2256,6 +2306,7 @@ const tamaredObj = {};
 for (let i of mapsStr) {
   tamaredObj[i] = new LayerGroup({
     layers: [
+      tokyo23redObj[i],
       tamared00Obj[i],
       tousyosekisyoku01Obj[i],
       tousyosekisyoku02Obj[i],
@@ -10490,7 +10541,7 @@ for (let i of mapsStr) {
 }
 const jisinSumm = '<a href="https://www.j-shis.bosai.go.jp/shm" target="_blank">地震ハザードステーション</a>'
 
-function Dokuji () {
+function Dokuji (minZoom) {
   this.preload = Infinity
   this.name = 'dokuji'
   this.source = new XYZ({
@@ -10501,10 +10552,10 @@ function Dokuji () {
   })
 }
 export const dokujiObjAr = []
-export function dokujiLayerTsuika (i) {
+export function dokujiLayerTsuika (i,minZoom) {
   dokujiObjAr[i] = {};
   for (let ii of mapsStr) {
-    dokujiObjAr[i][ii] = new TileLayer(new Dokuji())
+    dokujiObjAr[i][ii] = new TileLayer(new Dokuji(minZoom))
   }
 }
 
@@ -13811,7 +13862,11 @@ export const Layers =
         // { text: '日本CS立体図', data: { id: 'jcs', layer: nihonCsObj, opacity: 1, summary: nihonCsSumm } },
         // { text: '全国CS立体図10m', data: { id: 'cs10', layer: cs10mObj, opacity: 1, summary: cs10mSumm } },
         { text: '東京都陰陽図', data: { id: 'tamainyou', layer: tamainyouObj, opacity: 1, zoom:11, center:[139.25439119338986, 35.6997080831123], summary: tamainyouSumm } },
+        // { text: '東京都23区赤色立体地図', data: { id: 'tokyo23red', layer: tokyo23red0Obj, opacity: 1, zoom:11, summary: tokyo23red0Obj } },
+
         { text: '東京都赤色立体地図', data: { id: 'tamared', layer: tamaredObj, opacity: 1, zoom:11, center:[139.25439119338986, 35.6997080831123], summary: tamaredSumm } },
+        { text: '愛知県赤色立体地図', data: { id: 'aichired', layer: aichiRedObj, opacity: 1, zoom:9, summary: aichiRedSumm } },
+
         { text: '東京都CS立体図テスト', data: { id: 'tamacs', layer: tokyoCsObj, opacity: 1, zoom:11, center:[139.25439119338986, 35.6997080831123], summary: tamaCsSumm } },
         { text: 'CS立体図全部', data: { id: 'cs00', layer: cs00Obj, opacity: 1, summary: tamainyouSumm } },
         { text: '栃木県CS立体図', data: { id: 'tochigcs', layer: tochigicsObj, opacity: 1, zoom:10, center:[139.7261306915493, 36.67065922020146], summary: tochigicsSumm } },
@@ -13832,6 +13887,9 @@ export const Layers =
         { text: '熊本県・大分県CS立体図', data: { id: 'kumamotocs', layer: kumamotoCsObj, opacity: 1, zoom:9, center:[131.08264176666347, 32.86696607176184], summary: kumamotoCsSumm } },
         { text: '大阪府CS立体図', data: { id: 'osakacs', layer: osakaCsObj, opacity: 1, zoom:9, center:[135.5167507309548, 34.68490347466543], summary: osakaCsSumm } },
         { text: '和歌山県CS立体図', data: { id: 'wakayamacs', layer: wakayamaCsObj, opacity: 1, zoom:9, center:[135.52473298498347,33.913180427499256], summary: wakayamaCsSumm } },
+        { text: '神奈川県CS立体図', data: { id: 'kanagawacs', layer: kanagawaCsObj, opacity: 1, zoom:9, summary: kanagawaCsSumm } },
+
+
 
         { text: '能登CS立体図', data: { id: 'notocs', layer: notoCsObj, opacity: 1, zoom:9, center:[136.9312018478913, 37.22961765479215], summary: notoCsSumm } },
         { text: '能登西部赤色立体地図', data: { id: 'notoseibu', layer: notoSeibuObj, opacity: 1, zoom:9, center:[136.9312018478913, 37.22961765479215], summary: notoSeubuSumm } },

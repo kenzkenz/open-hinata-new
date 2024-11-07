@@ -340,14 +340,14 @@ const moduleInfo = {
     dokujiUrl: {
       map01: '',
       map02: '',
-      map03: '',
-      map04: ''
     },
     dokujiName: {
       map01: '',
       map02: '',
-      map03: '',
-      map04: ''
+    },
+    dokujiMin: {
+      map01: 0,
+      map02: 18,
     },
     selected10m: {
       map01: 200,
