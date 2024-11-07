@@ -140,6 +140,7 @@ export default {
       if (this.s_sonmei) {
         parameter = this.s_sonmei.replace(/　/gi,' ').trim()
       } else {
+
         parameter = this.s_sonmei.trim()
       }
       // const parameter = 'かみくぜ'

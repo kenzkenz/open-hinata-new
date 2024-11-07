@@ -8,9 +8,11 @@ $sql = '';
 $counter = 0;
 foreach($arr as $value) {
     if ($counter == 0) {
-        $sql .= "CONCAT(KEY0,PREF_NAME,CITY_NAME,令制国,CONCAT(令制国, '国' ),郡名,国郡名,村名,領分１,領分２,領分３,領分４,領分５,領分６,領分７,領分８,よみ,県) LIKE '%" . $value . "%'";
+//        $sql .= "CONCAT(KEY0,PREF_NAME,CITY_NAME,令制国,CONCAT(令制国, '国' ),郡名,国郡名,村名,領分１,領分２,領分３,領分４,領分５,領分６,領分７,領分８,よみ,県) LIKE '%" . $value . "%'";
+        $sql .= "CONCAT(KEY0,PREF_NAME,CITY_NAME,令制国,CONCAT(令制国, '国' ),郡名,国郡名,村名,領分１,よみ,県) LIKE '%" . $value . "%'";
     } else {
-        $sql .= "OR CONCAT(KEY0,PREF_NAME,CITY_NAME,令制国,CONCAT(令制国, '国' ),郡名,国郡名,村名,領分１,領分２,領分３,領分４,領分５,領分６,領分７,領分８,よみ,県) LIKE '%" . $value . "%'";
+//        $sql .= "OR CONCAT(KEY0,PREF_NAME,CITY_NAME,令制国,CONCAT(令制国, '国' ),郡名,国郡名,村名,領分１,領分２,領分３,領分４,領分５,領分６,領分７,領分８,よみ,県) LIKE '%" . $value . "%'";
+        $sql .= "OR CONCAT(KEY0,PREF_NAME,CITY_NAME,令制国,CONCAT(令制国, '国' ),郡名,国郡名,村名,領分１,よみ,県) LIKE '%" . $value . "%'";
     }
     $counter++;
 }

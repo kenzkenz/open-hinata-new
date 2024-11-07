@@ -384,6 +384,9 @@ tippecanoe -l f -f -o f.pmtiles hude201.geojson hude202.geojson hude203.geojson 
 tippecanoe -x land_type -x layer --drop-fraction-as-needed -l f -f -o f2.pmtiles f.geojson
 tippecanoe -l k -f -o k.pmtiles k.geojson
 
+
+
+
 tippecanoe-decode 15sekai-light -z 14 -Z 14 -c > 2.geojson
 tippecanoe -l h -f -o h.pmtiles hokai.geojson
 
