@@ -2370,23 +2370,23 @@ export function initMap (vm) {
             })
 
             const lonLat = transform([coord[0], coord[1]], "EPSG:3857", "EPSG:4326")
-            axios
-                .get('https://mreversegeocoder.gsi.go.jp/reverse-geocoder/LonLatToAddress', {
-                    params: {
-                        lon: lonLat[0],
-                        lat: lonLat[1]
-                    }
-                })
-                .then(function (response) {
-                    // console.log(response.data.results)
-                    const elAddress = document.querySelector( '#' + mapName + ' .address')
-                    if (response.data.results) {
-                        const splitMuni = muni[Number(response.data.results.muniCd)].split(',')
-                        if (elAddress.innerHTML !== response.data.results.lv01Nm) elAddress.innerHTML = splitMuni[1] + splitMuni[3] + response.data.results.lv01Nm
-                    } else {
-                        elAddress.innerHTML = ''
-                    }
-                })
+            // axios
+            //     .get('https://mreversegeocoder.gsi.go.jp/reverse-geocoder/LonLatToAddress', {
+            //         params: {
+            //             lon: lonLat[0],
+            //             lat: lonLat[1]
+            //         }
+            //     })
+            //     .then(function (response) {
+            //         // console.log(response.data.results)
+            //         const elAddress = document.querySelector( '#' + mapName + ' .address')
+            //         if (response.data.results) {
+            //             const splitMuni = muni[Number(response.data.results.muniCd)].split(',')
+            //             if (elAddress.innerHTML !== response.data.results.lv01Nm) elAddress.innerHTML = splitMuni[1] + splitMuni[3] + response.data.results.lv01Nm
+            //         } else {
+            //             elAddress.innerHTML = ''
+            //         }
+            //     })
         }
         map.on('moveend', function (event) {
             // console.log(777)
